@@ -2,13 +2,10 @@
 #include<d3d9.h>
 #include <windows.h>
 #include<dinput.h>
-#include"DInput.h"
+
 
 #ifndef CONTROL_H
 #define CONTROL_H
-
-#define PlayerSizeW 50
-#define PlayerSizeH 100
 
 enum KEYSTATE {
 	KEY_PUSH,
@@ -56,9 +53,11 @@ enum KEYKIND
 
 struct Ammo {
 	float cx, cy;
-	float r;
+	float radius;
+	float rad;
 	float dmg;
 	//bool wasHit;
+	bool wasReflect;
 	int reflect_max;
 	int reflect_cnt;
 
@@ -67,13 +66,15 @@ struct Ammo {
 struct Player {
 	float cx, cy;
 	float hp;
-	bool beshot;
+	bool beshotUP;
+	bool beshotDOWN;
 	int shot_cnt;
 	
 };
 
 extern LPDIRECTINPUTDEVICE8 g_pKeyDevice;
 
+void Control();
 void KeyCheck(KEYSTATE* Key, int DIK);
 void DXInputKeybourdInit(HWND hWnd, HINSTANCE hInstance);
 void FreeDxInput();

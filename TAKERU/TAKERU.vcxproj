@@ -125,19 +125,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ammo.cpp" />
+    <ClCompile Include="AmmoRender.cpp" />
     <ClCompile Include="BackgroundRender.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapRender.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerRender.cpp" />
     <ClCompile Include="Render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ammo.h" />
+    <ClInclude Include="AmmoRender.h" />
     <ClInclude Include="BackgroundRender.h" />
     <ClInclude Include="Control.h" />
     <ClInclude Include="MapRender.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerRender.h" />
     <ClInclude Include="Render.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

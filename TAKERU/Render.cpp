@@ -2,6 +2,8 @@
 #include"Render.h"
 #include"MapRender.h"
 #include"BackgroundRender.h"
+#include"AmmoRender.h"
+#include"PlayerRender.h"
 
 LPDIRECT3DTEXTURE9	  g_pTexture[TEXMAX];
 
@@ -66,7 +68,7 @@ void TextureInit() {
 	//‰æ‘œ‘I‘ð
 	D3DXCreateTextureFromFile(g_pD3Device, "picture/floor01.png", &g_pTexture[MAP_TEX]);
 	D3DXCreateTextureFromFile(g_pD3Device, "picture/background.png", &g_pTexture[BACKGROUND_TEX]);
-	D3DXCreateTextureFromFile(g_pD3Device, "picture/ammo.png", &g_pTexture[BACKGROUND_TEX]);
+	D3DXCreateTextureFromFile(g_pD3Device, "picture/ammo01.png", &g_pTexture[ENEMYAMMO01_TEX]);
 
 	CSVLoad("map.csv");
 }
@@ -103,6 +105,7 @@ void Render() {
 
 	BackgroundRender();
 	MapRender();
+	AMMORender();
 	
 	g_pD3Device->EndScene();
 	g_pD3Device->Present(NULL, NULL, NULL, NULL);

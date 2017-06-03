@@ -42,6 +42,12 @@
     <ClCompile Include="BackgroundRender.cpp">
       <Filter>render</Filter>
     </ClCompile>
+    <ClCompile Include="AmmoRender.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRender.cpp">
+      <Filter>render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Control.h">
@@ -60,6 +66,12 @@
       <Filter>render</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundRender.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="AmmoRender.h">
+      <Filter>render</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRender.h">
       <Filter>render</Filter>
     </ClInclude>
   </ItemGroup>

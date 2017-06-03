@@ -1,7 +1,15 @@
 #include"Control.h"
+#include"Ammo.h"
+#include"Player.h"
 
 LPDIRECTINPUT8 g_pDInput;
 LPDIRECTINPUTDEVICE8 g_pKeyDevice;
+
+void Control() {
+
+	Player_control();
+	Ammomove();
+}
 
 void KeyCheck(KEYSTATE* Key, int DIK) {
 	BYTE diks[256];
