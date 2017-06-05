@@ -63,7 +63,6 @@ struct Ammo {
 
 };
 
-
 extern LPDIRECTINPUTDEVICE8 g_pKeyDevice;
 
 void Control();

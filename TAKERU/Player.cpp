@@ -10,7 +10,7 @@ void PlayerInit(){
 
 	g_player.cx = 200.0f;
 	g_player.cy = 300.0f;
-	g_player.jump_v0 = 10.0f;
+	g_player.jump_v0 = -20.0f;
 	g_player.hp = 100.0f;
 	g_player.beshotUP = false;
 	g_player.beshotDOWN = false;
@@ -23,6 +23,9 @@ enum KEYSTATE g_Key[KEYMAX];
 
 void Player_control(){
 
+	//-------------------------------------------------------------------------
+	//プレイヤー重力かけるぜ
+	//-------------------------------------------------------------------------
 	int playerposX_map = (int)g_player.cx / TIPSIZE;
 	int playerposY_map = (int)(g_player.cy+ PlayerSizeH/2) / TIPSIZE;
 
@@ -30,13 +33,35 @@ void Player_control(){
 	if (g_map[playerposY_map][playerposX_map] == nothing) {
 		//重力をかける
 		g_player.jump_v0 += (float)Gravity;
-		g_player.cy += (float)Gravity;
+		g_player.cy += g_player.jump_v0;
 	}
 	else {
-		g_player.jump_v0 = 10.0f;
+		g_player.jump_v0 = -20.0f;
+	}
+	//------------------------------------------------------------------------
+	//左右に動かすぜ
+	//------------------------------------------------------------------------
+	KeyCheck(&g_Key[KEY_LEFT], DIK_LEFT);
+	KeyCheck(&g_Key[KEY_RIGHT], DIK_RIGHT);
+	if (g_Key[KEY_LEFT] == KEY_ON) {
+		g_player.cx -= PlayerMoveSpeed;
+	}
+	if (g_Key[KEY_RIGHT] == KEY_ON) {
+		g_player.cx += PlayerMoveSpeed;
 	}
 
+
+	//-------------------------------------------------------------------------
+	//ジャンプさせる
+	//-------------------------------------------------------------------------
+	KeyCheck(&g_Key[KEY_C], DIK_C);
+	if (g_Key[KEY_C] == KEY_ON) {
+		g_player.cy += g_player.jump_v0;
+	}
+
+	//-------------------------------------------------------------------------
 	//弾をはじき返す角度
+	//-------------------------------------------------------------------------
 	KeyCheck(&g_Key[KEY_Z],DIK_Z);
 	KeyCheck(&g_Key[KEY_X], DIK_X);
 

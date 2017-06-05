@@ -5,7 +5,7 @@
 void PlayerRender() {
 
 	CUSTOMVERTEX Player[] = {
-		{ g_player.cx- PlayerSizeW/2,g_player.cy- PlayerSizeH/2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
+		{ g_player.cx - PlayerSizeW/2,g_player.cy - PlayerSizeH / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
 		{ g_player.cx + PlayerSizeW/2,g_player.cy - PlayerSizeH / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
 		{ g_player.cx + PlayerSizeW/2,g_player.cy + PlayerSizeH / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
 		{ g_player.cx - PlayerSizeW/2,g_player.cy + PlayerSizeH / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }

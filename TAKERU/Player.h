@@ -5,7 +5,8 @@
 #define PlayerSizeW 50
 #define PlayerSizeH 100
 
-#define Gravity 4;
+#define Gravity 2.0;
+#define PlayerMoveSpeed 5;
 
 struct Player {
 	float cx, cy;
