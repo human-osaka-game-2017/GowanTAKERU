@@ -5,6 +5,20 @@
 #define PlayerSizeW 50
 #define PlayerSizeH 100
 
+#define Gravity 4;
+
+struct Player {
+	float cx, cy;
+	float jump_v0;
+	float hp;
+	bool beshotUP;
+	bool beshotDOWN;
+	int shot_cnt;
+
+};
+
+extern struct Player g_player;
+
 void PlayerInit();
 void Player_control();
 

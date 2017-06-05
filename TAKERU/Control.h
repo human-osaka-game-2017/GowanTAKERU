@@ -63,14 +63,6 @@ struct Ammo {
 
 };
 
-struct Player {
-	float cx, cy;
-	float hp;
-	bool beshotUP;
-	bool beshotDOWN;
-	int shot_cnt;
-	
-};
 
 extern LPDIRECTINPUTDEVICE8 g_pKeyDevice;
 

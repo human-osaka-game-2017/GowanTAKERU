@@ -69,6 +69,7 @@ void TextureInit() {
 	D3DXCreateTextureFromFile(g_pD3Device, "picture/floor01.png", &g_pTexture[MAP_TEX]);
 	D3DXCreateTextureFromFile(g_pD3Device, "picture/background.png", &g_pTexture[BACKGROUND_TEX]);
 	D3DXCreateTextureFromFile(g_pD3Device, "picture/ammo01.png", &g_pTexture[ENEMYAMMO01_TEX]);
+	D3DXCreateTextureFromFile(g_pD3Device, "picture/player.png", &g_pTexture[PLAYER_TEX]);
 
 	CSVLoad("map.csv");
 }
@@ -105,6 +106,7 @@ void Render() {
 
 	BackgroundRender();
 	MapRender();
+	PlayerRender();
 	AMMORender();
 	
 	g_pD3Device->EndScene();

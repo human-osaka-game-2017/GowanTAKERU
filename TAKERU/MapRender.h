@@ -5,7 +5,9 @@
 #define MAP_WIDTH 50
 #define TIPSIZE 32
 
-extern int g_map[MAP_HEIGHT][MAP_WIDTH];
+enum MapKind { nothing, yuka };
+
+extern MapKind g_map[MAP_HEIGHT][MAP_WIDTH];
 
 void MapRender();
 

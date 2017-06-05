@@ -1,7 +1,7 @@
 #include"MapRender.h"
 #include"Render.h"
 
-int g_map[MAP_HEIGHT][MAP_WIDTH];
+MapKind g_map[MAP_HEIGHT][MAP_WIDTH];
 
 void MapRender() {
 

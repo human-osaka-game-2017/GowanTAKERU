@@ -1,14 +1,17 @@
 #include"Player.h"
 #include"Control.h"
 
+#include"MapRender.h"
+
 struct Player g_player;
 extern struct Ammo g_enemyAmmo;
 
 void PlayerInit(){
 
-	g_player.cx = 200;
-	g_player.cy = 300;
-	g_player.hp = 100;
+	g_player.cx = 200.0f;
+	g_player.cy = 300.0f;
+	g_player.jump_v0 = 10.0f;
+	g_player.hp = 100.0f;
 	g_player.beshotUP = false;
 	g_player.beshotDOWN = false;
 	g_player.shot_cnt = 0;
@@ -20,6 +23,18 @@ enum KEYSTATE g_Key[KEYMAX];
 
 void Player_control(){
 
+	int playerposX_map = (int)g_player.cx / TIPSIZE;
+	int playerposY_map = (int)(g_player.cy+ PlayerSizeH/2) / TIPSIZE;
+
+	//プレイヤーの下が何もなかったら
+	if (g_map[playerposY_map][playerposX_map] == nothing) {
+		//重力をかける
+		g_player.jump_v0 += (float)Gravity;
+		g_player.cy += (float)Gravity;
+	}
+	else {
+		g_player.jump_v0 = 10.0f;
+	}
 
 	//弾をはじき返す角度
 	KeyCheck(&g_Key[KEY_Z],DIK_Z);

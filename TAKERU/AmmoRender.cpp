@@ -4,10 +4,10 @@
 void AMMORender() {
 
 	CUSTOMVERTEX ENEMYAMMO01 [] = {
-		{ 1000.f+ g_enemyAmmo.cx,200.f+ g_enemyAmmo.cy,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-		{ 1000.f+ AmmoSize+ g_enemyAmmo.cx,200.f+ g_enemyAmmo.cy,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
-		{ 1000.f+AmmoSize+ g_enemyAmmo.cx,200.f + AmmoSize+ g_enemyAmmo.cy,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-		{ 1000.f+ g_enemyAmmo.cx,200.f + AmmoSize+ g_enemyAmmo.cy,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
+		{ g_enemyAmmo.cx- AmmoSize/2,g_enemyAmmo.cy- AmmoSize/2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
+		{ g_enemyAmmo.cx+ AmmoSize/2,g_enemyAmmo.cy- AmmoSize/2,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
+		{ g_enemyAmmo.cx+ AmmoSize/2,g_enemyAmmo.cy+ AmmoSize/2,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
+		{ g_enemyAmmo.cx- AmmoSize/2,g_enemyAmmo.cy+ AmmoSize/2,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 	};
 
 	// テクスチャをステージに割り当てる
