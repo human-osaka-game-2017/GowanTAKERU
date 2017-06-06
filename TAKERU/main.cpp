@@ -1,5 +1,6 @@
 #include"Render.h"
 #include"Control.h"
+#include"Ammo.h"
 #include"Player.h"
 
 #define TITLE 	TEXT("Basic of game")
@@ -78,6 +79,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	DWORD currenttime;
 
 	PlayerInit();
+	AmmoInit();
 
 	timeBeginPeriod(1);
 
@@ -92,7 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if (currenttime - oldtime >= 1000 / 60) {
 				oldtime = currenttime;
 
-				/*Contorol();*/
+				Control();
 				Render();
 
 			}
