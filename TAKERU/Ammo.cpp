@@ -7,6 +7,7 @@ void AmmoInit() {
 
 	g_enemyAmmo.cx = 1000;
 	g_enemyAmmo.cy = 500;
+	g_enemyAmmo.cy = 300;
 	g_enemyAmmo.dmg = 20;
 	g_enemyAmmo.rad = 0;
 	g_enemyAmmo.radius = 15;
@@ -28,7 +29,6 @@ void Ammomove() {
 	if (g_enemyAmmo.wasReflect==true) {
 		g_enemyAmmo.cx += -Ammo_MOVESPEED*cos(g_enemyAmmo.rad);
 		g_enemyAmmo.cy += Ammo_MOVESPEED*sin(g_enemyAmmo.rad);
-	}
 	
 }
 

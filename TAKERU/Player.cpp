@@ -27,6 +27,7 @@ void Player_control(){
 	//-------------------------------------------------------------------------
 	//プレイヤー重力かけるぜ
 	//-------------------------------------------------------------------------
+
 	//プレイヤーの真下のマップチップ番号
 	int playerposX_map = (int)g_player.cx / TIPSIZE;
 	int playerposY_map = (int)(g_player.cy+ PlayerSizeH/2) / TIPSIZE;
@@ -37,9 +38,15 @@ void Player_control(){
 		g_player.jump_v0 += (float)Gravity;
 		g_player.cy += g_player.jump_v0;
 	}
+
 	//床についたら
 	else {
 		g_player.cy = (playerposY_map-1)*TIPSIZE- TIPSIZE/2;
+		g_player.jump_v0 = -20.0f;
+	}
+
+=======
+	else {
 		g_player.jump_v0 = -20.0f;
 	}
 
@@ -87,6 +94,7 @@ void Player_control(){
 
 	}
 
+
 	if (g_player.shot_cnt != 0 && g_player.shot_cnt < 10) {
 		if (Circle_Hit(g_player.cx + 10, g_player.cy + 10, 50.0f, g_enemyAmmo.cx, g_enemyAmmo.cy, AmmoSize / 2)) {
 			if (g_enemyAmmo.wasReflect == false) {
@@ -124,6 +132,29 @@ void Player_control(){
 					g_enemyAmmo.rad = D3DXToRadian(0.f);
 				}
 			}
+
+
+	//if(あたり判定){
+	if (g_player.shot_cnt != 0 && g_player.shot_cnt < 10) {
+		if (g_player.beshotUP == true){
+			g_enemyAmmo.rad = D3DXToRadian(0.0f);
+		}
+		if (g_player.beshotDOWN == true) {
+			g_enemyAmmo.rad = D3DXToRadian(60.f);
+		}
+		
+	}
+	if (10 < g_player.shot_cnt && g_player.shot_cnt < 20) {
+		g_enemyAmmo.rad = D3DXToRadian(30.f);
+	}
+
+	if (20 < g_player.shot_cnt && g_player.shot_cnt < 30) {
+		if (g_player.beshotUP == true) {
+			g_enemyAmmo.rad = D3DXToRadian(60.f);
+		}
+		if (g_player.beshotDOWN == true) {
+			g_enemyAmmo.rad = D3DXToRadian(0.f);
+
 		}
 
 	}
