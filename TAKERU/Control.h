@@ -3,6 +3,7 @@
 #include <windows.h>
 #include<dinput.h>
 #include"DInput.h"
+#include <stdio.h>
 
 #ifndef CONTROL_H
 #define CONTROL_H
@@ -66,6 +67,7 @@ struct Ammo {
 
 struct Player {
 	float cx, cy;
+	float r;
 	float hp;
 	bool beshot;
 	int shot_cnt;
@@ -82,5 +84,10 @@ void FreeDxInput();
 //{
 //	float x, y, height, width, scale, rad;
 //};
+
+bool Circle_Hit(float cx1, float cy1, float r1, float cx2, float cy2, float r2);
+
+
+
 
 #endif
