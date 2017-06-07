@@ -53,10 +53,11 @@ enum KEYKIND
 
 struct Ammo {
 	float cx, cy;
-	float radius;
+	float radius;//”¼Œa
 	float rad;
 	float dmg;
-	//bool wasHit;
+	float save_playercoordinateX, save_playercoordinateY;
+	bool berender;
 	bool wasReflect;
 	int reflect_max;
 	int reflect_cnt;
@@ -64,11 +65,13 @@ struct Ammo {
 };
 
 extern LPDIRECTINPUTDEVICE8 g_pKeyDevice;
+extern int g_frcnt;
 
 void Control();
 void KeyCheck(KEYSTATE* Key, int DIK);
 void DXInputKeybourdInit(HWND hWnd, HINSTANCE hInstance);
 bool Circle_Hit(float cx1, float cy1, float r1, float cx2, float cy2, float r2);
+double Calculate_rad(float x1, float y1, float x2, float y2);
 void FreeDxInput();
 
 //struct 
