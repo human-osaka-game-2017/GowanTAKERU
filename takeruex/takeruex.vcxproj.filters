@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainControl.cpp">
+      <Filter>Application\MainScene\MainControl</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerControl.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="MapControl.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletControl.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyControl.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManagement.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletRender.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRend.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="MapRender.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRender.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGroundRender.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="MainRender.cpp">
+      <Filter>Application\MainScene\MainRender</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManagement.h.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGraphics.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXInput.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="MainSceneInit.cpp">
+      <Filter>Application\MainScene\MainControl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Application">
+      <UniqueIdentifier>{301f50b5-cef8-49e2-975c-b893df947e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\MainScene">
+      <UniqueIdentifier>{1ad6ae51-dc80-42d5-a5e3-184027637094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\MainScene\MainControl">
+      <UniqueIdentifier>{14dfb9de-dc71-4714-b1e2-d592e24aea4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\MainScene\MainControl\Control">
+      <UniqueIdentifier>{35724632-9187-4fc3-ab1a-217f18e3b53c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\MainScene\MainRender">
+      <UniqueIdentifier>{1f690561-39c9-4f46-ac2a-ef042a8c52ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\MainScene\MainRender\Render">
+      <UniqueIdentifier>{50adc02f-dbd6-47f0-a2ad-56f0e78c7af4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{b7563eca-86d3-496e-9532-0a3a63766764}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainControl.h">
+      <Filter>Application\MainScene\MainControl</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerControl.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="MapControl.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletControl.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyControl.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManagement.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletRender.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyRend.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MapRender.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRender.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGroundRender.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MainRender.h">
+      <Filter>Application\MainScene\MainRender</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonRender.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManagement.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGraphics.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXInput.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonControl.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MainSceneInit.h">
+      <Filter>Application\MainScene\MainControl</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

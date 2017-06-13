@@ -1,0 +1,177 @@
+#include"PlayerControl.h"
+#include"MapRender.h"
+#include"MapControl.h"
+#include"CommonRender.h"
+#include"CommonControl.h"
+
+Player g_player;
+static D3DXVECTOR2 g_BasePoint = D3DXVECTOR2(DISPLAY_WIDTH / 2, (MAPCHIPNUM_HEIGHT *TIPSIZE) / 2);
+
+D3DXVECTOR2* GetBasePoint() {
+	return &g_BasePoint;
+}
+
+Player* GetplayerData() {
+	return &g_player;
+}
+
+void PlayerInit() {
+
+	g_player.WindowPos.x = g_player.WorldPos.x = 200.f;
+	g_player.WindowPos.y = g_player.WorldPos.y = 200.f;
+	g_player.hp = 100;
+	g_player.beLeft = false;
+	g_player.bePunchDOWN = false;
+	g_player.bePunchUP = false;
+
+}
+
+void PlayerMove() {
+
+	KEYSTATE* Key = GetKey();
+
+	//------------------------------------------------------------------------
+	//左右に動かすぜ
+	//------------------------------------------------------------------------
+	KeyCheck(&Key[KEY_LEFT], DIK_LEFT);
+	KeyCheck(&Key[KEY_RIGHT], DIK_RIGHT);
+	KeyCheck(&Key[KEY_C], DIK_C);
+
+	if (Key[KEY_LEFT] == KEY_ON) {
+
+		g_player.WorldPos.x -= PLAYERMOVESPEED;
+
+		if (g_player.WindowPos.x < 400) {
+			g_BasePoint.x -= PLAYERMOVESPEED;
+		}
+		else {
+			g_player.WindowPos.x -= PLAYERMOVESPEED;
+		}
+	}
+
+	if (Key[KEY_RIGHT] == KEY_ON) {
+
+		g_player.WorldPos.x += PLAYERMOVESPEED;
+
+		if (800 < g_player.WindowPos.x) {
+			g_BasePoint.x += PLAYERMOVESPEED;
+		}
+		else {
+			g_player.WindowPos.x += PLAYERMOVESPEED;
+		}
+	}
+}
+	
+
+//	//-------------------------------------------------------------------------
+//	//プレイヤー重力かけるぜ
+//	//-------------------------------------------------------------------------
+//	//プレイヤーの真下のマップチップ番号
+//
+//	MapNumXY PlayerMapNum;
+//	MapchipNumberSpecify(&PlayerMapNum, &g_player.WorldPos);
+//
+//	static int frcnt = 0;
+//	frcnt++;
+//
+//	//プレイヤーの下が床
+//	if (MapKindSpecify(&PlayerMapNum,DOWN) == yuka) {
+//
+//		g_player.WindowPos.y+=
+//
+//		//-------------------------------------------------------------------------
+//		//ジャンプさせる
+//		//-------------------------------------------------------------------------
+//
+//		if (Key[KEY_C] == KEY_ON) {
+//
+//			//プレイやーのジャンプ力をせってい 
+//			g_player.jump_v0 = -10.0f;
+//		}
+//	}
+//
+//	g_player.jump_v0 += (float)Gravity;
+//	g_player.cy += g_player.jump_v0;
+//}
+
+
+void PlayerControl() {
+
+	PlayerMove();
+
+	KEYSTATE* Key = GetKey();
+
+	////-------------------------------------------------------------------------
+	////弾をはじき返す角度
+	////-------------------------------------------------------------------------
+	//KeyCheck(&Key[KEY_Z], DIK_Z);
+	//KeyCheck(&Key[KEY_X], DIK_X);
+
+	//if (Key[KEY_Z] == KEY_ON)
+	//{
+	//	g_player.bePunchDOWN = true;
+
+	//}
+	//if (Key[KEY_X] == KEY_ON) {
+
+	//	g_player.bePunchUP = true;
+
+	//}
+
+	//static int frcnt = 0;
+
+	//if (g_player.bePunchUP == true || g_player.bePunchDOWN == true) {
+
+	//	frcnt++;
+
+	//}
+	//for (int i = 0; i < AmmoNumber; i++) {
+	//	if (frcnt != 0 && frcnt < 10) {
+	//		if (Circle_Hit(g_player.cx + 10, g_player.cy + 10, 50.0f, g_enemyAmmo[i].cx, g_enemyAmmo[i].cy, AmmoSize / 2)) {
+	//			if (g_enemyAmmo[i].wasReflect == false) {
+	//				g_enemyAmmo[i].wasReflect = true;
+
+	//				if (g_player.bePunchUP == true) {
+	//					g_enemyAmmo[i].rad = D3DXToRadian(0.0f);
+	//				}
+	//				if (g_player.bePunchDOWN == true) {
+	//					g_enemyAmmo[i].rad = D3DXToRadian(60.f);
+	//				}
+	//			}
+	//		}
+
+	//	}
+
+	//	if (10 < frcnt && frcnt < 20) {
+	//		if (Circle_Hit(g_player.cx + 10, g_player.cy, 50.0f, g_enemyAmmo[i].cx, g_enemyAmmo[i].cy, AmmoSize / 2)) {
+	//			if (g_enemyAmmo[i].wasReflect == false) {
+	//				g_enemyAmmo[i].wasReflect = true;
+	//				g_enemyAmmo[i].rad = D3DXToRadian(30.f);
+	//			}
+	//		}
+	//	}
+
+	//	if (20 < frcnt && frcnt < 30) {
+	//		if (Circle_Hit(g_player.cx + 10, g_player.cy - 10, 50.0f, g_enemyAmmo[i].cx, g_enemyAmmo[i].cy, AmmoSize / 2)) {
+	//			if (g_enemyAmmo[i].wasReflect == false) {
+	//				g_enemyAmmo[i].wasReflect = true;
+
+	//				if (g_player.bePunchUP == true) {
+	//					g_enemyAmmo[i].rad = D3DXToRadian(60.f);
+	//				}
+	//				if (g_player.bePunchDOWN == true) {
+	//					g_enemyAmmo[i].rad = D3DXToRadian(0.f);
+	//				}
+	//			}
+	//		}
+
+	//	}
+	//}
+
+	//if (frcnt >= 30) {
+	//	g_player.bePunchDOWN = false;
+	//	g_player.bePunchUP = false;
+	//	frcnt = 0;
+	//}
+
+}
