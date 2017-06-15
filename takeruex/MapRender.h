@@ -9,7 +9,7 @@
 
 //マップチップ全体の個数です
 #define MAPCHIPNUM_HEIGHT 50
-#define MAPCHIPNUM_WIDTH 50
+#define MAPCHIPNUM_WIDTH 70
 
 //描画するマップチップの個数です
 #define RENDERMAPCHIPNUM_HEIGHT 25

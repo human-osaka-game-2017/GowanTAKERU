@@ -12,12 +12,14 @@ int MapKindSpecify(MapNumXY* pMapNumXY) {
 	//アクセス違反を防ぐ
 	if (pMapNumXY->NumX < 0 || MAPCHIPNUM_WIDTH < pMapNumXY->NumX) {
 		pMapNumXY->NumX = 0;
+		pMapNumXY->NumY = 0;
 	}
 	if (pMapNumXY->NumY < 0 || MAPCHIPNUM_HEIGHT < pMapNumXY->NumY) {
+		pMapNumXY->NumX = 0;
 		pMapNumXY->NumY = 0;
 	}
 
-	int tmp = *(map + ((pMapNumXY->NumY-1)*MAPCHIPNUM_WIDTH + pMapNumXY->NumX));
+	int tmp = *(map + ((pMapNumXY->NumY)*MAPCHIPNUM_WIDTH + pMapNumXY->NumX));
 	return tmp;
 }
 
@@ -29,8 +31,10 @@ int MapKindSpecify_Plus1(MapNumXY* pMapNumXY, Direction direction) {
 	//アクセス違反を防ぐ
 	if (pMapNumXY->NumX < 0 || MAPCHIPNUM_WIDTH < pMapNumXY->NumX) {
 		pMapNumXY->NumX = 0;
+		pMapNumXY->NumY = 0;
 	}
 	if (pMapNumXY->NumY < 0 || MAPCHIPNUM_HEIGHT < pMapNumXY->NumY) {
+		pMapNumXY->NumX = 0;
 		pMapNumXY->NumY = 0;
 	}
 

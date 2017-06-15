@@ -52,13 +52,6 @@ void MapRender() {
 	for (int i = 0; i < MAPCHIPNUM_HEIGHT; i++) {
 		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
 
-			if (i == 4 && j == 17) {
-				int a = 5;
-			}
-			if (i == 6 && j == 17) {
-				int a;
-			}
-
 			//そのマップチップを描画するのかを判定
 			if     (RendArrayIndexLeftUp.NumY < i && i < RendArrayIndexRightDown.NumY ) {
 				if (RendArrayIndexLeftUp.NumX < j && j < RendArrayIndexRightDown.NumX) {

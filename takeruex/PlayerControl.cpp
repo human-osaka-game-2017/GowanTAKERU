@@ -73,7 +73,6 @@ void PlayerMove() {
 	//èÌÇ…èdóÕÇÇ©ÇØÇÈ
 	g_player.JumpPower += GRAVITY;
 	g_player.WorldPos.y += g_player.JumpPower;
-
 	if (g_player.WindowPos.y > 300) {
 		g_BasePoint.y += g_player.JumpPower;
 	}
@@ -108,9 +107,9 @@ void PlayerMove() {
 		g_player.JumpPower -= GRAVITY;
 
 		//ÇﬂÇËçûÇ›ÇÇ”ÇπÇÆ
-			/*float footdiff = player_rightfoot.y - (Player_rightfoot_MapNum.NumY+1)*(TIPSIZE);
+		float footdiff = (Player_rightfoot_MapNum.NumY)*(TIPSIZE)-player_rightfoot.y;
 			g_player.WindowPos.y += footdiff;
-			g_player.WorldPos.y += footdiff;*/
+			g_player.WorldPos.y += footdiff;
 
 
 		if (Key[KEY_C] == KEY_PUSH) {
