@@ -33,6 +33,7 @@ void PlayerInit() {
 void PlayerMove() {
 
 	KEYSTATE* Key = GetKey();
+	int* map = GetMapchipData();
 
 	//------------------------------------------------------------------------
 	//左右に動かすぜ
@@ -95,8 +96,10 @@ void PlayerMove() {
 
 	static int frcnt = 0;
 
-	//プレイヤーの下が床
-	if (MapKindSpecify(&Player_rightfoot_MapNum, DOWN) == yuka || MapKindSpecify(&Player_leftfoot_MapNum, DOWN) == yuka) {
+	//プレイヤーの足下が床
+	if (MapKindSpecify(&Player_rightfoot_MapNum)==yuka||
+		MapKindSpecify(&Player_leftfoot_MapNum)==yuka)
+	{
 		
 		g_player.Jumping = false;
 		g_player.JumpPower = 0.0f;
@@ -105,9 +108,9 @@ void PlayerMove() {
 		g_player.JumpPower -= GRAVITY;
 
 		//めり込みをふせぐ
-			float footdiff = player_rightfoot.y - (Player_rightfoot_MapNum.NumY)*(TIPSIZE);
+			/*float footdiff = player_rightfoot.y - (Player_rightfoot_MapNum.NumY+1)*(TIPSIZE);
 			g_player.WindowPos.y += footdiff;
-			g_player.WorldPos.y += footdiff;
+			g_player.WorldPos.y += footdiff;*/
 
 
 		if (Key[KEY_C] == KEY_PUSH) {
