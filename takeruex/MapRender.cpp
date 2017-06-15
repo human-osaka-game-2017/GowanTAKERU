@@ -20,14 +20,15 @@ void MapRender() {
 	LPDIRECT3DTEXTURE9* pTexture = GetTexture();
 
 	CUSTOMVERTEX map[] = {
-		{ 0.0f,0.0f,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-		{ TIPSIZE,0.0f,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
+		{ 0,0,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
+		{ TIPSIZE,0,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
 		{ TIPSIZE,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-		{ 0.0f,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
+		{ 0,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 	};
 
 	//basepointの初期位置
-	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, (MAPCHIPNUM_HEIGHT *TIPSIZE) / 2);
+	//playercontrol.cppと合わせてください
+	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
 	//初期位置からの差分
 	float differenceX = BasePoint->x - BasePoint0.x;
@@ -50,6 +51,13 @@ void MapRender() {
 
 	for (int i = 0; i < MAPCHIPNUM_HEIGHT; i++) {
 		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
+
+			if (i == 4 && j == 17) {
+				int a = 5;
+			}
+			if (i == 6 && j == 17) {
+				int a;
+			}
 
 			//そのマップチップを描画するのかを判定
 			if     (RendArrayIndexLeftUp.NumY < i && i < RendArrayIndexRightDown.NumY ) {

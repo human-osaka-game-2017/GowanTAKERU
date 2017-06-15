@@ -2,14 +2,22 @@
 #include"MapRender.h"
 
 void MapchipNumberSpecify(MapNumXY* pMapNumXY,D3DXVECTOR2* pWorldPos) {
-	pMapNumXY->NumX = pWorldPos->x / TIPSIZE;
-	pMapNumXY->NumY = pWorldPos->y / TIPSIZE;
+	pMapNumXY->NumX = (pWorldPos->x / TIPSIZE) + 1;
+	pMapNumXY->NumY = (pWorldPos->y / TIPSIZE) + 1;
 }
 
 int MapKindSpecify(MapNumXY* pMapNumXY, Direction direction) {
 
 	int* map = GetMapchipData();
 	int tmp;
+
+	//アクセス違反を防ぐ
+	if (pMapNumXY->NumX < 0 || MAPCHIPNUM_WIDTH < pMapNumXY->NumX) {
+		pMapNumXY->NumX = 0;
+	}
+	if (pMapNumXY->NumY < 0 || MAPCHIPNUM_HEIGHT < pMapNumXY->NumY) {
+		pMapNumXY->NumY = 0;
+	}
 
 	switch (direction) {
 

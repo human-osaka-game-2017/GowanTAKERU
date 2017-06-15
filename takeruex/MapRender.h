@@ -3,13 +3,17 @@
 
 #include<d3dx9.h>
 
+//------------------------重要-------------------------------------
+//マップチップの００番目(左上)は０でお願いします
+//------------------------------------------------------------------
+
 //マップチップ全体の個数です
 #define MAPCHIPNUM_HEIGHT 50
 #define MAPCHIPNUM_WIDTH 50
 
 //描画するマップチップの個数です
-#define RENDERMAPCHIPNUM_HEIGHT 24
-#define RENDERMAPCHIPNUM_WIDTH 42
+#define RENDERMAPCHIPNUM_HEIGHT 25
+#define RENDERMAPCHIPNUM_WIDTH 44
 
 //マップチップのサイズです
 #define TIPSIZE 32 

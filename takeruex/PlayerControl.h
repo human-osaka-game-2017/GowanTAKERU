@@ -9,6 +9,8 @@
 struct Player {
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
+	float JumpPower;
+	bool Jumping;
 	int hp;
 	bool bePunchUP;
 	bool bePunchDOWN;
