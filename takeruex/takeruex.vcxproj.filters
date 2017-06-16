@@ -23,9 +23,6 @@
     <ClCompile Include="BulletRender.cpp">
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyRend.cpp">
-      <Filter>Application\MainScene\MainRender\Render</Filter>
-    </ClCompile>
     <ClCompile Include="MapRender.cpp">
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClCompile>
@@ -94,9 +91,6 @@
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="BulletRender.h">
-      <Filter>Application\MainScene\MainRender\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyRend.h">
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClInclude>
     <ClInclude Include="MapRender.h">
