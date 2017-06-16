@@ -77,7 +77,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			if (currenttime - oldtime >= 1000 / 60) {
 				oldtime = currenttime;
 
-				SceneManagement();
+				SceneManage();
 
 			}
 			else {

@@ -9,6 +9,6 @@ struct SceneSelect {
 
 //シーンを分けてくれる。描画コントロールも呼んでます。
 //初期化ー＞処理ー＞リリースをやってます
-void SceneManagement();
+void SceneManage();
 
 #endif

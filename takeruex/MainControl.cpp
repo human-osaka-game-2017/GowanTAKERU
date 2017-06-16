@@ -1,12 +1,14 @@
 #include"MainControl.h"
 #include"PlayerControl.h"
 #include"EnemyControl.h"
+#include"BulletControl.h"
 #include"MainHitManagement.h"
 
 void MainControl() {
 
 	PlayerControl();
 	EnemyControl();
+	BulletControl();
 	HitManage();
 }
 

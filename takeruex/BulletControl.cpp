@@ -1,6 +1,7 @@
 #include "BulletControl.h"
 #include"BulletRender.h"
 #include"PlayerControl.h"
+#include"EnemyControl.h"
 
 static Bullet bullet[BULLETNUMBER];
 
@@ -8,7 +9,7 @@ void BulletInit() {
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		bullet->beActive = false;
 		bullet->BulletKind = bullet01;
-		bullet->dmg = 10;
+		bullet->Atk = 10;
 		bullet->rad = 0;
 		bullet->radius = BULLETSIZE / 2;
 		bullet->reflect_cnt = 0;
@@ -16,52 +17,54 @@ void BulletInit() {
 		bullet->save_playercoordinateX = 0;
 		bullet->save_playercoordinateY = 0;
 		bullet->wasReflect = false;
-		bullet->WorldPos.x = 1152;
-		bullet->WorldPos.y = 448;
 
 
 	}
 }
 
-//void BulletMove() {
-//
-//	static int frcnt = 0;
-//	if (frcnt == 200) {
-//		frcnt = 0;
-//	}
-//	else {
-//		frcnt++;
-//	}
+//void BulletMoveNomal() {
 //
 //	for (int i = 0; i < AmmoNumber; i++) {
 //
-//		if (g_enemyAmmo[i].berender == true) {
+//		if (bullet[i].berender == true) {
 //
 //			//プレイヤーめがけて（基本動作）
-//			if (g_enemyAmmo[i].wasReflect == false) {
+//			if (bullet[i].wasReflect == false) {
 //
 //				//その時のプレイヤー座標記憶。プレイヤーの座標は正だから初期値負で判定
-//				if (g_enemyAmmo[ammovalue_flg].save_playercoordinateX == -1.0f) {
-//					g_enemyAmmo[ammovalue_flg].save_playercoordinateX = g_player.cx;
-//					g_enemyAmmo[ammovalue_flg].save_playercoordinateY = g_player.cy;
+//				if (bullet[ammovalue_flg].save_playercoordinateX == -1.0f) {
+//					bullet[ammovalue_flg].save_playercoordinateX = g_player.cx;
+//					bullet[ammovalue_flg].save_playercoordinateY = g_player.cy;
 //				}
 //
 //				double rad = Calculate_rad(
-//					g_enemyAmmo[ammovalue_flg].cx,
-//					g_enemyAmmo[ammovalue_flg].cy,
-//					g_enemyAmmo[ammovalue_flg].save_playercoordinateX,
-//					g_enemyAmmo[ammovalue_flg].save_playercoordinateY
+//					bullet[ammovalue_flg].cx,
+//					bullet[ammovalue_flg].cy,
+//					bullet[ammovalue_flg].save_playercoordinateX,
+//					bullet[ammovalue_flg].save_playercoordinateY
 //				);
-//				g_enemyAmmo[i].cx += Ammo_MOVESPEED*cos(rad);
-//				g_enemyAmmo[i].cy += Ammo_MOVESPEED*sin(rad);
-//			}
-//
-//			//弾かれたとき
-//			if (g_enemyAmmo[i].wasReflect == true) {
-//				g_enemyAmmo[i].cx += -Ammo_MOVESPEED*cos(g_enemyAmmo[i].rad);
-//				g_enemyAmmo[i].cy += Ammo_MOVESPEED*sin(g_enemyAmmo[i].rad);
+//				bullet[i].cx += Ammo_MOVESPEED*cos(rad);
+//				bullet[i].cy += Ammo_MOVESPEED*sin(rad);
 //			}
 //
 //		}
 //	}
 //}
+//
+//void BulletMoveReflectToPlayer() {
+//
+//	for (int i = 0; i < AmmoNumber; i++) {
+//
+//		if (bullet[i].beActive == true) {
+//			//弾かれたとき
+//			if (bullet[i].wasReflect == true) {
+//				bullet[i].cx += -Ammo_MOVESPEED*cos(g_enemyAmmo[i].rad);
+//				bullet[i].cy += Ammo_MOVESPEED*sin(g_enemyAmmo[i].rad);
+//			}
+//		}
+//	}
+//}
+
+void BulletControl() {
+
+}

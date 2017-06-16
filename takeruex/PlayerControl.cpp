@@ -36,7 +36,7 @@ void PlayerInit() {
 	g_player.WindowPos.y = DISPLAY_HEIGHT/2;
 	g_player.JumpPower = 0.0f;
 	g_player.Jumping = false;
-	g_player.hp = 100;
+	g_player.Hp = 100;
 	g_player.beLeft = false;
 	g_player.bePunchDOWN = false;
 	g_player.bePunchUP = false;

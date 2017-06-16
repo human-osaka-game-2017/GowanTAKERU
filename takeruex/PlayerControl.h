@@ -11,7 +11,7 @@ struct Player {
 	D3DXVECTOR2 WorldPos;
 	float JumpPower;
 	bool Jumping;
-	int hp;
+	int Hp;
 	bool bePunchUP;
 	bool bePunchDOWN;
 	bool beLeft;

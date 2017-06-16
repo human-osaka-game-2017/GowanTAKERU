@@ -12,12 +12,16 @@ struct Bullet {
 	float radius;//”¼Œa
 	float rad;//Šp“x
 	float save_playercoordinateX, save_playercoordinateY;
-	int dmg;
+	int Atk;
 	int reflect_max;
 	int reflect_cnt;
 	bool wasReflect;
 	bool beActive;
 };
+
+void BulletControl();
+
+void BulletInit();
 
 
 #endif

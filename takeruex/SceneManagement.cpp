@@ -4,7 +4,7 @@
 #include"MainControl.h"
 #include"MainSceneInit.h"
 
-void SceneManagement() {
+void SceneManage() {
 	static int step = 0;
 
 	//‰æ‘œ‘I‘ð
