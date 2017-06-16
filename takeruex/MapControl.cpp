@@ -1,9 +1,15 @@
 #include"MapControl.h"
 #include"MapRender.h"
+#include"PlayerControl.h"
 
 void MapchipNumberSpecify(MapNumXY* pMapNumXY,D3DXVECTOR2* pWorldPos) {
 	pMapNumXY->NumX = (pWorldPos->x / TIPSIZE);
 	pMapNumXY->NumY = (pWorldPos->y / TIPSIZE);
+}
+
+void PosSpecifyForMapchipNumber(D3DXVECTOR2* pWorldPos, MapNumXY* pMapNumXY) {
+	pWorldPos->x = pMapNumXY->NumX*TIPSIZE;
+	pWorldPos->y = pMapNumXY->NumY*TIPSIZE;
 }
 
 int MapKindSpecify(MapNumXY* pMapNumXY) {

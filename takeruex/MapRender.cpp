@@ -19,7 +19,7 @@ void MapRender() {
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 	LPDIRECT3DTEXTURE9* pTexture = GetTexture();
 
-	CUSTOMVERTEX map[] = {
+	CUSTOMVERTEX mapvertex[] = {
 		{ 0,0,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
 		{ TIPSIZE,0,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
 		{ TIPSIZE,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
@@ -27,7 +27,6 @@ void MapRender() {
 	};
 
 	//basepointの初期位置
-	//playercontrol.cppと合わせてください
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
 	//初期位置からの差分
@@ -58,7 +57,7 @@ void MapRender() {
 
 					//描画する場所を設定
 					for (int k = 0; k < 4; k++) {
-						drawMapVertex[k] = map[k];
+						drawMapVertex[k] = mapvertex[k];
 						drawMapVertex[k].x += -differenceX + TIPSIZE*j;
 						drawMapVertex[k].y += -differenceY + TIPSIZE*i;
 					}
@@ -66,10 +65,10 @@ void MapRender() {
 
 					switch (g_map[j + i*MAPCHIPNUM_WIDTH]) {
 
-					case nothing:
+					case NOTHING:
 						break;
 
-					case yuka:
+					case FLOOR:
 						// テクスチャをステージに割り当てる
 						pD3Device->SetTexture(0, pTexture[MAP_TEX]);
 						// 描画

@@ -3,7 +3,7 @@
 
 #include<d3dx9.h>
 
-enum BulletKind{Bullet01};
+enum BulletKind{bullet01};
 
 struct Bullet {
 	BulletKind BulletKind;
@@ -11,11 +11,11 @@ struct Bullet {
 	D3DXVECTOR2 WorldPos;
 	float radius;//”¼Œa
 	float rad;//Šp“x
-	int dmg;
 	float save_playercoordinateX, save_playercoordinateY;
-	bool wasReflect;
+	int dmg;
 	int reflect_max;
 	int reflect_cnt;
+	bool wasReflect;
 	bool beActive;
 };
 

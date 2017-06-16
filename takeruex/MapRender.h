@@ -18,7 +18,7 @@
 //マップチップのサイズです
 #define TIPSIZE 32 
 
-enum MapKind { nothing, yuka };
+enum MapKind { NOTHING, FLOOR, START};
 
 int* GetMapchipData();
 void MapRender();

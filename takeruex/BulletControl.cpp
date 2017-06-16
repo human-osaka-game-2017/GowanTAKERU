@@ -1,5 +1,27 @@
 #include "BulletControl.h"
+#include"BulletRender.h"
 #include"PlayerControl.h"
+
+static Bullet bullet[BULLETNUMBER];
+
+void BulletInit() {
+	for (int i = 0; i < BULLETNUMBER; i++) {
+		bullet->beActive = false;
+		bullet->BulletKind = bullet01;
+		bullet->dmg = 10;
+		bullet->rad = 0;
+		bullet->radius = BULLETSIZE / 2;
+		bullet->reflect_cnt = 0;
+		bullet->reflect_max = 3;
+		bullet->save_playercoordinateX = 0;
+		bullet->save_playercoordinateY = 0;
+		bullet->wasReflect = false;
+		bullet->WorldPos.x = 1152;
+		bullet->WorldPos.y = 448;
+
+
+	}
+}
 
 //void BulletMove() {
 //
@@ -10,23 +32,6 @@
 //	else {
 //		frcnt++;
 //	}
-//
-//	//その玉の配列番号
-//	static int ammovalue_flg = 0;
-//	//2００フレーム目に１枚目描画、、、を続ける
-//	if (frcnt == 200) {
-//
-//		g_enemyAmmo[ammovalue_flg].berender = true;
-//
-//		ammovalue_flg++;
-//
-//		if (AmmoNumber <= ammovalue_flg) {
-//			ammovalue_flg = 0;
-//			AmmoInit();
-//		}
-//
-//	}
-//
 //
 //	for (int i = 0; i < AmmoNumber; i++) {
 //

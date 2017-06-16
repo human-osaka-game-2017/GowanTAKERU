@@ -19,8 +19,21 @@ Player* GetplayerData() {
 
 void PlayerInit() {
 
-	g_player.WindowPos.x = g_player.WorldPos.x = 200.0f;
-	g_player.WindowPos.y = g_player.WorldPos.y = 150.0f;
+	int* map = GetMapchipData();
+
+	for (int i = 0; i < MAPCHIPNUM_HEIGHT; i++){
+		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
+			if (*(map + (i*MAPCHIPNUM_WIDTH + j)) == START) {
+				MapNumXY playerstartMapNum = { j,i };
+				PosSpecifyForMapchipNumber(&g_player.WorldPos, &playerstartMapNum);
+				PosSpecifyForMapchipNumber(&g_BasePoint, &playerstartMapNum);
+			}
+		}
+
+	}
+
+	g_player.WindowPos.x = DISPLAY_WIDTH/2;
+	g_player.WindowPos.y = DISPLAY_HEIGHT/2;
 	g_player.JumpPower = 0.0f;
 	g_player.Jumping = false;
 	g_player.hp = 100;
@@ -96,8 +109,8 @@ void PlayerMove() {
 	static int frcnt = 0;
 
 	//ƒvƒŒƒCƒ„[‚Ì‘«‰º‚ª°
-	if (MapKindSpecify(&Player_rightfoot_MapNum)==yuka||
-		MapKindSpecify(&Player_leftfoot_MapNum)==yuka)
+	if (MapKindSpecify(&Player_rightfoot_MapNum)== FLOOR ||
+		MapKindSpecify(&Player_leftfoot_MapNum)== FLOOR)
 	{
 		
 		g_player.Jumping = false;

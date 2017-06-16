@@ -9,11 +9,11 @@
 //	LPDIRECT3DTEXTURE9* pTexture = GetTexture();
 //
 //			CUSTOMVERTEX Bullet[] = {
-//				{ g_enemyBullet[i].cx - BULLETSIZE / 2,g_enemyBullet[i].cy - BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
-//				{ g_enemyBullet[i].cx + BULLETSIZE / 2,g_enemyBullet[i].cy - BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
-//				{ g_enemyBullet[i].cx + BULLETSIZE / 2,g_enemyBullet[i].cy + BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-//				{ g_enemyBullet[i].cx - BULLETSIZE / 2,g_enemyBullet[i].cy + BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
-//			};
+//				{-BULLETSIZE / 2,-BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
+//				{ BULLETSIZE / 2,-BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f }, 
+//				{ BULLETSIZE / 2,BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
+//				{ -BULLETSIZE / 2,BULLETSIZE / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f }
+//				};
 //
 //			for (int i = 0; i < 4; i++) {
 //

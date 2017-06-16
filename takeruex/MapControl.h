@@ -14,6 +14,10 @@ struct MapNumXY {
 //第二引数ーーーーワールド座標を入れてください
 void MapchipNumberSpecify(MapNumXY* pMapNumXY, D3DXVECTOR2* pWorldPos);
 
+//マップチップの番号をいれて
+//座標を返してくれます
+void PosSpecifyForMapchipNumber(D3DXVECTOR2* pWorldPos, MapNumXY* pMapNumXY);
+
 int MapKindSpecify(MapNumXY* pMapNumXY);
 
 int MapKindSpecify_Plus1(MapNumXY* pMapNumXY, Direction direction);

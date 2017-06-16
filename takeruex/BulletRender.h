@@ -2,6 +2,7 @@
 #define BULLETRENDER_H
 
 #define BULLETSIZE 30
+#define BULLETNUMBER 20
 
 
 #endif
