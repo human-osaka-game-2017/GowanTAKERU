@@ -47,6 +47,12 @@
     <ClCompile Include="MainSceneInit.cpp">
       <Filter>Application\MainScene\MainControl</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyRender.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="MainHitManagement.cpp">
+      <Filter>Application\MainScene\MainControl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -121,6 +127,12 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="MainSceneInit.h">
+      <Filter>Application\MainScene\MainControl</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyRender.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MainHitManagement.h">
       <Filter>Application\MainScene\MainControl</Filter>
     </ClInclude>
   </ItemGroup>

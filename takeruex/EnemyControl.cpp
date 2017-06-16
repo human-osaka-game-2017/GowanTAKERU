@@ -7,19 +7,17 @@
 #include"PlayerRender.h"
 #include"PlayerControl.h"
 
-//
-//Enemy g_enemy;
-//
-//
-//void EnemyInit() {
-//	g_enemy.WindowPos.x = g_enemy.WorldPos.x = 222;
-//	g_enemy.WindowPos.y = g_enemy.WorldPos.y = 202;
-//	g_enemy.dmg = 20;
-//	g_enemy.bedead=false;
-//	g_enemy.beActive=false;
-//	g_enemy.beLeft=false;
-//
-//}
+
+Enemy g_enemy[ENEMYNUMBER];
+
+Enemy* GetenemyData() {
+		return g_enemy;
+	}
+
+void EnemyInit() {
+
+}
+
 ////Player* GetplayerData()
 ////D3DXVECTOR2* GetBasePoint()
 //void EnemyMove() {
@@ -38,7 +36,6 @@
 //	}
 //}
 //
-//	Enemy* GetenemyData() {
-//		return &g_enemy;
-//	}
-//
+void EnemyControl() {
+
+}
