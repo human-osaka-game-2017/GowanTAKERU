@@ -3,21 +3,27 @@
 
 #include<d3dx9.h>
 
+#define BULLETNUMBER 30
+
 enum BulletKind{bullet01};
 
 struct Bullet {
 	BulletKind BulletKind;
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
-	float radius;//”¼Œa
-	float rad;//Šp“x
-	float save_playercoordinateX, save_playercoordinateY;
+	D3DXVECTOR2 SavePlayerCoordinate;
+	float Size;
+	float Speed;
+	float Radius;//”¼Œa
+	float Rad;//Šp“x
 	int Atk;
-	int reflect_max;
-	int reflect_cnt;
+	int ReflectMax;
+	int ReflectCnt;
 	bool wasReflect;
 	bool beActive;
 };
+
+Bullet* GetBullet();
 
 void BulletControl();
 

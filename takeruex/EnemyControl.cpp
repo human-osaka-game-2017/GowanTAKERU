@@ -7,7 +7,6 @@
 #include"PlayerRender.h"
 #include"PlayerControl.h"
 
-
 Enemy g_enemy[ENEMYNUMBER];
 
 Enemy* GetenemyData() {

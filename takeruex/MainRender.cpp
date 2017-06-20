@@ -3,6 +3,7 @@
 #include"BackGroundRender.h"
 #include"MapRender.h"
 #include"PlayerRender.h"
+#include"BulletRender.h"
 
 void MainRender() {
 
@@ -20,6 +21,7 @@ void MainRender() {
 
 	BackgroundRender();
 	MapRender();
+	BulletRender();
 	PlayerRender();
 
 	pD3Device->EndScene();

@@ -1,8 +1,7 @@
 #ifndef BULLETRENDER_H
 #define BULLETRENDER_H
 
-#define BULLETSIZE 30
-#define BULLETNUMBER 20
 
+void BulletRender();
 
 #endif

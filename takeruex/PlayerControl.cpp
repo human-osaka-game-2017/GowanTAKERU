@@ -6,6 +6,9 @@
 #include"MainControl.h"
 #include"PlayerRender.h"
 
+#include"BulletControl.h"
+#include"MainHitManagement.h"
+
 Player g_player;
 static D3DXVECTOR2 g_BasePoint = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
@@ -151,6 +154,8 @@ void PlayerMove() {
 
 void PlayerControl() {
 
+	Bullet* bullet = GetBullet();
+
 	PlayerMove();
 
 	KEYSTATE* Key = GetKey();
@@ -180,17 +185,23 @@ void PlayerControl() {
 
 	}
 
-	/*for (int i = 0; i < AmmoNumber; i++) {
+	for (int i = 0; i < BULLETNUMBER; i++) {
 		if (frcnt != 0 && frcnt < 10) {
-			if (Circle_Hit(g_player.cx + 10, g_player.cy + 10, 50.0f, g_enemyAmmo[i].cx, g_enemyAmmo[i].cy, AmmoSize / 2)) {
-				if (g_enemyAmmo[i].wasReflect == false) {
-					g_enemyAmmo[i].wasReflect = true;
+			if (Circle_Hit(g_player.WindowPos.x + 10,
+				g_player.WindowPos.y + 10,
+				50.0f,
+				(bullet + i)->WindowPos.x,
+				(bullet + i)->WindowPos.y,
+				(bullet + i)->Size / 2))
+			{
+				if ((bullet + i)->wasReflect == false) {
+					(bullet + i)->wasReflect = true;
 
 					if (g_player.bePunchUP == true) {
-						g_enemyAmmo[i].rad = D3DXToRadian(0.0f);
+						(bullet + i)->Rad = D3DXToRadian(0.0f);
 					}
 					if (g_player.bePunchDOWN == true) {
-						g_enemyAmmo[i].rad = D3DXToRadian(60.f);
+						(bullet + i)->Rad = D3DXToRadian(60.f);
 					}
 				}
 			}
@@ -198,24 +209,35 @@ void PlayerControl() {
 		}
 
 		if (10 < frcnt && frcnt < 20) {
-			if (Circle_Hit(g_player.cx + 10, g_player.cy, 50.0f, g_enemyAmmo[i].cx, g_enemyAmmo[i].cy, AmmoSize / 2)) {
-				if (g_enemyAmmo[i].wasReflect == false) {
-					g_enemyAmmo[i].wasReflect = true;
-					g_enemyAmmo[i].rad = D3DXToRadian(30.f);
+			if (Circle_Hit(g_player.WindowPos.x + 10,
+				g_player.WindowPos.y,
+				50.0f,
+				(bullet + i)->WindowPos.x,
+				(bullet + i)->WindowPos.y,
+				(bullet + i)->Size / 2))
+			{
+				if ((bullet + i)->wasReflect == false) {
+					(bullet + i)->wasReflect = true;
+					(bullet + i)->Rad = D3DXToRadian(30.f);
 				}
 			}
 		}
 
 		if (20 < frcnt && frcnt < 30) {
-			if (Circle_Hit(g_player.cx + 10, g_player.cy - 10, 50.0f, g_enemyAmmo[i].cx, g_enemyAmmo[i].cy, AmmoSize / 2)) {
-				if (g_enemyAmmo[i].wasReflect == false) {
-					g_enemyAmmo[i].wasReflect = true;
+			if (Circle_Hit(g_player.WindowPos.x + 10,
+				g_player.WindowPos.y - 10,
+				50.0f,
+				(bullet + i)->WindowPos.x,
+				(bullet + i)->WindowPos.y,
+				(bullet + i)->Size / 2)) {
+				if ((bullet + i)->wasReflect == false) {
+					(bullet + i)->wasReflect = true;
 
 					if (g_player.bePunchUP == true) {
-						g_enemyAmmo[i].rad = D3DXToRadian(60.f);
+						(bullet + i)->Rad = D3DXToRadian(60.f);
 					}
 					if (g_player.bePunchDOWN == true) {
-						g_enemyAmmo[i].rad = D3DXToRadian(0.f);
+						(bullet + i)->Rad = D3DXToRadian(0.f);
 					}
 				}
 			}
@@ -227,6 +249,6 @@ void PlayerControl() {
 		g_player.bePunchDOWN = false;
 		g_player.bePunchUP = false;
 		frcnt = 0;
-	}*/
+	}
 
 }
