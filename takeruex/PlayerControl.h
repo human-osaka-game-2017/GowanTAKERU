@@ -12,6 +12,7 @@ struct Player {
 	float JumpPower;
 	bool Jumping;
 	int Hp;
+	int LifeRedused;
 	bool bePunchUP;
 	bool bePunchDOWN;
 	bool beInvincible;
