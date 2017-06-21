@@ -8,8 +8,8 @@
 //------------------------------------------------------------------
 
 //マップチップ全体の個数です
-#define MAPCHIPNUM_HEIGHT 50
-#define MAPCHIPNUM_WIDTH 70
+#define MAPCHIPNUM_HEIGHT 27
+#define MAPCHIPNUM_WIDTH 350
 
 //描画するマップチップの個数です
 #define RENDERMAPCHIPNUM_HEIGHT 25
@@ -18,7 +18,7 @@
 //マップチップのサイズです
 #define TIPSIZE 32 
 
-enum MapKind { NOTHING, FLOOR, START};
+enum MapKind { NOTHING, FLOOR, START=13};
 
 int* GetMapchipData();
 void MapRender();

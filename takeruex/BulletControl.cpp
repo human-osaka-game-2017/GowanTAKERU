@@ -2,6 +2,7 @@
 #include"PlayerControl.h"
 #include"EnemyControl.h"
 #include"MainControl.h"
+#include"MapControl.h"
 
 static Bullet g_bullet[BULLETNUMBER];
 
@@ -22,8 +23,8 @@ void BulletInit() {
 		g_bullet[i].Speed = 0;
 		g_bullet[i].ReflectCnt = 0;
 		g_bullet[i].ReflectMax = 0;
-		g_bullet[i].SavePlayerCoordinate.x = 0;
-		g_bullet[i].SavePlayerCoordinate.y = 0;
+		g_bullet[i].SaveCoordinate.x = 0;
+		g_bullet[i].SaveCoordinate.y = 0;
 		g_bullet[i].wasReflect = false;
 		g_bullet[i].WindowPos.x = 0;
 		g_bullet[i].WindowPos.y = 0;
@@ -47,13 +48,13 @@ void BulletCreate(int num, BulletKind bulletKind) {
 		g_bullet[num].Speed = 6.0f;
 		g_bullet[num].Size = 30;
 		g_bullet[num].ReflectMax = 3;
-		g_bullet[num].SavePlayerCoordinate = player->WorldPos;
+		g_bullet[num].SaveCoordinate = player->WorldPos;
 
 		g_bullet[num].Rad = Calculate_rad(
 			g_bullet[num].WorldPos.x,
 			g_bullet[num].WorldPos.y,
-			g_bullet[num].SavePlayerCoordinate.x,
-			g_bullet[num].SavePlayerCoordinate.y
+			g_bullet[num].SaveCoordinate.x,
+			g_bullet[num].SaveCoordinate.y
 		);
 		break;
 
@@ -71,9 +72,17 @@ void BulletMoveNomal(int num) {
 
 
 void BulletControl() {
+	
+	MapNumXY mapNum;
+
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		if (g_bullet[i].beActive) {
 			BulletMoveNomal(i);
 		}
 	}
+
+	MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);
+	int map = MapKindSpecify(&mapNum);
+
+
 }

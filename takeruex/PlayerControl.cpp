@@ -9,6 +9,9 @@
 #include"BulletControl.h"
 #include"MainHitManagement.h"
 
+void PlayerMove();
+void PlayerReflectMotion();
+
 Player g_player;
 static D3DXVECTOR2 g_BasePoint = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
@@ -27,22 +30,31 @@ void PlayerInit() {
 	for (int i = 0; i < MAPCHIPNUM_HEIGHT; i++){
 		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
 			if (*(map + (i*MAPCHIPNUM_WIDTH + j)) == START) {
+
 				MapNumXY playerstartMapNum = { j,i };
 				PosSpecifyForMapchipNumber(&g_player.WorldPos, &playerstartMapNum);
-				PosSpecifyForMapchipNumber(&g_BasePoint, &playerstartMapNum);
+				MapNumXY mapnum = { i,j - 5 };
+				PosSpecifyForMapchipNumber(&g_BasePoint, &mapnum);
 			}
 		}
-
 	}
 
 	g_player.WindowPos.x = DISPLAY_WIDTH/2;
-	g_player.WindowPos.y = DISPLAY_HEIGHT/2;
+	g_player.WindowPos.y = DISPLAY_HEIGHT/2+160;
 	g_player.JumpPower = 0.0f;
 	g_player.Jumping = false;
 	g_player.Hp = 100;
 	g_player.beLeft = false;
 	g_player.bePunchDOWN = false;
 	g_player.bePunchUP = false;
+
+}
+
+void PlayerControl() {
+
+	PlayerMove();
+
+	PlayerReflectMotion();
 
 }
 
@@ -89,12 +101,8 @@ void PlayerMove() {
 	//常に重力をかける
 	g_player.JumpPower += GRAVITY;
 	g_player.WorldPos.y += g_player.JumpPower;
-	if (g_player.WindowPos.y > 300) {
-		g_BasePoint.y += g_player.JumpPower;
-	}
-	else {
-		g_player.WindowPos.y += g_player.JumpPower;
-	}
+
+	g_player.WindowPos.y += g_player.JumpPower;
 
 	//プレイヤーの右足、左足のマップチップ番号
 
@@ -132,9 +140,6 @@ void PlayerMove() {
 			g_player.JumpPower = -10.0f;
 			g_player.Jumping = true;
 		}
-
-
-
 	}
 
 	else if (0) {
@@ -152,13 +157,10 @@ void PlayerMove() {
 	
 }
 
-void PlayerControl() {
-
-	Bullet* bullet = GetBullet();
-
-	PlayerMove();
+void PlayerReflectMotion() {
 
 	KEYSTATE* Key = GetKey();
+	Bullet* bullet = GetBullet();
 
 	//-------------------------------------------------------------------------
 	//弾をはじき返す角度
@@ -187,7 +189,7 @@ void PlayerControl() {
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		if (frcnt != 0 && frcnt < 10) {
-			if (Circle_Hit(g_player.WindowPos.x + 10,
+			if (CircleHit(g_player.WindowPos.x + 10,
 				g_player.WindowPos.y + 10,
 				50.0f,
 				(bullet + i)->WindowPos.x,
@@ -205,11 +207,10 @@ void PlayerControl() {
 					}
 				}
 			}
-
 		}
 
 		if (10 < frcnt && frcnt < 20) {
-			if (Circle_Hit(g_player.WindowPos.x + 10,
+			if (CircleHit(g_player.WindowPos.x + 10,
 				g_player.WindowPos.y,
 				50.0f,
 				(bullet + i)->WindowPos.x,
@@ -224,7 +225,7 @@ void PlayerControl() {
 		}
 
 		if (20 < frcnt && frcnt < 30) {
-			if (Circle_Hit(g_player.WindowPos.x + 10,
+			if (CircleHit(g_player.WindowPos.x + 10,
 				g_player.WindowPos.y - 10,
 				50.0f,
 				(bullet + i)->WindowPos.x,
@@ -241,7 +242,6 @@ void PlayerControl() {
 					}
 				}
 			}
-
 		}
 	}
 
@@ -250,5 +250,5 @@ void PlayerControl() {
 		g_player.bePunchUP = false;
 		frcnt = 0;
 	}
-
 }
+

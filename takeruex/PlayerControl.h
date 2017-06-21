@@ -14,6 +14,7 @@ struct Player {
 	int Hp;
 	bool bePunchUP;
 	bool bePunchDOWN;
+	bool beInvincible;
 	bool beLeft;
 	bool beActive;
 };

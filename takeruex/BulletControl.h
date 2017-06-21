@@ -11,7 +11,7 @@ struct Bullet {
 	BulletKind BulletKind;
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
-	D3DXVECTOR2 SavePlayerCoordinate;
+	D3DXVECTOR2 SaveCoordinate;
 	float Size;
 	float Speed;
 	float Radius;//”¼Œa
@@ -24,6 +24,8 @@ struct Bullet {
 };
 
 Bullet* GetBullet();
+
+void BulletCreate(int num, BulletKind bulletKind);
 
 void BulletControl();
 
