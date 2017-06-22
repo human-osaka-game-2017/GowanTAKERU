@@ -14,16 +14,35 @@ void PlayerRender() {
 
 	CUSTOMVERTEX Player[] = {
 		{ -PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-		{ PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
-		{ PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-		{ -PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
+		{ PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.5f,0.0f },
+		{ PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.5f,0.5f },
+		{ -PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.5f }
 	};
+
+	static int frcntPunch = 0;
+	if (player->bePunchUP || player->bePunchDOWN) {
+		frcntPunch++;
+	}
+	else {
+		frcntPunch = 0;
+	}
 
 	CUSTOMVERTEX DrawVertex[4];
 	for (int i = 0; i < 4; i++) {
 		DrawVertex[i] = Player[i];
 		DrawVertex[i].x += player->WindowPos.x;
 		DrawVertex[i].y += player->WindowPos.y;
+
+		if (frcntPunch < 12 && frcntPunch != 0) {
+			DrawVertex[i].tu += 0.5f;
+		}
+		if (12 < frcntPunch&&frcntPunch < 24) {
+			DrawVertex[i].tv += 0.5f;
+		}
+		if (24 < frcntPunch && frcntPunch < 36) {
+			DrawVertex[i].tu += 0.5f;
+			DrawVertex[i].tv += 0.5f;
+		}
 	}
 
 	// テクスチャをステージに割り当てる

@@ -63,7 +63,7 @@ void MainSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/floor01.png", &g_pTexture[MAP_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/background.png", &g_pTexture[BACKGROUND_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet01.png", &g_pTexture[BULLET01_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/player.png", &g_pTexture[PLAYER_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/playerActionTest.png", &g_pTexture[PLAYER_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy01.png", &g_pTexture[ENEMY01_TEX]);
 	
 	int* mapdata = GetMapchipData();

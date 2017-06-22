@@ -190,7 +190,7 @@ void PlayerReflectMotion() {
 	}
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
-		if (frcnt != 0 && frcnt < 10) {
+		if (frcnt != 0 && frcnt < 12) {
 			if (CircleHit(g_player.WindowPos.x + 10,
 				g_player.WindowPos.y + 10,
 				50.0f,
@@ -211,7 +211,7 @@ void PlayerReflectMotion() {
 			}
 		}
 
-		if (10 < frcnt && frcnt < 20) {
+		if (12 < frcnt && frcnt < 24) {
 			if (CircleHit(g_player.WindowPos.x + 10,
 				g_player.WindowPos.y,
 				50.0f,
@@ -226,7 +226,7 @@ void PlayerReflectMotion() {
 			}
 		}
 
-		if (20 < frcnt && frcnt < 30) {
+		if (24 < frcnt && frcnt < 36) {
 			if (CircleHit(g_player.WindowPos.x + 10,
 				g_player.WindowPos.y - 10,
 				50.0f,
@@ -247,7 +247,7 @@ void PlayerReflectMotion() {
 		}
 	}
 
-	if (frcnt >= 30) {
+	if (frcnt >= 36) {
 		g_player.bePunchDOWN = false;
 		g_player.bePunchUP = false;
 		frcnt = 0;
