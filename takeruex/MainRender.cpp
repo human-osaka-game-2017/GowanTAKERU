@@ -4,6 +4,7 @@
 #include"MapRender.h"
 #include"PlayerRender.h"
 #include"BulletRender.h"
+#include"EnemyRender.h"
 
 void MainRender() {
 
@@ -21,6 +22,7 @@ void MainRender() {
 
 	BackgroundRender();
 	MapRender();
+	EnemyRender();
 	BulletRender();
 	PlayerRender();
 
