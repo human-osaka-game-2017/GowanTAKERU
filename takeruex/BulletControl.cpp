@@ -3,6 +3,7 @@
 #include"EnemyControl.h"
 #include"MainControl.h"
 #include"MapControl.h"
+#include"CommonRender.h"
 
 static Bullet g_bullet[BULLETNUMBER];
 
@@ -48,11 +49,11 @@ void BulletCreate(int num, BulletKind bulletKind) {
 		g_bullet[num].Speed = 6.0f;
 		g_bullet[num].Size = 30;
 		g_bullet[num].ReflectMax = 3;
-		g_bullet[num].SaveCoordinate = player->WorldPos;
+		g_bullet[num].SaveCoordinate = player->WindowPos;
 
 		g_bullet[num].Rad = Calculate_rad(
-			g_bullet[num].WorldPos.x,
-			g_bullet[num].WorldPos.y,
+			g_bullet[num].WindowPos.x,
+			g_bullet[num].WindowPos.y,
 			g_bullet[num].SaveCoordinate.x,
 			g_bullet[num].SaveCoordinate.y
 		);
@@ -65,9 +66,9 @@ void BulletCreate(int num, BulletKind bulletKind) {
 void BulletMoveNomal(int num) {
 
 	g_bullet[num].WindowPos.x += g_bullet[num].Speed*cos(g_bullet[num].Rad);
-	g_bullet[num].WindowPos.y += g_bullet[num].Speed*sin(g_bullet[num].Rad);
+	g_bullet[num].WindowPos.y -= g_bullet[num].Speed*sin(g_bullet[num].Rad);
 	g_bullet[num].WorldPos.x += g_bullet[num].Speed*cos(g_bullet[num].Rad);
-	g_bullet[num].WorldPos.y += g_bullet[num].Speed*sin(g_bullet[num].Rad);
+	g_bullet[num].WorldPos.y -= g_bullet[num].Speed*sin(g_bullet[num].Rad);
 }
 
 
@@ -77,12 +78,22 @@ void BulletControl() {
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		if (g_bullet[i].beActive) {
+
 			BulletMoveNomal(i);
+
+			//MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);
+
+			//int map = MapKindSpecify(&mapNum);
+
+			if (g_bullet[i].WindowPos.x < -64 || DISPLAY_WIDTH + 64 < g_bullet[i].WindowPos.x) {
+				g_bullet[i].beActive = false;
+			}
+			if (g_bullet[i].WindowPos.y < -64 || DISPLAY_HEIGHT + 64 < g_bullet[i].WindowPos.y) {
+				g_bullet[i].beActive = false;
+			}
 		}
 	}
 
-	MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);
-	int map = MapKindSpecify(&mapNum);
-
+	
 
 }

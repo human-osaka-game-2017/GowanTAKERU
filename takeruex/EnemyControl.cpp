@@ -14,6 +14,8 @@ Enemy* GetenemyData() {
 		return g_enemy;
 	}
 
+void EnemyBulettCreate();
+
 void EnemyInit() {
 	g_enemy[0].WorldPos.x=600;//ワールド座標
 	g_enemy[0].WorldPos.y = 702;
@@ -62,26 +64,28 @@ void EnemyControl() {
 		//エネミーのwindow,Y座標を調べる
 		g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
 
+		EnemyBulettCreate();
+
 	}
-	
-
-
-
-
-
-
 }
+
 void EnemyBulettCreate() {
-	Bullet*bullt= GetBullet();
+
+	Bullet* bullt= GetBullet();
+
 	static int FrameCount = 0;
 	FrameCount++;
+
 	if (FrameCount == 300) {//5秒（300フレーム）に一回入るはず
-		static int bulletRest = 0;//弾の撃った数を図る関数
+
+		static int bulletRest = 0;//弾の撃った数を図る変数
 		BulletCreate(bulletRest,bullet01);
 		bulletRest++;
+
 		if (bulletRest == BULLETNUMBER) {//弾の装填数がなくなったら初期化
 			bulletRest = 0;
 		}
+
 		FrameCount = 0;
 	}
 }
