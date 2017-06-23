@@ -18,18 +18,40 @@ double Calculate_rad(float x1, float y1, float x2, float y2) {
 
 	double rad;
 
-	double lengthX = x1 - x2;
-	double lengthY = y1 - y2;
+	double lengthX = x2 - x1;
+	double lengthY = y2 - y1;
 
-	if (lengthX < 0 && lengthY > 0) {
-		rad = atan(lengthY / lengthX) + 180;
+	if (0 < lengthX) {
+		if (lengthY < 0) {
+
+			rad = atan(lengthY / lengthX);
+
+		}
+		else {
+
+			rad = atan(lengthY / lengthX) + (2 * D3DX_PI);
+
+		}
 	}
-	else if (lengthX < 0 && lengthY < 0) {
-		rad = atan(lengthY / lengthX) + 180;
+	else if (lengthX < 0) {
+
+		rad = atan(lengthY / lengthX) + D3DX_PI;
+
 	}
-	else {
-		rad = atan(lengthY / lengthX);
+	else if (lengthX == 0) {
+		if (0 < lengthY) {
+
+			rad = 3 / 2 * D3DX_PI;
+
+		}
+		else {
+
+			rad = D3DX_PI / 2;
+
+		}
 	}
+
+	rad = (2 * D3DX_PI) - rad;
 
 	return rad;
 }
