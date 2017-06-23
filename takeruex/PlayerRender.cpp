@@ -32,16 +32,29 @@ void PlayerRender() {
 		DrawVertex[i] = Player[i];
 		DrawVertex[i].x += player->WindowPos.x;
 		DrawVertex[i].y += player->WindowPos.y;
-
-		if (frcntPunch < 12 && frcntPunch != 0) {
-			DrawVertex[i].tu += 0.5f;
+		if (player->bePunchUP) {
+			if (frcntPunch < 12 && frcntPunch != 0) {
+				DrawVertex[i].tu += 0.5f;
+				DrawVertex[i].tv += 0.5f;
+			}
+			if (12 < frcntPunch&&frcntPunch < 24) {
+				DrawVertex[i].tv += 0.5f;
+			}
+			if (24 < frcntPunch && frcntPunch < 36) {
+				DrawVertex[i].tu += 0.5f;
+			}
 		}
-		if (12 < frcntPunch&&frcntPunch < 24) {
-			DrawVertex[i].tv += 0.5f;
-		}
-		if (24 < frcntPunch && frcntPunch < 36) {
-			DrawVertex[i].tu += 0.5f;
-			DrawVertex[i].tv += 0.5f;
+		if (player->bePunchDOWN) {
+			if (frcntPunch < 12 && frcntPunch != 0) {
+				DrawVertex[i].tu += 0.5f;
+			}
+			if (12 < frcntPunch&&frcntPunch < 24) {
+				DrawVertex[i].tv += 0.5f;
+			}
+			if (24 < frcntPunch && frcntPunch < 36) {
+				DrawVertex[i].tu += 0.5f;
+				DrawVertex[i].tv += 0.5f;
+			}
 		}
 	}
 

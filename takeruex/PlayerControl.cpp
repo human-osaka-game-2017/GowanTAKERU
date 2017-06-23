@@ -170,23 +170,23 @@ void PlayerReflectMotion() {
 	KeyCheck(&Key[KEY_Z], DIK_Z);
 	KeyCheck(&Key[KEY_X], DIK_X);
 
-	if (Key[KEY_Z] == KEY_ON)
-	{
-		g_player.bePunchDOWN = true;
-
-	}
-	if (Key[KEY_X] == KEY_ON) {
-
-		g_player.bePunchUP = true;
-
-	}
-
 	static int frcnt = 0;
 
 	if (g_player.bePunchUP == true || g_player.bePunchDOWN == true) {
 
 		frcnt++;
 
+	}
+	else {
+		if (Key[KEY_Z] == KEY_ON)
+		{
+			g_player.bePunchDOWN = true;
+
+		}
+		if (Key[KEY_X] == KEY_ON) {
+
+			g_player.bePunchUP = true;
+		}
 	}
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
@@ -200,13 +200,8 @@ void PlayerReflectMotion() {
 			{
 				if ((bullet + i)->wasReflect == false) {
 					(bullet + i)->wasReflect = true;
-
-					if (g_player.bePunchUP == true) {
-						(bullet + i)->Rad = D3DXToRadian(0.0f);
-					}
-					if (g_player.bePunchDOWN == true) {
-						(bullet + i)->Rad = D3DXToRadian(60.f);
-					}
+					(bullet + i)->Rad = D3DXToRadian(0.0f);
+					
 				}
 			}
 		}
@@ -221,7 +216,13 @@ void PlayerReflectMotion() {
 			{
 				if ((bullet + i)->wasReflect == false) {
 					(bullet + i)->wasReflect = true;
-					(bullet + i)->Rad = D3DXToRadian(30.f);
+
+					if (g_player.bePunchUP == true) {
+						(bullet + i)->Rad = D3DXToRadian(30.f);
+					}
+					if (g_player.bePunchDOWN == true) {
+						(bullet + i)->Rad = D3DXToRadian(-30.f);
+					}
 				}
 			}
 		}
@@ -240,7 +241,7 @@ void PlayerReflectMotion() {
 						(bullet + i)->Rad = D3DXToRadian(60.f);
 					}
 					if (g_player.bePunchDOWN == true) {
-						(bullet + i)->Rad = D3DXToRadian(0.f);
+						(bullet + i)->Rad = D3DXToRadian(-60.f);
 					}
 				}
 			}
