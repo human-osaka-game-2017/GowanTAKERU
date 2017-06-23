@@ -6,6 +6,7 @@
 #include"MainControl.h"
 #include"PlayerRender.h"
 #include"PlayerControl.h"
+#include "BulletControl.h"
 
 Enemy g_enemy[ENEMYNUMBER];
 
@@ -61,5 +62,26 @@ void EnemyControl() {
 		//エネミーのwindow,Y座標を調べる
 		g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
 
+	}
+	
+
+
+
+
+
+
+}
+void EnemyBulettCreate() {
+	Bullet*bullt= GetBullet();
+	static int FrameCount = 0;
+	FrameCount++;
+	if (FrameCount == 300) {//5秒（300フレーム）に一回入るはず
+		static int bulletRest = 0;//弾の撃った数を図る関数
+		BulletCreate(bulletRest,bullet01);
+		bulletRest++;
+		if (bulletRest == BULLETNUMBER) {//弾の装填数がなくなったら初期化
+			bulletRest = 0;
+		}
+		FrameCount = 0;
 	}
 }
