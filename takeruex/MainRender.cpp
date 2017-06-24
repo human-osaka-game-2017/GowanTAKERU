@@ -5,6 +5,7 @@
 #include"PlayerRender.h"
 #include"BulletRender.h"
 #include"EnemyRender.h"
+#include"UIRender.h"
 
 void MainRender() {
 
@@ -25,6 +26,7 @@ void MainRender() {
 	EnemyRender();
 	BulletRender();
 	PlayerRender();
+	UIRender();
 
 	pD3Device->EndScene();
 	pD3Device->Present(NULL, NULL, NULL, NULL);

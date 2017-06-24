@@ -140,6 +140,7 @@
     <ClCompile Include="PlayerControl.cpp" />
     <ClCompile Include="PlayerRender.cpp" />
     <ClCompile Include="SceneManagement.cpp" />
+    <ClCompile Include="UIRendr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGroundRender.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="PlayerControl.h" />
     <ClInclude Include="PlayerRender.h" />
     <ClInclude Include="SceneManagement.h" />
+    <ClInclude Include="UIRendr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
