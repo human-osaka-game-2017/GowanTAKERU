@@ -47,28 +47,36 @@ int MapKindSpecify_Plus1(MapNumXY* pMapNumXY, Direction direction) {
 	switch (direction) {
 
 	case UP:
-		tmp = *(map+(pMapNumXY->NumX + MAPCHIPNUM_HEIGHT*(pMapNumXY->NumY - 1)));
+		tmp = *(map+(pMapNumXY->NumX + MAPCHIPNUM_WIDTH*(pMapNumXY->NumY - 1)));
+		break;
 
 	case RIGHTUP:
-		tmp = *(map + ((pMapNumXY->NumX + 1) + MAPCHIPNUM_HEIGHT*(pMapNumXY->NumY - 1)));
+		tmp = *(map + ((pMapNumXY->NumX + 1) + MAPCHIPNUM_WIDTH*(pMapNumXY->NumY - 1)));
+		break;
 
 	case RIGHT:
-		tmp = *(map + ((pMapNumXY->NumX + 1) + MAPCHIPNUM_HEIGHT*pMapNumXY->NumY));
+		tmp = *(map + ((pMapNumXY->NumX + 1) + MAPCHIPNUM_WIDTH*pMapNumXY->NumY));
+		break;
 
 	case RIGHTDOWN:
-		tmp = *(map + ((pMapNumXY->NumX + 1) + MAPCHIPNUM_HEIGHT*(pMapNumXY->NumY + 1)));
+		tmp = *(map + ((pMapNumXY->NumX + 1) + MAPCHIPNUM_WIDTH*(pMapNumXY->NumY + 1)));
+		break;
 
 	case DOWN:
-		tmp = *(map + (pMapNumXY->NumX + MAPCHIPNUM_HEIGHT*(pMapNumXY->NumY + 1)));
+		tmp = *(map + (pMapNumXY->NumX + MAPCHIPNUM_WIDTH*(pMapNumXY->NumY + 1)));
+		break;
 
 	case LEFTDOWN:
-		tmp = *(map + ((pMapNumXY->NumX - 1) + MAPCHIPNUM_HEIGHT*(pMapNumXY->NumY + 1)));
+		tmp = *(map + ((pMapNumXY->NumX - 1) + MAPCHIPNUM_WIDTH*(pMapNumXY->NumY + 1)));
+		break;
 
 	case LEFT:
-		tmp = *(map + ((pMapNumXY->NumX - 1) + MAPCHIPNUM_HEIGHT*pMapNumXY->NumY));
+		tmp = *(map + ((pMapNumXY->NumX - 1) + MAPCHIPNUM_WIDTH*pMapNumXY->NumY));
+		break;
 
 	case LEFTUP:
-		tmp = *(map + ((pMapNumXY->NumX - 1) + MAPCHIPNUM_HEIGHT*(pMapNumXY->NumY - 1)));
+		tmp = *(map + ((pMapNumXY->NumX - 1) + MAPCHIPNUM_WIDTH*(pMapNumXY->NumY - 1)));
+		break;
 	}
 
 	return tmp;

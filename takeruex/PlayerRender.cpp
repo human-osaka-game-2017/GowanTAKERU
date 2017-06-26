@@ -58,6 +58,10 @@ void PlayerRender() {
 		}
 	}
 
+	if (player->beLeft) {
+		TurnVertex_tu(DrawVertex);
+	}
+
 	// テクスチャをステージに割り当てる
 	pD3Device->SetTexture(0, pTexture[PLAYER_TEX]);
 	// 描画

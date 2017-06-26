@@ -4,16 +4,36 @@
 #include"BulletControl.h"
 #include"BulletRender.h"
 #include"EnemyControl.h"
+#include"EnemyRender.h"
 
 void HitManage() {
 
 	Player* player = GetplayerData();
 	Bullet* bullet = GetBullet();
+	Enemy* enemy = GetenemyData();
 
-	//プレイヤーのダメージ計算と無敵時間の考慮
+
 	static int frcnt;
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
+		for (int j = 0; j < ENEMYNUMBER; j++) {
+
+			//敵とバレットのダメージ計算
+			if (bullet[i].wasReflect) {
+				if (SquareHit(&bullet[i].WindowPos, bullet->Size, bullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
+
+					bullet[i].beActive = false;
+					enemy[j].Hp -= bullet[i].Atk;
+
+					if (enemy[j].Hp < 0) {
+						enemy[j].beActive = false;
+						enemy[j].beDead = true;
+					}
+				}
+			}
+		}
+
+		//プレイヤーのダメージ計算と無敵時間の考慮
 		if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &bullet[i].WindowPos, bullet->Size, bullet->Size)) {
 			
 			bullet[i].beActive = false;
@@ -26,6 +46,15 @@ void HitManage() {
 		}
 	}
 
+	//エネミーとプレイヤーの直接のあたり判定
+	for (int i = 0; i < ENEMYNUMBER; i++) {
+		if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
+			if (!player->beInvincible) {
+				player->Hp -= enemy[i].Atk;
+				player->beInvincible = true;
+			}
+		}
+	}
 	if (player->beInvincible) {
 		frcnt++;
 	}
@@ -34,6 +63,8 @@ void HitManage() {
 		frcnt = 0;
 		player->beInvincible = false;
 	}
+
+
 }
 
 bool CircleHit(float cx1, float cy1, float r1, float cx2, float cy2, float r2) {

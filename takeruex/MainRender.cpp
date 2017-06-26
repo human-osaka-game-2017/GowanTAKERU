@@ -1,5 +1,6 @@
 #include"MainRender.h"
 #include"DirectXGraphics.h"
+#include"CommonRender.h"
 #include"BackGroundRender.h"
 #include"MapRender.h"
 #include"PlayerRender.h"
@@ -30,4 +31,18 @@ void MainRender() {
 
 	pD3Device->EndScene();
 	pD3Device->Present(NULL, NULL, NULL, NULL);
+}
+
+void TurnVertex_tu(CUSTOMVERTEX* vertex) {
+
+	CUSTOMVERTEX tmpVertex;
+
+	tmpVertex.tu = vertex[0].tu;
+	vertex[0].tu = vertex[1].tu;
+	vertex[1].tu = tmpVertex.tu;
+
+	tmpVertex.tu = vertex[3].tu;
+	vertex[3].tu = vertex[2].tu;
+	vertex[2].tu = tmpVertex.tu;
+
 }
