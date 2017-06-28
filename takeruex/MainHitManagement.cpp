@@ -51,10 +51,12 @@ void HitManage() {
 
 		//エネミーとプレイヤーの直接のあたり判定
 		for (int i = 0; i < ENEMYNUMBER; i++) {
-			if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
-				if (!player->beInvincible) {
-					player->Hp -= enemy[i].Atk;
-					player->beInvincible = true;
+			if(enemy[i].beActive && !enemy[i].beDead){
+				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
+					if (!player->beInvincible) {
+						player->Hp -= enemy[i].Atk;
+						player->beInvincible = true;
+					}
 				}
 			}
 		}
