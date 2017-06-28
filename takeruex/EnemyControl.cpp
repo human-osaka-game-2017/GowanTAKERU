@@ -17,16 +17,20 @@ Enemy* GetenemyData() {
 void EnemyBulettCreate();
 
 void EnemyInit() {
-	g_enemy[0].WorldPos.x=600;//ワールド座標
+	for (int i = 0; i < ENEMYNUMBER; i++) {
+		
+		g_enemy[i].WindowPos.x = 0;
+		g_enemy[i].WindowPos.y = 0;
+		g_enemy[i].Atk = 2;//攻撃力
+		g_enemy[i].Hp = 1;//体力
+		g_enemy[i].beDead = false;//死んでいるか
+		g_enemy[i].beActive = false;//活動中か
+		g_enemy[i].beLeft = false;//左（右）どうっち向いてるか
+	}
+	g_enemy[0].WorldPos.x = 600;//ワールド座標
 	g_enemy[0].WorldPos.y = 702;
-	g_enemy[0].WindowPos.x = 0;
-	g_enemy[0].WindowPos.y = 0;
-	g_enemy[0].Atk=2;//攻撃力
-	g_enemy[0].Hp=1;//体力
-	g_enemy[0].beDead=false;//死んでいるか
-	g_enemy[0].beActive=false;//活動中か
-	g_enemy[0].beLeft = false;//左（右）どうっち向いてるか
-
+	g_enemy[1].WorldPos.x = 900;//ワールド座標
+	g_enemy[1].WorldPos.y = 702;
 }
 
 void EnemyMove(int enemyNum) {
