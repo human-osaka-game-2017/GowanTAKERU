@@ -29,7 +29,7 @@ void TextureInit() {
 }
 
 void TextureFree() {
-	for (int i = 0; i <= TEXMAX; i++)
+	for (int i = 0; i < TEXMAX; i++)
 	{
 		if (g_pTexture[i] != NULL) {
 			g_pTexture[i]->Release();
@@ -65,6 +65,7 @@ void MainSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet01.png", &g_pTexture[BULLET01_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/playerActionTest.png", &g_pTexture[PLAYER_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy01.png", &g_pTexture[ENEMY01_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
 	
 	int* mapdata = GetMapchipData();
 	CSVLoad("CSV/mainscene/map.csv", mapdata, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);

@@ -2,6 +2,7 @@
 #include"PlayerControl.h"
 #include"EnemyControl.h"
 #include"BulletControl.h"
+#include"MapControl.h"
 #include"MainHitManagement.h"
 
 void MainControl() {
@@ -9,6 +10,7 @@ void MainControl() {
 	PlayerControl();
 	EnemyControl();
 	BulletControl();
+	MapComtrol();
 	HitManage();
 }
 

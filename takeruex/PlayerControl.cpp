@@ -42,7 +42,8 @@ void PlayerInit() {
 	g_player.WindowPos.y = DISPLAY_HEIGHT/2+160;
 	g_player.JumpPower = 0.0f;
 	g_player.Jumping = false;
-	g_player.Hp = 100;
+	g_player.Hp = 30;
+	g_player.beActive = true;
 	g_player.LifeRedused = 2;
 	g_player.beInvincible = false;
 	g_player.beLeft = false;
@@ -52,10 +53,11 @@ void PlayerInit() {
 }
 
 void PlayerControl() {
+	if (g_player.beActive) {
+		PlayerMove();
 
-	PlayerMove();
-
-	PlayerReflectMotion();
+		PlayerReflectMotion();
+	}
 
 }
 
@@ -184,7 +186,7 @@ void PlayerMove() {
 	}
 
 	
-	if (MapKindSpecify(&PlayerLeftTopMapNum) == FLOOR && MapKindSpecify_Plus1(&PlayerRightTopMapNum, LEFT) == FLOOR) {
+	if (MapKindSpecify(&PlayerLeftTopMapNum) == FLOOR || MapKindSpecify_Plus1(&PlayerRightTopMapNum, LEFT) == FLOOR) {
 		g_player.JumpPower = 0;
 	}
 

@@ -10,6 +10,8 @@ struct MapNumXY {
 	int NumX, NumY;
 };
 
+void MapComtrol();
+
 //第一引数ーーーーMapNumXYの構造体でXのマップチップ番号、Yのマップチップ番号を返してくれます
 //第二引数ーーーーワールド座標を入れてください
 void MapchipNumberSpecify(MapNumXY* pMapNumXY, D3DXVECTOR2* pWorldPos);

@@ -2,6 +2,20 @@
 #include"MapRender.h"
 #include"PlayerControl.h"
 
+void MapComtrol() {
+
+	int* map = GetMapchipData();
+	Player* player = GetplayerData();
+
+	if (9980 < player->WorldPos.x) {
+		for (int i = 17; i < 24; i++) {
+			for (int j = 288; j < 291; j++) {
+				*(map + j + i*MAPCHIPNUM_WIDTH) = FLOOR;
+			}
+		}
+	}
+}
+
 void MapchipNumberSpecify(MapNumXY* pMapNumXY,D3DXVECTOR2* pWorldPos) {
 	pMapNumXY->NumX = (pWorldPos->x / TIPSIZE);
 	pMapNumXY->NumY = (pWorldPos->y / TIPSIZE);
