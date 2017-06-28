@@ -63,12 +63,12 @@ void BulletCreate(int bulletNum,int enemyNum, BulletKind bulletKind) {
 
 }
 
-void BulletMoveNomal(int num) {
+void BulletMoveNomal(int bulletNum) {
 
-	g_bullet[num].WindowPos.x += g_bullet[num].Speed*cos(g_bullet[num].Rad);
-	g_bullet[num].WindowPos.y -= g_bullet[num].Speed*sin(g_bullet[num].Rad);
-	g_bullet[num].WorldPos.x += g_bullet[num].Speed*cos(g_bullet[num].Rad);
-	g_bullet[num].WorldPos.y -= g_bullet[num].Speed*sin(g_bullet[num].Rad);
+	g_bullet[bulletNum].WindowPos.x += g_bullet[bulletNum].Speed*cos(g_bullet[bulletNum].Rad);
+	g_bullet[bulletNum].WindowPos.y -= g_bullet[bulletNum].Speed*sin(g_bullet[bulletNum].Rad);
+	g_bullet[bulletNum].WorldPos.x += g_bullet[bulletNum].Speed*cos(g_bullet[bulletNum].Rad);
+	g_bullet[bulletNum].WorldPos.y -= g_bullet[bulletNum].Speed*sin(g_bullet[bulletNum].Rad);
 }
 
 

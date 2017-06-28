@@ -23,6 +23,7 @@ void EnemyInit() {
 		g_enemy[i].WindowPos.y = 0;
 		g_enemy[i].Atk = 2;//攻撃力
 		g_enemy[i].Hp = 1;//体力
+		g_enemy[i].bulletFreamCount = 0;
 		g_enemy[i].beDead = false;//死んでいるか
 		g_enemy[i].beActive = false;//活動中か
 		g_enemy[i].beLeft = false;//左（右）どうっち向いてるか
@@ -53,7 +54,7 @@ void EnemyMove(int enemyNum) {
 void EnemyControl() {
 
 	D3DXVECTOR2* basepoint = GetBasePoint();
-	for (int i = 1; i < ENEMYNUMBER; i++) {
+	for (int i = 0; i < ENEMYNUMBER; i++) {
 		if (g_enemy[i].beDead == false) {
 			//ウィンドウの外（左右）120ピクセルから描画開始のフラグを立てる
 			if (g_enemy[i].WorldPos.x < basepoint->x + DISPLAY_WIDTH / 2 + 120 && g_enemy[i].WorldPos.x > basepoint->x - DISPLAY_WIDTH / 2 - 120) {
@@ -70,31 +71,25 @@ void EnemyControl() {
 				//エネミーのwindow,Y座標を調べる
 				g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
 				EnemyMove(i);
-
-				EnemyBulettCreate(i);
+				g_enemy[i].bulletFreamCount++;
+				if (g_enemy[i].bulletFreamCount ==300) {//300フレームに1回入るはず
+					EnemyBulettCreate(i);
+					g_enemy[i].bulletFreamCount = 0;
+				}
 			}
 		}
 	}
 }
 
-
 void EnemyBulettCreate(int enemyNum) {
-
 	Bullet* bullt= GetBullet();
 
-	static int FrameCount = 0;
-	FrameCount++;
-
-	if (FrameCount == 300) {//5秒（300フレーム）に一回入るはず
-
 		static int bulletRest = 0;//弾の撃った数を図る変数
-		BulletCreate(bulletRest, enemyNum,bullet01);
+		BulletCreate(bulletRest, enemyNum, bullet01);
 		bulletRest++;
 
 		if (bulletRest == BULLETNUMBER) {//弾の装填数がなくなったら初期化
 			bulletRest = 0;
 		}
 
-		FrameCount = 0;
-	}
 }
