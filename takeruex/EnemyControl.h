@@ -3,7 +3,7 @@
 
 #include<d3dx9.h>
 #define MOVE_SUPEED 3.0f
-#define ENEMYNUMBER 3
+#define ENEMYNUMBER 2
 
 
 

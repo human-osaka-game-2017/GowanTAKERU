@@ -34,28 +34,28 @@ void BulletInit() {
 	}
 }
 
-void BulletCreate(int num, BulletKind bulletKind) {
+void BulletCreate(int bulletNum,int enemyNum, BulletKind bulletKind) {
 
 	Enemy* enemy = GetenemyData();
 	Player* player = GetplayerData();
 
-	g_bullet[num].beActive = true;
-	g_bullet[num].WindowPos = enemy->WindowPos;
-	g_bullet[num].WorldPos = enemy->WorldPos;
+	g_bullet[bulletNum].beActive = true;
+	g_bullet[bulletNum].WindowPos = enemy[enemyNum].WindowPos;
+	g_bullet[bulletNum].WorldPos = enemy[enemyNum].WorldPos;
 
 	switch (bulletKind) {
 
 	case bullet01:
-		g_bullet[num].Speed = 6.0f;
-		g_bullet[num].Size = 30;
-		g_bullet[num].ReflectMax = 3;
-		g_bullet[num].SaveCoordinate = player->WindowPos;
+		g_bullet[bulletNum].Speed = 6.0f;
+		g_bullet[bulletNum].Size = 30;
+		g_bullet[bulletNum].ReflectMax = 3;
+		g_bullet[bulletNum].SaveCoordinate = player->WindowPos;
 
-		g_bullet[num].Rad = Calculate_rad(
-			g_bullet[num].WindowPos.x,
-			g_bullet[num].WindowPos.y,
-			g_bullet[num].SaveCoordinate.x,
-			g_bullet[num].SaveCoordinate.y
+		g_bullet[bulletNum].Rad = Calculate_rad(
+			g_bullet[bulletNum].WindowPos.x,
+			g_bullet[bulletNum].WindowPos.y,
+			g_bullet[bulletNum].SaveCoordinate.x,
+			g_bullet[bulletNum].SaveCoordinate.y
 		);
 		break;
 

@@ -25,7 +25,7 @@ struct Bullet {
 
 Bullet* GetBullet();
 
-void BulletCreate(int num, BulletKind C);
+void BulletCreate(int bulletNum, int enemyNum, BulletKind bulletKind);
 
 void BulletControl();
 

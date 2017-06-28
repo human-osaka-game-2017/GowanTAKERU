@@ -20,8 +20,8 @@ void EnemyRender() {
 	};
 
 
-	for (int i = 0; i < ENEMYNUMBER; i++) {
-	if (enemy->beDead == false && enemy->beActive == true)
+	for (int i = 1; i < ENEMYNUMBER; i++) {
+	if (enemy[i].beDead == false && enemy[i].beActive == true)
 	{
 			CUSTOMVERTEX DrawVertex[4];
 			for (int j = 0; j < 4; j++) {
