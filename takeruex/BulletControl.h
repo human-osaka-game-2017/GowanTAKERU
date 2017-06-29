@@ -31,5 +31,8 @@ void BulletControl();
 
 void BulletInit();
 
+//bullet‚ğÁ‹‚µ‚Ü‚·
+void DeactivateBullet(int num);
+
 
 #endif

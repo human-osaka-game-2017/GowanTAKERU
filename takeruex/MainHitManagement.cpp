@@ -19,16 +19,18 @@ void HitManage() {
 		for (int j = 0; j < ENEMYNUMBER; j++) {
 
 			//敵とバレットのダメージ計算
-			if (enemy[j].beActive == true && enemy[j].beDead == false) {
-				if (bullet[i].wasReflect) {
-					if (SquareHit(&bullet[i].WindowPos, bullet->Size, bullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
+			if(bullet[i].beActive){
+				if (enemy[j].beActive == true && enemy[j].beDead == false) {
+					if (bullet[i].wasReflect) {
+						if (SquareHit(&bullet[i].WindowPos, bullet->Size, bullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
 
-						bullet[i].beActive = false;
-						enemy[j].Hp -= bullet[i].Atk;
+							DeactivateBullet(i);
+							enemy[j].Hp -= bullet[i].Atk;
 
-						if (enemy[j].Hp < 0) {
-							enemy[j].beActive = false;
-							enemy[j].beDead = true;
+							if (enemy[j].Hp < 0) {
+								enemy[j].beActive = false;
+								enemy[j].beDead = true;
+							}
 						}
 					}
 				}
@@ -38,7 +40,7 @@ void HitManage() {
 			if (bullet[i].beActive) {
 				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &bullet[i].WindowPos, bullet->Size, bullet->Size)) {
 
-					bullet[i].beActive = false;
+					DeactivateBullet(i);
 
 					if (!player->beInvincible) {
 						player->Hp -= bullet->Atk;

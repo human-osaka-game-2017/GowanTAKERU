@@ -81,10 +81,11 @@ void BulletControl() {
 
 			BulletMoveNomal(i);
 
-			//MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);
+			MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);
 
-			//int map = MapKindSpecify(&mapNum);
+			int map = MapKindSpecify(&mapNum);
 
+			//âÊñ äOÇ≈è¡Ç¶ÇÈ
 			if (g_bullet[i].WindowPos.x < -64 || DISPLAY_WIDTH + 64 < g_bullet[i].WindowPos.x) {
 				g_bullet[i].beActive = false;
 			}
@@ -93,7 +94,9 @@ void BulletControl() {
 			}
 		}
 	}
+}
 
-	
-
+void DeactivateBullet(int num) {
+	g_bullet[num].beActive = false;
+	g_bullet[num].wasReflect = false;
 }
