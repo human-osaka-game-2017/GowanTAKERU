@@ -7,12 +7,14 @@
 
 
 
+enum EnemyKind { enemyKind01 = 1 };
+
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
+	EnemyKind enemyKind;//エネミーの種類
 	int Atk;
 	int Hp;
-	int Kind;
 	int bulletFreamCount;//弾を撃つフラグを立てるためのフレームを図っている
 	bool beDead;//死んでいるか
 	bool beActive;//活動中か

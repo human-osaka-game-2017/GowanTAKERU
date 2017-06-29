@@ -11,5 +11,6 @@ void TextureFree();
 
 //mainsceneのテキスチャを読み込んでます
 void MainSceneLoad();
+void CSVLoad(char* mapdata, int* map, int height, int width);
 
 #endif
