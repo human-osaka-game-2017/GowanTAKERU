@@ -1,13 +1,19 @@
 #ifndef ENEMYCONTROL_H
 #define ENEMYCONTROL_H
+#include<d3dx9.h> 
+#define MOVE_SUPEED 3.0f//エネミーのスピード
+#define ENEMYNUMBER 3//エネミーの数
+#define GRAVITY 1//エネミーにかかる重力
 
-#include<d3dx9.h>
-#define MOVE_SUPEED 3.0f
-#define ENEMYNUMBER 2
 
 
+enum EnemyKind { enemyKind01 = 1,enemyKind02 = 2 ,enemyKind03 = 3 };
 
-enum EnemyKind { enemyKind01 = 1 };
+
+/*敵の種類
+kind01＝通常地上MOB
+kind02=通常空中MOB
+*/
 
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;

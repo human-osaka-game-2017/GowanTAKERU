@@ -10,7 +10,7 @@
 #include "FileManagement.h"
 
 Enemy g_enemy[ENEMYNUMBER];
-struct EnemyMapNum {
+struct EnemyMapNum {//CSVの座標と番号を入れる箱
 	int NumX;
 	int NumY;
 	EnemyKind enemyKind;
@@ -26,6 +26,7 @@ Enemy* GetenemyData() {
 void EnemyBulettCreate(int enemyNum);
 void EnemyMove(int enemyNuintq);
 void EnemyArrangement(EnemyMapNum enemyMapNum[]);
+void EnemyGravity(int enemyNum);
 
 void EnemyInit() {
 	EnemyMapNum enemyMapNum[ENEMYNUMBER];
@@ -42,6 +43,7 @@ void EnemyInit() {
 		g_enemy[i].beDead = false;//死んでいるか
 		g_enemy[i].beActive = false;//活動中か
 		g_enemy[i].beLeft = false;//左（右）どうっち向いてるか
+
 
 	}
 
@@ -65,6 +67,7 @@ void EnemyControl() {
 				g_enemy[i].WindowPos.x = DISPLAY_WIDTH / 2 + EnemyWorldDistanceX;
 				//エネミーのwindow,Y座標を調べる
 				g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
+				EnemyGravity(i);
 				EnemyMove(i);
 				g_enemy[i].bulletFreamCount++;
 				if (g_enemy[i].bulletFreamCount == 300) {//300フレームに1回入るはず
@@ -78,7 +81,9 @@ void EnemyControl() {
 
 
 void EnemyMove(int enemyNum) {
-	Player* player = GetplayerData();
+	Player* player = GetplayerData(); 
+	switch (g_enemy[enemyNum].enemyKind) {
+		case enemyKind01:
 		//エネミーのX座標がプレイヤーのX座標より小さかったら
 		if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
 			//+方向にエネミーを動かす
@@ -89,6 +94,23 @@ void EnemyMove(int enemyNum) {
 			//-方向にエネミーを動かす
 			g_enemy[enemyNum].WorldPos.x += MOVE_SUPEED;
 		}
+			
+			break;
+		case enemyKind02:
+			//エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
+			if (player->WindowPos.x + 200  < g_enemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_enemy[enemyNum].WorldPos.x -= MOVE_SUPEED;
+			}
+			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
+			else if (player->WindowPos.x - 200> g_enemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_enemy[enemyNum].WorldPos.x += MOVE_SUPEED;
+			}
+
+			break;
+	}
+
 	}
 
 
@@ -107,25 +129,29 @@ void EnemyBulettCreate(int enemyNum) {
 
 }
 
-void EnemyMovingRange() {//エネミーと壁の判定
-
-} 
 
 
-void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//エネミーのCSVからの表示
+void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSVからエネミーの座標と種類をもらう
 
 	int enemyArrangement[MAPCHIPNUM_HEIGHT*MAPCHIPNUM_WIDTH];
-	CSVLoad("CSV/mainscene/enemyArrangement.csv", enemyArrangement, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);//マップチップ呼び出し
+	CSVLoad("CSV/mainscene/enemyArrangement.csv", enemyArrangement, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);//CSV呼び出し
 
 	int count = 0;
 
 	for (int i = 0; i < MAPCHIPNUM_HEIGHT;i++) {
 		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
-			switch (enemyArrangement[j+i*MAPCHIPNUM_WIDTH]) {
+			switch (enemyArrangement[j+i*MAPCHIPNUM_WIDTH]) {//もらった敵のデータを入れ込む
 			case enemyKind01:
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
 				enemyMapNum[count].enemyKind = enemyKind01;
+				count++;
+				break;
+
+			case enemyKind02:
+				enemyMapNum[count].NumX = j;
+				enemyMapNum[count].NumY = i;
+				enemyMapNum[count].enemyKind = enemyKind02;
 				count++;
 				break;
 
@@ -139,17 +165,23 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//エネミーのCSVからの表示
 
 }
 
-////第一引数ーーーーMapNumXYの構造体でXのマップチップ番号、Yのマップチップ番号を返してくれます
-////第二引数ーーーーワールド座標を入れてください
-//void MapchipNumberSpecify(MapNumXY* pMapNumXY, D3DXVECTOR2* pWorldPos);
+void EnemyGravity(int enemyNum) {//地上ﾀｲﾌﾟのエネミーに重力をかける
+		switch (g_enemy[enemyNum].enemyKind) {
+		case enemyKind01:
+			g_enemy[enemyNum].WorldPos.y += GRAVITY;
+			break;
+		
+		default:
+			break;
+
+
+		}
+	
+}
+
+//float EnemyMoveSpeed(int enemyNum) {
+//	switch (g_enemy[enemyNum].enemyKind) {
+//	case enemyKind01:
 //
-////第一引数ーーーーマップチップの番号(MapNumXY)をいれて
-////第二引数ーーーーワールド座標を返してくれます
-//void PosSpecifyForMapchipNumber(D3DXVECTOR2* pWorldPos, MapNumXY* pMapNumXY);
-//
-////マップチップの番号(MapNumXY)をいれて、そのマップチップの種類を返してくれます
-//int MapKindSpecify(MapNumXY* pMapNumXY);
-//
-////第一引数ーーーーマップチップの番号(MapNumXY)をいれて
-////第二引数ーーーー方向（Direction）を指定するとその方向のマップチップの種類を返してくれます
-//int MapKindSpecify_Plus1(MapNumXY* pMapNumXY, Direction direction);
+//	}
+//}
