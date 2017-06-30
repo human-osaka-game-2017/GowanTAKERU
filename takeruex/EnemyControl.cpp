@@ -13,6 +13,7 @@ Enemy g_enemy[ENEMYNUMBER];
 struct EnemyMapNum {//CSV‚ÌÀ•W‚Æ”Ô†‚ğ“ü‚ê‚é” 
 	int NumX;
 	int NumY;
+	int Speed;
 	EnemyKind enemyKind;
 
 };
@@ -35,6 +36,7 @@ void EnemyInit() {
 		g_enemy[i].WorldPos.x = enemyMapNum[i].NumX*TIPSIZE;//ƒ[ƒ‹ƒhÀ•W
 		g_enemy[i].WorldPos.y = enemyMapNum[i].NumY*TIPSIZE;
 		g_enemy[i].enemyKind = enemyMapNum[i].enemyKind;
+		g_enemy[i].Speed = enemyMapNum[i].Speed;
 		g_enemy[i].WindowPos.x = 0;
 		g_enemy[i].WindowPos.y = 0;
 		g_enemy[i].Atk = 2;//UŒ‚—Í
@@ -87,12 +89,12 @@ void EnemyMove(int enemyNum) {
 		//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è¬‚³‚©‚Á‚½‚ç
 		if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
 			//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-			g_enemy[enemyNum].WorldPos.x -= MOVE_SUPEED;
+			g_enemy[enemyNum].MovementX -= g_enemy[enemyNum].Speed;
 		}
 		//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è‘å‚«‚©‚Á‚½‚ç
 		else if (player->WindowPos.x > g_enemy[enemyNum].WindowPos.x) {
 			//-•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-			g_enemy[enemyNum].WorldPos.x += MOVE_SUPEED;
+			g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
 		}
 			
 			break;
@@ -100,12 +102,12 @@ void EnemyMove(int enemyNum) {
 			//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W+200‚ÌˆÊ’u‚æ‚è‘å‚«‚©‚Á‚½‚ç
 			if (player->WindowPos.x + 200  < g_enemy[enemyNum].WindowPos.x) {
 				//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-				g_enemy[enemyNum].WorldPos.x -= MOVE_SUPEED;
+				g_enemy[enemyNum].MovementX -= g_enemy[enemyNum].Speed;
 			}
 			//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W-200‚ÌˆÊ’u‚æ‚è¬‚³‚©‚Á‚½‚ç
 			else if (player->WindowPos.x - 200> g_enemy[enemyNum].WindowPos.x) {
 				//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-				g_enemy[enemyNum].WorldPos.x += MOVE_SUPEED;
+				g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
 			}
 
 			break;
@@ -145,6 +147,7 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
 				enemyMapNum[count].enemyKind = enemyKind01;
+				enemyMapNum[count].Speed = 5;
 				count++;
 				break;
 
@@ -152,6 +155,7 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
 				enemyMapNum[count].enemyKind = enemyKind02;
+				enemyMapNum[count].Speed = 7;
 				count++;
 				break;
 
@@ -179,9 +183,19 @@ void EnemyGravity(int enemyNum) {//’nãÀ²Ìß‚ÌƒGƒlƒ~[‚Éd—Í‚ğ‚©‚¯‚é
 	
 }
 
-//float EnemyMoveSpeed(int enemyNum) {
-//	switch (g_enemy[enemyNum].enemyKind) {
-//	case enemyKind01:
-//
-//	}
-//}
+void MoveEnemy(int enemyNum) {
+	for (int i = 0; i < ENEMYNUMBER; i++) {
+		if (g_enemy[i].beActive == true && g_enemy[i].beDead == false) {//ƒfƒXAƒAƒNƒeƒBƒuƒ`ƒFƒbƒN
+			//ŠeƒGƒlƒ~[‚ÌÀ•W‚É“®‚­’l‚ğ‘«‚·
+			g_enemy[i].WorldPos.x += g_enemy[i].MovementX;
+			g_enemy[i].WorldPos.y += g_enemy[i].MovementY;
+			g_enemy[i].WindowPos.x += g_enemy[i].MovementX;
+			g_enemy[i].WindowPos.y += g_enemy[i].MovementY;
+
+			//Movement‚Ì‰Šú‰»
+			g_enemy[i].MovementX = 0;
+			g_enemy[i].MovementY = 0;
+		}
+		
+	 }
+}

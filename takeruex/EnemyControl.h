@@ -19,6 +19,9 @@ struct Enemy {
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
 	EnemyKind enemyKind;//エネミーの種類
+	float Speed;
+	float MovementX;//エネミーの1フレーム当たりの移動量
+	float MovementY;
 	int Atk;
 	int Hp;
 	int bulletFreamCount;//弾を撃つフラグを立てるためのフレームを図っている
@@ -32,5 +35,6 @@ struct Enemy {
 Enemy* GetenemyData();
 void EnemyInit();
 void EnemyControl();
+void MoveEnemy(int enemyNum);
 
 #endif
