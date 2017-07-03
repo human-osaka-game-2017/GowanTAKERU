@@ -1,4 +1,5 @@
 #include"MainHitManagement.h"
+#include"MapControl.h"
 #include"PlayerControl.h"
 #include"PlayerRender.h"
 #include"BulletControl.h"
@@ -12,8 +13,50 @@ void HitManage() {
 	Bullet* bullet = GetBullet();
 	Enemy* enemy = GetenemyData();
 
+	////プレイヤーとマップのあたり判定
 
-	static int frcnt;
+	//D3DXVECTOR2 tmpPos;
+	//MapNumXY tmpNum;
+
+	///*tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX;
+	//tmpPos.y= (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY;*/
+
+	//int MaxNumX = CalculateNumInRange(PLAYERSIZEWIDHE);
+	//int MaxNumY = CalculateNumInRange(PLAYERSIZEHEIGHT);
+	////MaxNumY -= 1;
+	//
+	//for (int i = 0; i <= (TIPSIZE*MaxNumY); i += TIPSIZE) {
+	//	for (int j = 0; j <= (TIPSIZE*MaxNumX); j += TIPSIZE) {
+
+	//		tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX + j;
+	//		tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
+	//		MapchipNumberSpecify(&tmpNum, &tmpPos);
+
+	//		if (MapKindSpecify(&tmpNum) == FLOOR) {
+	//			if (player->MovementX < 0) {
+	//				player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x;
+	//			}
+	//			else if (player->MovementX > 0) {
+	//				player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x-1;
+	//			}
+	//		}
+
+	//		tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX + j;
+	//		tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
+	//		MapchipNumberSpecify(&tmpNum, &tmpPos);
+
+	//		if (MapKindSpecify(&tmpNum) == FLOOR) {
+	//			if (player->MovementY < 0) {
+	//			player->MovementY += ((tmpNum.NumY + 1)* TIPSIZE) - tmpPos.y;
+	//			}
+	//			else if (player->MovementY > 0) {
+	//				player->MovementY += ((tmpNum.NumY)* TIPSIZE) - tmpPos.y-1 ;
+	//			}
+	//		}
+	//	}
+	//}
+
+	static int frcntInvincible;
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		for (int j = 0; j < ENEMYNUMBER; j++) {
@@ -64,11 +107,11 @@ void HitManage() {
 		}
 	}
 	if (player->beInvincible) {
-		frcnt++;
+		frcntInvincible++;
 	}
 
-	if (frcnt >= 90) {
-		frcnt = 0;
+	if (frcntInvincible >= 90) {
+		frcntInvincible = 0;
 		player->beInvincible = false;
 	}
 

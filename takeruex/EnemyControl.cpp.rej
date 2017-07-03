@@ -1,0 +1,10 @@
+diff a/takeruex/EnemyControl.cpp b/takeruex/EnemyControl.cpp	(rejected hunks)
+@@ -54,7 +54,7 @@
+ void EnemyControl() {
+ 
+ 	D3DXVECTOR2* basepoint = GetBasePoint();
+-	for (int i = 1; i < ENEMYNUMBER; i++) {
++	for (int i = 0; i < ENEMYNUMBER; i++) {
+ 		if (g_enemy[i].beDead == false) {
+ 			//�E�B���h�E�̊O�i���E�j120�s�N�Z������`��J�n�̃t���O�𗧂Ă�
+ 			if (g_enemy[i].WorldPos.x < basepoint->x + DISPLAY_WIDTH / 2 + 120 && g_enemy[i].WorldPos.x > basepoint->x - DISPLAY_WIDTH / 2 - 120) {

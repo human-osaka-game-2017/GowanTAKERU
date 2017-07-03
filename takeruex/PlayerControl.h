@@ -4,18 +4,20 @@
 #include<d3dx9.h>
 
 #define PLAYERMOVESPEED 5.0f
-#define PLAYERJUMPPOWER -5.0f
+#define PLAYERJUMPPOWER -4.0f
 
 struct Player {
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
+	float MovementX;
+	float MovementY;
 	float JumpPower;
-	bool Jumping;
 	int Hp;
-	int LifeRedused;
+	int LifeRedused;//Žc‹C
+	bool Jumping;
 	bool bePunchUP;
 	bool bePunchDOWN;
-	bool beInvincible;
+	bool beInvincible;//–³“G
 	bool beLeft;
 	bool beActive;
 };
@@ -27,5 +29,6 @@ D3DXVECTOR2* GetBasePoint();
 
 void PlayerControl();
 void PlayerInit();
+void MovePlayer();
 
 #endif

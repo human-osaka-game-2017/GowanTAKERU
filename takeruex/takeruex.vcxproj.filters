@@ -56,6 +56,9 @@
     <ClCompile Include="UIRendr.cpp">
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClCompile>
+    <ClCompile Include="MoveManagement.cpp">
+      <Filter>Application\MainScene\MainControl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -140,6 +143,9 @@
     </ClInclude>
     <ClInclude Include="UIRendr.h">
       <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveManagement.h">
+      <Filter>Application\MainScene\MainControl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

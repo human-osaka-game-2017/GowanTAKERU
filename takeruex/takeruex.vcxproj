@@ -137,6 +137,7 @@
     <ClCompile Include="MainSceneInit.cpp" />
     <ClCompile Include="MapControl.cpp" />
     <ClCompile Include="MapRender.cpp" />
+    <ClCompile Include="MoveManagement.cpp" />
     <ClCompile Include="PlayerControl.cpp" />
     <ClCompile Include="PlayerRender.cpp" />
     <ClCompile Include="SceneManagement.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="MainSceneInit.h" />
     <ClInclude Include="MapControl.h" />
     <ClInclude Include="MapRender.h" />
+    <ClInclude Include="MoveManagement.h" />
     <ClInclude Include="PlayerControl.h" />
     <ClInclude Include="PlayerRender.h" />
     <ClInclude Include="SceneManagement.h" />

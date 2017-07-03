@@ -12,6 +12,8 @@ struct Bullet {
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
 	D3DXVECTOR2 SaveCoordinate;
+	float MovementX;
+	float MovementY;
 	float Size;
 	float Speed;
 	float Radius;//îºåa
@@ -33,6 +35,8 @@ void BulletInit();
 
 //bulletÇè¡ãéÇµÇ‹Ç∑
 void DeactivateBullet(int num);
+
+void MoveBullet();
 
 
 #endif

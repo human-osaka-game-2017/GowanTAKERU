@@ -1,5 +1,4 @@
 #include"MapRender.h"
-#include"CommonRender.h"
 #include"DirectXGraphics.h"
 #include"FileManagement.h"
 #include"MainRender.h"

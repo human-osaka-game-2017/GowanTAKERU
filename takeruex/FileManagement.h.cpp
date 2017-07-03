@@ -66,7 +66,10 @@ void MainSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/playerActionTest.png", &g_pTexture[PLAYER_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy01.png", &g_pTexture[ENEMY01_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
-	
+	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpF.png", &g_pTexture[HPUI_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpIn.png", &g_pTexture[HPUIIN_TEX]);
+
+
 	int* mapdata = GetMapchipData();
 	CSVLoad("CSV/mainscene/map.csv", mapdata, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);
 }

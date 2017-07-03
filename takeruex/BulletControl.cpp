@@ -5,6 +5,8 @@
 #include"MapControl.h"
 #include"CommonRender.h"
 
+void SetBulletMovement(int bulletNum);
+
 static Bullet g_bullet[BULLETNUMBER];
 
 Bullet* GetBullet() {
@@ -22,6 +24,8 @@ void BulletInit() {
 		g_bullet[i].Rad = 0;
 		g_bullet[i].Radius = 0;
 		g_bullet[i].Speed = 0;
+		g_bullet[i].MovementX = 0;
+		g_bullet[i].MovementY = 0;
 		g_bullet[i].ReflectCnt = 0;
 		g_bullet[i].ReflectMax = 0;
 		g_bullet[i].SaveCoordinate.x = 0;
@@ -63,15 +67,6 @@ void BulletCreate(int bulletNum,int enemyNum, BulletKind bulletKind) {
 
 }
 
-void BulletMoveNomal(int bulletNum) {
-
-	g_bullet[bulletNum].WindowPos.x += g_bullet[bulletNum].Speed*cos(g_bullet[bulletNum].Rad);
-	g_bullet[bulletNum].WindowPos.y -= g_bullet[bulletNum].Speed*sin(g_bullet[bulletNum].Rad);
-	g_bullet[bulletNum].WorldPos.x += g_bullet[bulletNum].Speed*cos(g_bullet[bulletNum].Rad);
-	g_bullet[bulletNum].WorldPos.y -= g_bullet[bulletNum].Speed*sin(g_bullet[bulletNum].Rad);
-}
-
-
 void BulletControl() {
 	
 	MapNumXY mapNum;
@@ -79,7 +74,7 @@ void BulletControl() {
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		if (g_bullet[i].beActive) {
 
-			BulletMoveNomal(i);
+			SetBulletMovement(i);
 
 			MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);
 
@@ -94,6 +89,23 @@ void BulletControl() {
 			}
 		}
 	}
+}
+
+void MoveBullet() {
+	for (int i = 0; i < BULLETNUMBER; i++) {
+		if (g_bullet[i].beActive) {
+			g_bullet[i].WindowPos.x += g_bullet[i].MovementX;
+			g_bullet[i].WindowPos.y += g_bullet[i].MovementY;
+			g_bullet[i].WorldPos.x += g_bullet[i].MovementX;
+			g_bullet[i].WorldPos.y += g_bullet[i].MovementY;
+			g_bullet[i].MovementX = g_bullet[i].MovementY = 0;
+		}
+	}
+}
+
+void SetBulletMovement(int bulletNum) {
+	g_bullet[bulletNum].MovementX += g_bullet[bulletNum].Speed*cos(g_bullet[bulletNum].Rad);
+	g_bullet[bulletNum].MovementY -= g_bullet[bulletNum].Speed*sin(g_bullet[bulletNum].Rad);
 }
 
 void DeactivateBullet(int num) {

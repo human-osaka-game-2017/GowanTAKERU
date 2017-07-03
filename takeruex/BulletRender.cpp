@@ -1,7 +1,6 @@
 #include"BulletRender.h"
 #include"BulletControl.h"
 #include"DirectXGraphics.h"
-#include"CommonRender.h"
 #include"FileManagement.h"
 #include"MainRender.h"
 

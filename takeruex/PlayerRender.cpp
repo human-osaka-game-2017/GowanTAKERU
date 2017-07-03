@@ -1,7 +1,6 @@
 #include"PlayerRender.h"
 #include"PlayerControl.h"
 #include"MainRender.h"
-#include"CommonRender.h"
 #include"FileManagement.h"
 #include"DirectXGraphics.h"
 

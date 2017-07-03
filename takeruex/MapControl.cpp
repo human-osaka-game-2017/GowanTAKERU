@@ -95,3 +95,14 @@ int MapKindSpecify_Plus1(MapNumXY* pMapNumXY, Direction direction) {
 
 	return tmp;
 }
+
+int MapKindSpecifyForPos(D3DXVECTOR2* pWorldPos) {
+	MapNumXY MapNumXY;
+	MapNumXY.NumX = (pWorldPos->x / TIPSIZE);
+	MapNumXY.NumY = (pWorldPos->y / TIPSIZE);
+	return MapKindSpecify(&MapNumXY);
+}
+
+int CalculateNumInRange(float l) {
+	return (int)l / TIPSIZE ;
+}
