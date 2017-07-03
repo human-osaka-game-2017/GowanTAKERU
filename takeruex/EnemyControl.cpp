@@ -25,7 +25,7 @@ Enemy* GetenemyData() {
 	}
 //プロトタイプ群
 void EnemyBulettCreate(int enemyNum);
-void EnemyMove(int enemyNuintq);
+void EnemyPursuit(int enemyNum);
 void EnemyArrangement(EnemyMapNum enemyMapNum[]);
 void EnemyGravity(int enemyNum);
 
@@ -70,7 +70,7 @@ void EnemyControl() {
 				//エネミーのwindow,Y座標を調べる
 				g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
 				EnemyGravity(i);
-				EnemyMovement(i);
+				EnemyPursuit(i);
 				g_enemy[i].bulletFreamCount++;
 				if (g_enemy[i].bulletFreamCount == 300) {//300フレームに1回入るはず
 					EnemyBulettCreate(i);
@@ -82,7 +82,7 @@ void EnemyControl() {
 }
 
 
-void EnemyMovement(int enemyNum) {
+void EnemyPursuit(int enemyNum) {
 	Player* player = GetplayerData(); 
 	switch (g_enemy[enemyNum].enemyKind) {
 		case enemyKind01:
