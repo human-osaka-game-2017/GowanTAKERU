@@ -35,6 +35,6 @@ struct Enemy {
 Enemy* GetenemyData();
 void EnemyInit();
 void EnemyControl();
-void MoveEnemy(int enemyNum);
+void MoveEnemy();
 
 #endif

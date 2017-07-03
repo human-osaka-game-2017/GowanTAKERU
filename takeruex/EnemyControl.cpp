@@ -70,7 +70,7 @@ void EnemyControl() {
 				//エネミーのwindow,Y座標を調べる
 				g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
 				EnemyGravity(i);
-				EnemyMove(i);
+				EnemyMovement(i);
 				g_enemy[i].bulletFreamCount++;
 				if (g_enemy[i].bulletFreamCount == 300) {//300フレームに1回入るはず
 					EnemyBulettCreate(i);
@@ -82,7 +82,7 @@ void EnemyControl() {
 }
 
 
-void EnemyMove(int enemyNum) {
+void EnemyMovement(int enemyNum) {
 	Player* player = GetplayerData(); 
 	switch (g_enemy[enemyNum].enemyKind) {
 		case enemyKind01:
