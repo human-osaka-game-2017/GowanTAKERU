@@ -14,48 +14,55 @@ void HitManage() {
 	Bullet* bullet = GetBullet();
 	Enemy* enemy = GetenemyData();
 
-	////プレイヤーとマップのあたり判定
+	//プレイヤーとマップのあたり判定
 
-	//D3DXVECTOR2 tmpPos;
-	//MapNumXY tmpNum;
+	D3DXVECTOR2 tmpPos;
+	MapNumXY tmpNum;
+	float tmpMovementX = player->MovementX;
+	float tmpMovementY = player->MovementY;
 
-	///*tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX;
-	//tmpPos.y= (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY;*/
+	/*tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX;
+	tmpPos.y= (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY;*/
 
-	//int MaxNumX = CalculateNumInRange(PLAYERSIZEWIDHE);
-	//int MaxNumY = CalculateNumInRange(PLAYERSIZEHEIGHT);
-	////MaxNumY -= 1;
-	//
-	//for (int i = 0; i <= (TIPSIZE*MaxNumY); i += TIPSIZE) {
-	//	for (int j = 0; j <= (TIPSIZE*MaxNumX); j += TIPSIZE) {
+	int MaxNumX = CalculateNumInRange(PLAYERSIZEWIDTH);
+	int MaxNumY = CalculateNumInRange(PLAYERSIZEHEIGHT);
+	//MaxNumY -= 1;
+	
+	for (int i = 0; i <= (TIPSIZE*MaxNumY); i += TIPSIZE) {
+		for (int j = 0; j <= (TIPSIZE*MaxNumX); j += TIPSIZE) {
 
-	//		tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX + j;
-	//		tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
-	//		MapchipNumberSpecify(&tmpNum, &tmpPos);
+			tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDTH / 2)) + player->MovementX + j;
+			tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
+			MapchipNumberSpecify(&tmpNum, &tmpPos);
 
-	//		if (MapKindSpecify(&tmpNum) == FLOOR) {
-	//			if (player->MovementX < 0) {
-	//				player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x;
-	//			}
-	//			else if (player->MovementX > 0) {
-	//				player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x-1;
-	//			}
-	//		}
+			if (MapKindSpecify(&tmpNum) == FLOOR) {
+				if (player->MovementY < 0) {
+					player->MovementY += ((tmpNum.NumY + 1)* TIPSIZE) - tmpPos.y;
+				}
+				else if (player->MovementY > 0) {
+					player->MovementY += ((tmpNum.NumY)* TIPSIZE) - tmpPos.y - 1;
+				}
+				if (tmpMovementX > 0) {
+					int a = 0;
+				}
+				player->MovementX *= player->MovementY / tmpMovementY;
+				tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDTH / 2)) + player->MovementX + j;
+				tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
+				MapchipNumberSpecify(&tmpNum, &tmpPos);
+				
+			}
 
-	//		tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX + j;
-	//		tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
-	//		MapchipNumberSpecify(&tmpNum, &tmpPos);
-
-	//		if (MapKindSpecify(&tmpNum) == FLOOR) {
-	//			if (player->MovementY < 0) {
-	//			player->MovementY += ((tmpNum.NumY + 1)* TIPSIZE) - tmpPos.y;
-	//			}
-	//			else if (player->MovementY > 0) {
-	//				player->MovementY += ((tmpNum.NumY)* TIPSIZE) - tmpPos.y-1 ;
-	//			}
-	//		}
-	//	}
-	//}
+			if (MapKindSpecify(&tmpNum) == FLOOR) {
+				if (player->MovementX < 0) {
+					player->MovementX += ((tmpNum.NumX + 1)* TIPSIZE) - tmpPos.x;
+				}
+				else if (player->MovementX > 0) {
+					player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x - 1;
+				}
+				player->MovementY *= player->MovementX / tmpMovementX;
+			}
+		}
+	}
 
 	static int frcntInvincible;
 
@@ -115,6 +122,7 @@ void HitManage() {
 					tmpPlayer.x += -15;
 				}
 				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+				
 					if (!player->beInvincible) {
 						player->Hp -= enemy[i].Atk;
 						player->beInvincible = true;

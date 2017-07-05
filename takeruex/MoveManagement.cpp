@@ -5,6 +5,7 @@
 
 void MoveManage() {
 	MovePlayer();
+	//MoveEnemy();
 	MoveBullet();
 	MoveEnemy();
 }
