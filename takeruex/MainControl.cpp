@@ -19,7 +19,7 @@ void MainControl() {
 
 double Calculate_rad(float x1, float y1, float x2, float y2) {
 
-	double rad;
+	double rad= 0 ;
 
 	double lengthX = x2 - x1;
 	double lengthY = y2 - y1;

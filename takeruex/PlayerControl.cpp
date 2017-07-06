@@ -136,7 +136,7 @@ void SetPlayerMovement() {
 	PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDTH / 2 + g_player.MovementX;
 	PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDTH / 2 + g_player.MovementX;
 	PlayerLeftTop.y = PlayerRightTop.y = g_player.WorldPos.y - PLAYERSIZEHEIGHT / 2 + g_player.MovementY;
-	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + g_player.MovementY;
+	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + g_player.MovementY + 1;
 
 	MapchipNumberSpecify(&PlayerLeftTopMapNum, &PlayerLeftTop);
 	MapchipNumberSpecify(&PlayerRightTopMapNum, &PlayerRightTop);
@@ -149,18 +149,20 @@ void SetPlayerMovement() {
 	if (MapKindSpecify(&PlayerRightBottomMapNum) != NOTHING ||
 		MapKindSpecify(&PlayerLeftBottomMapNum) != NOTHING) {
 
-		g_player.Jumping = false;
-		g_player.JumpPower = 0.0f;
-		frcnt = 0;
+	
 
 		////ÇﬂÇËçûÇ›ÇÇ”ÇπÇÆ
 		//float footdiff = (PlayerRightBottomMapNum.NumY)*(TIPSIZE)-playerRightBottom.y;
 		//g_player.MovementY += footdiff;
-	}
 
-	if (MapKindSpecify_Plus1(&PlayerRightBottomMapNum, DOWN) == FLOOR ||
-		MapKindSpecify_Plus1(&PlayerLeftBottomMapNum, DOWN) == FLOOR)
-	{
+	//if (MapKindSpecify_Plus1(&PlayerRightBottomMapNum, DOWN) == FLOOR ||
+	//	MapKindSpecify_Plus1(&PlayerLeftBottomMapNum, DOWN) == FLOOR)
+	//{
+	
+		g_player.JumpPower = 0.0f;
+		g_player.Jumping = false;
+		frcnt = 0;
+
 		if (Key[KEY_C] == KEY_PUSH) {
 			g_player.JumpPower = PLAYERJUMPPOWER;
 			g_player.Jumping = true;
@@ -182,6 +184,10 @@ void SetPlayerMovement() {
 	g_player.MovementY += g_player.JumpPower;
 }
 
+//#include<Windows.h>
+//#include<tchar.h>
+//#include<stdio.h>
+
 void MovePlayer() {
 
 	g_player.WorldPos.x += g_player.MovementX;
@@ -194,6 +200,16 @@ void MovePlayer() {
 	else {
 		g_player.WindowPos.x += g_player.MovementX;
 	}
+
+	//#ifdef _DEBUG
+
+	//	TCHAR buff[256];
+	//	_stprintf_s(buff, 256, _T("%f\n"), g_player.MovementX);
+	//	OutputDebugString(buff);
+	//	TCHAR bufff[256];
+	//	_stprintf_s(bufff, 256, _T("%f\n"), g_BasePoint.x);
+	//	OutputDebugString(bufff);
+	//#endif
 
 	g_player.WorldPos.y += g_player.MovementY;
 	g_player.WindowPos.y += g_player.MovementY;
