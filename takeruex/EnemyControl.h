@@ -25,9 +25,11 @@ struct Enemy {
 	int Atk;
 	int Hp;
 	int bulletFreamCount;//弾を撃つフラグを立てるためのフレームを図っている
+	int firingInterval;//発射感覚
 	bool beDead;//死んでいるか
 	bool beActive;//活動中か
 	bool beLeft;//左（右）どうっち向いてるか
+
 
 };
 

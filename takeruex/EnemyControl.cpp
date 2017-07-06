@@ -14,6 +14,7 @@ struct EnemyMapNum {//CSV‚ÌÀ•W‚Æ”Ô†‚ğ“ü‚ê‚é” 
 	int NumX;
 	int NumY;
 	int Speed;
+	int firingInterval;
 	EnemyKind enemyKind;
 
 };
@@ -37,6 +38,7 @@ void EnemyInit() {
 		g_enemy[i].WorldPos.y = enemyMapNum[i].NumY*TIPSIZE;
 		g_enemy[i].enemyKind = enemyMapNum[i].enemyKind;
 		g_enemy[i].Speed = enemyMapNum[i].Speed;
+		g_enemy[i].firingInterval = enemyMapNum[i].firingInterval;
 		g_enemy[i].WindowPos.x = 0;
 		g_enemy[i].WindowPos.y = 0;
 		g_enemy[i].Atk = 2;//UŒ‚—Í
@@ -72,7 +74,7 @@ void EnemyControl() {
 				EnemyGravity(i);
 				EnemyPursuit(i);
 				g_enemy[i].bulletFreamCount++;
-				if (g_enemy[i].bulletFreamCount == 300) {//300ƒtƒŒ[ƒ€‚É1‰ñ“ü‚é‚Í‚¸
+				if (g_enemy[i].bulletFreamCount == g_enemy[i].firingInterval) {//ƒGƒlƒ~[–‚É‚Á‚Ä‚¢‚é‚Í”­ËŠ´Šo‚É‚È‚Á‚½‚ç“ü‚é
 					EnemyBulettCreate(i);
 					g_enemy[i].bulletFreamCount = 0;
 				}
@@ -83,37 +85,52 @@ void EnemyControl() {
 
 
 void EnemyPursuit(int enemyNum) {
-	Player* player = GetplayerData(); 
-	switch (g_enemy[enemyNum].enemyKind) {
+	Player* player = GetplayerData();
+	for (int i = 0; i < ENEMYNUMBER; i++) {
+		switch (g_enemy[enemyNum].enemyKind) {
 		case enemyKind01:
-		//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è¬‚³‚©‚Á‚½‚ç
-		if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
-			//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-			g_enemy[enemyNum].MovementX -= g_enemy[enemyNum].Speed;
-		}
-		//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è‘å‚«‚©‚Á‚½‚ç
-		else if (player->WindowPos.x > g_enemy[enemyNum].WindowPos.x) {
-			//-•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-			g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
-		}
-			
+			if (g_enemy[i].bulletFreamCount < g_enemy[i].firingInterval - 5) {//’e”­ËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–‚¾‚Á‚½‚ç’†‚É“ü‚é
+				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è¬‚³‚©‚Á‚½‚ç
+				if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
+					//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
+					g_enemy[enemyNum].MovementX -= g_enemy[enemyNum].Speed;
+				}
+				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è‘å‚«‚©‚Á‚½‚ç
+				else if (player->WindowPos.x > g_enemy[enemyNum].WindowPos.x) {
+					//-•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
+					g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
+				}
+			}
+			if (g_enemy[i].bulletFreamCount >= g_enemy[i].firingInterval - 5) {//”­ËƒtƒŒ[ƒ€‚Ì-5ƒtƒŒ[ƒ€ˆÈã‚ ‚ê‚Î’†‚É“ü‚é
+				g_enemy[enemyNum].MovementX = 0;
+				g_enemy[enemyNum].MovementY = 0;
+			}
+
+
 			break;
 		case enemyKind02:
-			//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W+200‚ÌˆÊ’u‚æ‚è‘å‚«‚©‚Á‚½‚ç
-			if (player->WindowPos.x + 200  < g_enemy[enemyNum].WindowPos.x) {
-				//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-				g_enemy[enemyNum].MovementX -= g_enemy[enemyNum].Speed;
+			if (g_enemy[i].bulletFreamCount < g_enemy[i].firingInterval - 5) {//’e”­ËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–‚¾‚Á‚½‚ç’†‚É“ü‚é
+				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W+200‚ÌˆÊ’u‚æ‚è‘å‚«‚©‚Á‚½‚ç
+				if (player->WindowPos.x + 200 < g_enemy[enemyNum].WindowPos.x) {
+					//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
+					g_enemy[enemyNum].MovementX -= g_enemy[enemyNum].Speed;
+				}
+				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W-200‚ÌˆÊ’u‚æ‚è¬‚³‚©‚Á‚½‚ç
+				else if (player->WindowPos.x - 200 > g_enemy[enemyNum].WindowPos.x) {
+					//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
+					g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
+				}
 			}
-			//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W-200‚ÌˆÊ’u‚æ‚è¬‚³‚©‚Á‚½‚ç
-			else if (player->WindowPos.x - 200> g_enemy[enemyNum].WindowPos.x) {
-				//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
-				g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
+			if (g_enemy[i].bulletFreamCount >= g_enemy[i].firingInterval - 5) {//”­ËƒtƒŒ[ƒ€‚Ì-5ƒtƒŒ[ƒ€ˆÈã‚ ‚ê‚Î’†‚É“ü‚é
+				g_enemy[enemyNum].MovementX = 0;
+				g_enemy[enemyNum].MovementY = 0;
 			}
 
 			break;
-	}
+		}
 
 	}
+}
 
 
 
@@ -147,7 +164,8 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
 				enemyMapNum[count].enemyKind = enemyKind01;
-				enemyMapNum[count].Speed = 5;
+				enemyMapNum[count].Speed = 2;
+				enemyMapNum[count].firingInterval = 200;
 				count++;
 				break;
 
@@ -155,7 +173,8 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
 				enemyMapNum[count].enemyKind = enemyKind02;
-				enemyMapNum[count].Speed = 7;
+				enemyMapNum[count].Speed = 3;
+				enemyMapNum[count].firingInterval = 250;
 				count++;
 				break;
 
@@ -172,18 +191,17 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 void EnemyGravity(int enemyNum) {//’nãÀ²Ìß‚ÌƒGƒlƒ~[‚Éd—Í‚ğ‚©‚¯‚é
 		switch (g_enemy[enemyNum].enemyKind) {
 		case enemyKind01:
-			g_enemy[enemyNum].WorldPos.y += GRAVITY;
+			g_enemy[enemyNum].MovementY += GRAVITY;
 			break;
 		
 		default:
 			break;
 
-
 		}
 	
 }
 
-void MoveEnemy(int enemyNum) {
+void MoveEnemy() {
 	for (int i = 0; i < ENEMYNUMBER; i++) {
 		if (g_enemy[i].beActive == true && g_enemy[i].beDead == false) {//ƒfƒXAƒAƒNƒeƒBƒuƒ`ƒFƒbƒN
 			//ŠeƒGƒlƒ~[‚ÌÀ•W‚É“®‚­’l‚ğ‘«‚·
