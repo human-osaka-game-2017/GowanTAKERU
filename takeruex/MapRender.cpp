@@ -20,9 +20,9 @@ void MapRender() {
 
 	CUSTOMVERTEX mapvertex[] = {
 		{ 0,0,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-		{ TIPSIZE,0,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
-		{ TIPSIZE,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-		{ 0,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
+		{ TIPSIZE,0,0.5f,1.0f,0xFFFFFFFF,0.125f,0.0f },
+		{ TIPSIZE,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,0.125f,0.125f },
+		{ 0,TIPSIZE,0.5f,1.0f,0xFFFFFFFF,0.0f,0.125f }
 	};
 
 	//basepointの初期位置
@@ -68,6 +68,9 @@ void MapRender() {
 						break;
 
 					case FLOOR:
+						for (int k = 0; k < 4; k++) {
+							drawMapVertex[k].tv += 0.125;
+						}
 						// テクスチャをステージに割り当てる
 						pD3Device->SetTexture(0, pTexture[MAP_TEX]);
 						// 描画

@@ -14,9 +14,9 @@ void PlayerRender() {
 
 		CUSTOMVERTEX Player[] = {
 			{ -PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-			{ PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.5f,0.0f },
-			{ PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.5f,0.5f },
-			{ -PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.5f }
+			{ PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDHE / 1024.0f,0.0f },
+			{ PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDHE / 1024.0f,PLAYERSIZEHEIGHT / 1024.0f },
+			{ -PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,PLAYERSIZEHEIGHT / 1024.0f }
 		};
 
 		static int frcntPunch = 0;
@@ -34,27 +34,31 @@ void PlayerRender() {
 			DrawVertex[i].x += player->WindowPos.x;
 			DrawVertex[i].y += player->WindowPos.y;
 			if (player->bePunchUP) {
-				if (frcntPunch < 12 && frcntPunch != 0) {
-					DrawVertex[i].tu += 0.5f;
-					DrawVertex[i].tv += 0.5f;
+
+				DrawVertex[i].tv += PLAYERSIZEHEIGHT * 4 / 1024.0f;
+
+				//if (frcntPunch < 12 && frcntPunch != 0) {
+				//	DrawVertex[i].tu += 0.5f;
+				//}
+				if (12 <= frcntPunch && frcntPunch < 24) {
+					DrawVertex[i].tu += PLAYERSIZEWIDHE / 1024.0f;
 				}
-				if (12 < frcntPunch&&frcntPunch < 24) {
-					DrawVertex[i].tv += 0.5f;
-				}
-				if (24 < frcntPunch && frcntPunch < 36) {
-					DrawVertex[i].tu += 0.5f;
+				if (24 <= frcntPunch && frcntPunch <= 36) {
+					DrawVertex[i].tu += PLAYERSIZEWIDHE * 2 / 1024.0f;
 				}
 			}
 			if (player->bePunchDOWN) {
-				if (frcntPunch < 12 && frcntPunch != 0) {
+
+				DrawVertex[i].tv += PLAYERSIZEHEIGHT * 3 / 1024.0f;
+
+				/*if (frcntPunch < 12 && frcntPunch != 0) {
 					DrawVertex[i].tu += 0.5f;
+				}*/
+				if (12 <= frcntPunch&&frcntPunch < 24) {
+					DrawVertex[i].tu += PLAYERSIZEWIDHE / 1024.0f;
 				}
-				if (12 < frcntPunch&&frcntPunch < 24) {
-					DrawVertex[i].tv += 0.5f;
-				}
-				if (24 < frcntPunch && frcntPunch < 36) {
-					DrawVertex[i].tu += 0.5f;
-					DrawVertex[i].tv += 0.5f;
+				if (24 <= frcntPunch && frcntPunch <= 36) {
+					DrawVertex[i].tu += PLAYERSIZEWIDHE * 2 / 1024.0f;
 				}
 			}
 		}

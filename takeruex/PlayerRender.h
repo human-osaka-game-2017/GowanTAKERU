@@ -1,8 +1,8 @@
 #ifndef PLAYERRENDER
 #define PLAYERRENDER
 
-#define PLAYERSIZEWIDHE 64
-#define PLAYERSIZEHEIGHT 128
+#define PLAYERSIZEWIDHE 90
+#define PLAYERSIZEHEIGHT 130
 
 void PlayerRender();
 
