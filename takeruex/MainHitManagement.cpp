@@ -7,11 +7,25 @@
 #include"EnemyControl.h"
 #include"EnemyRender.h"
 
+#include<Windows.h>
+#include<tchar.h>
+#include<stdio.h>
+
 void HitManage() {
 
 	Player* player = GetplayerData();
 	Bullet* bullet = GetBullet();
 	Enemy* enemy = GetenemyData();
+
+#ifdef _DEBUG
+
+	TCHAR buff[256];
+	_stprintf_s(buff, 256, _T("%f\n"), player->MovementX);
+	OutputDebugString(buff);
+	TCHAR bufff[256];
+	_stprintf_s(bufff, 256, _T("%f\n"), player->MovementY);
+	OutputDebugString(bufff);
+#endif
 
 	//プレイヤーとマップのあたり判定
 
@@ -41,14 +55,13 @@ void HitManage() {
 				else if (player->MovementY > 0) {
 					player->MovementY += ((tmpNum.NumY)* TIPSIZE) - tmpPos.y - 1;
 				}
-				if (tmpMovementX > 0) {
-					int a = 0;
+
+				if (player->MovementY != 0) {
+					player->MovementX *= player->MovementY / tmpMovementY;
+					tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDTH / 2)) + player->MovementX + j;
+					tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
+					MapchipNumberSpecify(&tmpNum, &tmpPos);
 				}
-				player->MovementX *= player->MovementY / tmpMovementY;
-				tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDTH / 2)) + player->MovementX + j;
-				tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
-				MapchipNumberSpecify(&tmpNum, &tmpPos);
-				
 			}
 
 			if (MapKindSpecify(&tmpNum) == FLOOR) {
@@ -58,10 +71,23 @@ void HitManage() {
 				else if (player->MovementX > 0) {
 					player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x - 1;
 				}
-				player->MovementY *= player->MovementX / tmpMovementX;
+
+				if (player->MovementY != 0) {
+					player->MovementX *= player->MovementY / tmpMovementY;
+				}
 			}
 		}
 	}
+
+#ifdef _DEBUG
+
+		//TCHAR buff[256];
+		_stprintf_s(buff, 256, _T("*%f*\n"), player->MovementX);
+		OutputDebugString(buff);
+		//TCHAR bufff[256];
+		_stprintf_s(bufff, 256, _T("*%f*\n"), player->MovementY);
+		OutputDebugString(bufff);
+#endif
 
 	static int frcntInvincible;
 
