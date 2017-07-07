@@ -1,17 +1,33 @@
 #include "SceneManagement.h"
+#include"StageSelect.h"
 #include"FileManagement.h"
 #include"MainRender.h"
 #include"MainControl.h"
 #include"MainSceneInit.h"
 
-void SceneManage() {
-	static int step = 0;
+void MainScene();
 
-	//if(メインシーン){
+void SceneManage() {
+	static SCENE_ID scene_ID;
+
+	switch (scene_ID) {
+	case MAINSCENE:
+		MainScene();
+		//if シーン切り替え条件
+		break;
+		
+	}
+
+
+}
+
+void MainScene() {
+	static int step = 0;
 	switch (step) {
 
 	case 0:
-		MainSceneLoad();
+		StageSelect();
+		MainSceneLoad(GetStage());
 		MainSceneInit();
 		step++;
 		break;
@@ -28,9 +44,4 @@ void SceneManage() {
 		//step=0;
 		//break;
 	}
-		//if(step==2){
-		//
-	//else
-
-
 }

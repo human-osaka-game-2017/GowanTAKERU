@@ -59,6 +59,12 @@
     <ClCompile Include="MoveManagement.cpp">
       <Filter>Application\MainScene\MainControl</Filter>
     </ClCompile>
+    <ClCompile Include="StageGimmick.cpp">
+      <Filter>Application\MainScene\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSelect.cpp">
+      <Filter>Application\MainScene\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -81,6 +87,9 @@
     </Filter>
     <Filter Include="Header">
       <UniqueIdentifier>{b7563eca-86d3-496e-9532-0a3a63766764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\MainScene\Stage">
+      <UniqueIdentifier>{4ebc9fa0-1de9-4d6b-a210-aceb6e572253}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +155,12 @@
     </ClInclude>
     <ClInclude Include="MoveManagement.h">
       <Filter>Application\MainScene\MainControl</Filter>
+    </ClInclude>
+    <ClInclude Include="StageGimmick.h">
+      <Filter>Application\MainScene\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSelect.h">
+      <Filter>Application\MainScene\Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

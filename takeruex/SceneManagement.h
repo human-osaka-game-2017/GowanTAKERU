@@ -3,8 +3,11 @@
 
 #include<d3dx9.h>
 
-struct SceneSelect {
-	bool MainScene;
+enum SCENE_ID {
+	MAINSCENE,
+	TITLESCENE,
+	/*GAMEOVER,
+	GAMECLEAR*/
 };
 
 //シーンを分けてくれる。描画コントロールも呼んでます。

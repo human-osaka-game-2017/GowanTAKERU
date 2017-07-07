@@ -56,20 +56,22 @@ void CSVLoad(char* mapdata, int* map,int height,int width) {
 
 }
 
-void MainSceneLoad() {
+void MainSceneLoad(STAGE_ID stage_ID) {
 
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/MapTip.png", &g_pTexture[MAP_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/background.png", &g_pTexture[BACKGROUND_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet01.png", &g_pTexture[BULLET01_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/Player.png", &g_pTexture[PLAYER_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy01.png", &g_pTexture[ENEMY01_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpF.png", &g_pTexture[HPUI_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpIn.png", &g_pTexture[HPUIIN_TEX]);
+	switch (stage_ID) {
+	case STAGE_1:
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/MapTip.png", &g_pTexture[MAP_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/background.png", &g_pTexture[BACKGROUND_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet01.png", &g_pTexture[BULLET01_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/Player.png", &g_pTexture[PLAYER_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy01.png", &g_pTexture[ENEMY01_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpF.png", &g_pTexture[HPUI_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpIn.png", &g_pTexture[HPUIIN_TEX]);
 
-
-	int* mapdata = GetMapchipData();
-	CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);
+		int* mapdata = GetMapchipData();
+		CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);
+	}
 }
