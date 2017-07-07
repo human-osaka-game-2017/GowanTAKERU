@@ -14,9 +14,6 @@ Enemy g_enemy[ENEMYNUMBER];
 struct EnemyMapNum {//CSV‚ÌÀ•W‚Æ”Ô†‚ğ“ü‚ê‚é” 
 	int NumX;
 	int NumY;
-	int Speed;
-	int firingInterval;
-	EnemyKind enemyKind;
 
 };
 
@@ -35,9 +32,6 @@ void EnemyInit() {
 	for (int i = 0; i < ENEMYNUMBER; i++) {
 		g_enemy[i].WorldPos.x = enemyMapNum[i].NumX*TIPSIZE;//ƒ[ƒ‹ƒhÀ•W
 		g_enemy[i].WorldPos.y = enemyMapNum[i].NumY*TIPSIZE;
-		g_enemy[i].enemyKind = enemyMapNum[i].enemyKind;
-		g_enemy[i].Speed = enemyMapNum[i].Speed;
-		g_enemy[i].firingInterval = enemyMapNum[i].firingInterval;
 		g_enemy[i].WindowPos.x = 0;
 		g_enemy[i].WindowPos.y = 0;
 		g_enemy[i].Atk = 2;//UŒ‚—Í
@@ -85,10 +79,9 @@ void EnemyControl() {
 
 void EnemyPursuit(int enemyNum) {
 	Player* player = GetplayerData();
-	for (int i = 0; i < ENEMYNUMBER; i++) {
 		switch (g_enemy[enemyNum].enemyKind) {
 		case enemyKind01:
-			if (g_enemy[i].bulletFreamCount < g_enemy[i].firingInterval - 5) {//’e”­ËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–‚¾‚Á‚½‚ç’†‚É“ü‚é
+			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//’e”­ËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–‚¾‚Á‚½‚ç’†‚É“ü‚é
 				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è¬‚³‚©‚Á‚½‚ç
 				if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
 					//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
@@ -100,7 +93,7 @@ void EnemyPursuit(int enemyNum) {
 					g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
 				}
 			}
-			if (g_enemy[i].bulletFreamCount >= g_enemy[i].firingInterval - 5) {//”­ËƒtƒŒ[ƒ€‚Ì-5ƒtƒŒ[ƒ€ˆÈã‚ ‚ê‚Î’†‚É“ü‚é
+			if (g_enemy[enemyNum].bulletFreamCount >= g_enemy[enemyNum].firingInterval - 5) {//”­ËƒtƒŒ[ƒ€‚Ì-5ƒtƒŒ[ƒ€ˆÈã‚ ‚ê‚Î’†‚É“ü‚é
 				g_enemy[enemyNum].MovementX = 0;
 				g_enemy[enemyNum].MovementY = 0;
 			}
@@ -108,7 +101,7 @@ void EnemyPursuit(int enemyNum) {
 
 			break;
 		case enemyKind02:
-			if (g_enemy[i].bulletFreamCount < g_enemy[i].firingInterval - 5) {//’e”­ËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–‚¾‚Á‚½‚ç’†‚É“ü‚é
+			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//’e”­ËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–‚¾‚Á‚½‚ç’†‚É“ü‚é
 				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W+200‚ÌˆÊ’u‚æ‚è‘å‚«‚©‚Á‚½‚ç
 				if (player->WindowPos.x + 200 < g_enemy[enemyNum].WindowPos.x) {
 					//+•ûŒü‚ÉƒGƒlƒ~[‚ğ“®‚©‚·
@@ -120,7 +113,7 @@ void EnemyPursuit(int enemyNum) {
 					g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
 				}
 			}
-			D3DXVECTOR2 tmpPos = g_enemy[i].WorldPos;
+			D3DXVECTOR2 tmpPos = g_enemy[enemyNum].WorldPos;
 			if (g_enemy[enemyNum].MovementX < 0) {
 				tmpPos.x += -ENEMYRESIZEWIDTH / 2;
 				if (MapKindSpecifyForPos(&tmpPos) != NOTHING)
@@ -135,7 +128,7 @@ void EnemyPursuit(int enemyNum) {
 					g_enemy[enemyNum].MovementX = 0;
 				}
 			}
-			if (g_enemy[i].bulletFreamCount >= g_enemy[i].firingInterval - 5) {//”­ËƒtƒŒ[ƒ€‚Ì-5ƒtƒŒ[ƒ€ˆÈã‚ ‚ê‚Î’†‚É“ü‚é
+			if (g_enemy[enemyNum].bulletFreamCount >= g_enemy[enemyNum].firingInterval - 5) {//”­ËƒtƒŒ[ƒ€‚Ì-5ƒtƒŒ[ƒ€ˆÈã‚ ‚ê‚Î’†‚É“ü‚é
 				g_enemy[enemyNum].MovementX = 0;
 				g_enemy[enemyNum].MovementY = 0;
 			}
@@ -143,7 +136,7 @@ void EnemyPursuit(int enemyNum) {
 			break;
 		}
 
-	}
+	
 }
 
 
@@ -177,18 +170,18 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 			case enemyKind01:
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
-				enemyMapNum[count].enemyKind = enemyKind01;
-				enemyMapNum[count].Speed = 1;
-				enemyMapNum[count].firingInterval = 200;
+				g_enemy[count].enemyKind = enemyKind01;
+				g_enemy[count].Speed = 1;
+				g_enemy[count].firingInterval = 200;
 				count++;
 				break;
 
 			case enemyKind02:
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
-				enemyMapNum[count].enemyKind = enemyKind02;
-				enemyMapNum[count].Speed = 2;
-				enemyMapNum[count].firingInterval = 250;
+				g_enemy[count].enemyKind = enemyKind02;
+				g_enemy[count].Speed = 2;
+				g_enemy[count].firingInterval = 250;
 				count++;
 				break;
 
