@@ -5,10 +5,10 @@
 
 #define BULLETNUMBER 30
 
-enum BulletKind{bullet01};
+enum BULLETKIND{BULLET01};
 
 struct Bullet {
-	BulletKind BulletKind;
+	BULLETKIND BulletKind;
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
 	D3DXVECTOR2 SaveCoordinate;
@@ -27,7 +27,7 @@ struct Bullet {
 
 Bullet* GetBullet();
 
-void BulletCreate(int bulletNum, int enemyNum, BulletKind bulletKind);
+void BulletCreate(int bulletNum, int enemyNum, BULLETKIND bulletKind);
 
 void BulletControl();
 

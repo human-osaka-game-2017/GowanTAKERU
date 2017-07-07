@@ -80,8 +80,8 @@ void EnemyControl() {
 void EnemyPursuit(int enemyNum) {
 	Player* player = GetplayerData();
 		switch (g_enemy[enemyNum].enemyKind) {
-		case Walkingenemy:
-		case Walkingenemy_Kye02:
+		case WALKINGENEMY:
+		case WALKINGENEMY_KYE02:
 			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//’e”­ŽËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–ž‚¾‚Á‚½‚ç’†‚É“ü‚é
 				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è¬‚³‚©‚Á‚½‚ç
 				if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
@@ -101,9 +101,9 @@ void EnemyPursuit(int enemyNum) {
 
 
 			break;
-		case Flyingenemy:
-		case Flyingenemy_Kye01:
-		case Flyingenemy_Kye02:
+		case FLYINGENEMY:
+		case FLYINGENEMY_KYE01:
+		case FLYINGENEMY_KYE02:
 			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//’e”­ŽËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–ž‚¾‚Á‚½‚ç’†‚É“ü‚é
 				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W+200‚ÌˆÊ’u‚æ‚è‘å‚«‚©‚Á‚½‚ç
 				if (player->WindowPos.x + 200 < g_enemy[enemyNum].WindowPos.x) {
@@ -149,7 +149,7 @@ void EnemyBulettCreate(int enemyNum) {
 	Bullet* bullt= GetBullet();
 
 		static int bulletRest = 0;//’e‚ÌŒ‚‚Á‚½”‚ð}‚é•Ï”
-		BulletCreate(bulletRest, enemyNum, bullet01);
+		BulletCreate(bulletRest, enemyNum, BULLET01);
 		bulletRest++;
 
 		if (bulletRest == BULLETNUMBER) {//’e‚Ì‘•“U”‚ª‚È‚­‚È‚Á‚½‚ç‰Šú‰»
@@ -170,30 +170,30 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚ÆŽí—Þ‚
 	for (int i = 0; i < MAPCHIPNUM_HEIGHT;i++) {
 		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
 			switch (enemyArrangement[j + i*MAPCHIPNUM_WIDTH]) {//‚à‚ç‚Á‚½“G‚Ìƒf[ƒ^‚ð“ü‚êž‚Þ
-			case Walkingenemy_Kye02:
-				g_enemy[count].enemyKind = Walkingenemy_Kye02;
-			case Walkingenemy:
+			case WALKINGENEMY_KYE02:
+				g_enemy[count].enemyKind = WALKINGENEMY_KYE02;
+			case WALKINGENEMY:
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
-				if (g_enemy[count].enemyKind != Walkingenemy_Kye02) {
-					g_enemy[count].enemyKind = Walkingenemy;
+				if (g_enemy[count].enemyKind != WALKINGENEMY_KYE02) {
+					g_enemy[count].enemyKind = WALKINGENEMY;
 				}
 				g_enemy[count].Speed = 1;
 				g_enemy[count].firingInterval = 200;
 				count++;
 				break;
 
-			case Flyingenemy_Kye01:
-				g_enemy[count].enemyKind = Flyingenemy_Kye01;
-			case Flyingenemy_Kye02:
-				if (g_enemy[count].enemyKind != Flyingenemy_Kye01){
-					g_enemy[count].enemyKind = Flyingenemy_Kye02;
+			case FLYINGENEMY_KYE01:
+				g_enemy[count].enemyKind = FLYINGENEMY_KYE01;
+			case FLYINGENEMY_KYE02:
+				if (g_enemy[count].enemyKind != FLYINGENEMY_KYE01){
+					g_enemy[count].enemyKind = FLYINGENEMY_KYE02;
 				}
-			case Flyingenemy:
+			case FLYINGENEMY:
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
-				if (g_enemy[count].enemyKind != Flyingenemy_Kye01|| g_enemy[count].enemyKind != Flyingenemy_Kye02) {
-					g_enemy[count].enemyKind = Flyingenemy;
+				if (g_enemy[count].enemyKind != FLYINGENEMY_KYE01|| g_enemy[count].enemyKind != FLYINGENEMY_KYE02) {
+					g_enemy[count].enemyKind = FLYINGENEMY;
 				}
 				g_enemy[count].Speed = 2;
 				g_enemy[count].firingInterval = 250;

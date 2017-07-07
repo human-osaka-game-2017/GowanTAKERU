@@ -18,7 +18,7 @@ void BulletInit() {
 	for (int i = 0; i < BULLETNUMBER; i++) {
 
 		g_bullet[i].beActive = false;
-		g_bullet[i].BulletKind = bullet01;
+		g_bullet[i].BulletKind = BULLET01;
 		g_bullet[i].Atk = 10;
 		g_bullet[i].Size = 0;
 		g_bullet[i].Rad = 0;
@@ -38,7 +38,7 @@ void BulletInit() {
 	}
 }
 
-void BulletCreate(int bulletNum,int enemyNum, BulletKind bulletKind) {
+void BulletCreate(int bulletNum,int enemyNum, BULLETKIND bulletKind) {
 
 	Enemy* enemy = GetenemyData();
 	Player* player = GetplayerData();
@@ -49,7 +49,7 @@ void BulletCreate(int bulletNum,int enemyNum, BulletKind bulletKind) {
 
 	switch (bulletKind) {
 
-	case bullet01:
+	case BULLET01:
 		g_bullet[bulletNum].Speed = 6.0f;
 		g_bullet[bulletNum].Size = 30;
 		g_bullet[bulletNum].ReflectMax = 3;

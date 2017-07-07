@@ -6,7 +6,7 @@
 
 
 
-enum EnemyKind {Flyingenemy = 5 ,Flyingenemy_Kye01=6,Flyingenemy_Kye02=7, Walkingenemy=9, Walkingenemy_Kye02=8};
+enum ENEMYKIND {FLYINGENEMY = 5 ,FLYINGENEMY_KYE01=6,FLYINGENEMY_KYE02=7, WALKINGENEMY=9, WALKINGENEMY_KYE02=8};
 /*エネミーの種類
 空中型
 Flyingenemy  ノーマル空中型
@@ -22,7 +22,7 @@ Walkingenemy_Kye02 キー2番持ちの地上型
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
-	EnemyKind enemyKind;//エネミーの種類
+	ENEMYKIND enemyKind;//エネミーの種類
 	float Speed;
 	float MovementX;//エネミーの1フレーム当たりの移動量
 	float MovementY;
