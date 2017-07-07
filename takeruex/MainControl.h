@@ -1,9 +1,8 @@
 #ifndef MAINCONTROL_H
 #define MAINCONTROL_H
 
-#define GRAVITY 0.2f
-
 #include<d3dx9.h>
+#define GRAVITY 0.2f
 
 void MainControl();
 

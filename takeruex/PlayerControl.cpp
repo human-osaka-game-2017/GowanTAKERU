@@ -32,7 +32,7 @@ void PlayerInit() {
 
 				MapNumXY playerstartMapNum = { j,i };
 				PosSpecifyForMapchipNumber(&g_player.WorldPos, &playerstartMapNum);
-				MapNumXY mapnum = { j,i-3 };
+				MapNumXY mapnum = { j,i-5 };
 				PosSpecifyForMapchipNumber(&g_BasePoint, &mapnum);
 			}
 		}

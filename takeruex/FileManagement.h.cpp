@@ -71,5 +71,5 @@ void MainSceneLoad() {
 
 
 	int* mapdata = GetMapchipData();
-	CSVLoad("CSV/mainscene/map.csv", mapdata, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);
+	CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);
 }

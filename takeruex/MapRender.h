@@ -8,7 +8,7 @@
 //------------------------------------------------------------------
 
 //マップチップ全体の個数です
-#define MAPCHIPNUM_HEIGHT 27
+#define MAPCHIPNUM_HEIGHT 30
 #define MAPCHIPNUM_WIDTH 350
 
 //描画するマップチップの個数です

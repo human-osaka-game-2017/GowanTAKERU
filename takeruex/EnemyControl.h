@@ -1,9 +1,8 @@
 #ifndef ENEMYCONTROL_H
 #define ENEMYCONTROL_H
 #include<d3dx9.h> 
-#define MOVE_SUPEED 3.0f//エネミーのスピード
 #define ENEMYNUMBER 3//エネミーの数
-#define GRAVITY 1//エネミーにかかる重力
+//#define GRAVITY 1//エネミーにかかる重力
 
 
 

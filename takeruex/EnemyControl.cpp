@@ -1,4 +1,5 @@
 #include"EnemyControl.h"
+#include"EnemyRender.h"
 #include"MapRender.h"
 #include"MapControl.h"
 #include"CommonRender.h"
@@ -19,8 +20,6 @@ struct EnemyMapNum {//CSV‚ÌÀ•W‚Æ”Ô†‚ğ“ü‚ê‚é” 
 
 };
 
-
-
 Enemy* GetenemyData() {
 		return g_enemy;
 	}
@@ -28,7 +27,7 @@ Enemy* GetenemyData() {
 void EnemyBulettCreate(int enemyNum);
 void EnemyPursuit(int enemyNum);
 void EnemyArrangement(EnemyMapNum enemyMapNum[]);
-void EnemyGravity(int enemyNum);
+//void EnemyGravity(int enemyNum);
 
 void EnemyInit() {
 	EnemyMapNum enemyMapNum[ENEMYNUMBER];
@@ -71,7 +70,7 @@ void EnemyControl() {
 				g_enemy[i].WindowPos.x = DISPLAY_WIDTH / 2 + EnemyWorldDistanceX;
 				//ƒGƒlƒ~[‚Ìwindow,YÀ•W‚ğ’²‚×‚é
 				g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
-				EnemyGravity(i);
+				//EnemyGravity(i);
 				EnemyPursuit(i);
 				g_enemy[i].bulletFreamCount++;
 				if (g_enemy[i].bulletFreamCount == g_enemy[i].firingInterval) {//ƒGƒlƒ~[–‚É‚Á‚Ä‚¢‚é‚Í”­ËŠ´Šo‚É‚È‚Á‚½‚ç“ü‚é
@@ -121,6 +120,21 @@ void EnemyPursuit(int enemyNum) {
 					g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
 				}
 			}
+			D3DXVECTOR2 tmpPos = g_enemy[i].WorldPos;
+			if (g_enemy[enemyNum].MovementX < 0) {
+				tmpPos.x += -ENEMYRESIZEWIDTH / 2;
+				if (MapKindSpecifyForPos(&tmpPos) != NOTHING)
+				{
+					g_enemy[enemyNum].MovementX = 0;
+				}
+			}
+			if (g_enemy[enemyNum].MovementX > 0) {
+				tmpPos.x += ENEMYRESIZEWIDTH / 2;
+				if (MapKindSpecifyForPos(&tmpPos) != NOTHING)
+				{
+					g_enemy[enemyNum].MovementX = 0;
+				}
+			}
 			if (g_enemy[i].bulletFreamCount >= g_enemy[i].firingInterval - 5) {//”­ËƒtƒŒ[ƒ€‚Ì-5ƒtƒŒ[ƒ€ˆÈã‚ ‚ê‚Î’†‚É“ü‚é
 				g_enemy[enemyNum].MovementX = 0;
 				g_enemy[enemyNum].MovementY = 0;
@@ -153,7 +167,7 @@ void EnemyBulettCreate(int enemyNum) {
 void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚ğ‚à‚ç‚¤
 
 	int enemyArrangement[MAPCHIPNUM_HEIGHT*MAPCHIPNUM_WIDTH];
-	CSVLoad("CSV/mainscene/enemyArrangement.csv", enemyArrangement, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);//CSVŒÄ‚Ño‚µ
+	CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyArrangement, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);//CSVŒÄ‚Ño‚µ
 
 	int count = 0;
 
@@ -164,7 +178,7 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
 				enemyMapNum[count].enemyKind = enemyKind01;
-				enemyMapNum[count].Speed = 2;
+				enemyMapNum[count].Speed = 1;
 				enemyMapNum[count].firingInterval = 200;
 				count++;
 				break;
@@ -173,7 +187,7 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
 				enemyMapNum[count].enemyKind = enemyKind02;
-				enemyMapNum[count].Speed = 3;
+				enemyMapNum[count].Speed = 2;
 				enemyMapNum[count].firingInterval = 250;
 				count++;
 				break;
@@ -188,18 +202,18 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 
 }
 
-void EnemyGravity(int enemyNum) {//’nãÀ²Ìß‚ÌƒGƒlƒ~[‚Éd—Í‚ğ‚©‚¯‚é
-		switch (g_enemy[enemyNum].enemyKind) {
-		case enemyKind01:
-			g_enemy[enemyNum].MovementY += GRAVITY;
-			break;
-		
-		default:
-			break;
-
-		}
-	
-}
+//void EnemyGravity(int enemyNum) {//’nãÀ²Ìß‚ÌƒGƒlƒ~[‚Éd—Í‚ğ‚©‚¯‚é
+//		switch (g_enemy[enemyNum].enemyKind) {
+//		case enemyKind01:
+//			g_enemy[enemyNum].MovementY += GRAVITY;
+//			break;
+//		
+//		default:
+//			break;
+//
+//		}
+//	
+//}
 
 void MoveEnemy() {
 	for (int i = 0; i < ENEMYNUMBER; i++) {

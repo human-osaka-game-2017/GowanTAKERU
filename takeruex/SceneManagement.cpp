@@ -7,7 +7,6 @@
 void SceneManage() {
 	static int step = 0;
 
-	//画像選択
 	//if(メインシーン){
 	switch (step) {
 

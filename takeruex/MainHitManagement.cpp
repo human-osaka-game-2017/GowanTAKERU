@@ -65,7 +65,7 @@ void HitManage() {
 			if(bullet[i].beActive){
 				if (enemy[j].beActive == true && enemy[j].beDead == false) {
 					if (bullet[i].wasReflect) {
-						if (SquareHit(&bullet[i].WindowPos, bullet->Size, bullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
+						if (SquareHit(&bullet[i].WindowPos, bullet->Size, bullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
 
 							DeactivateBullet(i);
 							enemy[j].Hp -= bullet[i].Atk;
@@ -97,7 +97,7 @@ void HitManage() {
 		//エネミーとプレイヤーの直接のあたり判定
 		for (int i = 0; i < ENEMYNUMBER; i++) {
 			if(enemy[i].beActive && !enemy[i].beDead){
-				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDHE, ENEMYRESIZEHEIGHT)) {
+				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
 					if (!player->beInvincible) {
 						player->Hp -= enemy[i].Atk;
 						player->beInvincible = true;
