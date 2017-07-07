@@ -26,9 +26,9 @@ void PlayerInit() {
 
 	int* map = GetMapchipData();
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
-	for (int i = 0; i < MAPCHIPNUM_HEIGHT; i++){
-		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
-			if (*(map + (i*MAPCHIPNUM_WIDTH + j)) == START) {
+	for (int i = 0; i < STAGE1MAPCHIPNUM_HEIGHT; i++){
+		for (int j = 0; j < STAGE1MAPCHIPNUM_WIDTH; j++) {
+			if (*(map + (i*STAGE1MAPCHIPNUM_WIDTH + j)) == START) {
 
 				MapNumXY playerstartMapNum = { j,i };
 				PosSpecifyForMapchipNumber(&g_player.WorldPos, &playerstartMapNum);

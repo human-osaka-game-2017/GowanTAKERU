@@ -162,14 +162,14 @@ void EnemyBulettCreate(int enemyNum) {
 
 void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSVからエネミーの座標と種類をもらう
 
-	int enemyArrangement[MAPCHIPNUM_HEIGHT*MAPCHIPNUM_WIDTH];
-	CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyArrangement, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);//CSV呼び出し
+	int enemyArrangement[STAGE1MAPCHIPNUM_HEIGHT*STAGE1MAPCHIPNUM_WIDTH];
+	CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyArrangement, STAGE1MAPCHIPNUM_HEIGHT, STAGE1MAPCHIPNUM_WIDTH);//CSV呼び出し
 
 	int count = 0;
 
-	for (int i = 0; i < MAPCHIPNUM_HEIGHT;i++) {
-		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
-			switch (enemyArrangement[j + i*MAPCHIPNUM_WIDTH]) {//もらった敵のデータを入れ込む
+	for (int i = 0; i < STAGE1MAPCHIPNUM_HEIGHT;i++) {
+		for (int j = 0; j < STAGE1MAPCHIPNUM_WIDTH; j++) {
+			switch (enemyArrangement[j + i*STAGE1MAPCHIPNUM_WIDTH]) {//もらった敵のデータを入れ込む
 			case WALKINGENEMY_KYE02:
 				g_enemy[count].enemyKind = WALKINGENEMY_KYE02;
 			case WALKINGENEMY:

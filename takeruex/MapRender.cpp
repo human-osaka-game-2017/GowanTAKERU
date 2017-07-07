@@ -5,7 +5,7 @@
 #include"MapControl.h"
 #include"PlayerControl.h"
 
-static int g_map[MAPCHIPNUM_HEIGHT*MAPCHIPNUM_WIDTH];
+static int g_map[STAGE1MAPCHIPNUM_HEIGHT*STAGE1MAPCHIPNUM_WIDTH];
 
 int* GetMapchipData() {
 	return g_map;
@@ -39,16 +39,16 @@ void MapRender() {
 
 	MapchipNumberSpecify(&RendArrayIndex, BasePoint);
 
-	RendArrayIndexLeftUp.NumX = RendArrayIndex.NumX - RENDERMAPCHIPNUM_WIDTH / 2;
-	RendArrayIndexLeftUp.NumY = RendArrayIndex.NumY - RENDERMAPCHIPNUM_HEIGHT / 2;
-	RendArrayIndexRightDown.NumX = RendArrayIndex.NumX + RENDERMAPCHIPNUM_WIDTH / 2;
-	RendArrayIndexRightDown.NumY = RendArrayIndex.NumY + RENDERMAPCHIPNUM_HEIGHT / 2;
+	RendArrayIndexLeftUp.NumX = RendArrayIndex.NumX - RENDERSTAGE1MAPCHIPNUM_WIDTH / 2;
+	RendArrayIndexLeftUp.NumY = RendArrayIndex.NumY - RENDERSTAGE1MAPCHIPNUM_HEIGHT / 2;
+	RendArrayIndexRightDown.NumX = RendArrayIndex.NumX + RENDERSTAGE1MAPCHIPNUM_WIDTH / 2;
+	RendArrayIndexRightDown.NumY = RendArrayIndex.NumY + RENDERSTAGE1MAPCHIPNUM_HEIGHT / 2;
 
 	//描画用vertex
 	CUSTOMVERTEX drawMapVertex[4];
 
-	for (int i = 0; i < MAPCHIPNUM_HEIGHT; i++) {
-		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
+	for (int i = 0; i < STAGE1MAPCHIPNUM_HEIGHT; i++) {
+		for (int j = 0; j < STAGE1MAPCHIPNUM_WIDTH; j++) {
 
 			//そのマップチップを描画するのかを判定
 			if     (RendArrayIndexLeftUp.NumY < i && i < RendArrayIndexRightDown.NumY ) {
@@ -62,7 +62,7 @@ void MapRender() {
 					}
 
 
-					switch (g_map[j + i*MAPCHIPNUM_WIDTH]) {
+					switch (g_map[j + i*STAGE1MAPCHIPNUM_WIDTH]) {
 
 					case NOTHING:
 						break;

@@ -49,7 +49,7 @@ void CSVLoad(char* mapdata, int* map,int height,int width) {
 		for (int j = 0; j < width; j++)
 		{
 			//ƒ|ƒCƒ“ƒ^‚¸‚ç‚µ‚Ä‚Ü‚·
-			fscanf_s(pFile, "%d,", map + (j + i*MAPCHIPNUM_WIDTH));
+			fscanf_s(pFile, "%d,", map + (j + i*STAGE1MAPCHIPNUM_WIDTH));
 		}
 	}
 	fclose(pFile);
@@ -72,6 +72,6 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpIn.png", &g_pTexture[HPUIIN_TEX]);
 
 		int* mapdata = GetMapchipData();
-		CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, MAPCHIPNUM_HEIGHT, MAPCHIPNUM_WIDTH);
+		CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, STAGE1MAPCHIPNUM_HEIGHT, STAGE1MAPCHIPNUM_WIDTH);
 	}
 }
