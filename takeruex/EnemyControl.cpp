@@ -80,7 +80,8 @@ void EnemyControl() {
 void EnemyPursuit(int enemyNum) {
 	Player* player = GetplayerData();
 		switch (g_enemy[enemyNum].enemyKind) {
-		case enemyKind01:
+		case Walkingenemy:
+		case Walkingenemy_Kye02:
 			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//’e”­ŽËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–ž‚¾‚Á‚½‚ç’†‚É“ü‚é
 				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è¬‚³‚©‚Á‚½‚ç
 				if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
@@ -100,7 +101,9 @@ void EnemyPursuit(int enemyNum) {
 
 
 			break;
-		case enemyKind02:
+		case Flyingenemy:
+		case Flyingenemy_Kye01:
+		case Flyingenemy_Kye02:
 			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//’e”­ŽËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–ž‚¾‚Á‚½‚ç’†‚É“ü‚é
 				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W+200‚ÌˆÊ’u‚æ‚è‘å‚«‚©‚Á‚½‚ç
 				if (player->WindowPos.x + 200 < g_enemy[enemyNum].WindowPos.x) {
@@ -166,20 +169,32 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚ÆŽí—Þ‚
 
 	for (int i = 0; i < MAPCHIPNUM_HEIGHT;i++) {
 		for (int j = 0; j < MAPCHIPNUM_WIDTH; j++) {
-			switch (enemyArrangement[j+i*MAPCHIPNUM_WIDTH]) {//‚à‚ç‚Á‚½“G‚Ìƒf[ƒ^‚ð“ü‚êž‚Þ
-			case enemyKind01:
+			switch (enemyArrangement[j + i*MAPCHIPNUM_WIDTH]) {//‚à‚ç‚Á‚½“G‚Ìƒf[ƒ^‚ð“ü‚êž‚Þ
+			case Walkingenemy_Kye02:
+				g_enemy[count].enemyKind = Walkingenemy_Kye02;
+			case Walkingenemy:
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
-				g_enemy[count].enemyKind = enemyKind01;
+				if (g_enemy[count].enemyKind != Walkingenemy_Kye02) {
+					g_enemy[count].enemyKind = Walkingenemy;
+				}
 				g_enemy[count].Speed = 1;
 				g_enemy[count].firingInterval = 200;
 				count++;
 				break;
 
-			case enemyKind02:
+			case Flyingenemy_Kye01:
+				g_enemy[count].enemyKind = Flyingenemy_Kye01;
+			case Flyingenemy_Kye02:
+				if (g_enemy[count].enemyKind != Flyingenemy_Kye01){
+					g_enemy[count].enemyKind = Flyingenemy_Kye02;
+				}
+			case Flyingenemy:
 				enemyMapNum[count].NumX = j;
 				enemyMapNum[count].NumY = i;
-				g_enemy[count].enemyKind = enemyKind02;
+				if (g_enemy[count].enemyKind != Flyingenemy_Kye01|| g_enemy[count].enemyKind != Flyingenemy_Kye02) {
+					g_enemy[count].enemyKind = Flyingenemy;
+				}
 				g_enemy[count].Speed = 2;
 				g_enemy[count].firingInterval = 250;
 				count++;

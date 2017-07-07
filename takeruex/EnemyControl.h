@@ -1,18 +1,23 @@
 #ifndef ENEMYCONTROL_H
 #define ENEMYCONTROL_H
 #include<d3dx9.h> 
-#define ENEMYNUMBER 3//エネミーの数
+#define ENEMYNUMBER 10//エネミーの数
 //#define GRAVITY 1//エネミーにかかる重力
 
 
 
-enum EnemyKind { enemyKind01 = 1,enemyKind02 = 2 ,enemyKind03 = 3 };
-
-
-/*敵の種類
-kind01＝通常地上MOB
-kind02=通常空中MOB
+enum EnemyKind {Flyingenemy = 5 ,Flyingenemy_Kye01=6,Flyingenemy_Kye02=7, Walkingenemy=9, Walkingenemy_Kye02=8};
+/*エネミーの種類
+空中型
+Flyingenemy  ノーマル空中型
+Flyingenemy_Kye01 キー１番持ちの空中型
+Flyingenemy_Kye02 キー2番持ちの空中型
+地上型
+Walkingenemy ノーマル地上型
+Walkingenemy_Kye02 キー2番持ちの地上型
 */
+
+
 
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;
