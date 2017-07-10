@@ -51,7 +51,7 @@ void BulletCreate(int bulletNum,int enemyNum, BULLETKIND bulletKind) {
 
 	case BULLET01:
 		g_bullet[bulletNum].Speed = 6.0f;
-		g_bullet[bulletNum].Size = 30;
+		g_bullet[bulletNum].Size = 22;
 		g_bullet[bulletNum].ReflectMax = 3;
 		g_bullet[bulletNum].SaveCoordinate = player->WindowPos;
 

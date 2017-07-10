@@ -17,9 +17,9 @@ void BulletRender() {
 
 			CUSTOMVERTEX Bullet[] = {
 				{-(bullet + i)->Size / 2,-(bullet + i)->Size / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
-				{ (bullet + i)->Size / 2,-(bullet + i)->Size / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
-				{ (bullet + i)->Size / 2, (bullet + i)->Size / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
-				{-(bullet + i)->Size / 2, (bullet + i)->Size / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f }
+				{ (bullet + i)->Size / 2,-(bullet + i)->Size / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
+				{ (bullet + i)->Size / 2, (bullet + i)->Size / 2,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
+				{-(bullet + i)->Size / 2, (bullet + i)->Size / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 			};
 
 			CUSTOMVERTEX DrawVertex[4];
@@ -29,11 +29,18 @@ void BulletRender() {
 				DrawVertex[j].y += bullet[i].WindowPos.y;
 			}
 
-			// テクスチャをステージに割り当てる
-			pD3Device->SetTexture(0, pTexture[BULLET01_TEX]);
-			// 描画
-			pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, DrawVertex, sizeof(CUSTOMVERTEX));
-
+			if (bullet[i].wasReflect) {
+				// テクスチャをステージに割り当てる
+				pD3Device->SetTexture(0, pTexture[BULLET01_TEX]);
+				// 描画
+				pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, DrawVertex, sizeof(CUSTOMVERTEX));
+			}
+			else {
+				// テクスチャをステージに割り当てる
+				pD3Device->SetTexture(0, pTexture[BULLET02_TEX]);
+				// 描画
+				pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, DrawVertex, sizeof(CUSTOMVERTEX));
+			}
 		}
 	}
 }

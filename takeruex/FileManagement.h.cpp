@@ -7,7 +7,7 @@
 
 #define StageNum 5
 
-static LPDIRECT3DTEXTURE9 g_pTexture[TEXMAX];
+static LPDIRECT3DTEXTURE9 g_pTexture[TEXMAX] = { NULL };
 int* g_mapData = NULL;
 STAGEXYMAX g_MapNumMax[StageNum * 2];
 
@@ -72,12 +72,13 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 	case STAGE_1:
 		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/MapTip.png", &g_pTexture[MAP_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/background.png", &g_pTexture[BACKGROUND_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet01.png", &g_pTexture[BULLET01_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/Player.png", &g_pTexture[PLAYER_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy01.png", &g_pTexture[ENEMY01_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet0.png", &g_pTexture[BULLET01_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet1.png", &g_pTexture[BULLET02_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/player.png", &g_pTexture[PLAYER_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy1.png", &g_pTexture[ENEMY01_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpF.png", &g_pTexture[HPUI_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpIn.png", &g_pTexture[HPUIIN_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/hp0.png", &g_pTexture[HPUI_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/hp1.png", &g_pTexture[HPUIIN_TEX]);
 		
 		int MaxX = GetStageXYMAX(stage_ID, X);
 		int MaxY = GetStageXYMAX(stage_ID, Y);
