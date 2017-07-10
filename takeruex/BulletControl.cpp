@@ -92,12 +92,14 @@ void BulletControl() {
 }
 
 void MoveBullet() {
+	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+	D3DXVECTOR2* basePoint = GetBasePoint();
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		if (g_bullet[i].beActive) {
-			g_bullet[i].WindowPos.x += g_bullet[i].MovementX;
-			g_bullet[i].WindowPos.y += g_bullet[i].MovementY;
 			g_bullet[i].WorldPos.x += g_bullet[i].MovementX;
 			g_bullet[i].WorldPos.y += g_bullet[i].MovementY;
+			g_bullet[i].WindowPos.x = g_bullet[i].WorldPos.x - (basePoint->x - BasePoint0.x);
+			g_bullet[i].WindowPos.y = g_bullet[i].WorldPos.y - (basePoint->y - BasePoint0.y);;
 			g_bullet[i].MovementX = g_bullet[i].MovementY = 0;
 		}
 	}

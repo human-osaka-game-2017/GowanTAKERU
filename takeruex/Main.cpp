@@ -58,6 +58,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	DXGraphicsInit(hWnd, true);				//‰Šú‰»ˆ—
 	TextureInit();
 	DXInputKeybourdInit(hWnd, hInstance);
+	StageMapNumMaxInit();
+
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));

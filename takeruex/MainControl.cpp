@@ -11,7 +11,6 @@ void MainControl() {
 	PlayerControl();
 	EnemyControl();
 	BulletControl();
-	MapComtrol();
 	HitManage();
 	MoveManage();
 }

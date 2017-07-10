@@ -5,7 +5,15 @@
 #include<stdio.h>
 #include"MapRender.h"
 
+#define StageNum 5
+
 static LPDIRECT3DTEXTURE9 g_pTexture[TEXMAX];
+int* g_mapData = NULL;
+STAGEXYMAX g_MapNumMax[StageNum * 2];
+
+int* GetMapData() {
+	return g_mapData;
+}
 
 LPDIRECT3DTEXTURE9* GetTexture() {
 	return g_pTexture;
@@ -49,7 +57,7 @@ void CSVLoad(char* mapdata, int* map,int height,int width) {
 		for (int j = 0; j < width; j++)
 		{
 			//ƒ|ƒCƒ“ƒ^‚¸‚ç‚µ‚Ä‚Ü‚·
-			fscanf_s(pFile, "%d,", map + (j + i*STAGE1MAPCHIPNUM_WIDTH));
+			fscanf_s(pFile, "%d,", map + (j + i*width));
 		}
 	}
 	fclose(pFile);
@@ -70,8 +78,58 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpF.png", &g_pTexture[HPUI_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/HpIn.png", &g_pTexture[HPUIIN_TEX]);
+		
+		int MaxX = GetStageXYMAX(stage_ID, X);
+		int MaxY = GetStageXYMAX(stage_ID, Y);
 
-		int* mapdata = GetMapchipData();
-		CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, STAGE1MAPCHIPNUM_HEIGHT, STAGE1MAPCHIPNUM_WIDTH);
+		g_mapData = (int*)malloc(sizeof(int)*MaxX*MaxY);
+		CSVLoad("CSV/mainscene/stage1_map.csv", g_mapData, MaxY, MaxX);
+	}
+}
+
+void ReleseMapData() {
+	free(g_mapData);
+	g_mapData = NULL;
+}
+
+void StageMapNumMaxInit() {
+	FILE* pFile;
+
+	fopen_s(&pFile, "CSV/mainscene/stage_num.csv", "r");
+
+	for (int i = 0; i < StageNum * 2; i++) {
+
+		fscanf_s(pFile, "%d,", &g_MapNumMax[i]);
+	}
+
+	fclose(pFile);
+}
+
+STAGEXYMAX GetStageXYMAX(STAGE_ID stage_ID, X_OR_Y XOrY) {
+	switch (stage_ID) {
+
+	case STAGE_1:
+		if (XOrY == X) {
+			return g_MapNumMax[0];
+		}
+		else {
+			return g_MapNumMax[1];
+		}
+
+	case STAGE_2:
+		if (XOrY == X) {
+			return g_MapNumMax[2];
+		}
+		else {
+			return g_MapNumMax[3];
+		}
+
+	case STAGE_3:
+		if (XOrY == X) {
+			return g_MapNumMax[4];
+		}
+		else {
+			return g_MapNumMax[5];
+		}
 	}
 }

@@ -5,12 +5,6 @@
 #include"MapControl.h"
 #include"PlayerControl.h"
 
-static int g_map[STAGE1MAPCHIPNUM_HEIGHT*STAGE1MAPCHIPNUM_WIDTH];
-
-int* GetMapchipData() {
-	return g_map;
-}
-
 void MapRender() {
 
 	D3DXVECTOR2* BasePoint = GetBasePoint();
@@ -47,8 +41,13 @@ void MapRender() {
 	//描画用vertex
 	CUSTOMVERTEX drawMapVertex[4];
 
-	for (int i = 0; i < STAGE1MAPCHIPNUM_HEIGHT; i++) {
-		for (int j = 0; j < STAGE1MAPCHIPNUM_WIDTH; j++) {
+	STAGE_ID stage_ID = GetStage_ID();
+	int MaxX = GetStageXYMAX(stage_ID, X);
+	int MaxY = GetStageXYMAX(stage_ID, Y);
+	int* map = GetMapData();
+
+	for (int i = 0; i < MaxY; i++) {
+		for (int j = 0; j < MaxX; j++) {
 
 			//そのマップチップを描画するのかを判定
 			if     (RendArrayIndexLeftUp.NumY < i && i < RendArrayIndexRightDown.NumY ) {
@@ -62,7 +61,7 @@ void MapRender() {
 					}
 
 
-					switch (g_map[j + i*STAGE1MAPCHIPNUM_WIDTH]) {
+					switch (map[j + i*MaxX]) {
 
 					case NOTHING:
 						break;

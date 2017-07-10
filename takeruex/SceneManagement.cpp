@@ -27,7 +27,7 @@ void MainScene() {
 
 	case 0:
 		StageSelect();
-		MainSceneLoad(GetStage());
+		MainSceneLoad(GetStage_ID());
 		MainSceneInit();
 		step++;
 		break;
@@ -40,6 +40,7 @@ void MainScene() {
 		break;
 
 	case 2:
+		ReleseMapData();
 		TextureFree();
 		//step=0;
 		//break;

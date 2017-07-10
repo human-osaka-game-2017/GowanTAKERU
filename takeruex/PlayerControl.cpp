@@ -7,6 +7,7 @@
 #include"PlayerRender.h"
 #include"BulletControl.h"
 #include"MainHitManagement.h"
+#include"FileManagement.h"
 
 void SetPlayerMovement();
 void PlayerReflectMotion();
@@ -24,11 +25,15 @@ Player* GetplayerData() {
 
 void PlayerInit() {
 
-	int* map = GetMapchipData();
+	STAGE_ID stage_ID = GetStage_ID();
+	int MaxX = GetStageXYMAX(stage_ID, X);
+	int MaxY = GetStageXYMAX(stage_ID, Y);
+	int* map = GetMapData();
+
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
-	for (int i = 0; i < STAGE1MAPCHIPNUM_HEIGHT; i++){
-		for (int j = 0; j < STAGE1MAPCHIPNUM_WIDTH; j++) {
-			if (*(map + (i*STAGE1MAPCHIPNUM_WIDTH + j)) == START) {
+	for (int i = 0; i < MaxY; i++){
+		for (int j = 0; j < MaxX; j++) {
+			if (*(map + (i*MaxX + j)) == START) {
 
 				MapNumXY playerstartMapNum = { j,i };
 				PosSpecifyForMapchipNumber(&g_player.WorldPos, &playerstartMapNum);
@@ -65,7 +70,7 @@ void PlayerControl() {
 void SetPlayerMovement() {
 
 	KEYSTATE* Key = GetKey();
-	int* map = GetMapchipData();
+	int* map = GetMapData();
 
 	//í‚Éd—Í‚ð‚©‚¯‚é
 	g_player.JumpPower += GRAVITY;

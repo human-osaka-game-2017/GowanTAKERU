@@ -162,14 +162,22 @@ void EnemyBulettCreate(int enemyNum) {
 
 void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚ğ‚à‚ç‚¤
 
-	int enemyArrangement[STAGE1MAPCHIPNUM_HEIGHT*STAGE1MAPCHIPNUM_WIDTH];
-	CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyArrangement, STAGE1MAPCHIPNUM_HEIGHT, STAGE1MAPCHIPNUM_WIDTH);//CSVŒÄ‚Ño‚µ
+	STAGE_ID stage_ID = GetStage_ID();
+	int MaxX = GetStageXYMAX(stage_ID, X);
+	int MaxY = GetStageXYMAX(stage_ID, Y);
+	int* enemyArrangement = (int*)malloc(sizeof(int)*MaxX*MaxY);
+
+	switch (stage_ID) {
+	case STAGE_1:
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyArrangement, MaxY, MaxX);//CSVŒÄ‚Ño‚µ
+		break;
+	}
 
 	int count = 0;
 
-	for (int i = 0; i < STAGE1MAPCHIPNUM_HEIGHT;i++) {
-		for (int j = 0; j < STAGE1MAPCHIPNUM_WIDTH; j++) {
-			switch (enemyArrangement[j + i*STAGE1MAPCHIPNUM_WIDTH]) {//‚à‚ç‚Á‚½“G‚Ìƒf[ƒ^‚ğ“ü‚ê‚Ş
+	for (int i = 0; i < MaxY;i++) {
+		for (int j = 0; j < MaxX; j++) {
+			switch (enemyArrangement[j + i*MaxX]) {//‚à‚ç‚Á‚½“G‚Ìƒf[ƒ^‚ğ“ü‚ê‚Ş
 			case WALKINGENEMY_KYE02:
 				g_enemy[count].enemyKind = WALKINGENEMY_KYE02;
 			case WALKINGENEMY:
@@ -207,6 +215,7 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 
 	}
 
+	free(enemyArrangement);
 
 }
 
