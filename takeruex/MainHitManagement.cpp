@@ -6,6 +6,7 @@
 #include"BulletRender.h"
 #include"EnemyControl.h"
 #include"EnemyRender.h"
+#include"DirectXSound.h"
 
 void HitManage() {
 
@@ -81,11 +82,20 @@ void HitManage() {
 
 			//プレイヤーのダメージ計算と無敵時間の考慮
 			if (bullet[i].beActive) {
-				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &bullet[i].WindowPos, bullet->Size, bullet->Size)) {
+				D3DXVECTOR2 tmpPlayer = player->WindowPos;
+				if (player->beLeft) {
+					tmpPlayer.x += 15;
+				}
+				else {
+					tmpPlayer.x += -15;
+				}
+				
+				if (SquareHit(&tmpPlayer, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT, &bullet[i].WindowPos, bullet->Size, bullet->Size)) {
 
 					DeactivateBullet(i);
 
 					if (!player->beInvincible) {
+						PlayBackSound(SOUND01, false);
 						player->Hp -= bullet->Atk;
 
 						player->beInvincible = true;
@@ -97,7 +107,14 @@ void HitManage() {
 		//エネミーとプレイヤーの直接のあたり判定
 		for (int i = 0; i < ENEMYNUMBER; i++) {
 			if(enemy[i].beActive && !enemy[i].beDead){
-				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+				D3DXVECTOR2 tmpPlayer = player->WindowPos;
+				if (player->beLeft) {
+					tmpPlayer.x += 15;
+				}
+				else {
+					tmpPlayer.x += -15;
+				}
+				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
 					if (!player->beInvincible) {
 						player->Hp -= enemy[i].Atk;
 						player->beInvincible = true;

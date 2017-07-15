@@ -235,9 +235,9 @@ void PlayerReflectMotion() {
 
 		if (g_player.beLeft) {
 			if (frcnt != 0 && frcnt < 12) {
-				if (CircleHit(g_player.WindowPos.x - 10,
-					g_player.WindowPos.y - 10,
-					50.0f,
+				if (CircleHit(g_player.WindowPos.x - 30,
+					g_player.WindowPos.y,
+					20.0f,
 					(bullet + i)->WindowPos.x,
 					(bullet + i)->WindowPos.y,
 					(bullet + i)->Size / 2))
@@ -251,9 +251,9 @@ void PlayerReflectMotion() {
 			}
 
 			if (12 < frcnt && frcnt < 24) {
-				if (CircleHit(g_player.WindowPos.x - 10,
-					g_player.WindowPos.y,
-					50.0f,
+				if (CircleHit(g_player.WindowPos.x - 30,
+					g_player.WindowPos.y - 20,
+					20.0f,
 					(bullet + i)->WindowPos.x,
 					(bullet + i)->WindowPos.y,
 					(bullet + i)->Size / 2))
@@ -272,9 +272,9 @@ void PlayerReflectMotion() {
 			}
 
 			if (24 < frcnt && frcnt < 36) {
-				if (CircleHit(g_player.WindowPos.x - 10,
-					g_player.WindowPos.y - 10,
-					50.0f,
+				if (CircleHit(g_player.WindowPos.x - 30,
+					g_player.WindowPos.y - 50,
+					20.0f,
 					(bullet + i)->WindowPos.x,
 					(bullet + i)->WindowPos.y,
 					(bullet + i)->Size / 2)) {
@@ -294,9 +294,9 @@ void PlayerReflectMotion() {
 		else {
 
 			if (frcnt != 0 && frcnt < 12) {
-				if (CircleHit(g_player.WindowPos.x + 10,
-					g_player.WindowPos.y + 10,
-					50.0f,
+				if (CircleHit(g_player.WindowPos.x + 30,
+					g_player.WindowPos.y,
+					20.0f,
 					(bullet + i)->WindowPos.x,
 					(bullet + i)->WindowPos.y,
 					(bullet + i)->Size / 2))
@@ -310,9 +310,9 @@ void PlayerReflectMotion() {
 			}
 
 			if (12 < frcnt && frcnt < 24) {
-				if (CircleHit(g_player.WindowPos.x + 10,
-					g_player.WindowPos.y,
-					50.0f,
+				if (CircleHit(g_player.WindowPos.x + 30,
+					g_player.WindowPos.y - 20,
+					20.0f,
 					(bullet + i)->WindowPos.x,
 					(bullet + i)->WindowPos.y,
 					(bullet + i)->Size / 2))
@@ -331,9 +331,9 @@ void PlayerReflectMotion() {
 			}
 
 			if (24 < frcnt && frcnt < 36) {
-				if (CircleHit(g_player.WindowPos.x + 10,
-					g_player.WindowPos.y - 10,
-					50.0f,
+				if (CircleHit(g_player.WindowPos.x + 30,
+					g_player.WindowPos.y - 50,
+					20.0f,
 					(bullet + i)->WindowPos.x,
 					(bullet + i)->WindowPos.y,
 					(bullet + i)->Size / 2)) {

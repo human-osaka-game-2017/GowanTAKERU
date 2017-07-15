@@ -34,7 +34,7 @@ void EnemyInit() {
 		g_enemy[i].WorldPos.y = enemyMapNum[i].NumY*TIPSIZE;
 		g_enemy[i].WindowPos.x = 0;
 		g_enemy[i].WindowPos.y = 0;
-		g_enemy[i].Atk = 2;//UŒ‚—Í
+		g_enemy[i].Atk = 20;//UŒ‚—Í
 		g_enemy[i].Hp = 1;//‘Ì—Í
 		g_enemy[i].bulletFreamCount = 0;
 		g_enemy[i].beDead = false;//€‚ñ‚Å‚¢‚é‚©

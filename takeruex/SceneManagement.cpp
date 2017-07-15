@@ -4,6 +4,8 @@
 #include"MainRender.h"
 #include"MainControl.h"
 #include"MainSceneInit.h"
+#include"StageGimmick.h"
+#include"DirectXSound.h"
 
 void MainScene();
 
@@ -35,6 +37,7 @@ void MainScene() {
 	case 1:
 		MainControl();
 		MainRender();
+		StageGimmickManage();
 
 		//if  step++;
 		break;
@@ -42,6 +45,7 @@ void MainScene() {
 	case 2:
 		ReleseMapData();
 		TextureFree();
+		ReleaseBuffer();
 		//step=0;
 		//break;
 	}

@@ -28,10 +28,20 @@ void EnemyRender() {
 				DrawVertex[j].x += enemy[i].WindowPos.x;
 				DrawVertex[j].y += enemy[i].WindowPos.y;
 			}
-			// テクスチャをステージに割り当てる
-			pD3Device->SetTexture(0, pTexture[ENEMY01_TEX]);
-			// 描画
-			pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, DrawVertex, sizeof(CUSTOMVERTEX));
+
+			switch (enemy[i].enemyKind) {
+			case FLYINGENEMY:
+			case FLYINGENEMY_KYE01:
+			case FLYINGENEMY_KYE02:
+
+			case WALKINGENEMY:
+			case WALKINGENEMY_KYE02:
+				// テクスチャをステージに割り当てる
+				pD3Device->SetTexture(0, pTexture[ENEMY01_TEX]);
+				// 描画
+				pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, DrawVertex, sizeof(CUSTOMVERTEX));
+			}
+			
 		}
 	}
 }

@@ -1,8 +1,10 @@
 #include"DirectXGraphics.h"
 #include"DirectXInput.h"
+#include"DirectXSound.h"
 #include"CommonRender.h"
 #include"SceneManagement.h"
 #include"FileManagement.h"
+
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
 	switch (msg)
@@ -58,6 +60,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	DXGraphicsInit(hWnd, true);				//èâä˙âªèàóù
 	TextureInit();
 	DXInputKeybourdInit(hWnd, hInstance);
+	DirectXSoundInit(hWnd);
 	StageMapNumMaxInit();
 
 
@@ -91,6 +94,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	//ÉäÉäÅ[ÉX
 	TextureFree();
+	ReleaseSoundDevice();
 	FreeDxInput();
 	FreeDxGraphics();
 

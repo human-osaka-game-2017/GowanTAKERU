@@ -4,6 +4,7 @@
 #include"MainRender.h"
 #include<stdio.h>
 #include"MapRender.h"
+#include"DirectXSound.h"
 
 #define StageNum 5
 
@@ -70,21 +71,23 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 
 	switch (stage_ID) {
 	case STAGE_1:
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/MapTip.png", &g_pTexture[MAP_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/background.png", &g_pTexture[BACKGROUND_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet0.png", &g_pTexture[BULLET01_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/bullet1.png", &g_pTexture[BULLET02_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/player.png", &g_pTexture[PLAYER_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/enemy1.png", &g_pTexture[ENEMY01_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/hp0.png", &g_pTexture[HPUI_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "picture/mainscene/hp1.png", &g_pTexture[HPUIIN_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/MapTip.png", &g_pTexture[MAP_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/background.png", &g_pTexture[BACKGROUND_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/bullet0.png", &g_pTexture[BULLET01_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/bullet1.png", &g_pTexture[BULLET02_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/player.png", &g_pTexture[PLAYER_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/enemy1.png", &g_pTexture[ENEMY01_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp0.png", &g_pTexture[HPUI_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp1.png", &g_pTexture[HPUIIN_TEX]);
 		
 		int MaxX = GetStageXYMAX(stage_ID, X);
 		int MaxY = GetStageXYMAX(stage_ID, Y);
 
 		g_mapData = (int*)malloc(sizeof(int)*MaxX*MaxY);
 		CSVLoad("CSV/mainscene/stage1_map.csv", g_mapData, MaxY, MaxX);
+
+		CreateBufferForWave("Sound/MainScene/Alarm01.wav", SOUND01);
 	}
 }
 

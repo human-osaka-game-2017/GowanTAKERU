@@ -3,7 +3,7 @@
 
 #include<d3dx9.h>
 
-#define BULLETNUMBER 30
+#define BULLETNUMBER 60
 
 enum BULLETKIND{BULLET01};
 
