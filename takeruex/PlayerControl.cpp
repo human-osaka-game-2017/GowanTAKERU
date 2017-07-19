@@ -101,7 +101,7 @@ void SetPlayerMovement() {
 
 	}
 
-	////プレイヤーの右足、左足のマップチップ番号
+	//プレイヤー四隅
 	D3DXVECTOR2 PlayerLeftTop;
 	D3DXVECTOR2 PlayerRightTop;
 	D3DXVECTOR2 playerRightBottom;
@@ -111,35 +111,10 @@ void SetPlayerMovement() {
 	MapNumXY PlayerRightBottomMapNum;
 	MapNumXY PlayerLeftBottomMapNum;
 
-	PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2 + g_player.MovementX;
-	PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2 + g_player.MovementX;
-	PlayerLeftTop.y = PlayerRightTop.y = g_player.WorldPos.y - PLAYERSIZEHEIGHT / 2 + g_player.MovementY;
-	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + g_player.MovementY;
+	PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2;
+	PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2;
+	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
 
-	MapchipNumberSpecify(&PlayerLeftTopMapNum, &PlayerLeftTop);
-	MapchipNumberSpecify(&PlayerRightTopMapNum, &PlayerRightTop);
-	MapchipNumberSpecify(&PlayerRightBottomMapNum, &playerRightBottom);
-	MapchipNumberSpecify(&PlayerLeftBottomMapNum, &playerLeftBottom);
-
-	//めり込み防止
-	if (MapKindSpecify_Plus1(&PlayerLeftTopMapNum, DOWN) == FLOOR || MapKindSpecify_Plus1(&PlayerLeftBottomMapNum, UP) == FLOOR) {
-		float diff = (PlayerLeftBottomMapNum.NumX + 1)*(TIPSIZE)-playerLeftBottom.x;
-		g_player.MovementX += diff;
-	}
-	if (MapKindSpecify_Plus1(&PlayerRightTopMapNum, DOWN) == FLOOR || MapKindSpecify_Plus1(&PlayerRightBottomMapNum, UP) == FLOOR) {
-		float diff = playerRightBottom.x - (PlayerRightBottomMapNum.NumX)*(TIPSIZE);
-		g_player.MovementX -= diff + 1;
-
-	}
-
-	//データの更新
-	PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2 + g_player.MovementX;
-	PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2 + g_player.MovementX;
-	PlayerLeftTop.y = PlayerRightTop.y = g_player.WorldPos.y - PLAYERSIZEHEIGHT / 2 + g_player.MovementY;
-	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + g_player.MovementY;
-
-	MapchipNumberSpecify(&PlayerLeftTopMapNum, &PlayerLeftTop);
-	MapchipNumberSpecify(&PlayerRightTopMapNum, &PlayerRightTop);
 	MapchipNumberSpecify(&PlayerRightBottomMapNum, &playerRightBottom);
 	MapchipNumberSpecify(&PlayerLeftBottomMapNum, &playerLeftBottom);
 
@@ -148,24 +123,16 @@ void SetPlayerMovement() {
 	//プレイヤーの足下が床
 	if (MapKindSpecify(&PlayerRightBottomMapNum) != NOTHING ||
 		MapKindSpecify(&PlayerLeftBottomMapNum) != NOTHING) {
-
-		g_player.Jumping = false;
+	
 		g_player.JumpPower = 0.0f;
+		g_player.Jumping = false;
 		frcnt = 0;
 
 		if (Key[KEY_C] == KEY_PUSH) {
 			g_player.JumpPower = PLAYERJUMPPOWER;
 			g_player.Jumping = true;
 		}
-
-		//めり込みをふせぐ
-		float footdiff = (PlayerRightBottomMapNum.NumY)*(TIPSIZE)-playerRightBottom.y;
-		g_player.MovementY += footdiff;
 	}
-
-	/*if (MapKindSpecify_Plus1(&PlayerRightBottomMapNum,DOWN) == FLOOR ||
-	MapKindSpecify_Plus1(&PlayerLeftBottomMapNum,DOWN) == FLOOR)
-	{*/
 
 	if (g_player.Jumping) {
 		frcnt++;
@@ -175,7 +142,12 @@ void SetPlayerMovement() {
 			}
 		}
 	}
-	if (MapKindSpecify(&PlayerLeftTopMapNum) == FLOOR || MapKindSpecify_Plus1(&PlayerRightTopMapNum, LEFT) == FLOOR) {
+
+	PlayerLeftTop.y = PlayerRightTop.y = g_player.WorldPos.y - PLAYERSIZEHEIGHT / 2 + 10 + g_player.JumpPower;
+	MapchipNumberSpecify(&PlayerLeftTopMapNum, &PlayerLeftTop);
+	MapchipNumberSpecify(&PlayerRightTopMapNum, &PlayerRightTop);
+
+	if (MapKindSpecify(&PlayerLeftTopMapNum) == FLOOR || MapKindSpecify(&PlayerRightTopMapNum) == FLOOR) {
 		g_player.JumpPower = 0;
 	}
 

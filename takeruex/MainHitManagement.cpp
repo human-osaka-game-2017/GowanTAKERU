@@ -8,6 +8,16 @@
 #include"EnemyRender.h"
 #include"DirectXSound.h"
 
+#include<Windows.h>
+#include<tchar.h>
+#include<stdio.h>
+
+void CollisionMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
+
+#include<Windows.h>
+#include<tchar.h>
+#include<stdio.h>
+
 void HitManage() {
 
 	Player* player = GetplayerData();
@@ -25,7 +35,7 @@ void HitManage() {
 	}
 	
 	//’e‚Æƒ}ƒbƒv‚Ì‚ ‚½‚è”»’è‚Æ”½Ëˆ—
-
+	
 	static int frcntInvincible;
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
@@ -85,6 +95,7 @@ void HitManage() {
 					tmpPlayer.x += -15;
 				}
 				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+				
 					if (!player->beInvincible) {
 						player->Hp -= enemy[i].Atk;
 						player->beInvincible = true;
