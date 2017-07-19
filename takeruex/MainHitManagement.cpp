@@ -253,4 +253,4 @@ void CollisionMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, floa
 //			}
 //		}
 //	}
-//}
+
