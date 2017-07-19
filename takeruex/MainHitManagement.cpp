@@ -14,48 +14,17 @@ void HitManage() {
 	Bullet* bullet = GetBullet();
 	Enemy* enemy = GetenemyData();
 
-	////プレイヤーとマップのあたり判定
+	//プレイヤーとマップのあたり判定とその処理
+	D3DXVECTOR2 tmp = player->WorldPos;
+	tmp.y += 5;
+	CollisionMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT - 10);
 
-	//D3DXVECTOR2 tmpPos;
-	//MapNumXY tmpNum;
-
-	///*tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX;
-	//tmpPos.y= (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY;*/
-
-	//int MaxNumX = CalculateNumInRange(PLAYERSIZEWIDHE);
-	//int MaxNumY = CalculateNumInRange(PLAYERSIZEHEIGHT);
-	////MaxNumY -= 1;
-	//
-	//for (int i = 0; i <= (TIPSIZE*MaxNumY); i += TIPSIZE) {
-	//	for (int j = 0; j <= (TIPSIZE*MaxNumX); j += TIPSIZE) {
-
-	//		tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX + j;
-	//		tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
-	//		MapchipNumberSpecify(&tmpNum, &tmpPos);
-
-	//		if (MapKindSpecify(&tmpNum) == FLOOR) {
-	//			if (player->MovementX < 0) {
-	//				player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x;
-	//			}
-	//			else if (player->MovementX > 0) {
-	//				player->MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x-1;
-	//			}
-	//		}
-
-	//		tmpPos.x = (player->WorldPos.x - (PLAYERSIZEWIDHE / 2)) + player->MovementX + j;
-	//		tmpPos.y = (player->WorldPos.y - (PLAYERSIZEHEIGHT / 2)) + player->MovementY + i;
-	//		MapchipNumberSpecify(&tmpNum, &tmpPos);
-
-	//		if (MapKindSpecify(&tmpNum) == FLOOR) {
-	//			if (player->MovementY < 0) {
-	//			player->MovementY += ((tmpNum.NumY + 1)* TIPSIZE) - tmpPos.y;
-	//			}
-	//			else if (player->MovementY > 0) {
-	//				player->MovementY += ((tmpNum.NumY)* TIPSIZE) - tmpPos.y-1 ;
-	//			}
-	//		}
-	//	}
-	//}
+	//エネミーとマップのあたり判定とその処理
+	for (int i = 0; i < ENEMYNUMBER; i++) {
+		CollisionMap(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementX, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
+	}
+	
+	//弾とマップのあたり判定と反射処理
 
 	static int frcntInvincible;
 
@@ -95,7 +64,8 @@ void HitManage() {
 					DeactivateBullet(i);
 
 					if (!player->beInvincible) {
-						PlayBackSound(SOUND01, false);
+						PlayBackSound(SOUND01, false, 100);
+
 						player->Hp -= bullet->Atk;
 
 						player->beInvincible = true;
@@ -184,3 +154,103 @@ bool SquareHit(D3DXVECTOR2* pPosA, float widthA, float heightA, D3DXVECTOR2* pPo
 	}
 	return false;
 }
+
+void CollisionMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, float width, float height) {
+
+	D3DXVECTOR2 tmpPos;
+	MapNumXY tmpNum;
+	float tmpMovementX = *MovementX;
+	float tmpMovementY = *MovementY;
+
+	int MaxNumX = CalculateNumInRange(width);
+	int MaxNumY = CalculateNumInRange(height);
+
+	for (int i = 0; i <MaxNumY + 1; i++) {
+		for (int j = 0; j <MaxNumX + 1; j++) {
+
+			if (i == MaxNumY && j != MaxNumX) {
+				tmpPos.x = (Pos.x - (width / 2)) + *MovementX + j * TIPSIZE;
+				tmpPos.y = (Pos.y + (height / 2));
+			}
+			else if (i != MaxNumY && j == MaxNumX) {
+				tmpPos.x = (Pos.x + (width / 2)) + *MovementX;
+				tmpPos.y = (Pos.y - (height / 2)) + i * TIPSIZE;
+			}
+			else if (i == MaxNumY && j == MaxNumX) {
+				tmpPos.x = (Pos.x + (width / 2)) + *MovementX;
+				tmpPos.y = (Pos.y + (height / 2));
+			}
+			else {
+				tmpPos.x = (Pos.x - (width / 2)) + *MovementX + j * TIPSIZE;
+				tmpPos.y = (Pos.y - (height / 2)) + i * TIPSIZE;
+			}
+			MapchipNumberSpecify(&tmpNum, &tmpPos);
+
+			if (MapKindSpecify(&tmpNum) == FLOOR) {
+				if (*MovementX < 0) {
+					*MovementX += ((tmpNum.NumX + 1)* TIPSIZE) - tmpPos.x;
+				}
+				else if (*MovementX > 0) {
+					*MovementX += ((tmpNum.NumX)* TIPSIZE) - tmpPos.x - 1;
+				}
+
+				if (*MovementX != 0) {
+					*MovementY *=*MovementX / tmpMovementX;
+				}
+			}
+
+			if (i == MaxNumY && j != MaxNumX) {
+				tmpPos.x = (Pos.x - (width / 2)) + j * TIPSIZE;
+				tmpPos.y = (Pos.y + (height / 2)) + *MovementY;
+			}
+			else if (i != MaxNumY && j == MaxNumX) {
+				tmpPos.x = (Pos.x + (width / 2));
+				tmpPos.y = (Pos.y - (height / 2)) + *MovementY + i * TIPSIZE;
+			}
+			else if (i == MaxNumY && j == MaxNumX) {
+				tmpPos.x = (Pos.x + (width / 2));
+				tmpPos.y = (Pos.y + (height / 2)) + *MovementY;
+			}
+			else {
+				tmpPos.x = (Pos.x - (width / 2)) + j * TIPSIZE;
+				tmpPos.y = (Pos.y - (height / 2)) + *MovementY + i * TIPSIZE;
+			}
+
+			MapchipNumberSpecify(&tmpNum, &tmpPos);
+
+			if (MapKindSpecify(&tmpNum) == FLOOR) {
+				if (*MovementY < 0) {
+					*MovementY += ((tmpNum.NumY + 1)* TIPSIZE) - tmpPos.y;
+				}
+				else if (*MovementY > 0) {
+					*MovementY += ((tmpNum.NumY)* TIPSIZE) - tmpPos.y - 1;
+				}
+
+				if (*MovementY != 0) {
+					*MovementX *= *MovementY / tmpMovementY;
+				}
+
+			}
+		}
+	}
+}
+
+//void CollisionMapForBullet() {
+//
+//	Bullet* bullet = GetBullet();
+//
+//	for (int i = 0; i < BULLETNUMBER; i++) {
+//		for (int j = 0; j < ENEMYNUMBER; j++) {
+//
+//			if (bullet[i].beActive && 0 < bullet[i].ReflectCnt) {
+//
+//
+//			}
+//
+//			Broken:
+//			if (0 == bullet[i].ReflectCnt) {
+//				bullet[i].beActive = false;
+//			}
+//		}
+//	}
+//}

@@ -113,8 +113,11 @@ bool CreateBufferForWave(char* soundfile,int soundID) {
 	return true;
 }
 
-void PlayBackSound(int soundID,bool Loop) {
-	if (Loop) {
+void PlayBackSound(int soundID,bool loop, LONG volume) {
+
+	g_pDSBuffer[soundID]->SetVolume(volume);
+	
+	if (loop) {
 		g_pDSBuffer[soundID]->Play(0, 0, DSBPLAY_LOOPING);
 	}
 	else {
@@ -126,6 +129,10 @@ void PlayBackSound(int soundID,bool Loop) {
 void StopSound(int soundID) {
 	g_pDSBuffer[soundID]->Stop();
 }
+
+//void PauseSound(int soundID) {
+//	g_pDSBuffer[soundID]->
+//}
 
 void ReleaseBuffer() {
 	for (int i = 0; i < SOUNDMAX; i++) {

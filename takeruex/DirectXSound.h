@@ -18,7 +18,7 @@ bool CreateBufferForWave(char* soundfile, int soundID);
 //サウンドを再生します
 //第一引数 識別するためのID（enum)
 //第二引数 ループするならtrue,しないならfalse
-void PlayBackSound(int soundID, bool Loop);
+void PlayBackSound(int soundID, bool loop, LONG volume);
 
 // サウンドを停止します
 //第一引数 識別するためのID（enum)

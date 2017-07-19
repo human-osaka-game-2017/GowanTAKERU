@@ -87,7 +87,8 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		g_mapData = (int*)malloc(sizeof(int)*MaxX*MaxY);
 		CSVLoad("CSV/mainscene/stage1_map.csv", g_mapData, MaxY, MaxX);
 
-		CreateBufferForWave("Sound/MainScene/Alarm01.wav", SOUND01);
+		CreateBufferForWave("Sound/MainScene/SE_ShotBom1.wav", SOUND01);
+		CreateBufferForWave("Sound/MainScene/BGM_Stage.wav", SOUND02);
 	}
 }
 
