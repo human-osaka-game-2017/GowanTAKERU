@@ -98,7 +98,7 @@ void EnemyPursuit(int enemyNum) {
 				g_enemy[enemyNum].MovementX = 0;
 				g_enemy[enemyNum].MovementY = 0;
 			}
-
+			g_enemy[enemyNum].MovementY += GRAVITY;
 
 			break;
 		case FLYINGENEMY:
@@ -116,21 +116,7 @@ void EnemyPursuit(int enemyNum) {
 					g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
 				}
 			}
-			D3DXVECTOR2 tmpPos = g_enemy[enemyNum].WorldPos;
-			if (g_enemy[enemyNum].MovementX < 0) {
-				tmpPos.x += -ENEMYRESIZEWIDTH / 2;
-				if (MapKindSpecifyForPos(&tmpPos) != NOTHING)
-				{
-					g_enemy[enemyNum].MovementX = 0;
-				}
-			}
-			if (g_enemy[enemyNum].MovementX > 0) {
-				tmpPos.x += ENEMYRESIZEWIDTH / 2;
-				if (MapKindSpecifyForPos(&tmpPos) != NOTHING)
-				{
-					g_enemy[enemyNum].MovementX = 0;
-				}
-			}
+			
 			if (g_enemy[enemyNum].bulletFreamCount >= g_enemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
 				g_enemy[enemyNum].MovementX = 0;
 				g_enemy[enemyNum].MovementY = 0;

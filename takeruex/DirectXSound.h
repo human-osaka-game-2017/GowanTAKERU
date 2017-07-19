@@ -3,7 +3,7 @@
 
 #include<Windows.h>
 
-enum SOUND_ID { SOUND01, SOUNDMAX };
+enum SOUND_ID { SOUND01,SOUND02, SOUNDMAX };
 
 //Directsoundの初期化を行います
 //第一引数 ウィンドウのハンドル

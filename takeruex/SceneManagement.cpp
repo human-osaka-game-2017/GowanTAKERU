@@ -31,6 +31,7 @@ void MainScene() {
 		StageSelect();
 		MainSceneLoad(GetStage_ID());
 		MainSceneInit();
+		PlayBackSound(SOUND02, true);
 		step++;
 		break;
 

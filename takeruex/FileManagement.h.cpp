@@ -88,6 +88,7 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		CSVLoad("CSV/mainscene/stage1_map.csv", g_mapData, MaxY, MaxX);
 
 		CreateBufferForWave("Sound/MainScene/Alarm01.wav", SOUND01);
+		CreateBufferForWave("Sound/MainScene/BGM_Stage.wav", SOUND02);
 	}
 }
 
