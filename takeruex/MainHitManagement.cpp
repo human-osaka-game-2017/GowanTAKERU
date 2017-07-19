@@ -14,6 +14,10 @@
 
 void CollisionMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
 
+#include<Windows.h>
+#include<tchar.h>
+#include<stdio.h>
+
 void HitManage() {
 
 	Player* player = GetplayerData();

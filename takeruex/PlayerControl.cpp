@@ -154,10 +154,6 @@ void SetPlayerMovement() {
 	g_player.MovementY += g_player.JumpPower;
 }
 
-//#include<Windows.h>
-//#include<tchar.h>
-//#include<stdio.h>
-
 void MovePlayer() {
 
 	g_player.WorldPos.x += g_player.MovementX;
@@ -170,16 +166,6 @@ void MovePlayer() {
 	else {
 		g_player.WindowPos.x += g_player.MovementX;
 	}
-
-	//#ifdef _DEBUG
-
-	//	TCHAR buff[256];
-	//	_stprintf_s(buff, 256, _T("%f\n"), g_player.MovementX);
-	//	OutputDebugString(buff);
-	//	TCHAR bufff[256];
-	//	_stprintf_s(bufff, 256, _T("%f\n"), g_BasePoint.x);
-	//	OutputDebugString(bufff);
-	//#endif
 
 	g_player.WorldPos.y += g_player.MovementY;
 	g_player.WindowPos.y += g_player.MovementY;
