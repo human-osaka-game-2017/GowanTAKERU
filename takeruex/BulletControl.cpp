@@ -5,8 +5,6 @@
 #include"MapControl.h"
 #include"CommonRender.h"
 
-void SetBulletMovement(int bulletNum);
-
 static Bullet g_bullet[BULLETNUMBER];
 
 Bullet* GetBullet() {

@@ -172,6 +172,7 @@ void MovePlayer() {
 
 	g_player.MovementX = 0;
 	g_player.MovementY = 0;
+	
 }
 
 void PlayerReflectMotion() {
@@ -217,7 +218,7 @@ void PlayerReflectMotion() {
 					if ((bullet + i)->wasReflect == false) {
 						(bullet + i)->wasReflect = true;
 						(bullet + i)->Rad = D3DXToRadian(180.0f);
-
+						(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 					}
 				}
 			}
@@ -235,9 +236,11 @@ void PlayerReflectMotion() {
 
 						if (g_player.bePunchUP == true) {
 							(bullet + i)->Rad = D3DXToRadian(150.0f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 						if (g_player.bePunchDOWN == true) {
 							(bullet + i)->Rad = D3DXToRadian(210.0f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 					}
 				}
@@ -255,9 +258,11 @@ void PlayerReflectMotion() {
 
 						if (g_player.bePunchUP == true) {
 							(bullet + i)->Rad = D3DXToRadian(120.0f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 						if (g_player.bePunchDOWN == true) {
 							(bullet + i)->Rad = D3DXToRadian(240.0f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 					}
 				}
@@ -276,6 +281,7 @@ void PlayerReflectMotion() {
 					if ((bullet + i)->wasReflect == false) {
 						(bullet + i)->wasReflect = true;
 						(bullet + i)->Rad = D3DXToRadian(0.0f);
+						(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 
 					}
 				}
@@ -294,9 +300,11 @@ void PlayerReflectMotion() {
 
 						if (g_player.bePunchUP == true) {
 							(bullet + i)->Rad = D3DXToRadian(30.f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 						if (g_player.bePunchDOWN == true) {
 							(bullet + i)->Rad = D3DXToRadian(-30.f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 					}
 				}
@@ -314,9 +322,11 @@ void PlayerReflectMotion() {
 
 						if (g_player.bePunchUP == true) {
 							(bullet + i)->Rad = D3DXToRadian(60.f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 						if (g_player.bePunchDOWN == true) {
 							(bullet + i)->Rad = D3DXToRadian(-60.f);
+							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
 					}
 				}

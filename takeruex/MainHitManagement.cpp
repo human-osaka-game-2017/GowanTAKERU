@@ -1,5 +1,6 @@
 #include"MainHitManagement.h"
 #include"MapControl.h"
+#include"MainControl.h"
 #include"PlayerControl.h"
 #include"PlayerRender.h"
 #include"BulletControl.h"
@@ -13,6 +14,7 @@
 #include<stdio.h>
 
 void CollisionMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
+void CollisionMapForBullet();
 
 #include<Windows.h>
 #include<tchar.h>
@@ -23,6 +25,8 @@ void HitManage() {
 	Player* player = GetplayerData();
 	Bullet* bullet = GetBullet();
 	Enemy* enemy = GetenemyData();
+
+	CollisionMapForBullet();
 
 	//プレイヤーとマップのあたり判定とその処理
 	D3DXVECTOR2 tmp = player->WorldPos;
@@ -246,22 +250,106 @@ void CollisionMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, floa
 	}
 }
 
-//void CollisionMapForBullet() {
-//
-//	Bullet* bullet = GetBullet();
-//
-//	for (int i = 0; i < BULLETNUMBER; i++) {
-//		for (int j = 0; j < ENEMYNUMBER; j++) {
-//
-//			if (bullet[i].beActive && 0 < bullet[i].ReflectCnt) {
-//
-//
-//			}
-//
-//			Broken:
-//			if (0 == bullet[i].ReflectCnt) {
-//				bullet[i].beActive = false;
-//			}
-//		}
-//	}
+void CollisionMapForBullet() {
+	static int fr = 0;
+	fr++;
+	Bullet* bullet = GetBullet();
 
+	for (int i = 0; i < BULLETNUMBER; i++) {
+
+		if (bullet[i].beActive) {
+			//for (float unitVectorCnt = 1 / bullet[i].Speed; unitVectorCnt <= 1; unitVectorCnt += 1 / bullet[i].Speed) 
+			D3DXVECTOR2 Left;
+			D3DXVECTOR2 Right;
+			D3DXVECTOR2 Bottom;
+			D3DXVECTOR2 Top;
+
+			Left.x = bullet[i].WorldPos.x - (bullet[i].Size / 2) + (bullet[i].MovementX/*unitVectorCnt*/);
+			Right.x = bullet[i].WorldPos.x + (bullet[i].Size / 2) + (bullet[i].MovementX/**unitVectorCnt*/);
+			Top.x = Bottom.x = bullet[i].WorldPos.x + (bullet[i].MovementX/**unitVectorCnt*/);
+			Top.y = bullet[i].WorldPos.y - (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
+			Bottom.y = bullet[i].WorldPos.y + (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
+			Left.y = Right.y = bullet[i].WorldPos.y + (bullet[i].MovementY/**unitVectorCnt*/);
+
+			D3DXVECTOR2 tmpPos;
+			tmpPos.x = bullet[i].WorldPos.x + bullet[i].MovementX;
+			tmpPos.y = bullet[i].WorldPos.y + bullet[i].MovementY;
+
+			if (MapKindSpecifyForPos(&Left) != NOTHING) {
+
+				bullet[i].ReflectCnt++;
+				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+					bullet[i].beActive = false;
+					continue;
+				}
+
+				if (bullet[i].MovementY < 0) {
+					bullet[i].Rad = 2 * D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
+				}
+				else if (bullet[i].MovementY > 0) {
+					bullet[i].Rad = -1 * Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
+				}
+				else if (bullet[i].MovementY = 0) {
+					bullet[i].Rad += D3DX_PI;
+				}
+
+			}
+
+			else if (MapKindSpecifyForPos(&Right) != NOTHING) {
+				bullet[i].ReflectCnt++;
+				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+					bullet[i].beActive = false;
+					continue;
+				}
+
+				if (bullet[i].MovementY < 0) {
+					bullet[i].Rad = D3DX_PI - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - D3DX_PI);
+				}
+				else if (bullet[i].MovementY > 0) {
+					bullet[i].Rad = D3DX_PI + (D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
+				}
+				else if (bullet[i].MovementY = 0) {
+					bullet[i].Rad += D3DX_PI;
+				}
+
+			}
+			else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
+				bullet[i].ReflectCnt++;
+				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+					bullet[i].beActive = false;
+					continue;
+				}
+
+				if (bullet[i].MovementX < 0) {
+					bullet[i].Rad = (0.5*D3DX_PI) + ((0.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
+				}
+				else if (bullet[i].MovementX > 0) {
+					bullet[i].Rad = (0.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (0.5*D3DX_PI));
+				}
+				else if (bullet[i].MovementX = 0) {
+					bullet[i].Rad += D3DX_PI;
+				}
+
+			}
+			else if (MapKindSpecifyForPos(&Top) != NOTHING) {
+				bullet[i].ReflectCnt++;
+				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+					bullet[i].beActive = false;
+					continue;
+				}
+
+				if (bullet[i].MovementX < 0) {
+					bullet[i].Rad = (1.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (1.5*D3DX_PI));
+				}
+				else if (bullet[i].MovementX > 0) {
+					bullet[i].Rad = (1.5*D3DX_PI) + ((1.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
+				}
+				else if (bullet[i].MovementX = 0) {
+					bullet[i].Rad += D3DX_PI;
+				}
+
+				SetBulletMovement(i);
+			}
+		}
+	}
+}
