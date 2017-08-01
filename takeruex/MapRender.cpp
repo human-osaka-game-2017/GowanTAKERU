@@ -50,7 +50,7 @@ void MapRender() {
 		for (int j = 0; j < MaxX; j++) {
 
 			//そのマップチップを描画するのかを判定
-			if     (RendArrayIndexLeftUp.NumY < i && i < RendArrayIndexRightDown.NumY ) {
+			if (RendArrayIndexLeftUp.NumY < i && i < RendArrayIndexRightDown.NumY) {
 				if (RendArrayIndexLeftUp.NumX < j && j < RendArrayIndexRightDown.NumX) {
 
 					//描画する場所を設定
@@ -64,21 +64,26 @@ void MapRender() {
 					switch (map[j + i*MaxX]) {
 
 					case NOTHING:
-						break;
+						continue;
 
 					case FLOOR:
 						for (int k = 0; k < 4; k++) {
 							drawMapVertex[k].tv += 0.125;
 						}
-						// テクスチャをステージに割り当てる
-						pD3Device->SetTexture(0, pTexture[MAP_TEX]);
-						// 描画
-						pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawMapVertex, sizeof(CUSTOMVERTEX));
+						break;
+
+					case NEEDLE:
+						for (int k = 0; k < 4; k++) {
+							drawMapVertex[k].tv += 0.25;
+						}
 						break;
 					}
+					// テクスチャをステージに割り当てる
+					pD3Device->SetTexture(0, pTexture[MAP_TEX]);
+					// 描画
+					pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawMapVertex, sizeof(CUSTOMVERTEX));
 				}
 			}
 		}
 	}
-
 }

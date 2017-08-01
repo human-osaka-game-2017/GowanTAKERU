@@ -99,5 +99,5 @@ int MapKindSpecifyForPos(D3DXVECTOR2* pWorldPos) {
 }
 
 int CalculateNumInRange(float l) {
-	return (int)l / TIPSIZE ;
+	return (int)l / TIPSIZE + 1 ;
 }

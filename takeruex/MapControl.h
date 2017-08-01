@@ -21,7 +21,7 @@ void PosSpecifyForMapchipNumber(D3DXVECTOR2* pWorldPos, MapNumXY* pMapNumXY);
 //マップチップの番号(MapNumXY)をいれて、そのマップチップの種類を返してくれます
 int MapKindSpecify(MapNumXY* pMapNumXY);
 
-//ワールド座標を入れて、そこのマップチップの番号を返してくれます
+//ワールド座標を入れて、そこのマップチップの種類を返してくれます
 int MapKindSpecifyForPos(D3DXVECTOR2* pWorldPos);
 
 //第一引数ーーーーマップチップの番号(MapNumXY)をいれて

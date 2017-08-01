@@ -13,7 +13,7 @@
 #include<tchar.h>
 #include<stdio.h>
 
-void CollisionMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
+void PushOutMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
 void CollisionMapForBullet();
 
 #include<Windows.h>
@@ -26,21 +26,33 @@ void HitManage() {
 	Bullet* bullet = GetBullet();
 	Enemy* enemy = GetenemyData();
 
-	CollisionMapForBullet();
+	//プレイヤーとマップの処理
 
-	//プレイヤーとマップのあたり判定とその処理
+	static int frcntInvincible;
+
+	D3DXVECTOR2 playerRightBottom;
+	D3DXVECTOR2 playerLeftBottom;
+	playerRightBottom.x = player->WorldPos.x + PLAYERSIZEWIDHE / 2;
+	playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDHE / 2;
+	playerRightBottom.y= playerLeftBottom.y= player->WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
+	if (!player->beInvincible) {
+		if (MapKindSpecifyForPos(&playerRightBottom) == NEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == NEEDLE) {
+			player->Hp -= 10;
+			player->beInvincible = true;
+		}
+	}
+
 	D3DXVECTOR2 tmp = player->WorldPos;
 	tmp.y += 5;
-	CollisionMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT - 10);
+	PushOutMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT - 10);
 
-	//エネミーとマップのあたり判定とその処理
+	//エネミーとマップの押し出し処理
 	for (int i = 0; i < ENEMYNUMBER; i++) {
-		CollisionMap(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementX, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
+		PushOutMap(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementX, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
 	}
 	
-	//弾とマップのあたり判定と反射処理
-	
-	static int frcntInvincible;
+	//弾のマップとの反射処理
+	CollisionMapForBullet();
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		for (int j = 0; j < ENEMYNUMBER; j++) {
@@ -170,7 +182,7 @@ bool SquareHit(D3DXVECTOR2* pPosA, float widthA, float heightA, D3DXVECTOR2* pPo
 	return false;
 }
 
-void CollisionMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, float width, float height) {
+void PushOutMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, float width, float height) {
 
 	D3DXVECTOR2 tmpPos;
 	MapNumXY tmpNum;
@@ -201,7 +213,7 @@ void CollisionMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, floa
 			}
 			MapchipNumberSpecify(&tmpNum, &tmpPos);
 
-			if (MapKindSpecify(&tmpNum) == FLOOR) {
+			if (MapKindSpecify(&tmpNum) != NOTHING) {
 				if (*MovementX < 0) {
 					*MovementX += ((tmpNum.NumX + 1)* TIPSIZE) - tmpPos.x;
 				}
@@ -233,7 +245,7 @@ void CollisionMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, floa
 
 			MapchipNumberSpecify(&tmpNum, &tmpPos);
 
-			if (MapKindSpecify(&tmpNum) == FLOOR) {
+			if (MapKindSpecify(&tmpNum) != NOTHING) {
 				if (*MovementY < 0) {
 					*MovementY += ((tmpNum.NumY + 1)* TIPSIZE) - tmpPos.y;
 				}

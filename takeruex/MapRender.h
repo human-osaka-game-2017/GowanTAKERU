@@ -10,7 +10,8 @@
 //マップチップのサイズです
 #define TIPSIZE 32 
 
-enum MapKind { NOTHING, FLOOR, START=13,};
+enum MapKind { NOTHING, FLOOR, NEEDLE };
+enum GimmickKind{ START = 13 };
 
 void MapRender();
 

@@ -28,9 +28,14 @@ void PlayerInit() {
 	STAGE_ID stage_ID = GetStage_ID();
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
-	int* map = GetMapData();
+	int* map = (int*)malloc(sizeof(int)*MaxX*MaxY);
 
-	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+	switch (stage_ID) {
+	case STAGE_1:
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
+		break;
+	}
+	
 	for (int i = 0; i < MaxY; i++){
 		for (int j = 0; j < MaxX; j++) {
 			if (*(map + (i*MaxX + j)) == START) {
@@ -39,9 +44,14 @@ void PlayerInit() {
 				PosSpecifyForMapchipNumber(&g_player.WorldPos, &playerstartMapNum);
 				MapNumXY mapnum = { j,i-5 };
 				PosSpecifyForMapchipNumber(&g_BasePoint, &mapnum);
+				goto Break;
 			}
 		}
 	}
+	Break:
+	free(map);
+	
+	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
 	g_player.WindowPos.x = g_player.WorldPos.x - (g_BasePoint.x - BasePoint0.x);
 	g_player.WindowPos.y = g_player.WorldPos.y - (g_BasePoint.y - BasePoint0.y);
@@ -147,7 +157,7 @@ void SetPlayerMovement() {
 	MapchipNumberSpecify(&PlayerLeftTopMapNum, &PlayerLeftTop);
 	MapchipNumberSpecify(&PlayerRightTopMapNum, &PlayerRightTop);
 
-	if (MapKindSpecify(&PlayerLeftTopMapNum) == FLOOR || MapKindSpecify(&PlayerRightTopMapNum) == FLOOR) {
+	if (MapKindSpecify(&PlayerLeftTopMapNum) == FLOOR || MapKindSpecify(&PlayerRightTopMapNum) != NOTHING) {
 		g_player.JumpPower = 0;
 	}
 
