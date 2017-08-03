@@ -4,7 +4,7 @@
 #include<d3dx9.h>
 
 #define PLAYERMOVESPEED 5.0f
-#define PLAYERJUMPPOWER -6.5f
+#define PLAYERJUMPPOWER -7.5f
 
 struct Player {
 	D3DXVECTOR2 WindowPos;
