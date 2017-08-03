@@ -37,9 +37,6 @@ void PlayerRender() {
 
 				DrawVertex[i].tv += PLAYERSIZEHEIGHT * 4 / 1024.0f;
 
-				//if (frcntPunch < 12 && frcntPunch != 0) {
-				//	DrawVertex[i].tu += 0.5f;
-				//}
 				if (12 <= frcntPunch && frcntPunch < 24) {
 					DrawVertex[i].tu += PLAYERSIZEWIDHE / 1024.0f;
 				}
@@ -51,9 +48,6 @@ void PlayerRender() {
 
 				DrawVertex[i].tv += PLAYERSIZEHEIGHT * 3 / 1024.0f;
 
-				/*if (frcntPunch < 12 && frcntPunch != 0) {
-					DrawVertex[i].tu += 0.5f;
-				}*/
 				if (12 <= frcntPunch&&frcntPunch < 24) {
 					DrawVertex[i].tu += PLAYERSIZEWIDHE / 1024.0f;
 				}

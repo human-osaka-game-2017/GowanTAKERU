@@ -121,8 +121,15 @@ void SetPlayerMovement() {
 	MapNumXY PlayerRightBottomMapNum;
 	MapNumXY PlayerLeftBottomMapNum;
 
-	PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2;
-	PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2;
+	if (g_player.beLeft) {
+		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2 - 30;
+		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2;
+	}
+	else {
+		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2;
+		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2 + 30;
+	}
+	
 	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
 
 	MapchipNumberSpecify(&PlayerRightBottomMapNum, &playerRightBottom);

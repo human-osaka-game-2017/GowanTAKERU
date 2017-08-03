@@ -4,7 +4,7 @@
 #include<d3dx9.h>
 
 //描画するマップチップの個数です
-#define RENDERSTAGE1MAPCHIPNUM_HEIGHT 25
+#define RENDERSTAGE1MAPCHIPNUM_HEIGHT 26
 #define RENDERSTAGE1MAPCHIPNUM_WIDTH 44
 
 //マップチップのサイズです

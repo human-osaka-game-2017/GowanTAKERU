@@ -14,6 +14,7 @@
 #include<stdio.h>
 
 void PushOutMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
+
 void CollisionMapForBullet();
 
 #include<Windows.h>
@@ -44,7 +45,13 @@ void HitManage() {
 
 	D3DXVECTOR2 tmp = player->WorldPos;
 	tmp.y += 5;
-	PushOutMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDHE, PLAYERSIZEHEIGHT - 10);
+	if (player->beLeft) {
+		tmp.x -= 15;
+	}
+	else {
+		tmp.x += 15;
+	}
+	PushOutMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT - 10);
 
 	//エネミーとマップの押し出し処理
 	for (int i = 0; i < ENEMYNUMBER; i++) {
