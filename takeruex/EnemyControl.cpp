@@ -36,7 +36,7 @@ void EnemyInit() {
 		g_enemy[i].WindowPos.y = 0;
 		g_enemy[i].Atk = 20;//攻撃力
 		g_enemy[i].Hp = 1;//体力
-		g_enemy[i].bulletFreamCount = 0;
+		g_enemy[i].bulletFrameCount = 0;
 		g_enemy[i].beDead = false;//死んでいるか
 		g_enemy[i].beActive = false;//活動中か
 		g_enemy[i].beLeft = false;//左（右）どうっち向いてるか
@@ -66,10 +66,10 @@ void EnemyControl() {
 				g_enemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
 				//EnemyGravity(i);
 				EnemyPursuit(i);
-				g_enemy[i].bulletFreamCount++;
-				if (g_enemy[i].bulletFreamCount == g_enemy[i].firingInterval) {//エネミー事に持っているは発射感覚になったら入る
+				g_enemy[i].bulletFrameCount++;
+				if (g_enemy[i].bulletFrameCount == g_enemy[i].firingInterval) {//エネミー事に持っているは発射感覚になったら入る
 					EnemyBulettCreate(i);
-					g_enemy[i].bulletFreamCount = 0;
+					g_enemy[i].bulletFrameCount = 0;
 				}
 			}
 		}
@@ -82,7 +82,7 @@ void EnemyPursuit(int enemyNum) {
 		switch (g_enemy[enemyNum].enemyKind) {
 		case WALKINGENEMY:
 		case WALKINGENEMY_KYE02:
-			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
+			if (g_enemy[enemyNum].bulletFrameCount < g_enemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
 				//エネミーのX座標がプレイヤーのX座標より小さかったら
 				if (player->WindowPos.x < g_enemy[enemyNum].WindowPos.x) {
 					//+方向にエネミーを動かす
@@ -94,7 +94,7 @@ void EnemyPursuit(int enemyNum) {
 					g_enemy[enemyNum].MovementX += g_enemy[enemyNum].Speed;
 				}
 			}
-			if (g_enemy[enemyNum].bulletFreamCount >= g_enemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
+			if (g_enemy[enemyNum].bulletFrameCount >= g_enemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
 				g_enemy[enemyNum].MovementX = 0;
 				g_enemy[enemyNum].MovementY = 0;
 			}
@@ -104,7 +104,7 @@ void EnemyPursuit(int enemyNum) {
 		case FLYINGENEMY:
 		case FLYINGENEMY_KYE01:
 		case FLYINGENEMY_KYE02:
-			if (g_enemy[enemyNum].bulletFreamCount < g_enemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
+			if (g_enemy[enemyNum].bulletFrameCount < g_enemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
 				//エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 				if (player->WindowPos.x + 200 < g_enemy[enemyNum].WindowPos.x) {
 					//+方向にエネミーを動かす
@@ -117,7 +117,7 @@ void EnemyPursuit(int enemyNum) {
 				}
 			}
 			
-			if (g_enemy[enemyNum].bulletFreamCount >= g_enemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
+			if (g_enemy[enemyNum].bulletFrameCount >= g_enemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
 				g_enemy[enemyNum].MovementX = 0;
 				g_enemy[enemyNum].MovementY = 0;
 			}

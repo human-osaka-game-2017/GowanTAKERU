@@ -9,8 +9,15 @@
 #include"MainHitManagement.h"
 #include"FileManagement.h"
 
+#define COMMON_ANIM_INTERVAL 6
+#define LAND__ANIM_INTERVAL 3
+#define TAKEOFAIR_ANIM_INTERVAL 4
+#define SWING_INTERVAL 12
+
+//プロトタイプ群
 void SetPlayerMovement();
 void PlayerReflectMotion();
+void DecidePlayerAnimMotion();
 
 Player g_player;
 static D3DXVECTOR2 g_BasePoint = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
@@ -60,11 +67,11 @@ void PlayerInit() {
 	g_player.Jumping = false;
 	g_player.Hp = 100;
 	g_player.beActive = true;
-	g_player.LifeRedused = 2;
+	g_player.LifeReduced = 2;
 	g_player.beInvincible = false;
 	g_player.beLeft = false;
-	g_player.bePunchDOWN = false;
-	g_player.bePunchUP = false;
+	g_player.beDownSwing = false;
+	g_player.beUPSwing = false;
 }
 
 void PlayerControl() {
@@ -94,7 +101,7 @@ void SetPlayerMovement() {
 
 
 	if (Key[KEY_LEFT] == KEY_ON) {
-		if (!g_player.bePunchDOWN && !g_player.bePunchUP) {
+		if (!g_player.beDownSwing && !g_player.beUPSwing) {
 			g_player.beLeft = true;
 		}
 
@@ -103,7 +110,7 @@ void SetPlayerMovement() {
 	}
 
 	if (Key[KEY_RIGHT] == KEY_ON) {
-		if (!g_player.bePunchDOWN && !g_player.bePunchUP) {
+		if (!g_player.beDownSwing && !g_player.beUPSwing) {
 			g_player.beLeft = false;
 		}
 
@@ -122,12 +129,12 @@ void SetPlayerMovement() {
 	MapNumXY PlayerLeftBottomMapNum;
 
 	if (g_player.beLeft) {
-		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2 - 30;
-		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2;
+		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDTH / 2 - 30;
+		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDTH / 2;
 	}
 	else {
-		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDHE / 2;
-		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDHE / 2 + 30;
+		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDTH / 2;
+		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDTH / 2 + 30;
 	}
 	
 	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
@@ -187,6 +194,8 @@ void MovePlayer() {
 	g_player.WorldPos.y += g_player.MovementY;
 	g_player.WindowPos.y += g_player.MovementY;
 
+	DecidePlayerAnimMotion();
+
 	g_player.MovementX = 0;
 	g_player.MovementY = 0;
 	
@@ -205,7 +214,7 @@ void PlayerReflectMotion() {
 
 	static int frcnt = 0;
 
-	if (g_player.bePunchUP == true || g_player.bePunchDOWN == true) {
+	if (g_player.beUPSwing == true || g_player.beDownSwing == true) {
 
 		frcnt++;
 
@@ -213,12 +222,12 @@ void PlayerReflectMotion() {
 	else {
 		if (Key[KEY_Z] == KEY_PUSH)
 		{
-			g_player.bePunchDOWN = true;
+			g_player.beDownSwing = true;
 
 		}
 		if (Key[KEY_X] == KEY_PUSH) {
 
-			g_player.bePunchUP = true;
+			g_player.beUPSwing = true;
 		}
 	}
 	for (int i = 0; i < BULLETNUMBER; i++) {
@@ -251,11 +260,11 @@ void PlayerReflectMotion() {
 					if ((bullet + i)->wasReflect == false) {
 						(bullet + i)->wasReflect = true;
 
-						if (g_player.bePunchUP == true) {
+						if (g_player.beUPSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(150.0f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
-						if (g_player.bePunchDOWN == true) {
+						if (g_player.beDownSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(210.0f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
@@ -273,11 +282,11 @@ void PlayerReflectMotion() {
 					if ((bullet + i)->wasReflect == false) {
 						(bullet + i)->wasReflect = true;
 
-						if (g_player.bePunchUP == true) {
+						if (g_player.beUPSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(120.0f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
-						if (g_player.bePunchDOWN == true) {
+						if (g_player.beDownSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(240.0f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
@@ -315,11 +324,11 @@ void PlayerReflectMotion() {
 					if ((bullet + i)->wasReflect == false) {
 						(bullet + i)->wasReflect = true;
 
-						if (g_player.bePunchUP == true) {
+						if (g_player.beUPSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(30.f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
-						if (g_player.bePunchDOWN == true) {
+						if (g_player.beDownSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(-30.f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
@@ -337,11 +346,11 @@ void PlayerReflectMotion() {
 					if ((bullet + i)->wasReflect == false) {
 						(bullet + i)->wasReflect = true;
 
-						if (g_player.bePunchUP == true) {
+						if (g_player.beUPSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(60.f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
-						if (g_player.bePunchDOWN == true) {
+						if (g_player.beDownSwing == true) {
 							(bullet + i)->Rad = D3DXToRadian(-60.f);
 							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
 						}
@@ -352,9 +361,219 @@ void PlayerReflectMotion() {
 	}
 
 	if (frcnt >= 36) {
-		g_player.bePunchDOWN = false;
-		g_player.bePunchUP = false;
+		g_player.beDownSwing = false;
+		g_player.beUPSwing = false;
 		frcnt = 0;
 	}
 }
 
+void DecidePlayerAnimMotion() {
+
+	static PLAYERANIM oldAnimState = STANDBY1;
+
+	static int swingfrcnt = 0;
+	static int jumpfrcnt = 0;
+	static int runfrcnt = 0;
+	static int standbycnt = 0;
+	static int land = 0;
+	static int takeOffTheAir = 0;
+
+	//swingモーション中でない
+	if (swingfrcnt == 0) {
+
+		//upswingか判定
+		if (g_player.beUPSwing) {
+
+			//yに移動量がある
+			if (g_player.MovementY) {
+				g_player.currentAnimState = JUMPUPSWING1;
+			}
+
+			//yに移動量がない
+			else {
+
+				//xに移動量がある
+				if (g_player.MovementX) {
+					g_player.currentAnimState = RUNUPSWING1;
+				}
+
+				//xに移動量がない
+				else {
+					g_player.currentAnimState = STANDUPSWING1;
+				}
+			}
+
+			swingfrcnt++;
+		}
+
+		//downswingか判定
+		else if (g_player.beDownSwing) {
+
+			//yに移動量がある
+			if (g_player.MovementY) {
+				g_player.currentAnimState = JUMPDOWNSWING1;
+			}
+
+			//yに移動量がない
+			else {
+
+				//xに移動量がある
+				if (g_player.MovementX) {
+					g_player.currentAnimState = RUNDOWNSWING1;
+				}
+
+				//xに移動量がない
+				else {
+					g_player.currentAnimState = STANDDOWNSWING1;
+				}
+			}
+
+			swingfrcnt++;
+		}
+
+		//yに移動量がある(jumpかどうか)
+		else if (g_player.MovementY) {
+
+			//上昇中
+			if (g_player.MovementY < 0) {
+				if ((jumpfrcnt % (COMMON_ANIM_INTERVAL * 2)) < COMMON_ANIM_INTERVAL) {
+					g_player.currentAnimState = JUMP2;
+				}
+				else {
+					g_player.currentAnimState = JUMP3;
+				}
+			}
+
+			//下降中
+			else {
+				int tmp = jumpfrcnt % (COMMON_ANIM_INTERVAL * 3);
+				if (tmp < COMMON_ANIM_INTERVAL) {
+					g_player.currentAnimState = JUMP4;
+				}
+				else if (tmp < (COMMON_ANIM_INTERVAL * 2)) {
+					g_player.currentAnimState = JUMP5;
+				}
+				else if (tmp < (COMMON_ANIM_INTERVAL * 3)) {
+					g_player.currentAnimState = JUMP6;
+				}
+			}
+
+			//離陸中
+			KEYSTATE* Key = GetKey();
+			if (Key[KEY_C] == KEY_PUSH) {
+				takeOffTheAir = -TAKEOFAIR_ANIM_INTERVAL;
+			}
+			if ((takeOffTheAir < 0) && (0 < jumpfrcnt || jumpfrcnt < TAKEOFAIR_ANIM_INTERVAL)) {
+				g_player.currentAnimState = JUMP1;
+				takeOffTheAir++;
+			}
+
+			jumpfrcnt++;
+		}
+		//yに移動量がない(run or standby)
+		else {
+
+			//xに移動量がある(run)
+			if (g_player.MovementX) {
+				int tmp = runfrcnt % (COMMON_ANIM_INTERVAL * 8);
+				if (tmp < COMMON_ANIM_INTERVAL) {
+					g_player.currentAnimState = RUN1;
+				}
+				else if (tmp < COMMON_ANIM_INTERVAL * 2) {
+					g_player.currentAnimState = RUN2;
+				}
+				else if (tmp < COMMON_ANIM_INTERVAL * 3) {
+					g_player.currentAnimState = RUN3;
+				}
+				else if (tmp < COMMON_ANIM_INTERVAL * 4) {
+					g_player.currentAnimState = RUN4;
+				}
+				else if (tmp < COMMON_ANIM_INTERVAL * 5) {
+					g_player.currentAnimState = RUN5;
+				}
+				else if (tmp < COMMON_ANIM_INTERVAL * 6) {
+					g_player.currentAnimState = RUN6;
+				}
+				else if (tmp < COMMON_ANIM_INTERVAL * 7) {
+					g_player.currentAnimState = RUN7;
+				}
+				else if (tmp < COMMON_ANIM_INTERVAL * 8) {
+					g_player.currentAnimState = RUN8;
+				}
+				runfrcnt++;
+			}
+
+			//xに移動量がない
+			else {
+				int tmp = standbycnt % COMMON_ANIM_INTERVAL;
+				if (tmp < COMMON_ANIM_INTERVAL) {
+					g_player.currentAnimState = STANDBY1;
+				}
+				else {
+					g_player.currentAnimState = STANDBY2;
+				}
+				standbycnt++;
+			}
+
+			//着陸中
+			if (land < 0) {
+				g_player.currentAnimState = JUMP7;
+				land++;
+			}
+			if (oldAnimState == JUMP4 ||
+				oldAnimState == JUMP5 ||
+				oldAnimState == JUMP6) {
+				g_player.currentAnimState = JUMP7;
+				land = -LAND__ANIM_INTERVAL;
+			}
+		}
+	}
+
+	//swingモーション中である
+	else {
+		if ((swingfrcnt % COMMON_ANIM_INTERVAL) == (COMMON_ANIM_INTERVAL - 1)) {
+			g_player.currentAnimState++;
+		}
+		swingfrcnt++;
+	}
+
+	//リセット処理
+	//swingcntのリセット
+	if (!(g_player.beUPSwing) && !(g_player.beDownSwing)) {
+		swingfrcnt = 0;
+	}
+	//standby中
+	if (g_player.currentAnimState <= STANDBY2) {
+		swingfrcnt = 0;
+		jumpfrcnt = 0;
+		runfrcnt = 0;
+		land = 0;
+		takeOffTheAir = 0;
+	}
+	//jump中
+	else if (g_player.currentAnimState <= JUMP7) {
+		swingfrcnt = 0;
+		runfrcnt = 0;
+		standbycnt = 0;
+	}
+	//run中
+	else if (g_player.currentAnimState <= RUN8) {
+		swingfrcnt = 0;
+		jumpfrcnt = 0;
+		standbycnt = 0;
+		land = 0;
+		takeOffTheAir = 0;
+	}
+	//swing中
+	else if (g_player.currentAnimState <= RUNUPSWING6) {
+		jumpfrcnt = 0;
+		runfrcnt = 0;
+		standbycnt = 0;
+		land = 0;
+		takeOffTheAir = 0;
+	}
+
+	oldAnimState = (PLAYERANIM)g_player.currentAnimState;
+
+	
+}

@@ -3,6 +3,10 @@
 #include"MainRender.h"
 #include"FileManagement.h"
 #include"DirectXGraphics.h"
+#include"CommonControl.h"
+
+//プロトタイプ宣言
+int DecidePlayerAnimMotion(Player* player);
 
 void PlayerRender() {
 
@@ -13,68 +17,54 @@ void PlayerRender() {
 		LPDIRECT3DTEXTURE9* pTexture = GetTexture();
 
 		CUSTOMVERTEX Player[] = {
-			{ -PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-			{ PLAYERSIZEWIDHE / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDHE / 1024.0f - 1 / 1024.0f,0.0f },
-			{ PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDHE / 1024.0f - 1 / 1024.0f,PLAYERSIZEHEIGHT / 1024.0f },
-			{ -PLAYERSIZEWIDHE / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,PLAYERSIZEHEIGHT / 1024.0f }
+			{ -PLAYERSIZEWIDTH / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
+			{ PLAYERSIZEWIDTH / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDTH / 1024.0f - 1 / 1024.0f,0.0f },
+			{ PLAYERSIZEWIDTH / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDTH / 1024.0f - 1 / 1024.0f,PLAYERSIZEHEIGHT / 1024.0f },
+			{ -PLAYERSIZEWIDTH / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,PLAYERSIZEHEIGHT / 1024.0f }
 		};
 
-		static int frcntPunch = 0;
-
-		if (player->bePunchUP || player->bePunchDOWN) {
-			frcntPunch++;
-		}
-		else {
-			frcntPunch = 0;
-		}
-
-		CUSTOMVERTEX DrawVertex[4];
+		CUSTOMVERTEX CurrentDrawVertex[4];
 		for (int i = 0; i < 4; i++) {
-			DrawVertex[i] = Player[i];
-			DrawVertex[i].x += player->WindowPos.x;
-			DrawVertex[i].y += player->WindowPos.y;
-			if (player->bePunchUP) {
+			CurrentDrawVertex[i] = Player[i];
+			CurrentDrawVertex[i].x += player->WindowPos.x;
+			CurrentDrawVertex[i].y += player->WindowPos.y;
 
-				DrawVertex[i].tv += PLAYERSIZEHEIGHT * 4 / 1024.0f;
+			int trimX = player->currentAnimState % 10;
+			int trimY = player->currentAnimState / 10;;
 
-				if (12 <= frcntPunch && frcntPunch < 24) {
-					DrawVertex[i].tu += PLAYERSIZEWIDHE / 1024.0f;
-				}
-				if (24 <= frcntPunch && frcntPunch <= 36) {
-					DrawVertex[i].tu += PLAYERSIZEWIDHE * 2 / 1024.0f;
-				}
+			//runswing中の例外処理（画像の場所によるもの）
+			if ((RUNDOWNSWING1 <= player->currentAnimState) && (player->currentAnimState <= RUNUPSWING6)) {
+				CurrentDrawVertex[i].tu += PLAYERSIZEWIDTH * trimY / 1024.f;
+				CurrentDrawVertex[i].tv += PLAYERSIZEHEIGHT * trimX / 1024.f;
 			}
-			if (player->bePunchDOWN) {
+			//そうでないなら
+			else {
 
-				DrawVertex[i].tv += PLAYERSIZEHEIGHT * 3 / 1024.0f;
+				CurrentDrawVertex[i].tu += PLAYERSIZEWIDTH * trimX / 1024.f;
+				CurrentDrawVertex[i].tv += PLAYERSIZEHEIGHT * trimY / 1024.f;
 
-				if (12 <= frcntPunch&&frcntPunch < 24) {
-					DrawVertex[i].tu += PLAYERSIZEWIDHE / 1024.0f;
-				}
-				if (24 <= frcntPunch && frcntPunch <= 36) {
-					DrawVertex[i].tu += PLAYERSIZEWIDHE * 2 / 1024.0f;
-				}
 			}
+
+			
 		}
 
 		if (player->beLeft) {
-			TurnVertex_tu(DrawVertex);
+			TurnVertex_tu(CurrentDrawVertex);
 		}
 
 		static int frcntInvincible = 0;
-
-		if (!player->beInvincible || (frcntInvincible % 18) < 9) {
-
-			// テクスチャをステージに割り当てる
-			pD3Device->SetTexture(0, pTexture[PLAYER_TEX]);
-			// 描画
-			pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, DrawVertex, sizeof(CUSTOMVERTEX));
-		}
 		if (player->beInvincible) {
 			frcntInvincible++;
 		}
 		else {
 			frcntInvincible = 0;
 		}
+		if (!player->beInvincible || (frcntInvincible % 18) < 9) {
+			// テクスチャをステージに割り当てる
+			pD3Device->SetTexture(0, pTexture[PLAYER_TEX]);
+			// 描画
+			pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, CurrentDrawVertex, sizeof(CUSTOMVERTEX));
+		}
 	}
 }
+

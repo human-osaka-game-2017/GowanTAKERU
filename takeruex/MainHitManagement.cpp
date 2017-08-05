@@ -33,8 +33,8 @@ void HitManage() {
 
 	D3DXVECTOR2 playerRightBottom;
 	D3DXVECTOR2 playerLeftBottom;
-	playerRightBottom.x = player->WorldPos.x + PLAYERSIZEWIDHE / 2;
-	playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDHE / 2;
+	playerRightBottom.x = player->WorldPos.x + PLAYERSIZEWIDTH / 2;
+	playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2;
 	playerRightBottom.y= playerLeftBottom.y= player->WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
 	if (!player->beInvincible) {
 		if (MapKindSpecifyForPos(&playerRightBottom) == NEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == NEEDLE) {
@@ -51,7 +51,7 @@ void HitManage() {
 	else {
 		tmp.x += 15;
 	}
-	PushOutMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT - 10);
+	PushOutMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT - 10);
 
 	//エネミーとマップの押し出し処理
 	for (int i = 0; i < ENEMYNUMBER; i++) {
@@ -92,7 +92,7 @@ void HitManage() {
 					tmpPlayer.x += -15;
 				}
 				
-				if (SquareHit(&tmpPlayer, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT, &bullet[i].WindowPos, bullet->Size, bullet->Size)) {
+				if (SquareHit(&tmpPlayer, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &bullet[i].WindowPos, bullet->Size, bullet->Size)) {
 
 					DeactivateBullet(i);
 
@@ -117,7 +117,7 @@ void HitManage() {
 				else {
 					tmpPlayer.x += -15;
 				}
-				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDHE - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
 				
 					if (!player->beInvincible) {
 						player->Hp -= enemy[i].Atk;

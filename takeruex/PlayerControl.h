@@ -13,10 +13,11 @@ struct Player {
 	float MovementY;
 	float JumpPower;
 	int Hp;
-	int LifeRedused;//残気
+	int LifeReduced;//残気
+	int currentAnimState;
 	bool Jumping;
-	bool bePunchUP;
-	bool bePunchDOWN;
+	bool beUPSwing;
+	bool beDownSwing;
 	bool beInvincible;//無敵
 	bool beLeft;
 	bool beActive;
