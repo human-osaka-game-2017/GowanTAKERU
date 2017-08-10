@@ -123,6 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackGroundRender.cpp" />
+    <ClCompile Include="Blackout.cpp" />
     <ClCompile Include="BulletControl.cpp" />
     <ClCompile Include="BulletRender.cpp" />
     <ClCompile Include="DirectXGraphics.cpp" />
@@ -132,9 +133,11 @@
     <ClCompile Include="EnemyRender.cpp" />
     <ClCompile Include="FileManagement.h.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainBlackOutRender.cpp" />
     <ClCompile Include="MainControl.cpp" />
     <ClCompile Include="MainHitManagement.cpp" />
     <ClCompile Include="MainRender.cpp" />
+    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MainSceneInit.cpp" />
     <ClCompile Include="MapControl.cpp" />
     <ClCompile Include="MapRender.cpp" />
@@ -148,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGroundRender.h" />
+    <ClInclude Include="Blackout.h" />
     <ClInclude Include="BulletControl.h" />
     <ClInclude Include="BulletRender.h" />
     <ClInclude Include="CommonControl.h" />
@@ -159,9 +163,11 @@
     <ClInclude Include="EnemyControl.h" />
     <ClInclude Include="EnemyRender.h" />
     <ClInclude Include="FileManagement.h" />
+    <ClInclude Include="MainBlackOutRender.h" />
     <ClInclude Include="MainControl.h" />
     <ClInclude Include="MainHitManagement.h" />
     <ClInclude Include="MainRender.h" />
+    <ClInclude Include="MainScene.h" />
     <ClInclude Include="MainSceneInit.h" />
     <ClInclude Include="MapControl.h" />
     <ClInclude Include="MapRender.h" />

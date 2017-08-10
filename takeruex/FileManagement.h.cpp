@@ -80,6 +80,7 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp0.png", &g_pTexture[HPUI_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp1.png", &g_pTexture[HPUIIN_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/blackout.png", &g_pTexture[BLACKOUT_TEX]);
 		
 		int MaxX = GetStageXYMAX(stage_ID, X);
 		int MaxY = GetStageXYMAX(stage_ID, Y);

@@ -9,10 +9,11 @@
 #include"MainHitManagement.h"
 #include"FileManagement.h"
 
-#define COMMON_ANIM_INTERVAL 6
-#define LAND__ANIM_INTERVAL 3
-#define TAKEOFAIR_ANIM_INTERVAL 4
-#define SWING_INTERVAL 12
+#define COMMON_ANIM_INTERVAL	6
+#define LAND__ANIM_INTERVAL		3
+#define STANDBY_ANIM_INTERVAL	30
+#define TAKEOFAIR_ANIM_INTERVAL	4
+#define SWING_INTERVAL			12
 
 //プロトタイプ群
 void SetPlayerMovement();
@@ -65,7 +66,7 @@ void PlayerInit() {
 	g_player.MovementX = g_player.MovementY = 0;
 	g_player.JumpPower = 0.0f;
 	g_player.Jumping = false;
-	g_player.Hp = 100;
+	g_player.Hp = 20;
 	g_player.beActive = true;
 	g_player.LifeReduced = 2;
 	g_player.beInvincible = false;
@@ -184,7 +185,7 @@ void MovePlayer() {
 	if (g_player.WindowPos.x < 300 && g_player.beLeft) {
 		g_BasePoint.x += g_player.MovementX;
 	}
-	else if(900 < g_player.WindowPos.x && !g_player.beLeft) {
+	else if(700 < g_player.WindowPos.x && !g_player.beLeft) {
 		g_BasePoint.x += g_player.MovementX;
 	}
 	else {
@@ -192,7 +193,16 @@ void MovePlayer() {
 	}
 
 	g_player.WorldPos.y += g_player.MovementY;
-	g_player.WindowPos.y += g_player.MovementY;
+
+	/*if (g_player.WindowPos.y < 200 && g_player.MovementY < 0) {
+		g_BasePoint.y += g_player.MovementY;
+	}
+	else if (400 < g_player.WindowPos.y && 0 < g_player.MovementY) {
+		g_BasePoint.y += g_player.MovementY;
+	}
+	else {*/
+		g_player.WindowPos.y += g_player.MovementY;
+	
 
 	DecidePlayerAnimMotion();
 
@@ -376,7 +386,6 @@ void DecidePlayerAnimMotion() {
 	static int runfrcnt = 0;
 	static int standbycnt = 0;
 	static int land = 0;
-	static int takeOffTheAir = 0;
 
 	//swingモーション中でない
 	if (swingfrcnt == 0) {
@@ -434,8 +443,13 @@ void DecidePlayerAnimMotion() {
 		//yに移動量がある(jumpかどうか)
 		else if (g_player.MovementY) {
 
+			//離陸中
+			if (g_player.Jumping && (0 <= jumpfrcnt && jumpfrcnt < TAKEOFAIR_ANIM_INTERVAL)) {
+				g_player.currentAnimState = JUMP1;
+			}
+
 			//上昇中
-			if (g_player.MovementY < 0) {
+			else if (g_player.MovementY < 0) {
 				if ((jumpfrcnt % (COMMON_ANIM_INTERVAL * 2)) < COMMON_ANIM_INTERVAL) {
 					g_player.currentAnimState = JUMP2;
 				}
@@ -456,16 +470,6 @@ void DecidePlayerAnimMotion() {
 				else if (tmp < (COMMON_ANIM_INTERVAL * 3)) {
 					g_player.currentAnimState = JUMP6;
 				}
-			}
-
-			//離陸中
-			KEYSTATE* Key = GetKey();
-			if (Key[KEY_C] == KEY_PUSH) {
-				takeOffTheAir = -TAKEOFAIR_ANIM_INTERVAL;
-			}
-			if ((takeOffTheAir < 0) && (0 < jumpfrcnt || jumpfrcnt < TAKEOFAIR_ANIM_INTERVAL)) {
-				g_player.currentAnimState = JUMP1;
-				takeOffTheAir++;
 			}
 
 			jumpfrcnt++;
@@ -505,8 +509,9 @@ void DecidePlayerAnimMotion() {
 
 			//xに移動量がない
 			else {
-				int tmp = standbycnt % COMMON_ANIM_INTERVAL;
-				if (tmp < COMMON_ANIM_INTERVAL) {
+				//g_player.currentAnimState = STANDBY1;
+				int tmp = standbycnt % STANDBY_ANIM_INTERVAL * 2;
+				if (tmp < STANDBY_ANIM_INTERVAL) {
 					g_player.currentAnimState = STANDBY1;
 				}
 				else {
@@ -548,7 +553,6 @@ void DecidePlayerAnimMotion() {
 		jumpfrcnt = 0;
 		runfrcnt = 0;
 		land = 0;
-		takeOffTheAir = 0;
 	}
 	//jump中
 	else if (g_player.currentAnimState <= JUMP7) {
@@ -562,7 +566,6 @@ void DecidePlayerAnimMotion() {
 		jumpfrcnt = 0;
 		standbycnt = 0;
 		land = 0;
-		takeOffTheAir = 0;
 	}
 	//swing中
 	else if (g_player.currentAnimState <= RUNUPSWING6) {
@@ -570,7 +573,6 @@ void DecidePlayerAnimMotion() {
 		runfrcnt = 0;
 		standbycnt = 0;
 		land = 0;
-		takeOffTheAir = 0;
 	}
 
 	oldAnimState = (PLAYERANIM)g_player.currentAnimState;

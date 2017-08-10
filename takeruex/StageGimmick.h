@@ -2,5 +2,5 @@
 #define STAGEGIMMICK
 
 void StageGimmickManage();
-
+void ComeBackCheckPoint();
 #endif

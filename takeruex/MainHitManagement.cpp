@@ -8,6 +8,7 @@
 #include"EnemyControl.h"
 #include"EnemyRender.h"
 #include"DirectXSound.h"
+#include"MainBlackOutRender.h"
 
 #include<Windows.h>
 #include<tchar.h>
@@ -37,7 +38,7 @@ void HitManage() {
 	playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2;
 	playerRightBottom.y= playerLeftBottom.y= player->WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
 	if (!player->beInvincible) {
-		if (MapKindSpecifyForPos(&playerRightBottom) == NEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == NEEDLE) {
+		if (MapKindSpecifyForPos(&playerRightBottom) == UPNEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == UPNEEDLE) {
 			player->Hp -= 10;
 			player->beInvincible = true;
 		}
@@ -134,11 +135,6 @@ void HitManage() {
 	if (frcntInvincible >= 90) {
 		frcntInvincible = 0;
 		player->beInvincible = false;
-	}
-
-	//player‚ÌŽ€–S”»’è‚Ìƒtƒ‰ƒO
-	if (player->Hp <= 0) {
-		player->beActive = false;
 	}
 }
 

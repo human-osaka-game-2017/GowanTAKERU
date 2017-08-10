@@ -5,9 +5,6 @@
 #include"DirectXGraphics.h"
 #include"CommonControl.h"
 
-//プロトタイプ宣言
-int DecidePlayerAnimMotion(Player* player);
-
 void PlayerRender() {
 
 	Player* player = GetplayerData();

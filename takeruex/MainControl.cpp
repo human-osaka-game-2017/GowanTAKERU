@@ -5,6 +5,8 @@
 #include"MapControl.h"
 #include"MainHitManagement.h"
 #include"MoveManagement.h"
+#include"StageGimmick.h"
+#include"MainBlackOutRender.h"
 
 void MainControl() {
 
@@ -12,10 +14,33 @@ void MainControl() {
 	EnemyControl();
 	BulletControl();
 	HitManage();
+	StageGimmickManage();
 	MoveManage();
+
+	//player‚ÌŽ€–S”»’è
+	Player* player = GetplayerData();
+	static int frcnt = 0;
+	bool* MainBlackOutflg = GetMainBlackOutflg();
+
+	if (player->Hp <= 0) {
+
+		player->Hp = 100;
+		player->LifeReduced--;
+
+		*MainBlackOutflg = true;
+	}
+
+	if (frcnt == (FINISHFRM / 2)) {
+		ComeBackCheckPoint();
+	}
+	if (*MainBlackOutflg) {
+		frcnt++;
+	}
+	else {
+		frcnt = 0;
+	}
+	
 }
-
-
 
 double Calculate_rad(float x1, float y1, float x2, float y2) {
 

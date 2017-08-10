@@ -72,7 +72,7 @@ void MapRender() {
 						}
 						break;
 
-					case NEEDLE:
+					case UPNEEDLE:
 						for (int k = 0; k < 4; k++) {
 							drawMapVertex[k].tv += 0.25;
 						}

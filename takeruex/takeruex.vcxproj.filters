@@ -68,6 +68,15 @@
     <ClCompile Include="DirectXSound.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="Blackout.cpp">
+      <Filter>Application\Blackout</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>Application\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="MainBlackOutRender.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -93,6 +102,9 @@
     </Filter>
     <Filter Include="Application\MainScene\Stage">
       <UniqueIdentifier>{4ebc9fa0-1de9-4d6b-a210-aceb6e572253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Blackout">
+      <UniqueIdentifier>{ba25eb1c-5166-44e3-87b7-70c7c81a4ab7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +182,15 @@
     </ClInclude>
     <ClInclude Include="CommonSound.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Blackout.h">
+      <Filter>Application\Blackout</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>Application\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="MainBlackOutRender.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

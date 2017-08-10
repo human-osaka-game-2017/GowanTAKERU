@@ -6,8 +6,8 @@
 enum SCENE_ID {
 	MAINSCENE,
 	TITLESCENE,
-	/*GAMEOVER,
-	GAMECLEAR*/
+	GAMEOVER,
+	GAMECLEAR
 };
 
 //シーンを分けてくれる。描画コントロールも呼んでます。
