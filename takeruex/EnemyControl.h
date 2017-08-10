@@ -46,6 +46,7 @@ struct Enemy {
 	bool beDead;//€‚ñ‚Å‚¢‚é‚©
 	bool beActive;//Šˆ“®’†‚©
 	bool beLeft;//¶i‰Ej‚Ç‚¤‚Á‚¿Œü‚¢‚Ä‚é‚©
+	int siza;
 
 
 };
