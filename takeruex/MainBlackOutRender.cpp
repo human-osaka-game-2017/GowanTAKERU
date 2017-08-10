@@ -20,21 +20,22 @@ void MainBlackOutRender() {
 		{ DISPLAY_WIDTH,DISPLAY_HEIGHT,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
 		{ 0.0f,DISPLAY_HEIGHT,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 	};
-
+	
 	static int frcnt = 0;
 	DWORD color;
-	if (frcnt < (2 / FINISHFRM)) {
-		color = ((0xFF * frcnt / (2 / FINISHFRM)) << 6) | 0x00FFFFFF;
+
+	if (frcnt < (FINISHFRM / 2)) {
+		DWORD aaa = ((0xFF * frcnt / (FINISHFRM / 2)) << 24);
+		color = ((0xFF * frcnt / (FINISHFRM / 2)) << 24) | 0x00FFFFFF;
 	}
-	else if((2 / FINISHFRM)){
-		color = ((0xFF * (FINISHFRM-frcnt) / (2 / FINISHFRM)) << 6) | 0x00FFFFFF;
+	else {
+		color = ((0xFF * (FINISHFRM-frcnt) / (FINISHFRM / 2)) << 24) | 0x00FFFFFF;
 	}
 
 	CUSTOMVERTEX DrawVertex[4];
 	for (int i = 0; i < 4; i++) {
 		DrawVertex[i] = BlackOut[i];
 		DrawVertex[i].color = color;
-		DrawVertex[i].color = 0x00FFFFFF;
 	}
 
 	// テクスチャをステージに割り当てる

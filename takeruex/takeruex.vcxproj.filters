@@ -77,6 +77,24 @@
     <ClCompile Include="MainBlackOutRender.cpp">
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClCompile>
+    <ClCompile Include="GameClearRender.cpp">
+      <Filter>Application\GameClearScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClear.cpp">
+      <Filter>Application\GameClearScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>Application\GameOverScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverRender.cpp">
+      <Filter>Application\GameOverScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>Application\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleRender.cpp">
+      <Filter>Application\TitleScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -105,6 +123,15 @@
     </Filter>
     <Filter Include="Application\Blackout">
       <UniqueIdentifier>{ba25eb1c-5166-44e3-87b7-70c7c81a4ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\TitleScene">
+      <UniqueIdentifier>{d1cbe9f0-e29f-4c01-8f89-a6d0572f6781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameClearScene">
+      <UniqueIdentifier>{f8b7b849-ce87-45de-9368-04f85bb637d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\GameOverScene">
+      <UniqueIdentifier>{ab277002-f445-4c35-bab1-3d106a0ab410}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +218,24 @@
     </ClInclude>
     <ClInclude Include="MainBlackOutRender.h">
       <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClear.h">
+      <Filter>Application\GameClearScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>Application\GameOverScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverRender.h">
+      <Filter>Application\GameOverScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>Application\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleRender.h">
+      <Filter>Application\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClearRender.h">
+      <Filter>Application\GameClearScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

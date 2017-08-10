@@ -132,6 +132,10 @@
     <ClCompile Include="EnemyControl.cpp" />
     <ClCompile Include="EnemyRender.cpp" />
     <ClCompile Include="FileManagement.h.cpp" />
+    <ClCompile Include="GameClear.cpp" />
+    <ClCompile Include="GameClearRender.cpp" />
+    <ClCompile Include="GameOver.cpp" />
+    <ClCompile Include="GameOverRender.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainBlackOutRender.cpp" />
     <ClCompile Include="MainControl.cpp" />
@@ -147,6 +151,8 @@
     <ClCompile Include="SceneManagement.cpp" />
     <ClCompile Include="StageGimmick.cpp" />
     <ClCompile Include="StageSelect.cpp" />
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TitleRender.cpp" />
     <ClCompile Include="UIRendr.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,10 @@
     <ClInclude Include="EnemyControl.h" />
     <ClInclude Include="EnemyRender.h" />
     <ClInclude Include="FileManagement.h" />
+    <ClInclude Include="GameClear.h" />
+    <ClInclude Include="GameClearRender.h" />
+    <ClInclude Include="GameOver.h" />
+    <ClInclude Include="GameOverRender.h" />
     <ClInclude Include="MainBlackOutRender.h" />
     <ClInclude Include="MainControl.h" />
     <ClInclude Include="MainHitManagement.h" />
@@ -177,6 +187,8 @@
     <ClInclude Include="SceneManagement.h" />
     <ClInclude Include="StageGimmick.h" />
     <ClInclude Include="StageSelect.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="TitleRender.h" />
     <ClInclude Include="UIRendr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

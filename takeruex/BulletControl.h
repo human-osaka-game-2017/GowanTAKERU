@@ -5,7 +5,7 @@
 
 #define BULLETNUMBER 60
 
-enum BULLETKIND{BULLET01};
+enum BULLETKIND{BULLET01, HOMING};
 
 struct Bullet {
 	BULLETKIND BulletKind;

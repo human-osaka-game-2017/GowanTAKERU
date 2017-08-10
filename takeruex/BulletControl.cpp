@@ -68,10 +68,21 @@ void BulletCreate(int bulletNum,int enemyNum, BULLETKIND bulletKind) {
 void BulletControl() {
 	
 	MapNumXY mapNum;
+	Player* player = GetplayerData();
 
 	for (int i = 0; i < BULLETNUMBER; i++) {
 		if (g_bullet[i].beActive) {
-
+			if (g_bullet[i].BulletKind == HOMING) {
+				if (g_bullet[i].wasReflect) {
+					g_bullet[i].SaveCoordinate = player->WindowPos;
+					g_bullet[i].Rad = Calculate_rad(
+						g_bullet[i].WindowPos.x,
+						g_bullet[i].WindowPos.y,
+						g_bullet[i].SaveCoordinate.x,
+						g_bullet[i].SaveCoordinate.y
+					);
+				}
+			}
 			SetBulletMovement(i);
 
 			MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);

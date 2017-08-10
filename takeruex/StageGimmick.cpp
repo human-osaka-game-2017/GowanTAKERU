@@ -10,26 +10,31 @@
 
 void StageGimmickManage() {
 
-	STAGE_ID stage_ID = GetStage_ID();
-	Player* player = GetplayerData();
-	int* map = GetMapData();
-	STAGEXYMAX maxX = GetStageXYMAX(stage_ID, X);
-	STAGEXYMAX maxY = GetStageXYMAX(stage_ID, Y);
+	//STAGE_ID stage_ID = GetStage_ID();
+	//Player* player = GetplayerData();
+	//int* map = GetMapData();
+	//STAGEXYMAX maxX = GetStageXYMAX(stage_ID, X);
+	//STAGEXYMAX maxY = GetStageXYMAX(stage_ID, Y);
 
-	switch (stage_ID) {
+	//switch (stage_ID) {
 
-	case STAGE_1:
-		if (player->WorldPos.x >= 9342) {
-			for (int i = 19; i <= 25; i++) {
-				for (int j = 288; j <= 290; j++) {
-					map[i*maxX + j] = FLOOR;
-				}
-			}
-		}
-	}
+	//case STAGE_1:
+	//	if (player->WorldPos.x >= 9342) {
+	//		for (int i = 19; i <= 25; i++) {
+	//			for (int j = 288; j <= 290; j++) {
+	//				map[i*maxX + j] = FLOOR;
+	//			}
+	//		}
+	//	}
+	//}
+
+	//for (int i = 0; i < ENEMYNUMBER; i++) {
+	//	if()
+	//}
 
 }
 
+//チェックポイントは必ず二つ
 void ComeBackCheckPoint() {
 
 	STAGE_ID stage_ID = GetStage_ID();
@@ -57,6 +62,7 @@ void ComeBackCheckPoint() {
 			}
 		}
 	}
+	free(gimmickData);
 
 	Player* player = GetplayerData();
 	D3DXVECTOR2* basePoint = GetBasePoint();
@@ -82,4 +88,7 @@ void ComeBackCheckPoint() {
 
 	EnemyInit();
 	BulletInit();
+
+	int* mapdata = GetMapData();
+	CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, maxY, maxX);
 }

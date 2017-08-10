@@ -20,6 +20,7 @@ struct EnemyMapNum {//CSVの座標と番号を入れる箱
 Enemy* GetenemyData() {
 		return g_enemy;
 	}
+
 //プロトタイプ群
 void EnemyBulettCreate(int enemyNum);
 void EnemyPursuit(int enemyNum);
@@ -40,7 +41,6 @@ void EnemyInit() {
 		g_enemy[i].beDead = false;//死んでいるか
 		g_enemy[i].beActive = false;//活動中か
 		g_enemy[i].beLeft = false;//左（右）どうっち向いてるか
-
 
 	}
 
