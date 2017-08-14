@@ -56,7 +56,7 @@ enum MapKind {
 	BOSS_Stage2,
 	BOSS_Stage3,
 	BOSS_Stage4,
-	Dummy,//予備隠し用
+	Dummy2,//予備隠し用
 	Respawn_point1,//リスポーン地点
 	Respawn_point2,
 };

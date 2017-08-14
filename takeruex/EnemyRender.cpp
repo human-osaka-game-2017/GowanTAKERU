@@ -3,6 +3,7 @@
 #include"MainRender.h"
 #include"FileManagement.h"
 #include"DirectXGraphics.h"
+#include "MapRender.h"
 
 void EnemyRender() {
 
@@ -30,12 +31,12 @@ void EnemyRender() {
 			}
 
 			switch (enemy[i].enemyKind) {
-			case FLYINGENEMY:
-			case FLYINGENEMY_KYE01:
-			case FLYINGENEMY_KYE02:
+			case FLYINGENEMY1:
+			case FLYINGENEMY_HAS_KEY1:
+			case FLYINGENEMY_HAS_KEY2:
 
-			case WALKINGENEMY:
-			case WALKINGENEMY_KYE02:
+			case WALKINGENEMY_1:
+			case WALKINGENEMY_HAS_KEY_2:
 				// テクスチャをステージに割り当てる
 				pD3Device->SetTexture(0, pTexture[ENEMY01_TEX]);
 				// 描画
