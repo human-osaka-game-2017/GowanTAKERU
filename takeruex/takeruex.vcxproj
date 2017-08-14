@@ -123,7 +123,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackGroundRender.cpp" />
-    <ClCompile Include="Blackout.cpp" />
     <ClCompile Include="BulletControl.cpp" />
     <ClCompile Include="BulletRender.cpp" />
     <ClCompile Include="DirectXGraphics.cpp" />
@@ -137,7 +136,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameOverRender.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainBlackOutRender.cpp" />
+    <ClCompile Include="BlackOutRender.cpp" />
     <ClCompile Include="MainControl.cpp" />
     <ClCompile Include="MainHitManagement.cpp" />
     <ClCompile Include="MainRender.cpp" />
@@ -151,13 +150,13 @@
     <ClCompile Include="SceneManagement.cpp" />
     <ClCompile Include="StageGimmick.cpp" />
     <ClCompile Include="StageSelect.cpp" />
-    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Boss1.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleRender.cpp" />
     <ClCompile Include="UIRendr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGroundRender.h" />
-    <ClInclude Include="Blackout.h" />
     <ClInclude Include="BulletControl.h" />
     <ClInclude Include="BulletRender.h" />
     <ClInclude Include="CommonControl.h" />
@@ -173,7 +172,7 @@
     <ClInclude Include="GameClearRender.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameOverRender.h" />
-    <ClInclude Include="MainBlackOutRender.h" />
+    <ClInclude Include="BlackOutRender.h" />
     <ClInclude Include="MainControl.h" />
     <ClInclude Include="MainHitManagement.h" />
     <ClInclude Include="MainRender.h" />
@@ -187,7 +186,8 @@
     <ClInclude Include="SceneManagement.h" />
     <ClInclude Include="StageGimmick.h" />
     <ClInclude Include="StageSelect.h" />
-    <ClInclude Include="Title.h" />
+    <ClInclude Include="Boss1.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleRender.h" />
     <ClInclude Include="UIRendr.h" />
   </ItemGroup>

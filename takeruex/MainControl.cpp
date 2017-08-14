@@ -6,7 +6,9 @@
 #include"MainHitManagement.h"
 #include"MoveManagement.h"
 #include"StageGimmick.h"
-#include"MainBlackOutRender.h"
+#include"BlackOutRender.h"
+
+#include<d3dx9.h>
 
 void MainControl() {
 
@@ -19,25 +21,18 @@ void MainControl() {
 
 	//player‚ÌŽ€–S”»’è
 	Player* player = GetplayerData();
-	static int frcnt = 0;
-	bool* MainBlackOutflg = GetMainBlackOutflg();
+	BlackOutData* blackOutData = GetBlackOutData();
 
 	if (player->Hp <= 0) {
 
 		player->Hp = 100;
 		player->LifeReduced--;
 
-		*MainBlackOutflg = true;
+		blackOutData->BlackOutflg = true;
 	}
 
-	if (frcnt == (FINISHFRM / 2)) {
+	if (blackOutData->BlackOutNextState==BLACKOUT) {
 		ComeBackCheckPoint();
-	}
-	if (*MainBlackOutflg) {
-		frcnt++;
-	}
-	else {
-		frcnt = 0;
 	}
 	
 }
@@ -82,6 +77,11 @@ double Calculate_rad(float x1, float y1, float x2, float y2) {
 	rad = (2 * D3DX_PI) - rad;
 
 	return rad;
+}
+
+float Calculate_distance(float x1, float y1, float x2, float y2) {
+
+	return (float)sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
 }
 
 //struct VertexInfo {

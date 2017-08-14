@@ -4,6 +4,8 @@
 #include"CommonRender.h"
 #include"SceneManagement.h"
 #include"FileManagement.h"
+#include"MainRender.h"
+#include"TitleRender.h"
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
@@ -93,8 +95,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 
 	//ÉäÉäÅ[ÉX
-	TextureFree();
+	SCENE_ID scene_ID = GetCurrentScene_ID();
+	int num = 0;
+	switch (scene_ID) {
+	case MAINSCENE:
+		num = MAINSCENE_TEXMAX;
+	case TITLESCENE:
+		num = TITLESCENE_TEXMAX;
+	}
+	ReleaseTexture(num);
+	FreeTexture();
+	ReleaseBuffer();
 	ReleaseSoundDevice();
+	ReleaseBlackOutTexture();
 	FreeDxInput();
 	FreeDxGraphics();
 

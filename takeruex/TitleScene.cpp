@@ -1,5 +1,5 @@
-#include"GameOver.h"
-#include"GameOverRender.h"
+#include"TitleScene.h"
+#include"TitleRender.h"
 #include"CommonControl.h"
 #include"FileManagement.h"
 #include"DirectXGraphics.h"
@@ -7,10 +7,10 @@
 #include"DirectXSound.h"
 
 //プロトタイプ群
-void GameOverRender(bool pushkey);
+void TitleRender(bool pushkey);
 
-SCENE_ID RunGameOverScene(bool willbetrancefar) {
-	SCENE_ID nextscene_ID = GAMEOVERSCENE;
+SCENE_ID RunTitleScene(bool willbetrancefar) {
+	SCENE_ID nextscene_ID = TITLESCENE;
 
 	KEYSTATE* key = GetKey();
 	KeyCheck(&key[KEY_Z], DIK_Z);
@@ -25,7 +25,7 @@ SCENE_ID RunGameOverScene(bool willbetrancefar) {
 
 	switch (step) {
 	case 0:
-		GameOverSceneLoad();
+		TitleSceneLoad();
 		nextsceneflg = false;
 		step++;
 		break;
@@ -33,16 +33,17 @@ SCENE_ID RunGameOverScene(bool willbetrancefar) {
 	case 1:
 
 		if (key[KEY_Z] == KEY_PUSH) {
-			nextscene_ID = TITLESCENE;
+			nextscene_ID = MAINSCENE;
 			nextsceneflg = true;
+			PlayBackSound(SOUND03, false,100);
 		}
 
-		GameOverRender(nextsceneflg);
+		TitleRender(nextsceneflg);
 
 		break;
 
 	case 2:
-		ReleaseTexture(GAMEOVER_TEXMAX);
+		ReleaseTexture(TITLESCENE_TEXMAX);
 		FreeTexture();
 		step = 0;
 		break;
@@ -51,7 +52,7 @@ SCENE_ID RunGameOverScene(bool willbetrancefar) {
 	return nextscene_ID;
 }
 
-void GameOverRender(bool pushkey) {
+void TitleRender(bool pushkey) {
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 
 	pD3Device->Clear(0, NULL,
@@ -61,9 +62,8 @@ void GameOverRender(bool pushkey) {
 
 	pD3Device->BeginScene();
 
-	GameOverBackGroundRender();
-	GameOverLogoRender();
-	GameOverPushZkeyRender(pushkey);
+	TitleBackGroundRender();
+	TitleLogoRender(pushkey);
 
 	BlackOutData* blackOutData = GetBlackOutData();
 	if (blackOutData->BlackOutflg) {
@@ -73,5 +73,4 @@ void GameOverRender(bool pushkey) {
 	pD3Device->EndScene();
 	pD3Device->Present(NULL, NULL, NULL, NULL);
 }
-
 

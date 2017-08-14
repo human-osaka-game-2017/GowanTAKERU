@@ -8,7 +8,7 @@
 #include"EnemyControl.h"
 #include"EnemyRender.h"
 #include"DirectXSound.h"
-#include"MainBlackOutRender.h"
+#include"BlackOutRender.h"
 
 #include<Windows.h>
 #include<tchar.h>

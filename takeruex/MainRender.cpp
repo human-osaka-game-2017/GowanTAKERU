@@ -7,7 +7,7 @@
 #include"BulletRender.h"
 #include"EnemyRender.h"
 #include"UIRender.h"
-#include"MainBlackOutRender.h"
+#include"BlackOutRender.h"
 
 void MainRender() {
 
@@ -30,9 +30,9 @@ void MainRender() {
 	PlayerRender();
 	UIRender();
 
-	bool* BlackOutflg = GetMainBlackOutflg();
-	if (*BlackOutflg) {
-		MainBlackOutRender();
+	BlackOutData* blackOutData = GetBlackOutData();
+	if (blackOutData->BlackOutflg) {
+		BlackOutRender();
 	}
 
 	pD3Device->EndScene();

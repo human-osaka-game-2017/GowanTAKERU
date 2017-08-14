@@ -5,15 +5,22 @@
 #include<stdio.h>
 #include"MapRender.h"
 #include"DirectXSound.h"
+#include"TitleRender.h"
+#include"GameOverRender.h"
 
 #define StageNum 5
 
-static LPDIRECT3DTEXTURE9 g_pTexture[TEXMAX] = { NULL };
+static LPDIRECT3DTEXTURE9* g_pTexture;
+static LPDIRECT3DTEXTURE9 g_pBlackOutTexture;
 int* g_mapData = NULL;
 STAGEXYMAX g_MapNumMax[StageNum * 2];
 
 int* GetMapData() {
 	return g_mapData;
+}
+
+LPDIRECT3DTEXTURE9* GetBlackOutTexture() {
+	return &g_pBlackOutTexture;
 }
 
 LPDIRECT3DTEXTURE9* GetTexture() {
@@ -39,16 +46,27 @@ void TextureInit() {
 	pD3Device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 
 	pD3Device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+
+	D3DXCreateTextureFromFile(pD3Device, "Picture/BlackOut/blackout.png", &g_pBlackOutTexture);
 }
 
-void TextureFree() {
-	for (int i = 0; i < TEXMAX; i++)
+void ReleaseTexture(int num) {
+	for (int i = 0; i < num; i++)
 	{
 		if (g_pTexture[i] != NULL) {
 			g_pTexture[i]->Release();
 			g_pTexture[i] = NULL;
 		}
 	}
+}
+
+void FreeTexture() {
+	free(g_pTexture);
+}
+
+void ReleaseBlackOutTexture() {
+	g_pBlackOutTexture->Release();
+	g_pBlackOutTexture = NULL;
 }
 
 void CSVLoad(char* mapdata, int* map,int height,int width) {
@@ -69,9 +87,21 @@ void CSVLoad(char* mapdata, int* map,int height,int width) {
 
 }
 
+void TitleSceneLoad() {
+
+	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
+	g_pTexture = (LPDIRECT3DTEXTURE9*)malloc(sizeof(LPDIRECT3DTEXTURE9)*TITLESCENE_TEXMAX);
+
+	D3DXCreateTextureFromFile(pD3Device, "Picture/TitleScene/titlebackground.png", &g_pTexture[TITLE_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/TitleScene/pushZkeylogo.png", &g_pTexture[TITLELOGO_TEX]);
+
+	CreateBufferForWave("Sound/SE_Start.wav", SOUND03);
+}
+
 void MainSceneLoad(STAGE_ID stage_ID) {
 
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
+	g_pTexture=(LPDIRECT3DTEXTURE9*)malloc(sizeof(LPDIRECT3DTEXTURE9)*MAINSCENE_TEXMAX);
 
 	switch (stage_ID) {
 	case STAGE_1:
@@ -81,10 +111,8 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/bullet1.png", &g_pTexture[BULLET02_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/player.png", &g_pTexture[PLAYER_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/enemy1.png", &g_pTexture[ENEMY01_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/GameOverTest.png", &g_pTexture[GAMEOVER_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp0.png", &g_pTexture[HPUI_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp1.png", &g_pTexture[HPUIIN_TEX]);
-		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/blackout.png", &g_pTexture[BLACKOUT_TEX]);
 		
 		int MaxX = GetStageXYMAX(stage_ID, X);
 		int MaxY = GetStageXYMAX(stage_ID, Y);
@@ -92,12 +120,22 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		g_mapData = (int*)malloc(sizeof(int)*MaxX*MaxY);
 		CSVLoad("CSV/mainscene/stage1_map.csv", g_mapData, MaxY, MaxX);
 
-		CreateBufferForWave("Sound/MainScene/SE_ShotBom1.wav", SOUND01);
-		CreateBufferForWave("Sound/MainScene/BGM_Stage.wav", SOUND02);
+		CreateBufferForWave("Sound/SE_ShotBom1.wav", SOUND01);
+		CreateBufferForWave("Sound/BGM_Stage.wav", SOUND02);
 	}
 }
 
-void ReleseMapData() {
+void GameOverSceneLoad() {
+	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
+	g_pTexture = (LPDIRECT3DTEXTURE9*)malloc(sizeof(LPDIRECT3DTEXTURE9)*GAMEOVER_TEXMAX);
+
+	D3DXCreateTextureFromFile(pD3Device, "Picture/GameOverScene/gameoverbackground.png", &g_pTexture[GAMEOVERBACKGROUND_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/GameOverScene/gameoverlogo.png", &g_pTexture[GAMEOVERLOGO_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/GameOverScene/pushZkeylogo.png", &g_pTexture[GAMEOVERPUSH_Z_KEY_TEX]);
+
+}
+
+void FreeMapData() {
 	free(g_mapData);
 	g_mapData = NULL;
 }

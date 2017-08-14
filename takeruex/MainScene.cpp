@@ -8,16 +8,22 @@
 #include"PlayerControl.h"
 
 
-SCENE_ID RunMainScene() {
+SCENE_ID RunMainScene(bool willbetrancefar) {
 
-	SCENE_ID scene = MAINSCENE;
+	SCENE_ID nextscene = MAINSCENE;
 	Player* pPlayer = GetplayerData();
 
 	static int step = 0;
+
+
+	if (willbetrancefar) {
+		step = 2;
+	}
+
 	switch (step) {
 
 	case 0:
-		StageSelect();
+		//StageSelect();
 		MainSceneLoad(GetStage_ID());
 		MainSceneInit();
 		PlayBackSound(SOUND02, true, 100);
@@ -28,21 +34,22 @@ SCENE_ID RunMainScene() {
 		MainControl();
 		MainRender();
 
-		/*if (pPlayer->LifeReduced == 0) {
-				scene = GAMEOVER;
-				step++;
-			}*/
+		if (pPlayer->LifeReduced == 0) {
+			nextscene = GAMEOVERSCENE;
+			StopSound(SOUND02);
+			}
 		//if(bossŽ€–S)step++
 		//if(stage4bossŽ€–S)scene = GAMECLEAR
 		break;
 
 	case 2:
-		ReleseMapData();
-		TextureFree();
-		ReleaseBuffer();
+		FreeMapData();
+		ReleaseTexture(MAINSCENE_TEXMAX);
+		FreeTexture();
+		//ReleaseBuffer();
 		step=0;
 		break;
 	}
 
-	return scene;
+	return nextscene;
 }

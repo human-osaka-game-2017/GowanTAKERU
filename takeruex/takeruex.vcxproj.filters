@@ -32,9 +32,6 @@
     <ClCompile Include="BackGroundRender.cpp">
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClCompile>
-    <ClCompile Include="MainRender.cpp">
-      <Filter>Application\MainScene\MainRender</Filter>
-    </ClCompile>
     <ClCompile Include="FileManagement.h.cpp">
       <Filter>Application</Filter>
     </ClCompile>
@@ -68,14 +65,8 @@
     <ClCompile Include="DirectXSound.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Blackout.cpp">
-      <Filter>Application\Blackout</Filter>
-    </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <Filter>Application\MainScene</Filter>
-    </ClCompile>
-    <ClCompile Include="MainBlackOutRender.cpp">
-      <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClCompile>
     <ClCompile Include="GameClearRender.cpp">
       <Filter>Application\GameClearScene</Filter>
@@ -89,11 +80,20 @@
     <ClCompile Include="GameOverRender.cpp">
       <Filter>Application\GameOverScene</Filter>
     </ClCompile>
-    <ClCompile Include="Title.cpp">
-      <Filter>Application\TitleScene</Filter>
-    </ClCompile>
     <ClCompile Include="TitleRender.cpp">
       <Filter>Application\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Application\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackOutRender.cpp">
+      <Filter>Application\Blackout</Filter>
+    </ClCompile>
+    <ClCompile Include="MainRender.cpp">
+      <Filter>Application\MainScene\MainRender</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss1.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -210,14 +210,8 @@
     <ClInclude Include="CommonSound.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Blackout.h">
-      <Filter>Application\Blackout</Filter>
-    </ClInclude>
     <ClInclude Include="MainScene.h">
       <Filter>Application\MainScene</Filter>
-    </ClInclude>
-    <ClInclude Include="MainBlackOutRender.h">
-      <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClInclude>
     <ClInclude Include="GameClear.h">
       <Filter>Application\GameClearScene</Filter>
@@ -228,14 +222,20 @@
     <ClInclude Include="GameOverRender.h">
       <Filter>Application\GameOverScene</Filter>
     </ClInclude>
-    <ClInclude Include="Title.h">
-      <Filter>Application\TitleScene</Filter>
-    </ClInclude>
     <ClInclude Include="TitleRender.h">
       <Filter>Application\TitleScene</Filter>
     </ClInclude>
     <ClInclude Include="GameClearRender.h">
       <Filter>Application\GameClearScene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Application\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackOutRender.h">
+      <Filter>Application\Blackout</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss1.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

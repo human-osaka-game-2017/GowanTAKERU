@@ -20,16 +20,25 @@ enum X_OR_Y {
 
 //pTexture使いたい人つかって
 LPDIRECT3DTEXTURE9* GetTexture();
+LPDIRECT3DTEXTURE9* GetBlackOutTexture();
 
 //textureをリリース
-void TextureFree();
+void ReleaseTexture(int num);
+void ReleaseBlackOutTexture();
+void FreeTexture();
 
 int* GetMapData();
 
 //mainsceneのテキスチャとマップの読み込み
 //Releseを行ってください
 void MainSceneLoad(STAGE_ID stage_ID);
-void ReleseMapData();
+void FreeMapData();
+
+//タイトルシーンの読み込み
+void TitleSceneLoad();
+
+//ゲームオーバーシーンの読み込み
+void GameOverSceneLoad();
 
 void CSVLoad(char* mapdata, int* map, int height, int width);
 
