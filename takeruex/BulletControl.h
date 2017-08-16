@@ -5,7 +5,14 @@
 
 #define BULLETNUMBER 60
 
-enum BULLETKIND{BULLET01, HOMING};
+enum BULLETKIND{
+	BULLET01,//壁に当たると消える
+	BULLET02,//壁で2回反射する
+	BULLET03,//壁で4回反射する
+	FASTBULLET,//スピード１．３倍
+	POWERBULLET,//高威力
+	HOMING
+};
 
 struct Bullet {
 	BULLETKIND BulletKind;

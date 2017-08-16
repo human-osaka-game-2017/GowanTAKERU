@@ -29,6 +29,7 @@ void HitManage() {
 	Boss1Data* pBoss1 = GetBoss1Data();
 	Bullet* pFirstBullet = GetFirstBulletAddress();
 	Enemy* enemy = GetenemyData();
+	
 
 	//プレイヤーとマップの処理
 	static int frcntInvincible;
@@ -69,7 +70,15 @@ void HitManage() {
 	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
 
 		//ボス１と弾のダメージ計算
-
+		if (pBoss1->isActive&&!(pBoss1->isDead)) {
+			if (pSearchBullet->wasReflect) {
+				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss1->WindowPos, BOSS1WIDTH, BOSS1HEIGHT)) {
+					pBoss1->Hp -= pSearchBullet->Atk;
+					DeleteBullet(&pSearchBullet);
+					continue;
+				}
+			}
+		}
 
 		//プレイヤーと弾のダメージ計算と無敵時間の考慮
 		D3DXVECTOR2 tmpPlayer = player->WindowPos;
@@ -133,6 +142,25 @@ void HitManage() {
 			}
 		}
 	}
+
+	//boss1とプレイヤーの直接のあたり判定
+	if (pBoss1->isActive && !(pBoss1->isDead)) {
+		D3DXVECTOR2 tmpPlayer = player->WindowPos;
+		if (player->beLeft) {
+			tmpPlayer.x += 15;
+		}
+		else {
+			tmpPlayer.x += -15;
+		}
+		if (SquareHit(&player->WindowPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss1->WindowPos, BOSS1WIDTH, BOSS1HEIGHT)) {
+
+			if (!player->beInvincible) {
+				player->Hp -= pBoss1->Atk;
+				player->beInvincible = true;
+			}
+		}
+	}
+
 	if (player->beInvincible) {
 		frcntInvincible++;
 	}

@@ -196,11 +196,11 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 				g_enemy[enemycount].size = 32;
 				enemycount++;
 				break;
-			case FixedBattery1:
+			case FIXEDBATTERY1:
 				enemyMapNum[enemycount].NumX = j;
 				enemyMapNum[enemycount].NumY = i;
 				g_enemy[enemycount].Speed = 0;
-				g_enemy[enemycount].enemyKind = FixedBattery1;
+				g_enemy[enemycount].enemyKind = FIXEDBATTERY1;
 				g_enemy[enemycount].firingInterval = 150;
 				g_enemy[enemycount].size = 32 ;
 

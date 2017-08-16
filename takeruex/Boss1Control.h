@@ -23,6 +23,7 @@ struct Boss1Data {
 	int saveActionCntForNORMALSHOT;
 	int saveActionCntForDUALSHOT;
 	int saveDUALSHOTActionCntForLARIAT;
+	int Atk;
 	//bool isJumping;
 	bool isLeft;
 	bool isDead;

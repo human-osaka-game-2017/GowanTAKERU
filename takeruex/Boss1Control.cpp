@@ -36,7 +36,7 @@ void Boss1Init() {
 
 	for (int i = 0; i < MaxY; i++) {
 		for (int j = 0; j < MaxX; j++) {
-			if (gimmickData[j + i*MaxX] == BOSS_Stage1) {
+			if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
 				g_Boss1.isExistence = true;
 				g_Boss1.WolrdPos.x = TIPSIZE*j;
 				g_Boss1.WolrdPos.y = TIPSIZE*i;
@@ -51,6 +51,7 @@ BREAK:
 		g_Boss1.MovementX = g_Boss1.MovementY = 0;
 		g_Boss1.a = 0;//g_Boss1.ga = 0;
 		g_Boss1.Hp = 70;
+		g_Boss1.Atk = 20;
 		g_Boss1.saveShotFrmcnt = 0;
 		g_Boss1.saveActionCntForNORMALSHOT = 0;
 		g_Boss1.saveActionCntForDUALSHOT = 0;
@@ -111,7 +112,7 @@ void Boss1Control() {
 			static int LARIATMiddleFrcnt = -1;
 			switch (g_Boss1.Boss1State) {
 			case NORMALSHOT:
-				BulletCreate(g_Boss1.WolrdPos, BULLET01);
+				BulletCreate(g_Boss1.WolrdPos, HOMING);
 				g_Boss1.saveActionCntForDUALSHOT++;
 				g_Boss1.saveActionCntForNORMALSHOT = 0;
 				g_Boss1.saveShotFrmcnt = 0;

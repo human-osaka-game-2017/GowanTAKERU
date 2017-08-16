@@ -40,8 +40,8 @@ enum MapKind {
 	WALKINGENEMY_HAS_KEY_1,
 	WALKINGENEMY_HAS_KEY_2,
 	WALKINGENEMY_HAS_KEY_3,
-	FixedBattery1,//固定砲台
-	Dummy,//予備
+	FIXEDBATTERY1,//固定砲台
+	DUMMY,//予備
 	FLYINGENEMY1,//空中敵
 	FLYINGENEMY2,
 	FLYINGENEMY3,
@@ -50,15 +50,15 @@ enum MapKind {
 	FLYINGENEMY_HAS_KEY1,
 	FLYINGENEMY_HAS_KEY2,
 	FLYINGENEMY_HAS_KEY3,
-	FixedBattery2,
-	StartLocation,//たけるスタート地点
-	BOSS_Stage1,
-	BOSS_Stage2,
-	BOSS_Stage3,
-	BOSS_Stage4,
-	Dummy2,//予備隠し用
-	Respawn_point1,//リスポーン地点
-	Respawn_point2,
+	FIXEDBATTERY2,
+	STARTLOCATION,//たけるスタート地点
+	BOSS_STAGE1,
+	BOSS_STAGE2,
+	BOSS_STAGE3,
+	BOSS_STAGE4,
+	DUMMY2,//予備隠し用
+	RESPAWN_POINT1,//リスポーン地点
+	RESPAWN_POINT2,
 };
 enum GimmickKind{ START = 40, CHECKPOINT_1=46, CHECKPOINT_2};
 

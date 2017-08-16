@@ -79,11 +79,26 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind) {
 	newBullet->WindowPos.x = newBullet->WorldPos.x - (pBasePoint->x - BasePoint0.x);
 	newBullet->WindowPos.y = newBullet->WorldPos.y - (pBasePoint->y - BasePoint0.y);
 	newBullet->wasReflect = false;
+	newBullet->MovementX = newBullet->MovementY = 0;
+
+	Player* pPlayer = GetplayerData();
 
 	switch (bulletKind) {
 
 	case BULLET01:
-		Player* pPlayer = GetplayerData();
+		newBullet->Speed = 6.0f;
+		newBullet->Atk = 10;
+		newBullet->Size = 22;
+		newBullet->ReflectMax = 3;
+		newBullet->SaveCoordinate = pPlayer->WindowPos;
+		newBullet->Rad = Calculate_rad(
+			newBullet->WindowPos.x,
+			newBullet->WindowPos.y,
+			newBullet->SaveCoordinate.x,
+			newBullet->SaveCoordinate.y
+		);
+		break;
+	case HOMING:
 		newBullet->Speed = 6.0f;
 		newBullet->Atk = 10;
 		newBullet->Size = 22;
@@ -105,6 +120,17 @@ void BulletControl() {
 	Player* player = GetplayerData();
 
 	for (Bullet* pSearchBullet = g_firstBullet.next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
+
+		//‰æ–ÊŠO‚ÅÁ‚¦‚é
+		if (pSearchBullet->WindowPos.x < -64 || DISPLAY_WIDTH + 64 < pSearchBullet->WindowPos.x) {
+			DeleteBullet(&pSearchBullet);
+			continue;
+		}
+		if (pSearchBullet->WindowPos.y < -64 || DISPLAY_HEIGHT + 64 < pSearchBullet->WindowPos.y) {
+			DeleteBullet(&pSearchBullet);
+			continue;
+		}
+
 		if (pSearchBullet->BulletKind == HOMING) {
 			if (!pSearchBullet->wasReflect) {
 				pSearchBullet->SaveCoordinate = player->WindowPos;
@@ -118,16 +144,6 @@ void BulletControl() {
 		}
 
 		SetBulletMovement(pSearchBullet);
-
-		//‰æ–ÊŠO‚ÅÁ‚¦‚é
-		if (pSearchBullet->WindowPos.x < -64 || DISPLAY_WIDTH + 64 < pSearchBullet->WindowPos.x) {
-			DeleteBullet(&pSearchBullet);
-			continue;
-		}
-		if (pSearchBullet->WindowPos.y < -64 || DISPLAY_HEIGHT + 64 < pSearchBullet->WindowPos.y) {
-			DeleteBullet(&pSearchBullet);
-			continue;
-		}
 	}
 }
 
