@@ -1,10 +1,13 @@
-#include"Boss1.h"
+#include"Boss1Control.h"
 #include"FileManagement.h"
 #include"MapRender.h"
 #include"PlayerControl.h"
 #include"CommonRender.h"
 #include"MainControl.h"
 #include"BulletControl.h"
+#include"MapControl.h"
+
+#define DUALSHOTINTERVALS 60
 
 //プロトタイプ群
 BOSS1STATE DecidedBoss1State(float range, int bulletNum);
@@ -44,22 +47,23 @@ void Boss1Init() {
 
 BREAK:
 	if (g_Boss1.isExistence) {
-		g_Boss1.Boss1State = NON;
+		g_Boss1.Boss1State = BOSS1_NON;
 		g_Boss1.MovementX = g_Boss1.MovementY = 0;
-		g_Boss1.a = g_Boss1.ga = 0;
+		g_Boss1.a = 0;//g_Boss1.ga = 0;
 		g_Boss1.Hp = 70;
 		g_Boss1.saveShotFrmcnt = 0;
 		g_Boss1.saveActionCntForNORMALSHOT = 0;
 		g_Boss1.saveActionCntForDUALSHOT = 0;
 		g_Boss1.saveDUALSHOTActionCntForLARIAT = 0;
-		g_Boss1.isJumping = false;
+		//g_Boss1.isJumping = false;
 		g_Boss1.isLeft = true;
-		g_Boss1.isDead = true;
+		g_Boss1.isDead = false;
 		g_Boss1.isActive = false;
 	}
 
 	free(gimmickData);
 }
+
 
 void Boss1Control() {
 	
@@ -83,7 +87,6 @@ void Boss1Control() {
 
 			//知覚する
 			Player* pPlayer = GetplayerData();
-			Bullet* pBullet = GetBullet();
 
 			float range = Calculate_distance(g_Boss1.WolrdPos.x, g_Boss1.WolrdPos.y, pPlayer->WorldPos.x, pPlayer->WorldPos.y);
 			if (range < 0) {
@@ -92,23 +95,89 @@ void Boss1Control() {
 			
 			int bulletNum = 0;
 
-			for (int i = 0; i < BULLETNUMBER; i++) {
-				if (pBullet[i].beActive) {
-					bulletNum++;
-				}
+			Bullet* pFirstBullet = GetFirstBulletAddress();
+			for (Bullet* SearchBullet = pFirstBullet->next; SearchBullet !=NULL; SearchBullet= SearchBullet->next) {
+				
+				bulletNum++;
 			}
 
 			//意思決定
-			g_Boss1.Boss1State = DecidedBoss1State(range, bulletNum);
+			if (g_Boss1.Boss1State == BOSS1_NON) {
+				g_Boss1.Boss1State = DecidedBoss1State(range, bulletNum);
+			}
 
 			//行動
+			static int DUALSHOTMiddleFrcnt = 0;
+			static int LARIATMiddleFrcnt = -1;
 			switch (g_Boss1.Boss1State) {
 			case NORMALSHOT:
+				BulletCreate(g_Boss1.WolrdPos, BULLET01);
+				g_Boss1.saveActionCntForDUALSHOT++;
+				g_Boss1.saveActionCntForNORMALSHOT = 0;
+				g_Boss1.saveShotFrmcnt = 0;
+				DUALSHOTMiddleFrcnt = 0;
+				g_Boss1.Boss1State = BOSS1_NON;
+				break;
 
+			case DUALSHOT:
+				if (DUALSHOTMiddleFrcnt == 0) {
+					BulletCreate(g_Boss1.WolrdPos, BULLET01);
+				}
+				
+				if (DUALSHOTMiddleFrcnt == DUALSHOTINTERVALS) {
+					BulletCreate(g_Boss1.WolrdPos, BULLET01);
+					g_Boss1.saveActionCntForDUALSHOT = 0;
+					g_Boss1.saveActionCntForNORMALSHOT++;
+					g_Boss1.saveDUALSHOTActionCntForLARIAT++;
+					g_Boss1.saveShotFrmcnt = 0;
+					DUALSHOTMiddleFrcnt = 0;
+					g_Boss1.Boss1State = BOSS1_NON;
+				}
+				DUALSHOTMiddleFrcnt++;
+				break;
+
+			case LARIAT:
+				if (g_Boss1.a < BOSS1MAXSPEED) {
+					g_Boss1.a += 0.5;
+				}
+
+				if (g_Boss1.isLeft) {
+					g_Boss1.MovementX += -g_Boss1.a;
+					D3DXVECTOR2 boss1Left = g_Boss1.WolrdPos;
+					boss1Left.x = g_Boss1.WolrdPos.x - (BOSS1WIDTH / 2) + g_Boss1.MovementX;
+					if (MapKindSpecifyForPos(&boss1Left) != NOTHING) {
+						g_Boss1.Boss1State = BOSS1_NON;
+						g_Boss1.a = 0;
+						g_Boss1.saveActionCntForDUALSHOT++;
+						g_Boss1.saveActionCntForNORMALSHOT++;
+					}
+				}
+				else {
+					g_Boss1.MovementX += g_Boss1.a;
+					D3DXVECTOR2 boss1Right = g_Boss1.WolrdPos;
+					boss1Right.x = g_Boss1.WolrdPos.x + (BOSS1WIDTH / 2) + g_Boss1.MovementX;
+					if (MapKindSpecifyForPos(&boss1Right) != NOTHING) {
+						g_Boss1.Boss1State = BOSS1_NON;
+						g_Boss1.a = 0;
+						g_Boss1.saveActionCntForDUALSHOT++;
+						g_Boss1.saveActionCntForNORMALSHOT++;
+					}
+				}
+				break;
 			}
+			g_Boss1.saveShotFrmcnt++;
 		}
-		
 	}
+}
+
+void MoveBoss1() {
+	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+	D3DXVECTOR2* basePoint = GetBasePoint();
+	g_Boss1.WolrdPos.x += g_Boss1.MovementX;
+	g_Boss1.WolrdPos.y += g_Boss1.MovementY;
+	g_Boss1.WindowPos.x = g_Boss1.WolrdPos.x - (basePoint->x - BasePoint0.x);
+	g_Boss1.WindowPos.y = g_Boss1.WolrdPos.y - (basePoint->y - BasePoint0.y);
+	g_Boss1.MovementX = g_Boss1.MovementY = 0;
 }
 
 
@@ -122,19 +191,19 @@ BOSS1STATE DecidedBoss1State(float range, int bulletNum) {
 
 	DecidedValue[LARIAT]= CalculateLARIATDecidedValue(range);
 
-	DecidedValue[NON] = ((100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[LARIAT])) / 3;
+	DecidedValue[BOSS1_NON] = ((100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[LARIAT])) / 3;
 
 	//最も大きい値を決定
-	float* Max = &DecidedValue[NON];
+	float* Max = &DecidedValue[BOSS1_NON];
 	for (int i = 0; i < BOSS1STATE_MAX; i++) {
 		if (*Max < DecidedValue[i]) {
 			Max = &DecidedValue[i];
 		}
 	}
 
-	BOSS1STATE boss1State = NON;
-	if (Max == &DecidedValue[NON]) {
-		boss1State = NON;
+	BOSS1STATE boss1State = BOSS1_NON;
+	if (Max == &DecidedValue[BOSS1_NON]) {
+		boss1State = BOSS1_NON;
 	}
 	else if (Max == &DecidedValue[NORMALSHOT]) {
 		boss1State = NORMALSHOT;

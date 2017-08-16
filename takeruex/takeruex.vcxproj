@@ -123,6 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BackGroundRender.cpp" />
+    <ClCompile Include="Boss1Render.cpp" />
     <ClCompile Include="BulletControl.cpp" />
     <ClCompile Include="BulletRender.cpp" />
     <ClCompile Include="DirectXGraphics.cpp" />
@@ -150,13 +151,14 @@
     <ClCompile Include="SceneManagement.cpp" />
     <ClCompile Include="StageGimmick.cpp" />
     <ClCompile Include="StageSelect.cpp" />
-    <ClCompile Include="Boss1.cpp" />
+    <ClCompile Include="Boss1Control.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleRender.cpp" />
     <ClCompile Include="UIRendr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGroundRender.h" />
+    <ClInclude Include="Boss1Render.h" />
     <ClInclude Include="BulletControl.h" />
     <ClInclude Include="BulletRender.h" />
     <ClInclude Include="CommonControl.h" />
@@ -186,7 +188,7 @@
     <ClInclude Include="SceneManagement.h" />
     <ClInclude Include="StageGimmick.h" />
     <ClInclude Include="StageSelect.h" />
-    <ClInclude Include="Boss1.h" />
+    <ClInclude Include="Boss1Control.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleRender.h" />
     <ClInclude Include="UIRendr.h" />

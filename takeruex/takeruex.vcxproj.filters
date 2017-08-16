@@ -92,7 +92,10 @@
     <ClCompile Include="MainRender.cpp">
       <Filter>Application\MainScene\MainRender</Filter>
     </ClCompile>
-    <ClCompile Include="Boss1.cpp">
+    <ClCompile Include="Boss1Render.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss1Control.cpp">
       <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClCompile>
   </ItemGroup>
@@ -234,7 +237,10 @@
     <ClInclude Include="BlackOutRender.h">
       <Filter>Application\Blackout</Filter>
     </ClInclude>
-    <ClInclude Include="Boss1.h">
+    <ClInclude Include="Boss1Render.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss1Control.h">
       <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClInclude>
   </ItemGroup>

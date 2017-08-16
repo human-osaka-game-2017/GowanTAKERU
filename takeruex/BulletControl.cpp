@@ -6,34 +6,21 @@
 #include"CommonRender.h"
 
 static Bullet g_bullet[BULLETNUMBER];
+static Bullet g_firstBullet;
 
 Bullet* GetBullet() {
 	return g_bullet;
 }
 
+Bullet* GetFirstBulletAddress() {
+	return &g_firstBullet;
+}
+
 void BulletInit() {
 
-	for (int i = 0; i < BULLETNUMBER; i++) {
+	g_firstBullet.next = NULL;
+	g_firstBullet.previous = &g_firstBullet;
 
-		g_bullet[i].beActive = false;
-		g_bullet[i].BulletKind = BULLET01;
-		g_bullet[i].Atk = 10;
-		g_bullet[i].Size = 0;
-		g_bullet[i].Rad = 0;
-		g_bullet[i].Radius = 0;
-		g_bullet[i].Speed = 0;
-		g_bullet[i].MovementX = 0;
-		g_bullet[i].MovementY = 0;
-		g_bullet[i].ReflectCnt = 0;
-		g_bullet[i].ReflectMax = 0;
-		g_bullet[i].SaveCoordinate.x = 0;
-		g_bullet[i].SaveCoordinate.y = 0;
-		g_bullet[i].wasReflect = false;
-		g_bullet[i].WindowPos.x = 0;
-		g_bullet[i].WindowPos.y = 0;
-		g_bullet[i].WorldPos.x = 0;
-		g_bullet[i].WorldPos.y = 0;
-	}
 }
 
 void BulletCreate(int bulletNum,int enemyNum, BULLETKIND bulletKind) {
@@ -65,37 +52,81 @@ void BulletCreate(int bulletNum,int enemyNum, BULLETKIND bulletKind) {
 
 }
 
+void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind) {
+
+	//最後尾の弾の実体のアドレスまで移動
+	Bullet* pSearchBullet = &g_firstBullet;
+	while (1) {
+		if (pSearchBullet->next == NULL) {
+			break;
+		}
+		pSearchBullet = pSearchBullet->next;
+	}
+
+	//bulletを生成
+	Bullet* newBullet = (Bullet*)malloc(sizeof(Bullet));
+
+	//連結
+	pSearchBullet->next = newBullet;
+	newBullet->previous = pSearchBullet;
+
+	//初期化
+	newBullet->next = NULL;
+	newBullet->BulletKind = bulletKind;
+	newBullet->WorldPos = launchingSite;
+	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+	D3DXVECTOR2* pBasePoint = GetBasePoint();
+	newBullet->WindowPos.x = newBullet->WorldPos.x - (pBasePoint->x - BasePoint0.x);
+	newBullet->WindowPos.y = newBullet->WorldPos.y - (pBasePoint->y - BasePoint0.y);
+	newBullet->wasReflect = false;
+
+	switch (bulletKind) {
+
+	case BULLET01:
+		Player* pPlayer = GetplayerData();
+		newBullet->Speed = 6.0f;
+		newBullet->Atk = 10;
+		newBullet->Size = 22;
+		newBullet->ReflectMax = 3;
+		newBullet->SaveCoordinate = pPlayer->WindowPos;
+		newBullet->Rad = Calculate_rad(
+			newBullet->WindowPos.x,
+			newBullet->WindowPos.y,
+			newBullet->SaveCoordinate.x,
+			newBullet->SaveCoordinate.y
+		);
+		break;
+
+	}
+}
+
 void BulletControl() {
-	
-	MapNumXY mapNum;
+
 	Player* player = GetplayerData();
 
-	for (int i = 0; i < BULLETNUMBER; i++) {
-		if (g_bullet[i].beActive) {
-			if (g_bullet[i].BulletKind == HOMING) {
-				if (g_bullet[i].wasReflect) {
-					g_bullet[i].SaveCoordinate = player->WindowPos;
-					g_bullet[i].Rad = Calculate_rad(
-						g_bullet[i].WindowPos.x,
-						g_bullet[i].WindowPos.y,
-						g_bullet[i].SaveCoordinate.x,
-						g_bullet[i].SaveCoordinate.y
-					);
-				}
+	for (Bullet* pSearchBullet = g_firstBullet.next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
+		if (pSearchBullet->BulletKind == HOMING) {
+			if (!pSearchBullet->wasReflect) {
+				pSearchBullet->SaveCoordinate = player->WindowPos;
+				pSearchBullet->Rad = Calculate_rad(
+					pSearchBullet->WindowPos.x,
+					pSearchBullet->WindowPos.y,
+					pSearchBullet->SaveCoordinate.x,
+					pSearchBullet->SaveCoordinate.y
+				);
 			}
-			SetBulletMovement(i);
+		}
 
-			MapchipNumberSpecify(&mapNum, &g_bullet->WorldPos);
+		SetBulletMovement(pSearchBullet);
 
-			int map = MapKindSpecify(&mapNum);
-
-			//画面外で消える
-			if (g_bullet[i].WindowPos.x < -64 || DISPLAY_WIDTH + 64 < g_bullet[i].WindowPos.x) {
-				g_bullet[i].beActive = false;
-			}
-			if (g_bullet[i].WindowPos.y < -64 || DISPLAY_HEIGHT + 64 < g_bullet[i].WindowPos.y) {
-				g_bullet[i].beActive = false;
-			}
+		//画面外で消える
+		if (pSearchBullet->WindowPos.x < -64 || DISPLAY_WIDTH + 64 < pSearchBullet->WindowPos.x) {
+			DeleteBullet(&pSearchBullet);
+			continue;
+		}
+		if (pSearchBullet->WindowPos.y < -64 || DISPLAY_HEIGHT + 64 < pSearchBullet->WindowPos.y) {
+			DeleteBullet(&pSearchBullet);
+			continue;
 		}
 	}
 }
@@ -103,23 +134,56 @@ void BulletControl() {
 void MoveBullet() {
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 	D3DXVECTOR2* basePoint = GetBasePoint();
-	for (int i = 0; i < BULLETNUMBER; i++) {
-		if (g_bullet[i].beActive) {
-			g_bullet[i].WorldPos.x += g_bullet[i].MovementX;
-			g_bullet[i].WorldPos.y += g_bullet[i].MovementY;
-			g_bullet[i].WindowPos.x = g_bullet[i].WorldPos.x - (basePoint->x - BasePoint0.x);
-			g_bullet[i].WindowPos.y = g_bullet[i].WorldPos.y - (basePoint->y - BasePoint0.y);;
-			g_bullet[i].MovementX = g_bullet[i].MovementY = 0;
+	for (Bullet* pSearchBullet = g_firstBullet.next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
+		
+		pSearchBullet->WorldPos.x += pSearchBullet->MovementX;
+		pSearchBullet->WorldPos.y += pSearchBullet->MovementY;
+		pSearchBullet->WindowPos.x = pSearchBullet->WorldPos.x - (basePoint->x - BasePoint0.x);
+		pSearchBullet->WindowPos.y = pSearchBullet->WorldPos.y - (basePoint->y - BasePoint0.y);
+		pSearchBullet->MovementX = pSearchBullet->MovementY = 0;
 		}
 	}
-}
+
 
 void SetBulletMovement(int bulletNum) {
 	g_bullet[bulletNum].MovementX += g_bullet[bulletNum].Speed*cos(g_bullet[bulletNum].Rad);
 	g_bullet[bulletNum].MovementY -= g_bullet[bulletNum].Speed*sin(g_bullet[bulletNum].Rad);
 }
 
+void SetBulletMovement(Bullet* pBullet) {
+	pBullet->MovementX = pBullet->Speed*cos(pBullet->Rad);
+	pBullet->MovementY = -(pBullet->Speed*sin(pBullet->Rad));
+}
+
 void DeactivateBullet(int num) {
 	g_bullet[num].beActive = false;
 	g_bullet[num].wasReflect = false;
+}
+
+void DeleteBullet(Bullet** DeletionBullet) {
+	Bullet* pre = (*DeletionBullet)->previous;
+	((*DeletionBullet)->previous)->next = (*DeletionBullet)->next;
+	((*DeletionBullet)->next)->previous = (*DeletionBullet)->previous;
+	free(*DeletionBullet);
+	*DeletionBullet = pre;
+}
+
+void DeleteALLBullet() {
+
+	Bullet* pSearchBullet = &g_firstBullet;
+	while (1) {
+
+		//最後尾の時
+		if (pSearchBullet->next == NULL) {
+
+			//g_firstBulletはmallocじゃないから開放しなくていい
+			if (pSearchBullet != &g_firstBullet) {
+				free(pSearchBullet);
+				break;
+			}
+		}
+
+		pSearchBullet = pSearchBullet->next;
+		free(pSearchBullet->previous);
+	}
 }

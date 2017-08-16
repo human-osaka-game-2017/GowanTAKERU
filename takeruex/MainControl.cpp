@@ -7,13 +7,15 @@
 #include"MoveManagement.h"
 #include"StageGimmick.h"
 #include"BlackOutRender.h"
+#include"Boss1Control.h"
 
 #include<d3dx9.h>
 
 void MainControl() {
 
 	PlayerControl();
-	EnemyControl();
+	//EnemyControl();
+	Boss1Control();
 	BulletControl();
 	HitManage();
 	StageGimmickManage();

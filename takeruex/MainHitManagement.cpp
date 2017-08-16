@@ -9,6 +9,7 @@
 #include"EnemyRender.h"
 #include"DirectXSound.h"
 #include"BlackOutRender.h"
+#include"Boss1Control.h"
 
 #include<Windows.h>
 #include<tchar.h>
@@ -25,11 +26,11 @@ void CollisionMapForBullet();
 void HitManage() {
 
 	Player* player = GetplayerData();
-	Bullet* bullet = GetBullet();
+	Boss1Data* pBoss1 = GetBoss1Data();
+	Bullet* pFirstBullet = GetFirstBulletAddress();
 	Enemy* enemy = GetenemyData();
 
 	//プレイヤーとマップの処理
-
 	static int frcntInvincible;
 
 	D3DXVECTOR2 playerRightBottom;
@@ -58,72 +59,76 @@ void HitManage() {
 	for (int i = 0; i < ENEMYNUMBER; i++) {
 		PushOutMap(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementX, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
 	}
+
+	//boss1とマップの押し出し処理
+	PushOutMap(pBoss1->WolrdPos, &pBoss1->MovementX, &pBoss1->MovementY, BOSS1WIDTH, BOSS1HEIGHT);
 	
 	//弾のマップとの反射処理
 	CollisionMapForBullet();
 
-	for (int i = 0; i < BULLETNUMBER; i++) {
-		for (int j = 0; j < ENEMYNUMBER; j++) {
+	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
 
-			//敵とバレットのダメージ計算
-			if(bullet[i].beActive){
-				if (enemy[j].beActive == true && enemy[j].beDead == false) {
-					if (bullet[i].wasReflect) {
-						if (SquareHit(&bullet[i].WindowPos, bullet->Size, bullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+		//ボス１と弾のダメージ計算
 
-							DeactivateBullet(i);
-							enemy[j].Hp -= bullet[i].Atk;
 
-							if (enemy[j].Hp < 0) {
-								enemy[j].beActive = false;
-								enemy[j].beDead = true;
-							}
-						}
-					}
-				}
+		//プレイヤーと弾のダメージ計算と無敵時間の考慮
+		D3DXVECTOR2 tmpPlayer = player->WindowPos;
+		if (player->beLeft) {
+			tmpPlayer.x += 15;
+		}
+		else {
+			tmpPlayer.x += -15;
+		}
+
+		if (SquareHit(&tmpPlayer, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size)) {
+
+			if (!player->beInvincible) {
+				PlayBackSound(SOUND01, false, 100);
+
+				player->Hp -= pSearchBullet->Atk;
+
+				player->beInvincible = true;
 			}
 
-			//プレイヤーのダメージ計算と無敵時間の考慮
-			if (bullet[i].beActive) {
-				D3DXVECTOR2 tmpPlayer = player->WindowPos;
-				if (player->beLeft) {
-					tmpPlayer.x += 15;
-				}
-				else {
-					tmpPlayer.x += -15;
-				}
-				
-				if (SquareHit(&tmpPlayer, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &bullet[i].WindowPos, bullet->Size, bullet->Size)) {
+			DeleteBullet(&pSearchBullet);
+			continue;
+		}
 
-					DeactivateBullet(i);
+		//敵とバレットのダメージ計算
+		for (int j = 0; j < ENEMYNUMBER; j++) {
+			if (enemy[j].beActive == true && enemy[j].beDead == false) {
+				if (pSearchBullet->wasReflect) {
+					if (SquareHit(&pSearchBullet->WindowPos, pFirstBullet->Size, pFirstBullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
 
-					if (!player->beInvincible) {
-						PlayBackSound(SOUND01, false, 100);
+						enemy[j].Hp -= pSearchBullet->Atk;
 
-						player->Hp -= bullet->Atk;
-
-						player->beInvincible = true;
+						if (enemy[j].Hp < 0) {
+							enemy[j].beActive = false;
+							enemy[j].beDead = true;
+						}
+						DeleteBullet(&pSearchBullet);
+						break;
 					}
 				}
 			}
 		}
+	}
 
-		//エネミーとプレイヤーの直接のあたり判定
-		for (int i = 0; i < ENEMYNUMBER; i++) {
-			if(enemy[i].beActive && !enemy[i].beDead){
-				D3DXVECTOR2 tmpPlayer = player->WindowPos;
-				if (player->beLeft) {
-					tmpPlayer.x += 15;
-				}
-				else {
-					tmpPlayer.x += -15;
-				}
-				if (SquareHit(&player->WindowPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
-				
-					if (!player->beInvincible) {
-						player->Hp -= enemy[i].Atk;
-						player->beInvincible = true;
-					}
+	//エネミーとプレイヤーの直接のあたり判定
+	for (int i = 0; i < ENEMYNUMBER; i++) {
+		if (enemy[i].beActive && !enemy[i].beDead) {
+			D3DXVECTOR2 tmpPlayer = player->WindowPos;
+			if (player->beLeft) {
+				tmpPlayer.x += 15;
+			}
+			else {
+				tmpPlayer.x += -15;
+			}
+			if (SquareHit(&player->WindowPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+
+				if (!player->beInvincible) {
+					player->Hp -= enemy[i].Atk;
+					player->beInvincible = true;
 				}
 			}
 		}
@@ -268,103 +273,197 @@ void PushOutMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, float 
 void CollisionMapForBullet() {
 	static int fr = 0;
 	fr++;
-	Bullet* bullet = GetBullet();
+	Bullet* pFirstBullet = GetFirstBulletAddress();
+	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
+		D3DXVECTOR2 Left;
+		D3DXVECTOR2 Right;
+		D3DXVECTOR2 Bottom;
+		D3DXVECTOR2 Top;
 
-	for (int i = 0; i < BULLETNUMBER; i++) {
+		Left.x = pSearchBullet->WorldPos.x - (pSearchBullet->Size / 2) + (pSearchBullet->MovementX);
+		Right.x = pSearchBullet->WorldPos.x + (pSearchBullet->Size / 2) + (pSearchBullet->MovementX);
+		Top.x = Bottom.x = pSearchBullet->WorldPos.x + (pSearchBullet->MovementX);
+		Top.y = pSearchBullet->WorldPos.y - (pSearchBullet->Size / 2) + (pSearchBullet->MovementY);
+		Bottom.y = pSearchBullet->WorldPos.y + (pSearchBullet->Size / 2) + (pSearchBullet->MovementY);
+		Left.y = Right.y = pSearchBullet->WorldPos.y + (pSearchBullet->MovementY);
 
-		if (bullet[i].beActive) {
-			//for (float unitVectorCnt = 1 / bullet[i].Speed; unitVectorCnt <= 1; unitVectorCnt += 1 / bullet[i].Speed) 
-			D3DXVECTOR2 Left;
-			D3DXVECTOR2 Right;
-			D3DXVECTOR2 Bottom;
-			D3DXVECTOR2 Top;
+		D3DXVECTOR2 tmpPos;
+		tmpPos.x = pSearchBullet->WorldPos.x + pSearchBullet->MovementX;
+		tmpPos.y = pSearchBullet->WorldPos.y + pSearchBullet->MovementY;
 
-			Left.x = bullet[i].WorldPos.x - (bullet[i].Size / 2) + (bullet[i].MovementX/*unitVectorCnt*/);
-			Right.x = bullet[i].WorldPos.x + (bullet[i].Size / 2) + (bullet[i].MovementX/**unitVectorCnt*/);
-			Top.x = Bottom.x = bullet[i].WorldPos.x + (bullet[i].MovementX/**unitVectorCnt*/);
-			Top.y = bullet[i].WorldPos.y - (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
-			Bottom.y = bullet[i].WorldPos.y + (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
-			Left.y = Right.y = bullet[i].WorldPos.y + (bullet[i].MovementY/**unitVectorCnt*/);
+		if (MapKindSpecifyForPos(&Left) != NOTHING) {
 
-			D3DXVECTOR2 tmpPos;
-			tmpPos.x = bullet[i].WorldPos.x + bullet[i].MovementX;
-			tmpPos.y = bullet[i].WorldPos.y + bullet[i].MovementY;
-
-			if (MapKindSpecifyForPos(&Left) != NOTHING) {
-
-				bullet[i].ReflectCnt++;
-				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-					bullet[i].beActive = false;
-					continue;
-				}
-
-				if (bullet[i].MovementY < 0) {
-					bullet[i].Rad = 2 * D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
-				}
-				else if (bullet[i].MovementY > 0) {
-					bullet[i].Rad = -1 * Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
-				}
-				else if (bullet[i].MovementY = 0) {
-					bullet[i].Rad += D3DX_PI;
-				}
-
+			pSearchBullet->ReflectCnt++;
+			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
+				pSearchBullet->beActive = false;
+				continue;
 			}
 
-			else if (MapKindSpecifyForPos(&Right) != NOTHING) {
-				bullet[i].ReflectCnt++;
-				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-					bullet[i].beActive = false;
-					continue;
-				}
-
-				if (bullet[i].MovementY < 0) {
-					bullet[i].Rad = D3DX_PI - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - D3DX_PI);
-				}
-				else if (bullet[i].MovementY > 0) {
-					bullet[i].Rad = D3DX_PI + (D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
-				}
-				else if (bullet[i].MovementY = 0) {
-					bullet[i].Rad += D3DX_PI;
-				}
-
+			if (pSearchBullet->MovementY < 0) {
+				pSearchBullet->Rad = 2 * D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y);
 			}
-			else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
-				bullet[i].ReflectCnt++;
-				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-					bullet[i].beActive = false;
-					continue;
-				}
-
-				if (bullet[i].MovementX < 0) {
-					bullet[i].Rad = (0.5*D3DX_PI) + ((0.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
-				}
-				else if (bullet[i].MovementX > 0) {
-					bullet[i].Rad = (0.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (0.5*D3DX_PI));
-				}
-				else if (bullet[i].MovementX = 0) {
-					bullet[i].Rad += D3DX_PI;
-				}
-
+			else if (pSearchBullet->MovementY > 0) {
+				pSearchBullet->Rad = -1 * Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y);
 			}
-			else if (MapKindSpecifyForPos(&Top) != NOTHING) {
-				bullet[i].ReflectCnt++;
-				if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-					bullet[i].beActive = false;
-					continue;
-				}
-
-				if (bullet[i].MovementX < 0) {
-					bullet[i].Rad = (1.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (1.5*D3DX_PI));
-				}
-				else if (bullet[i].MovementX > 0) {
-					bullet[i].Rad = (1.5*D3DX_PI) + ((1.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
-				}
-				else if (bullet[i].MovementX = 0) {
-					bullet[i].Rad += D3DX_PI;
-				}
-
-				SetBulletMovement(i);
+			else if (pSearchBullet->MovementY = 0) {
+				pSearchBullet->Rad += D3DX_PI;
 			}
+
+		}
+
+		else if (MapKindSpecifyForPos(&Right) != NOTHING) {
+			pSearchBullet->ReflectCnt++;
+			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
+				pSearchBullet->beActive = false;
+				continue;
+			}
+
+			if (pSearchBullet->MovementY < 0) {
+				pSearchBullet->Rad = D3DX_PI - (Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y) - D3DX_PI);
+			}
+			else if (pSearchBullet->MovementY > 0) {
+				pSearchBullet->Rad = D3DX_PI + (D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y));
+			}
+			else if (pSearchBullet->MovementY = 0) {
+				pSearchBullet->Rad += D3DX_PI;
+			}
+
+		}
+		else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
+			pSearchBullet->ReflectCnt++;
+			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
+				pSearchBullet->beActive = false;
+				continue;
+			}
+
+			if (pSearchBullet->MovementX < 0) {
+				pSearchBullet->Rad = (0.5*D3DX_PI) + ((0.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y));
+			}
+			else if (pSearchBullet->MovementX > 0) {
+				pSearchBullet->Rad = (0.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y) - (0.5*D3DX_PI));
+			}
+			else if (pSearchBullet->MovementX = 0) {
+				pSearchBullet->Rad += D3DX_PI;
+			}
+
+		}
+		else if (MapKindSpecifyForPos(&Top) != NOTHING) {
+			pSearchBullet->ReflectCnt++;
+			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
+				pSearchBullet->beActive = false;
+				continue;
+			}
+
+			if (pSearchBullet->MovementX < 0) {
+				pSearchBullet->Rad = (1.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y) - (1.5*D3DX_PI));
+			}
+			else if (pSearchBullet->MovementX > 0) {
+				pSearchBullet->Rad = (1.5*D3DX_PI) + ((1.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y));
+			}
+			else if (pSearchBullet->MovementX = 0) {
+				pSearchBullet->Rad += D3DX_PI;
+			}
+
+			SetBulletMovement(pSearchBullet);
 		}
 	}
+		//Bullet* bullet = GetBullet();
+
+		//for (int i = 0; i < BULLETNUMBER; i++) {
+
+		//	if (bullet[i].beActive) {
+		//		//for (float unitVectorCnt = 1 / bullet[i].Speed; unitVectorCnt <= 1; unitVectorCnt += 1 / bullet[i].Speed) 
+		//		D3DXVECTOR2 Left;
+		//		D3DXVECTOR2 Right;
+		//		D3DXVECTOR2 Bottom;
+		//		D3DXVECTOR2 Top;
+
+		//		Left.x = bullet[i].WorldPos.x - (bullet[i].Size / 2) + (bullet[i].MovementX/*unitVectorCnt*/);
+		//		Right.x = bullet[i].WorldPos.x + (bullet[i].Size / 2) + (bullet[i].MovementX/**unitVectorCnt*/);
+		//		Top.x = Bottom.x = bullet[i].WorldPos.x + (bullet[i].MovementX/**unitVectorCnt*/);
+		//		Top.y = bullet[i].WorldPos.y - (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
+		//		Bottom.y = bullet[i].WorldPos.y + (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
+		//		Left.y = Right.y = bullet[i].WorldPos.y + (bullet[i].MovementY/**unitVectorCnt*/);
+
+		//		D3DXVECTOR2 tmpPos;
+		//		tmpPos.x = bullet[i].WorldPos.x + bullet[i].MovementX;
+		//		tmpPos.y = bullet[i].WorldPos.y + bullet[i].MovementY;
+
+		//		if (MapKindSpecifyForPos(&Left) != NOTHING) {
+
+		//			bullet[i].ReflectCnt++;
+		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+		//				bullet[i].beActive = false;
+		//				continue;
+		//			}
+
+		//			if (bullet[i].MovementY < 0) {
+		//				bullet[i].Rad = 2 * D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
+		//			}
+		//			else if (bullet[i].MovementY > 0) {
+		//				bullet[i].Rad = -1 * Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
+		//			}
+		//			else if (bullet[i].MovementY = 0) {
+		//				bullet[i].Rad += D3DX_PI;
+		//			}
+
+		//		}
+
+		//		else if (MapKindSpecifyForPos(&Right) != NOTHING) {
+		//			bullet[i].ReflectCnt++;
+		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+		//				bullet[i].beActive = false;
+		//				continue;
+		//			}
+
+		//			if (bullet[i].MovementY < 0) {
+		//				bullet[i].Rad = D3DX_PI - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - D3DX_PI);
+		//			}
+		//			else if (bullet[i].MovementY > 0) {
+		//				bullet[i].Rad = D3DX_PI + (D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
+		//			}
+		//			else if (bullet[i].MovementY = 0) {
+		//				bullet[i].Rad += D3DX_PI;
+		//			}
+
+		//		}
+		//		else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
+		//			bullet[i].ReflectCnt++;
+		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+		//				bullet[i].beActive = false;
+		//				continue;
+		//			}
+
+		//			if (bullet[i].MovementX < 0) {
+		//				bullet[i].Rad = (0.5*D3DX_PI) + ((0.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
+		//			}
+		//			else if (bullet[i].MovementX > 0) {
+		//				bullet[i].Rad = (0.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (0.5*D3DX_PI));
+		//			}
+		//			else if (bullet[i].MovementX = 0) {
+		//				bullet[i].Rad += D3DX_PI;
+		//			}
+
+		//		}
+		//		else if (MapKindSpecifyForPos(&Top) != NOTHING) {
+		//			bullet[i].ReflectCnt++;
+		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
+		//				bullet[i].beActive = false;
+		//				continue;
+		//			}
+
+		//			if (bullet[i].MovementX < 0) {
+		//				bullet[i].Rad = (1.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (1.5*D3DX_PI));
+		//			}
+		//			else if (bullet[i].MovementX > 0) {
+		//				bullet[i].Rad = (1.5*D3DX_PI) + ((1.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
+		//			}
+		//			else if (bullet[i].MovementX = 0) {
+		//				bullet[i].Rad += D3DX_PI;
+		//			}
+
+		//			SetBulletMovement(i);
+		//		}
+		//	}
+		//}
 }

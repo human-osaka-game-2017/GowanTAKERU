@@ -3,11 +3,13 @@
 
 #include<d3dx9.h>
 
-#define BOSS1MAXSPEED 5
-#define BOSS1ATK 20
+#define BOSS1WIDTH		120
+#define BOSS1HEIGHT		240
+#define BOSS1MAXSPEED	5
+#define BOSS1ATK		20
 
 enum BOSS1STATE {
-	NON, NORMALSHOT, DUALSHOT,LARIAT, BOSS1STATE_MAX
+	BOSS1_NON, NORMALSHOT, DUALSHOT,LARIAT, BOSS1STATE_MAX
 };
 
 struct Boss1Data {
@@ -15,13 +17,13 @@ struct Boss1Data {
 	D3DXVECTOR2 WindowPos;
 	BOSS1STATE Boss1State;
 	float MovementX, MovementY;
-	float a, ga;//加速度、重力加速度
+	float a;//, ga;//加速度、重力加速度
 	int Hp;
 	int saveShotFrmcnt;
 	int saveActionCntForNORMALSHOT;
 	int saveActionCntForDUALSHOT;
 	int saveDUALSHOTActionCntForLARIAT;
-	bool isJumping;
+	//bool isJumping;
 	bool isLeft;
 	bool isDead;
 	bool isActive;
@@ -31,5 +33,9 @@ struct Boss1Data {
 Boss1Data* GetBoss1Data();
 
 void Boss1Init();
+
+void Boss1Control();
+
+void MoveBoss1();
 
 #endif

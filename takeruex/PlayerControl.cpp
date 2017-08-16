@@ -214,7 +214,6 @@ void MovePlayer() {
 void PlayerReflectMotion() {
 
 	KEYSTATE* Key = GetKey();
-	Bullet* bullet = GetBullet();
 
 	//-------------------------------------------------------------------------
 	//’e‚ð‚Í‚¶‚«•Ô‚·Šp“x
@@ -240,21 +239,22 @@ void PlayerReflectMotion() {
 			g_player.beUPSwing = true;
 		}
 	}
-	for (int i = 0; i < BULLETNUMBER; i++) {
+	Bullet* pFirstBullet = GetFirstBulletAddress();
+	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next){
 
 		if (g_player.beLeft) {
 			if (frcnt != 0 && frcnt < 12) {
 				if (CircleHit(g_player.WindowPos.x - 30,
 					g_player.WindowPos.y,
 					20.0f,
-					(bullet + i)->WindowPos.x,
-					(bullet + i)->WindowPos.y,
-					(bullet + i)->Size / 2))
+					pSearchBullet->WindowPos.x,
+					pSearchBullet->WindowPos.y,
+					pSearchBullet->Size / 2))
 				{
-					if ((bullet + i)->wasReflect == false) {
-						(bullet + i)->wasReflect = true;
-						(bullet + i)->Rad = D3DXToRadian(180.0f);
-						(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+					if (pSearchBullet->wasReflect == false) {
+						pSearchBullet->wasReflect = true;
+						pSearchBullet->Rad = D3DXToRadian(180.0f);
+						pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 					}
 				}
 			}
@@ -263,20 +263,20 @@ void PlayerReflectMotion() {
 				if (CircleHit(g_player.WindowPos.x - 30,
 					g_player.WindowPos.y - 20,
 					20.0f,
-					(bullet + i)->WindowPos.x,
-					(bullet + i)->WindowPos.y,
-					(bullet + i)->Size / 2))
+					pSearchBullet->WindowPos.x,
+					pSearchBullet->WindowPos.y,
+					pSearchBullet->Size / 2))
 				{
-					if ((bullet + i)->wasReflect == false) {
-						(bullet + i)->wasReflect = true;
+					if (pSearchBullet->wasReflect == false) {
+						pSearchBullet->wasReflect = true;
 
 						if (g_player.beUPSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(150.0f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(150.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 						if (g_player.beDownSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(210.0f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(210.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 					}
 				}
@@ -286,19 +286,19 @@ void PlayerReflectMotion() {
 				if (CircleHit(g_player.WindowPos.x - 30,
 					g_player.WindowPos.y - 50,
 					20.0f,
-					(bullet + i)->WindowPos.x,
-					(bullet + i)->WindowPos.y,
-					(bullet + i)->Size / 2)) {
-					if ((bullet + i)->wasReflect == false) {
-						(bullet + i)->wasReflect = true;
+					pSearchBullet->WindowPos.x,
+					pSearchBullet->WindowPos.y,
+					pSearchBullet->Size / 2)) {
+					if (pSearchBullet->wasReflect == false) {
+						pSearchBullet->wasReflect = true;
 
 						if (g_player.beUPSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(120.0f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(120.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 						if (g_player.beDownSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(240.0f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(240.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 					}
 				}
@@ -310,14 +310,14 @@ void PlayerReflectMotion() {
 				if (CircleHit(g_player.WindowPos.x + 30,
 					g_player.WindowPos.y,
 					20.0f,
-					(bullet + i)->WindowPos.x,
-					(bullet + i)->WindowPos.y,
-					(bullet + i)->Size / 2))
+					pSearchBullet->WindowPos.x,
+					pSearchBullet->WindowPos.y,
+					pSearchBullet->Size / 2))
 				{
-					if ((bullet + i)->wasReflect == false) {
-						(bullet + i)->wasReflect = true;
-						(bullet + i)->Rad = D3DXToRadian(0.0f);
-						(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+					if (pSearchBullet->wasReflect == false) {
+						pSearchBullet->wasReflect = true;
+						pSearchBullet->Rad = D3DXToRadian(0.0f);
+						pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 
 					}
 				}
@@ -327,20 +327,20 @@ void PlayerReflectMotion() {
 				if (CircleHit(g_player.WindowPos.x + 30,
 					g_player.WindowPos.y - 20,
 					20.0f,
-					(bullet + i)->WindowPos.x,
-					(bullet + i)->WindowPos.y,
-					(bullet + i)->Size / 2))
+					pSearchBullet->WindowPos.x,
+					pSearchBullet->WindowPos.y,
+					pSearchBullet->Size / 2))
 				{
-					if ((bullet + i)->wasReflect == false) {
-						(bullet + i)->wasReflect = true;
+					if (pSearchBullet->wasReflect == false) {
+						pSearchBullet->wasReflect = true;
 
 						if (g_player.beUPSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(30.f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(30.f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 						if (g_player.beDownSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(-30.f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(-30.f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 					}
 				}
@@ -350,19 +350,19 @@ void PlayerReflectMotion() {
 				if (CircleHit(g_player.WindowPos.x + 30,
 					g_player.WindowPos.y - 50,
 					20.0f,
-					(bullet + i)->WindowPos.x,
-					(bullet + i)->WindowPos.y,
-					(bullet + i)->Size / 2)) {
-					if ((bullet + i)->wasReflect == false) {
-						(bullet + i)->wasReflect = true;
+					pSearchBullet->WindowPos.x,
+					pSearchBullet->WindowPos.y,
+					pSearchBullet->Size / 2)) {
+					if (pSearchBullet->wasReflect == false) {
+						pSearchBullet->wasReflect = true;
 
 						if (g_player.beUPSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(60.f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(60.f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 						if (g_player.beDownSwing == true) {
-							(bullet + i)->Rad = D3DXToRadian(-60.f);
-							(bullet + i)->SaveCoordinate = (bullet + i)->WorldPos;
+							pSearchBullet->Rad = D3DXToRadian(-60.f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 						}
 					}
 				}

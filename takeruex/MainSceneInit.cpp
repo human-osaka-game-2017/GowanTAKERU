@@ -2,9 +2,11 @@
 #include"PlayerControl.h"
 #include"EnemyControl.h"
 #include"BulletControl.h"
+#include"Boss1Control.h"
 
 void MainSceneInit() {
 	PlayerInit();
-	EnemyInit();
+	//EnemyInit();
 	BulletInit();
+	Boss1Init();
 }

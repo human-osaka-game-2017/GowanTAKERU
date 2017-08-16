@@ -16,16 +16,39 @@ struct Bullet {
 	float MovementY;
 	float Size;
 	float Speed;
-	float Radius;//半径
+	//float Radius;//半径
 	float Rad;//角度
 	int Atk;
 	int ReflectMax;
 	int ReflectCnt;
 	bool wasReflect;
 	bool beActive;
+	Bullet* next;
+	Bullet* previous;
 };
 
 Bullet* GetBullet();
+
+//下のやり方でbulletを探索できます
+//Bullet* pFirstBullet = GetFirstBulletAddress();
+//for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next)
+Bullet* GetFirstBulletAddress();
+
+//指定された地点に弾を生成します
+//第一引数 発射地点
+//第二引数 生成する弾の種類
+void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind);
+
+//角度からmovementをセットします
+void SetBulletMovement(Bullet* pBullet);
+
+//指定された弾を消します（前後をつなげてfreeします）
+//渡されたアドレスは一つ前のアドレスに変更します
+//第一引数 消したい弾のアドレスのアドレス
+void DeleteBullet(Bullet** DeletionBullet);
+
+//すべての弾をfreeします
+void DeleteALLBullet();
 
 void BulletCreate(int bulletNum, int enemyNum, BULLETKIND bulletKind);
 

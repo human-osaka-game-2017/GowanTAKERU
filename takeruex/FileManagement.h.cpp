@@ -113,6 +113,7 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/enemy1.png", &g_pTexture[ENEMY01_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp0.png", &g_pTexture[HPUI_TEX]);
 		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp1.png", &g_pTexture[HPUIIN_TEX]);
+		D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/boss1.png", &g_pTexture[BOSS1_TEX]);
 		
 		int MaxX = GetStageXYMAX(stage_ID, X);
 		int MaxY = GetStageXYMAX(stage_ID, Y);
