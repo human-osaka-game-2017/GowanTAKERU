@@ -4,11 +4,13 @@
 #include"BulletControl.h"
 #include"Boss1Control.h"
 #include"StageGimmick.h"
+#include"Boss2Control.h"
 
 void MainSceneInit() {
 	PlayerInit();
-	EnemyInit();
+	//EnemyInit();
 	BulletInit();
 	//Boss1Init();
+	Boss2Init();
 	StageGimmickInit();
 }

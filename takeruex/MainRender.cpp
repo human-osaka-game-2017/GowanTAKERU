@@ -9,6 +9,7 @@
 #include"UIRender.h"
 #include"BlackOutRender.h"
 #include"Boss1Render.h"
+#include"Boss2Render.h"
 
 void MainRender() {
 
@@ -26,8 +27,9 @@ void MainRender() {
 
 	BackgroundRender();
 	MapRender();
-	EnemyRender();
+	//EnemyRender();
 	//Boss1Render();
+	Boss2Render();
 	BulletRender();
 	PlayerRender();
 	UIRender();

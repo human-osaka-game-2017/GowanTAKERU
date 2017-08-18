@@ -98,6 +98,12 @@
     <ClCompile Include="Boss1Control.cpp">
       <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClCompile>
+    <ClCompile Include="Boss2Render.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss2Control.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -241,6 +247,12 @@
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClInclude>
     <ClInclude Include="Boss1Control.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Render.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss2Control.h">
       <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClInclude>
   </ItemGroup>

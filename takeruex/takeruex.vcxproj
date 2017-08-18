@@ -124,6 +124,8 @@
   <ItemGroup>
     <ClCompile Include="BackGroundRender.cpp" />
     <ClCompile Include="Boss1Render.cpp" />
+    <ClCompile Include="Boss2Control.cpp" />
+    <ClCompile Include="Boss2Render.cpp" />
     <ClCompile Include="BulletControl.cpp" />
     <ClCompile Include="BulletRender.cpp" />
     <ClCompile Include="DirectXGraphics.cpp" />
@@ -159,6 +161,8 @@
   <ItemGroup>
     <ClInclude Include="BackGroundRender.h" />
     <ClInclude Include="Boss1Render.h" />
+    <ClInclude Include="Boss2Control.h" />
+    <ClInclude Include="Boss2Render.h" />
     <ClInclude Include="BulletControl.h" />
     <ClInclude Include="BulletRender.h" />
     <ClInclude Include="CommonControl.h" />

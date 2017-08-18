@@ -8,14 +8,16 @@
 #include"StageGimmick.h"
 #include"BlackOutRender.h"
 #include"Boss1Control.h"
+#include"Boss2Control.h"
 
 #include<d3dx9.h>
 
 void MainControl() {
 
 	PlayerControl();
-	EnemyControl();
+	//EnemyControl();
 	//Boss1Control();
+	Boss2Control();
 	BulletControl();
 	HitManage();
 	StageGimmickManage();

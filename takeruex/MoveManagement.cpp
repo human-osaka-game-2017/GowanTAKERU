@@ -3,10 +3,12 @@
 #include"PlayerControl.h"
 #include"EnemyControl.h"
 #include"Boss1Control.h"
+#include"Boss2Control.h"
 
 void MoveManage() {
 	MovePlayer();
 	MoveBullet();
-	MoveEnemy();
+	//MoveEnemy();
 	//MoveBoss1();
+	MoveBoss2();
 }
