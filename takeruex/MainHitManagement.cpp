@@ -45,6 +45,9 @@ void HitManage() {
 			player->beInvincible = true;
 		}
 	}
+	if (MapKindSpecifyForPos(&playerRightBottom) == HOLE || MapKindSpecifyForPos(&playerLeftBottom) == HOLE) {
+		player->Hp = 0;
+	}
 
 	D3DXVECTOR2 tmp = player->WorldPos;
 	tmp.y += 5;

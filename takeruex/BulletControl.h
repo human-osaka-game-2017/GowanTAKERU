@@ -57,14 +57,9 @@ void DeleteBullet(Bullet** DeletionBullet);
 //‚·‚×‚Ä‚Ì’e‚ğfree‚µ‚Ü‚·
 void DeleteALLBullet();
 
-void BulletCreate(int bulletNum, int enemyNum, BULLETKIND bulletKind);
-
 void BulletControl();
 
 void BulletInit();
-
-//bullet‚ğÁ‹‚µ‚Ü‚·
-void DeactivateBullet(int num);
 
 void MoveBullet();
 

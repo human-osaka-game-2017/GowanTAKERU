@@ -23,35 +23,6 @@ void BulletInit() {
 
 }
 
-void BulletCreate(int bulletNum,int enemyNum, BULLETKIND bulletKind) {
-
-	Enemy* enemy = GetenemyData();
-	Player* player = GetplayerData();
-
-	g_bullet[bulletNum].beActive = true;
-	g_bullet[bulletNum].WindowPos = enemy[enemyNum].WindowPos;
-	g_bullet[bulletNum].WorldPos = enemy[enemyNum].WorldPos;
-
-	switch (bulletKind) {
-
-	case BULLET01:
-		g_bullet[bulletNum].Speed = 6.0f;
-		g_bullet[bulletNum].Size = 22;
-		g_bullet[bulletNum].ReflectMax = 3;
-		g_bullet[bulletNum].SaveCoordinate = player->WindowPos;
-
-		g_bullet[bulletNum].Rad = Calculate_rad(
-			g_bullet[bulletNum].WindowPos.x,
-			g_bullet[bulletNum].WindowPos.y,
-			g_bullet[bulletNum].SaveCoordinate.x,
-			g_bullet[bulletNum].SaveCoordinate.y
-		);
-		break;
-
-	}
-
-}
-
 void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind) {
 
 	//ÅŒã”ö‚Ì’e‚ÌŽÀ‘Ì‚ÌƒAƒhƒŒƒX‚Ü‚ÅˆÚ“®
@@ -160,20 +131,9 @@ void MoveBullet() {
 		}
 	}
 
-
-void SetBulletMovement(int bulletNum) {
-	g_bullet[bulletNum].MovementX += g_bullet[bulletNum].Speed*cos(g_bullet[bulletNum].Rad);
-	g_bullet[bulletNum].MovementY -= g_bullet[bulletNum].Speed*sin(g_bullet[bulletNum].Rad);
-}
-
 void SetBulletMovement(Bullet* pBullet) {
 	pBullet->MovementX = pBullet->Speed*cos(pBullet->Rad);
 	pBullet->MovementY = -(pBullet->Speed*sin(pBullet->Rad));
-}
-
-void DeactivateBullet(int num) {
-	g_bullet[num].beActive = false;
-	g_bullet[num].wasReflect = false;
 }
 
 void DeleteBullet(Bullet** DeletionBullet) {

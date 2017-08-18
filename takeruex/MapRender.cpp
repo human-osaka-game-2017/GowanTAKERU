@@ -58,30 +58,30 @@ void MapRender() {
 						drawMapVertex[k] = mapvertex[k];
 						drawMapVertex[k].x += -differenceX + TIPSIZE*j;
 						drawMapVertex[k].y += -differenceY + TIPSIZE*i;
+
+
+						switch (map[j + i*MaxX]) {
+
+						case NOTHING:
+							continue;
+
+						case FLOOR:
+								drawMapVertex[k].tv += 0.125;
+							break;
+
+						case UPNEEDLE:
+								drawMapVertex[k].tv += 0.25;
+							break;
+						}
 					}
 
-
-					switch (map[j + i*MaxX]) {
-
-					case NOTHING:
-						continue;
-
-					case FLOOR:
-						for (int k = 0; k < 4; k++) {
-							drawMapVertex[k].tv += 0.125;
-						}
-						break;
-
-					case UPNEEDLE:
-						for (int k = 0; k < 4; k++) {
-							drawMapVertex[k].tv += 0.25;
-						}
-						break;
+					if (map[j + i*MaxX] != NOTHING) {
+						// テクスチャをステージに割り当てる
+						pD3Device->SetTexture(0, pTexture[MAP_TEX]);
+						// 描画
+						pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawMapVertex, sizeof(CUSTOMVERTEX));
 					}
-					// テクスチャをステージに割り当てる
-					pD3Device->SetTexture(0, pTexture[MAP_TEX]);
-					// 描画
-					pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawMapVertex, sizeof(CUSTOMVERTEX));
+					
 				}
 			}
 		}

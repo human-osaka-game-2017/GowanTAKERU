@@ -7,6 +7,6 @@
 void MoveManage() {
 	MovePlayer();
 	MoveBullet();
-	//MoveEnemy();
-	MoveBoss1();
+	MoveEnemy();
+	//MoveBoss1();
 }

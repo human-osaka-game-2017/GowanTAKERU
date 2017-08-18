@@ -29,7 +29,6 @@ Enemy* GetenemyData() {
 	}
 
 //プロトタイプ群
-void EnemyBulettCreate(int enemyNum);
 void EnemyPursuit(int enemyNum);
 void EnemyArrangement(EnemyMapNum enemyMapNum[]);
 
@@ -118,7 +117,7 @@ void EnemyControl() {
 				EnemyPursuit(i);
 				g_enemy[i].bulletFrameCount++;
 				if (g_enemy[i].bulletFrameCount == g_enemy[i].firingInterval) {//エネミー事に持っているは発射感覚になったら入る
-					EnemyBulettCreate(i);
+					BulletCreate(g_enemy[i].WorldPos,BULLET01);
 					g_enemy[i].bulletFrameCount = 0;
 				}
 			}
@@ -177,24 +176,6 @@ void EnemyPursuit(int enemyNum) {
 
 	
 }
-
-
-
-
-void EnemyBulettCreate(int enemyNum) {
-	Bullet* bullt= GetBullet();
-
-		static int bulletRest = 0;//弾の撃った数を図る変数
-		BulletCreate(bulletRest, enemyNum, BULLET01);
-		bulletRest++;
-
-		if (bulletRest == BULLETNUMBER ) {//弾の装填数がなくなったら初期化
-			bulletRest = 0;
-		}
-
-}
-
-
 
 void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSVからエネミーの座標と種類をもらう
 

@@ -35,7 +35,7 @@ SCENE_ID RunTitleScene(bool willbetrancefar) {
 		if (key[KEY_Z] == KEY_PUSH) {
 			nextscene_ID = MAINSCENE;
 			nextsceneflg = true;
-			PlayBackSound(SOUND03, false,100);
+			//PlayBackSound(SOUND03, false,50);
 		}
 
 		TitleRender(nextsceneflg);

@@ -14,8 +14,8 @@
 void MainControl() {
 
 	PlayerControl();
-	//EnemyControl();
-	Boss1Control();
+	EnemyControl();
+	//Boss1Control();
 	BulletControl();
 	HitManage();
 	StageGimmickManage();

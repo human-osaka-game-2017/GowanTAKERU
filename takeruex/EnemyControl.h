@@ -4,11 +4,6 @@
 #define ENEMYNUMBER 10//エネミーの数
 //#define GRAVITY 1//エネミーにかかる重力
 
-
-
-
-
-
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
