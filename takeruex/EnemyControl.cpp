@@ -9,75 +9,68 @@
 #include"PlayerControl.h"
 #include "BulletControl.h"
 #include "FileManagement.h"
-#include "MapRender.h"
 
-EnemyMapDate g_EnemyMapDate;
 
-EnemyMapDate* GetEnemyMapDate() {
-	return &g_EnemyMapDate;
-}
 
-Enemy g_enemy[ENEMYNUMBER];
-struct EnemyMapNum {//CSVの座標と番号を入れる箱
-	int NumX;
-	int NumY;
+Enemy* g_enemy;//魔ロックする　んでそれをフリーしてくれ（関数作ってくれ）
 
-};
-
-Enemy* GetenemyData() {
+Enemy* GetenemyData() {//データよこせよ魔ロックしたやつ
 		return g_enemy;
 	}
+
+int enemyMaxCount = 0;
+
+int GetEnemyMax() {
+	return enemyMaxCount;
+}
 
 //プロトタイプ群
 void EnemyPursuit(int enemyNum);
 void EnemyArrangement(EnemyMapNum enemyMapNum[]);
 
-//void EnemyCSVInit() {
-//	g_EnemyMapDate.MaxDate = 0;
-//	g_EnemyMapDate.HasKeyDate = 0;
-//
-//	STAGE_ID stage_ID = GetStage_ID();
-//	int MaxX = GetStageXYMAX(stage_ID, X);
-//	int MaxY = GetStageXYMAX(stage_ID, Y);
-//	int* enemyArrangement = (int*)malloc(sizeof(int)*MaxX*MaxY);
-//
-//	switch (stage_ID) {
-//	case STAGE_1:
-//		CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyArrangement, MaxY, MaxX);//CSV呼び出し
-//		break;
-//	}
-//
-//	int enemyMaxCount = 0;
-//	int enemyHasKyeCount = 0;
-//
-//	for (int i = 0; i < MaxY; i++) {
-//		for (int j = 0; j < MaxX; j++) {
-//			switch (enemyArrangement[j + i*MaxX]) {
-//			case WALKINGENEMY_HAS_KEY_2:
-//			case FLYINGENEMY_HAS_KEY1:
-//			case FLYINGENEMY_HAS_KEY2:
-//				enemyHasKyeCount;
-//			case WALKINGENEMY_1:
-//			case FLYINGENEMY1:
-//			case FIXEDBATTERY1:
-//				enemyMaxCount++;
-//				break;
-//			default:
-//				break;
-//			}
-//		}
-//		g_EnemyMapDate.MaxDate = enemyMaxCount;
-//		g_EnemyMapDate.HasKeyDate = enemyHasKyeCount;
-//	}
-//
-//	free();
-//
-//
-//}
+int EnemyCSVInit() {
+	STAGE_ID stage_ID = GetStage_ID();
+	int MaxX = GetStageXYMAX(stage_ID, X);
+	int MaxY = GetStageXYMAX(stage_ID, Y);
+	int* enemyCSVInit = (int*)malloc(sizeof(int)*MaxX*MaxY);
+
+	switch (stage_ID) {
+	case STAGE_1:
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyCSVInit, MaxY, MaxX);//CSV呼び出し
+		break;
+	}
+
+
+	for (int i = 0; i < MaxY; i++) {
+		for (int j = 0; j < MaxX; j++) {
+			switch (enemyCSVInit[j + i*MaxX]) {
+			case WALKINGENEMY_HAS_KEY_2:
+			case FLYINGENEMY_HAS_KEY1:
+			case FLYINGENEMY_HAS_KEY2:
+			case WALKINGENEMY_1:
+			case FLYINGENEMY1:
+			case FIXEDBATTERY1:
+				enemyMaxCount++;
+				break;
+			default:
+				break;
+			}
+		}
+
+	}
+	g_enemy = (Enemy*)malloc(sizeof(Enemy)*enemyMaxCount);
+
+
+	free(enemyCSVInit);
+	return enemyMaxCount;
+
+
+}
 
 void EnemyInit() {
-
-	EnemyMapNum enemyMapNum[ENEMYNUMBER];
+	//g_enemyを魔ロック
+	EnemyCSVInit(); 
+	g_enemy = (Enemy*)malloc(sizeof(Enemy)*enemyMaxCount);
 	EnemyArrangement(enemyMapNum);
 	for (int i = 0; i < ENEMYNUMBER; i++) {
 		g_enemy[i].WorldPos.x = enemyMapNum[i].NumX*TIPSIZE;//ワールド座標
@@ -178,7 +171,7 @@ void EnemyPursuit(int enemyNum) {
 	
 }
 
-void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSVからエネミーの座標と種類をもらう
+void EnemyArrangement() {//CSVからエネミーの座標と種類をもらう
 
 	STAGE_ID stage_ID = GetStage_ID();
 	int MaxX = GetStageXYMAX(stage_ID, X);
