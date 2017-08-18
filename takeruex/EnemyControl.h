@@ -28,6 +28,13 @@ struct Enemy {
 
 };
 
+struct EnemyMapDate {
+	int MaxDate;//最大数
+	int HasKeyDate;//キー持ちの数
+};
+
+
+
 ////エネミーデータ
 Enemy* GetenemyData();
 void EnemyInit();

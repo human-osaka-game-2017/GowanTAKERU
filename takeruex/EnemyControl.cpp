@@ -11,6 +11,12 @@
 #include "FileManagement.h"
 #include "MapRender.h"
 
+EnemyMapDate g_EnemyMapDate;
+
+EnemyMapDate* GetEnemyMapDate() {
+	return &g_EnemyMapDate;
+}
+
 Enemy g_enemy[ENEMYNUMBER];
 struct EnemyMapNum {//CSV‚ÌÀ•W‚Æ”Ô†‚ğ“ü‚ê‚é” 
 	int NumX;
@@ -26,9 +32,52 @@ Enemy* GetenemyData() {
 void EnemyBulettCreate(int enemyNum);
 void EnemyPursuit(int enemyNum);
 void EnemyArrangement(EnemyMapNum enemyMapNum[]);
-//void EnemyGravity(int enemyNum);
+
+//void EnemyCSVInit() {
+//	g_EnemyMapDate.MaxDate = 0;
+//	g_EnemyMapDate.HasKeyDate = 0;
+//
+//	STAGE_ID stage_ID = GetStage_ID();
+//	int MaxX = GetStageXYMAX(stage_ID, X);
+//	int MaxY = GetStageXYMAX(stage_ID, Y);
+//	int* enemyArrangement = (int*)malloc(sizeof(int)*MaxX*MaxY);
+//
+//	switch (stage_ID) {
+//	case STAGE_1:
+//		CSVLoad("CSV/mainscene/stage1_gimmick.csv", enemyArrangement, MaxY, MaxX);//CSVŒÄ‚Ño‚µ
+//		break;
+//	}
+//
+//	int enemyMaxCount = 0;
+//	int enemyHasKyeCount = 0;
+//
+//	for (int i = 0; i < MaxY; i++) {
+//		for (int j = 0; j < MaxX; j++) {
+//			switch (enemyArrangement[j + i*MaxX]) {
+//			case WALKINGENEMY_HAS_KEY_2:
+//			case FLYINGENEMY_HAS_KEY1:
+//			case FLYINGENEMY_HAS_KEY2:
+//				enemyHasKyeCount;
+//			case WALKINGENEMY_1:
+//			case FLYINGENEMY1:
+//			case FIXEDBATTERY1:
+//				enemyMaxCount++;
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//		g_EnemyMapDate.MaxDate = enemyMaxCount;
+//		g_EnemyMapDate.HasKeyDate = enemyHasKyeCount;
+//	}
+//
+//	free();
+//
+//
+//}
 
 void EnemyInit() {
+
 	EnemyMapNum enemyMapNum[ENEMYNUMBER];
 	EnemyArrangement(enemyMapNum);
 	for (int i = 0; i < ENEMYNUMBER; i++) {
@@ -219,7 +268,7 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚Æí—Ş‚
 //}
 
 void MoveEnemy() {
-	for (int i = 0; i < ENEMYNUMBER; i++) {
+	for (int i = 0; i < g_EnemyMapDate.MaxDate; i++) {
 		if (g_enemy[i].beActive == true && g_enemy[i].beDead == false) {//ƒfƒXAƒAƒNƒeƒBƒuƒ`ƒFƒbƒN
 			//ŠeƒGƒlƒ~[‚ÌÀ•W‚É“®‚­’l‚ğ‘«‚·
 			g_enemy[i].WorldPos.x += g_enemy[i].MovementX;
