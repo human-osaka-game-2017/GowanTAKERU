@@ -130,6 +130,7 @@ void EnemyPursuit(int enemyNum) {
 	Player* player = GetplayerData();
 		switch (g_enemy[enemyNum].enemyKind) {
 		case WALKINGENEMY_1:
+		case WALKINGENEMY_HAS_KEY_1:
 		case WALKINGENEMY_HAS_KEY_2:
 			if (g_enemy[enemyNum].bulletFrameCount < g_enemy[enemyNum].firingInterval - 5) {//’e”­ŽËƒtƒŒ[ƒ€‚æ‚è-5ƒtƒŒ[ƒ€–¢–ž‚¾‚Á‚½‚ç’†‚É“ü‚é
 				//ƒGƒlƒ~[‚ÌXÀ•W‚ªƒvƒŒƒCƒ„[‚ÌXÀ•W‚æ‚è¬‚³‚©‚Á‚½‚ç
@@ -195,8 +196,12 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚ÆŽí—Þ‚
 	for (int i = 0; i < MaxY;i++) {
 		for (int j = 0; j < MaxX; j++) {
 			switch (enemyArrangement[j + i*MaxX]) {//‚à‚ç‚Á‚½“G‚Ìƒf[ƒ^‚ð“ü‚êž‚Þ
+			case WALKINGENEMY_HAS_KEY_1:
+				g_enemy[enemycount].enemyKind = WALKINGENEMY_HAS_KEY_1;
 			case WALKINGENEMY_HAS_KEY_2:
-				g_enemy[enemycount].enemyKind = WALKINGENEMY_HAS_KEY_2;
+				if (g_enemy[enemycount].enemyKind != WALKINGENEMY_HAS_KEY_1) {
+					g_enemy[enemycount].enemyKind = WALKINGENEMY_HAS_KEY_2;
+				}
 			case WALKINGENEMY_1:
 				enemyMapNum[enemycount].NumX = j;
 				enemyMapNum[enemycount].NumY = i;
@@ -249,7 +254,7 @@ void EnemyArrangement(EnemyMapNum enemyMapNum[]) {//CSV‚©‚çƒGƒlƒ~[‚ÌÀ•W‚ÆŽí—Þ‚
 //}
 
 void MoveEnemy() {
-	for (int i = 0; i < g_EnemyMapDate.MaxDate; i++) {
+	for (int i = 0; i < ENEMYNUMBER; i++) {
 		if (g_enemy[i].beActive == true && g_enemy[i].beDead == false) {//ƒfƒXAƒAƒNƒeƒBƒuƒ`ƒFƒbƒN
 			//ŠeƒGƒlƒ~[‚ÌÀ•W‚É“®‚­’l‚ð‘«‚·
 			g_enemy[i].WorldPos.x += g_enemy[i].MovementX;
