@@ -41,8 +41,6 @@ void PlayerRender() {
 				CurrentDrawVertex[i].tv += PLAYERSIZEHEIGHT * trimY / 1024.f;
 
 			}
-
-			
 		}
 
 		if (player->beLeft) {

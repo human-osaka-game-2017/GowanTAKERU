@@ -28,7 +28,7 @@ void HitManage() {
 	Player* player = GetplayerData();
 	Boss1Data* pBoss1 = GetBoss1Data();
 	Bullet* pFirstBullet = GetFirstBulletAddress();
-	Enemy* enemy = GetenemyData();
+	Enemy* enemy = GetEnemyData();
 	
 
 	//プレイヤーとマップの処理
@@ -60,7 +60,8 @@ void HitManage() {
 	PushOutMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT - 10);
 
 	//エネミーとマップの押し出し処理
-	for (int i = 0; i < ENEMYNUMBER; i++) {
+	int enemyMax = GetEnemyMax();
+	for (int i = 0; i < enemyMax; i++) {
 		PushOutMap(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementX, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
 	}
 
@@ -107,7 +108,8 @@ void HitManage() {
 		}
 
 		//敵とバレットのダメージ計算
-		for (int j = 0; j < ENEMYNUMBER; j++) {
+		int enemyMax = GetEnemyMax();
+		for (int j = 0; j < enemyMax; j++) {
 			if (enemy[j].beActive == true && enemy[j].beDead == false) {
 				if (pSearchBullet->wasReflect) {
 					if (SquareHit(&pSearchBullet->WindowPos, pFirstBullet->Size, pFirstBullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
@@ -127,7 +129,7 @@ void HitManage() {
 	}
 
 	//エネミーとプレイヤーの直接のあたり判定
-	for (int i = 0; i < ENEMYNUMBER; i++) {
+	for (int i = 0; i < enemyMax; i++) {
 		if (enemy[i].beActive && !enemy[i].beDead) {
 			D3DXVECTOR2 tmpPlayer = player->WindowPos;
 			if (player->beLeft) {

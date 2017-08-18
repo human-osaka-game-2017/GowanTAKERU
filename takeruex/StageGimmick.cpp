@@ -38,8 +38,9 @@ void StageGimmickInit() {
 	}
 	
 	//‚»‚ê‚¼‚ê‚Ì“G‚ÌƒJƒM‚¿‚ğ”‚¦Aİ’è‚·‚é
-	Enemy* pEnemy = GetenemyData();
-	for (int i = 0; i < ENEMYNUMBER; i++) {
+	Enemy* pEnemy = GetEnemyData();
+	int enemyMax = GetEnemyMax();
+	for (int i = 0; i < enemyMax; i++) {
 		switch (pEnemy[i].enemyKind) {
 
 		case WALKINGENEMY_HAS_KEY_1:
@@ -71,12 +72,13 @@ void StageGimmickInit() {
 
 void StageGimmickManage() {
 
-	Enemy* pEnemy = GetenemyData();
+	Enemy* pEnemy = GetEnemyData();
 
 	int gateKeyNumCnt[KEYNUM_KIND_MAX] = { 0 };
 
 	//“G‚Ì€‚ñ‚Å‚¢‚éŒ®‚¿‚Ì”‚ğ”‚¦‚é
-	for (int i = 0; i < ENEMYNUMBER; i++) {
+	int enemyMax = GetEnemyMax();
+	for (int i = 0; i < enemyMax; i++) {
 
 		if (pEnemy[i].beDead) {
 			switch (pEnemy[i].enemyKind)

@@ -6,6 +6,7 @@
 #include"MainSceneInit.h"
 #include"DirectXSound.h"
 #include"PlayerControl.h"
+#include"EnemyControl.h"
 
 
 SCENE_ID RunMainScene(bool willbetrancefar) {
@@ -43,6 +44,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		break;
 
 	case 2:
+		FreeEnemyData();
 		FreeMapData();
 		ReleaseTexture(MAINSCENE_TEXMAX);
 		FreeTexture();

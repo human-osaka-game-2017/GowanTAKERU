@@ -62,9 +62,6 @@ void MapRender() {
 
 						switch (map[j + i*MaxX]) {
 
-						case NOTHING:
-							continue;
-
 						case FLOOR:
 								drawMapVertex[k].tv += 0.125;
 							break;
@@ -81,7 +78,6 @@ void MapRender() {
 						// •`‰æ
 						pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawMapVertex, sizeof(CUSTOMVERTEX));
 					}
-					
 				}
 			}
 		}

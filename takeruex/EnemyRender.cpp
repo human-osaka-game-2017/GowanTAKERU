@@ -10,7 +10,7 @@ void EnemyRender() {
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 	LPDIRECT3DTEXTURE9* pTexture = GetTexture();
 
-	Enemy* enemy = GetenemyData();
+	Enemy* enemy = GetEnemyData();
 
 	CUSTOMVERTEX Enemy[] = {
 		{-ENEMYRESIZEWIDTH / 2, -ENEMYRESIZEHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
@@ -19,8 +19,8 @@ void EnemyRender() {
 		{-ENEMYRESIZEWIDTH / 2,  ENEMYRESIZEHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 	};
 
-
-	for (int i = 0; i < ENEMYNUMBER; i++) {
+	int enemyMax = GetEnemyMax();
+	for (int i = 0; i < enemyMax; i++) {
 	if (enemy[i].beDead == false && enemy[i].beActive == true)
 	{
 			CUSTOMVERTEX DrawVertex[4];

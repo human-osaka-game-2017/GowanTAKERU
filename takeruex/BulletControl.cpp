@@ -139,7 +139,10 @@ void SetBulletMovement(Bullet* pBullet) {
 void DeleteBullet(Bullet** DeletionBullet) {
 	Bullet* pre = (*DeletionBullet)->previous;
 	((*DeletionBullet)->previous)->next = (*DeletionBullet)->next;
-	((*DeletionBullet)->next)->previous = (*DeletionBullet)->previous;
+	if ((*DeletionBullet)->next != NULL) {
+		((*DeletionBullet)->next)->previous = (*DeletionBullet)->previous;
+
+	}
 	free(*DeletionBullet);
 	*DeletionBullet = pre;
 }

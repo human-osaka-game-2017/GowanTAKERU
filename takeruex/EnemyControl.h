@@ -1,7 +1,6 @@
 #ifndef ENEMYCONTROL_H
 #define ENEMYCONTROL_H
 #include<d3dx9.h> 
-#define ENEMYNUMBER 10//エネミーの数
 //#define GRAVITY 1//エネミーにかかる重力
 
 struct Enemy { 
@@ -23,17 +22,12 @@ struct Enemy {
 
 };
 
-struct EnemyMapDate {
-	int MaxDate;//最大数
-	int HasKeyDate;//キー持ちの数
-};
-
-
-
 ////エネミーデータ
-Enemy* GetenemyData();
+int GetEnemyMax();
+Enemy* GetEnemyData();
 void EnemyInit();
 void EnemyControl();
 void MoveEnemy();
+void FreeEnemyData();
 
 #endif
