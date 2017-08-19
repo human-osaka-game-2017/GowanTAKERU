@@ -8,9 +8,9 @@
 
 void MainSceneInit() {
 	PlayerInit();
-	//EnemyInit();
+	EnemyInit();
 	BulletInit();
-	//Boss1Init();
+	Boss1Init();
 	Boss2Init();
 	StageGimmickInit();
 }

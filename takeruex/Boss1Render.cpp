@@ -17,7 +17,7 @@ void Boss1Render() {
 		{ BOSS1WIDTH / 2,  BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
 		{ -BOSS1WIDTH / 2,  BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 	};
-	if (pBoss1->isActive) {
+	if (pBoss1->isActive && !pBoss1->isDead) {
 		CUSTOMVERTEX drawVertex[4];
 		for (int j = 0; j < 4; j++) {
 			drawVertex[j] = boss1[j];

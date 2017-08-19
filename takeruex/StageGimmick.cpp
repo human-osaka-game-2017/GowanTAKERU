@@ -7,16 +7,21 @@
 #include"MapControl.h"
 #include"BulletControl.h"
 #include"EnemyControl.h"
+#include"Boss1Control.h"
 
 #define KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG	0x0001
 #define KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG	0x0002
 #define KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG	0x0004
+#define SHUTTER_2_FLG						0x0012
 #define KEYNUM_FLYINGENEMY_HAS_KEY1_FLG		0x0008
 #define KEYNUM_FLYINGENEMY_HAS_KEY2_FLG		0x0010
 #define KEYNUM_FLYINGENEMY_HAS_KEY3_FLG		0x0020
 
+static bool g_BossGateflg = false;
+
 //プロトタイプ宣言
-void OpenGate(int mapKind);
+void OpenGate(MapKind mapKind);
+void CloseGate(MapKind beforeMapKind, MapKind afterMapKind);
 
 enum KEYNUM_KIND {
 	KEYNUM_WALKINGENEMY_HAS_KEY_1,
@@ -32,6 +37,8 @@ int g_GateKeyNum[KEYNUM_KIND_MAX] = { 0 };
 
 
 void StageGimmickInit() {
+
+	g_BossGateflg = false;
 
 	for (int i = 0; i < KEYNUM_KIND_MAX; i++) {
 		g_GateKeyNum[i] = 0;
@@ -114,48 +121,97 @@ void StageGimmickManage() {
 
 	//それぞれの設定された鍵持ちの数と死んでいる鍵持ちの数が一緒か調べ、同じならフラグを立てる
 	for (int i = 0; i < KEYNUM_KIND_MAX; i++) {
+
 		if (gateKeyNumCnt[i] == g_GateKeyNum[i]) {
 			switch (i) {
 			case KEYNUM_WALKINGENEMY_HAS_KEY_1:
-				gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG;
+				gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG;
 				break;
 			case KEYNUM_WALKINGENEMY_HAS_KEY_2:
-				gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG;
+				gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG;
 				break;
 			case KEYNUM_WALKINGENEMY_HAS_KEY_3:
-				gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG;
+				gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG;
 				break;
 			case KEYNUM_FLYINGENEMY_HAS_KEY1:
-				gateflg | KEYNUM_FLYINGENEMY_HAS_KEY1_FLG;
+				gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY1_FLG;
 				break;
 			case KEYNUM_FLYINGENEMY_HAS_KEY2:
-				gateflg | KEYNUM_FLYINGENEMY_HAS_KEY2_FLG;
+				gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY2_FLG;
 				break;
 			case KEYNUM_FLYINGENEMY_HAS_KEY3:
-				gateflg | KEYNUM_FLYINGENEMY_HAS_KEY3_FLG;
+				gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY3_FLG;
 				break;
 			}
 		}
 	}
 
-	//リンクさせる
+	//シャッターとリンクさせる
 	if (gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG) {
 		OpenGate(SHUTTER_1);
+		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_1] = -1;
 	}
-	if ((gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG) && (gateflg & KEYNUM_FLYINGENEMY_HAS_KEY2_FLG)) {
+	if ((gateflg & SHUTTER_2_FLG)) {
 		OpenGate(SHUTTER_2);
+		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_2] = -1;
+		g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY2] = -1;
+	}
+
+	//boss用シャッターの処理
+	Boss1Data* pBoss1 = GetBoss1Data();
+
+	bool bossActiveflg;
+	STAGE_ID stage_ID = GetStage_ID();
+	switch (stage_ID) {
+	case STAGE_1:
+		bossActiveflg = pBoss1->isActive;
+		break;
+	}
+
+
+	if (bossActiveflg && !g_BossGateflg) {
+		CloseGate(BOSS_SHUTTER, WALL);
+		g_BossGateflg = true;
 	}
 }
 
-
-void OpenGate(int mapKind) {
+void CloseGate(MapKind beforeMapKind, MapKind afterMapKind) {
 
 	STAGE_ID stage_ID = GetStage_ID();
 	STAGEXYMAX maxX = GetStageXYMAX(stage_ID, X);
 	STAGEXYMAX maxY = GetStageXYMAX(stage_ID, Y);
 	int* pGimmickData = (int*)malloc(sizeof(int)*maxX*maxY);
 
-	CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);
+	switch (stage_ID) {
+	case STAGE_1:
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);//CSV呼び出し
+		break;
+	}
+
+	int* pMapData = GetMapData();
+
+	for (int i = 0; i < maxY; i++) {
+		for (int j = 0; j < maxX; j++) {
+			if (*(pGimmickData + (i*maxX + j)) == beforeMapKind) {
+				*(pMapData + (i*maxX + j)) = afterMapKind;
+			}
+
+		}
+	}
+}
+
+void OpenGate(MapKind mapKind) {
+
+	STAGE_ID stage_ID = GetStage_ID();
+	STAGEXYMAX maxX = GetStageXYMAX(stage_ID, X);
+	STAGEXYMAX maxY = GetStageXYMAX(stage_ID, Y);
+	int* pGimmickData = (int*)malloc(sizeof(int)*maxX*maxY);
+
+	switch (stage_ID) {
+	case STAGE_1:
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);//CSV呼び出し
+		break;
+	}
 
 	int* pMapData = GetMapData();
 

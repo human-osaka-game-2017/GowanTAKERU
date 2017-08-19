@@ -29,7 +29,6 @@ struct Bullet {
 	int ReflectMax;
 	int ReflectCnt;
 	bool wasReflect;
-	bool beActive;
 	Bullet* next;
 	Bullet* previous;
 };

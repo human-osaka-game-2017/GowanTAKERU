@@ -61,6 +61,7 @@ void CountEnemy(int maxX,int maxY,int* pGimmickData) {
 			}
 		}
 	}
+	g_EnemyMaxCount++;
 }
 
 void EnemyInit() {
@@ -81,30 +82,31 @@ void EnemyInit() {
 	g_pEnemy = (Enemy*)malloc(sizeof(Enemy)*g_EnemyMaxCount);
 
 	SetEnemyData(maxX, maxY, pGimmickData);
-
-
+	free(pGimmickData);
 }
 
 void EnemyControl() {
 
 	D3DXVECTOR2* basepoint = GetBasePoint();
+	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+
 	int enemyMax = GetEnemyMax();
 	for (int i = 0; i < enemyMax; i++) {
 		if (g_pEnemy[i].beDead == false) {
+
+			g_pEnemy[i].WindowPos.x = g_pEnemy[i].WorldPos.x - (basepoint->x - BasePoint0.x);
+			g_pEnemy[i].WindowPos.y = g_pEnemy[i].WorldPos.y - (basepoint->y - BasePoint0.y);
+
 			//ウィンドウの外（左右）120ピクセルから描画開始のフラグを立てる
-			if (g_pEnemy[i].WorldPos.x < basepoint->x + DISPLAY_WIDTH / 2 + 120 && g_pEnemy[i].WorldPos.x > basepoint->x - DISPLAY_WIDTH / 2 - 120) {
+			if (-(2 * TIPSIZE) < g_pEnemy[i].WindowPos.x && g_pEnemy[i].WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
+				-(2 * TIPSIZE) < g_pEnemy[i].WindowPos.y && g_pEnemy[i].WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
 				g_pEnemy[i].beActive = true;
 			}
+			else {
+				g_pEnemy[i].beActive = false;
+			}
+
 			if (g_pEnemy[i].beActive == true && g_pEnemy[i].beDead == false) {
-				//エネミーとベースポイントとのworld,X座標の距離を調べる
-				float EnemyWorldDistanceX = g_pEnemy[i].WorldPos.x - basepoint->x;
-				//エネミーとベースポイントとのworld,Y座標の距離を調べる
-				float EnemyWorldDistanceY = g_pEnemy[i].WorldPos.y - basepoint->y;
-				//エネミーのwindow,X座標を調べる
-				g_pEnemy[i].WindowPos.x = DISPLAY_WIDTH / 2 + EnemyWorldDistanceX;
-				//エネミーのwindow,Y座標を調べる
-				g_pEnemy[i].WindowPos.y = DISPLAY_HEIGHT / 2 + EnemyWorldDistanceY;
-				//EnemyGravity(i);
 				EnemyPursuit(i);
 				g_pEnemy[i].bulletFrameCount++;
 				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー事に持っているは発射感覚になったら入る
@@ -127,19 +129,19 @@ void EnemyPursuit(int enemyNum) {
 				//エネミーのX座標がプレイヤーのX座標より小さかったら
 				if (player->WindowPos.x < g_pEnemy[enemyNum].WindowPos.x) {
 					//+方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
+					g_pEnemy[enemyNum].MovementX = -g_pEnemy[enemyNum].Speed;
 				}
 				//エネミーのX座標がプレイヤーのX座標より大きかったら
 				else if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
 					//-方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX += g_pEnemy[enemyNum].Speed;
+					g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
 				}
 			}
 			if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
 				g_pEnemy[enemyNum].MovementX = 0;
 				g_pEnemy[enemyNum].MovementY = 0;
 			}
-			g_pEnemy[enemyNum].MovementY += GRAVITY;
+			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 
 			break;
 		case FLYINGENEMY1:
@@ -149,12 +151,12 @@ void EnemyPursuit(int enemyNum) {
 				//エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 				if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
 					//+方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
+					g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
 				}
 				//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
 				else if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
 					//+方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX += g_pEnemy[enemyNum].Speed;
+					g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
 				}
 			}
 			
@@ -356,12 +358,13 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 			if (g_pEnemy[enemyCount].enemyKind != NOTHING) {
 				g_pEnemy[enemyCount].WorldPos.x = j*TIPSIZE;
 				g_pEnemy[enemyCount].WorldPos.y = i*TIPSIZE;
-				g_pEnemy[i].WindowPos.x = 0;
-				g_pEnemy[i].WindowPos.y = 0;
-				g_pEnemy[i].bulletFrameCount = 0;
-				g_pEnemy[i].beDead = false;//死んでいるか
-				g_pEnemy[i].beActive = false;//活動中か
-				g_pEnemy[i].beLeft = false;//左（右）どうっち向いてるか
+				g_pEnemy[enemyCount].WindowPos.x = 0;
+				g_pEnemy[enemyCount].WindowPos.y = 0;
+				g_pEnemy[enemyCount].MovementX = g_pEnemy[enemyCount].MovementY = 0;
+				g_pEnemy[enemyCount].bulletFrameCount = 0;
+				g_pEnemy[enemyCount].beDead = false;//死んでいるか
+				g_pEnemy[enemyCount].beActive = false;//活動中か
+				g_pEnemy[enemyCount].beLeft = false;//左（右）どうっち向いてるか
 				enemyCount++;
 
 			}

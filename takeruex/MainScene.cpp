@@ -27,7 +27,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		//StageSelect();
 		MainSceneLoad(GetStage_ID());
 		MainSceneInit();
-		//PlayBackSound(SOUND02, true, 50);
+		PlayBackSound(SOUND02, true, 10);
 		step++;
 		break;
 

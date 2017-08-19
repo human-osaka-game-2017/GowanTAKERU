@@ -27,8 +27,8 @@ void MainRender() {
 
 	BackgroundRender();
 	MapRender();
-	//EnemyRender();
-	//Boss1Render();
+	EnemyRender();
+	Boss1Render();
 	Boss2Render();
 	BulletRender();
 	PlayerRender();

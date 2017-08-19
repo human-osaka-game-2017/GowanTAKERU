@@ -66,7 +66,7 @@ void PlayerInit() {
 	g_player.MovementX = g_player.MovementY = 0;
 	g_player.JumpPower = 0.0f;
 	g_player.Jumping = false;
-	g_player.Hp = 10000;
+	g_player.Hp = 100;
 	g_player.beActive = true;
 	g_player.LifeReduced = 1;
 	g_player.beInvincible = false;

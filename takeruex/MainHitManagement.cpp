@@ -15,6 +15,7 @@
 #include<tchar.h>
 #include<stdio.h>
 
+void PushOutMapFourPoint(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
 void PushOutMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height);
 
 void CollisionMapForBullet();
@@ -62,7 +63,9 @@ void HitManage() {
 	//エネミーとマップの押し出し処理
 	int enemyMax = GetEnemyMax();
 	for (int i = 0; i < enemyMax; i++) {
-		PushOutMap(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementX, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
+		if (enemy[i].beActive && !enemy[i].beDead) {
+			PushOutMapFourPoint(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementY, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
+		}
 	}
 
 	//boss1とマップの押し出し処理
@@ -78,6 +81,10 @@ void HitManage() {
 			if (pSearchBullet->wasReflect) {
 				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss1->WindowPos, BOSS1WIDTH, BOSS1HEIGHT)) {
 					pBoss1->Hp -= pSearchBullet->Atk;
+					if (pBoss1->Hp <= 0) {
+						pBoss1->isDead = true;
+						pBoss1->isActive = false;
+					}
 					DeleteBullet(&pSearchBullet);
 					continue;
 				}
@@ -92,19 +99,20 @@ void HitManage() {
 		else {
 			tmpPlayer.x += -15;
 		}
+		if(!pSearchBullet->wasReflect){
+			if (SquareHit(&tmpPlayer, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size)) {
 
-		if (SquareHit(&tmpPlayer, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size)) {
+				if (!player->beInvincible) {
+					PlayBackSound(SOUND01, false, 100);
 
-			if (!player->beInvincible) {
-				PlayBackSound(SOUND01, false, 100);
+					player->Hp -= pSearchBullet->Atk;
 
-				player->Hp -= pSearchBullet->Atk;
+					player->beInvincible = true;
+				}
 
-				player->beInvincible = true;
+				DeleteBullet(&pSearchBullet);
+				continue;
 			}
-
-			DeleteBullet(&pSearchBullet);
-			continue;
 		}
 
 		//敵とバレットのダメージ計算
@@ -223,6 +231,42 @@ bool SquareHit(D3DXVECTOR2* pPosA, float widthA, float heightA, D3DXVECTOR2* pPo
 	return false;
 }
 
+void PushOutMapFourPoint(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, float width, float height) {
+	D3DXVECTOR2 Left;
+	D3DXVECTOR2 Right;
+	D3DXVECTOR2 Bottom;
+	D3DXVECTOR2 Top;
+
+	Left.x = Pos.x - (width / 2) + *MovementX - 1;
+	Right.x = Pos.x + (width / 2) + *MovementX;
+	Top.x = Bottom.x = Pos.x + *MovementX;
+	Top.y = Pos.y - (height / 2) + *MovementY;
+	Bottom.y = Pos.y + (height / 2) + *MovementY + 1;
+	Left.y = Right.y = Pos.y + *MovementY;
+
+	MapNumXY tmpNum;
+	MapchipNumberSpecify(&tmpNum, &Left);
+
+	if (MapKindSpecify(&tmpNum) != NOTHING) {
+		*MovementX -= Left.x - ((tmpNum.NumX + 1) * TIPSIZE);
+	}
+
+	MapchipNumberSpecify(&tmpNum, &Right);
+	if (MapKindSpecify(&tmpNum) != NOTHING) {
+		*MovementX -= Right.x - ((tmpNum.NumX) * TIPSIZE);
+	}
+
+	MapchipNumberSpecify(&tmpNum, &Top);
+	if (MapKindSpecify(&tmpNum) != NOTHING) {
+		*MovementY += Top.y - ((tmpNum.NumY + 1) * TIPSIZE);
+	}
+
+	MapchipNumberSpecify(&tmpNum, &Bottom);
+	if (MapKindSpecify(&tmpNum) != NOTHING) {
+		*MovementY -= (Bottom.y) - ((tmpNum.NumY) * TIPSIZE);
+	}
+}
+
 void PushOutMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, float width, float height) {
 
 	D3DXVECTOR2 tmpPos;
@@ -304,8 +348,6 @@ void PushOutMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, float 
 }
 
 void CollisionMapForBullet() {
-	static int fr = 0;
-	fr++;
 	Bullet* pFirstBullet = GetFirstBulletAddress();
 	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
 		D3DXVECTOR2 Left;
@@ -313,11 +355,11 @@ void CollisionMapForBullet() {
 		D3DXVECTOR2 Bottom;
 		D3DXVECTOR2 Top;
 
-		Left.x = pSearchBullet->WorldPos.x - (pSearchBullet->Size / 2) + (pSearchBullet->MovementX);
+		Left.x = pSearchBullet->WorldPos.x - (pSearchBullet->Size / 2) + (pSearchBullet->MovementX) -1;
 		Right.x = pSearchBullet->WorldPos.x + (pSearchBullet->Size / 2) + (pSearchBullet->MovementX);
 		Top.x = Bottom.x = pSearchBullet->WorldPos.x + (pSearchBullet->MovementX);
 		Top.y = pSearchBullet->WorldPos.y - (pSearchBullet->Size / 2) + (pSearchBullet->MovementY);
-		Bottom.y = pSearchBullet->WorldPos.y + (pSearchBullet->Size / 2) + (pSearchBullet->MovementY);
+		Bottom.y = pSearchBullet->WorldPos.y + (pSearchBullet->Size / 2) + (pSearchBullet->MovementY) + 1;
 		Left.y = Right.y = pSearchBullet->WorldPos.y + (pSearchBullet->MovementY);
 
 		D3DXVECTOR2 tmpPos;
@@ -328,7 +370,7 @@ void CollisionMapForBullet() {
 
 			pSearchBullet->ReflectCnt++;
 			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
-				pSearchBullet->beActive = false;
+				DeleteBullet(&pSearchBullet);
 				continue;
 			}
 
@@ -338,7 +380,7 @@ void CollisionMapForBullet() {
 			else if (pSearchBullet->MovementY > 0) {
 				pSearchBullet->Rad = -1 * Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y);
 			}
-			else if (pSearchBullet->MovementY = 0) {
+			else if (pSearchBullet->MovementY == 0) {
 				pSearchBullet->Rad += D3DX_PI;
 			}
 
@@ -347,7 +389,7 @@ void CollisionMapForBullet() {
 		else if (MapKindSpecifyForPos(&Right) != NOTHING) {
 			pSearchBullet->ReflectCnt++;
 			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
-				pSearchBullet->beActive = false;
+				DeleteBullet(&pSearchBullet);
 				continue;
 			}
 
@@ -357,7 +399,7 @@ void CollisionMapForBullet() {
 			else if (pSearchBullet->MovementY > 0) {
 				pSearchBullet->Rad = D3DX_PI + (D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y));
 			}
-			else if (pSearchBullet->MovementY = 0) {
+			else if (pSearchBullet->MovementY == 0) {
 				pSearchBullet->Rad += D3DX_PI;
 			}
 
@@ -365,7 +407,7 @@ void CollisionMapForBullet() {
 		else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
 			pSearchBullet->ReflectCnt++;
 			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
-				pSearchBullet->beActive = false;
+				DeleteBullet(&pSearchBullet);
 				continue;
 			}
 
@@ -375,7 +417,7 @@ void CollisionMapForBullet() {
 			else if (pSearchBullet->MovementX > 0) {
 				pSearchBullet->Rad = (0.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y) - (0.5*D3DX_PI));
 			}
-			else if (pSearchBullet->MovementX = 0) {
+			else if (pSearchBullet->MovementX == 0) {
 				pSearchBullet->Rad += D3DX_PI;
 			}
 
@@ -383,7 +425,7 @@ void CollisionMapForBullet() {
 		else if (MapKindSpecifyForPos(&Top) != NOTHING) {
 			pSearchBullet->ReflectCnt++;
 			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
-				pSearchBullet->beActive = false;
+				DeleteBullet(&pSearchBullet);
 				continue;
 			}
 
@@ -393,110 +435,11 @@ void CollisionMapForBullet() {
 			else if (pSearchBullet->MovementX > 0) {
 				pSearchBullet->Rad = (1.5*D3DX_PI) + ((1.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, pSearchBullet->WorldPos.x, pSearchBullet->WorldPos.y));
 			}
-			else if (pSearchBullet->MovementX = 0) {
+			else if (pSearchBullet->MovementX == 0) {
 				pSearchBullet->Rad += D3DX_PI;
 			}
 
 			SetBulletMovement(pSearchBullet);
 		}
 	}
-		//Bullet* bullet = GetBullet();
-
-		//for (int i = 0; i < BULLETNUMBER; i++) {
-
-		//	if (bullet[i].beActive) {
-		//		//for (float unitVectorCnt = 1 / bullet[i].Speed; unitVectorCnt <= 1; unitVectorCnt += 1 / bullet[i].Speed) 
-		//		D3DXVECTOR2 Left;
-		//		D3DXVECTOR2 Right;
-		//		D3DXVECTOR2 Bottom;
-		//		D3DXVECTOR2 Top;
-
-		//		Left.x = bullet[i].WorldPos.x - (bullet[i].Size / 2) + (bullet[i].MovementX/*unitVectorCnt*/);
-		//		Right.x = bullet[i].WorldPos.x + (bullet[i].Size / 2) + (bullet[i].MovementX/**unitVectorCnt*/);
-		//		Top.x = Bottom.x = bullet[i].WorldPos.x + (bullet[i].MovementX/**unitVectorCnt*/);
-		//		Top.y = bullet[i].WorldPos.y - (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
-		//		Bottom.y = bullet[i].WorldPos.y + (bullet[i].Size / 2) + (bullet[i].MovementY/**unitVectorCnt*/);
-		//		Left.y = Right.y = bullet[i].WorldPos.y + (bullet[i].MovementY/**unitVectorCnt*/);
-
-		//		D3DXVECTOR2 tmpPos;
-		//		tmpPos.x = bullet[i].WorldPos.x + bullet[i].MovementX;
-		//		tmpPos.y = bullet[i].WorldPos.y + bullet[i].MovementY;
-
-		//		if (MapKindSpecifyForPos(&Left) != NOTHING) {
-
-		//			bullet[i].ReflectCnt++;
-		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-		//				bullet[i].beActive = false;
-		//				continue;
-		//			}
-
-		//			if (bullet[i].MovementY < 0) {
-		//				bullet[i].Rad = 2 * D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
-		//			}
-		//			else if (bullet[i].MovementY > 0) {
-		//				bullet[i].Rad = -1 * Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y);
-		//			}
-		//			else if (bullet[i].MovementY = 0) {
-		//				bullet[i].Rad += D3DX_PI;
-		//			}
-
-		//		}
-
-		//		else if (MapKindSpecifyForPos(&Right) != NOTHING) {
-		//			bullet[i].ReflectCnt++;
-		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-		//				bullet[i].beActive = false;
-		//				continue;
-		//			}
-
-		//			if (bullet[i].MovementY < 0) {
-		//				bullet[i].Rad = D3DX_PI - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - D3DX_PI);
-		//			}
-		//			else if (bullet[i].MovementY > 0) {
-		//				bullet[i].Rad = D3DX_PI + (D3DX_PI - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
-		//			}
-		//			else if (bullet[i].MovementY = 0) {
-		//				bullet[i].Rad += D3DX_PI;
-		//			}
-
-		//		}
-		//		else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
-		//			bullet[i].ReflectCnt++;
-		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-		//				bullet[i].beActive = false;
-		//				continue;
-		//			}
-
-		//			if (bullet[i].MovementX < 0) {
-		//				bullet[i].Rad = (0.5*D3DX_PI) + ((0.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
-		//			}
-		//			else if (bullet[i].MovementX > 0) {
-		//				bullet[i].Rad = (0.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (0.5*D3DX_PI));
-		//			}
-		//			else if (bullet[i].MovementX = 0) {
-		//				bullet[i].Rad += D3DX_PI;
-		//			}
-
-		//		}
-		//		else if (MapKindSpecifyForPos(&Top) != NOTHING) {
-		//			bullet[i].ReflectCnt++;
-		//			if (bullet[i].ReflectCnt == bullet[i].ReflectMax) {
-		//				bullet[i].beActive = false;
-		//				continue;
-		//			}
-
-		//			if (bullet[i].MovementX < 0) {
-		//				bullet[i].Rad = (1.5*D3DX_PI) - (Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y) - (1.5*D3DX_PI));
-		//			}
-		//			else if (bullet[i].MovementX > 0) {
-		//				bullet[i].Rad = (1.5*D3DX_PI) + ((1.5*D3DX_PI) - Calculate_rad(tmpPos.x, tmpPos.y, bullet[i].WorldPos.x, bullet[i].WorldPos.y));
-		//			}
-		//			else if (bullet[i].MovementX = 0) {
-		//				bullet[i].Rad += D3DX_PI;
-		//			}
-
-		//			SetBulletMovement(i);
-		//		}
-		//	}
-		//}
 }

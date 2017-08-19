@@ -63,11 +63,25 @@ void MapRender() {
 						switch (map[j + i*MaxX]) {
 
 						case FLOOR:
-								drawMapVertex[k].tv += 0.125;
+								drawMapVertex[k].tv += 0.125 * 1;
+							break;
+
+						case WALL:
+							drawMapVertex[k].tv += 0.125 * 1;
+							drawMapVertex[k].tu += 0.125;
+							break;
+
+						case BLOCK:
+							drawMapVertex[k].tv += 0.125 * 1;
+							drawMapVertex[k].tu += 0.125 * 2;
+							break;
+
+						case CEILING:
+							drawMapVertex[k].tv += 0.125 * 1;
+							drawMapVertex[k].tu += 0.125 * 3;
 							break;
 
 						case UPNEEDLE:
-								drawMapVertex[k].tv += 0.25;
 							break;
 						}
 					}

@@ -27,6 +27,7 @@ struct Player {
 Player* GetplayerData();
 
 D3DXVECTOR2* GetBasePoint();
+//D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
 void PlayerControl();
 void PlayerInit();

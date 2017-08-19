@@ -1,7 +1,7 @@
 #ifndef ENEMYCONTROL_H
 #define ENEMYCONTROL_H
 #include<d3dx9.h> 
-//#define GRAVITY 1//エネミーにかかる重力
+#define ENEMYGRAVITY 3//エネミーにかかる重力
 
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;

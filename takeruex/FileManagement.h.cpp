@@ -101,6 +101,7 @@ void TitleSceneLoad() {
 void MainSceneLoad(STAGE_ID stage_ID) {
 
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
+	unsigned int a = sizeof(LPDIRECT3DTEXTURE9)*MAINSCENE_TEXMAX;
 	g_pTexture=(LPDIRECT3DTEXTURE9*)malloc(sizeof(LPDIRECT3DTEXTURE9)*MAINSCENE_TEXMAX);
 
 	switch (stage_ID) {

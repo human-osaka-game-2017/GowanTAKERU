@@ -68,7 +68,7 @@ BREAK:
 
 void Boss1Control() {
 	
-	if (g_Boss1.isExistence) {
+	if (g_Boss1.isExistence && !g_Boss1.isDead) {
 
 		//活動状態かチェック
 		D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);

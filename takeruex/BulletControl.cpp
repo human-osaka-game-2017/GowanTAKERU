@@ -51,6 +51,7 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind) {
 	newBullet->WindowPos.y = newBullet->WorldPos.y - (pBasePoint->y - BasePoint0.y);
 	newBullet->wasReflect = false;
 	newBullet->MovementX = newBullet->MovementY = 0;
+	newBullet->ReflectCnt = 0;
 
 	Player* pPlayer = GetplayerData();
 
