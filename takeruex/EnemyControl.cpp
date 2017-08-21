@@ -121,52 +121,209 @@ void EnemyControl() {
 
 void EnemyPursuit(int enemyNum) {
 	Player* player = GetplayerData();
-		switch (g_pEnemy[enemyNum].enemyKind) {
-		case WALKINGENEMY_1:
-		case WALKINGENEMY_HAS_KEY_1:
-		case WALKINGENEMY_HAS_KEY_2:
-			if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
-				//エネミーのX座標がプレイヤーのX座標より小さかったら
-				if (player->WindowPos.x < g_pEnemy[enemyNum].WindowPos.x) {
-					//+方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX = -g_pEnemy[enemyNum].Speed;
-				}
-				//エネミーのX座標がプレイヤーのX座標より大きかったら
-				else if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
-					//-方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
-				}
-			}
-			if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
-				g_pEnemy[enemyNum].MovementX = 0;
-				g_pEnemy[enemyNum].MovementY = 0;
-			}
-			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-
-			break;
-		case FLYINGENEMY1:
-		case FLYINGENEMY_HAS_KEY1:
-		case FLYINGENEMY_HAS_KEY2:
-			if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
-				//エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
-				if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
-					//+方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
-				}
-				//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
-				else if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
-					//+方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
-				}
-			}
-			
-			if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
-				g_pEnemy[enemyNum].MovementX = 0;
-				g_pEnemy[enemyNum].MovementY = 0;
-			}
-
-			break;
+	D3DXVECTOR2* basepoint = GetBasePoint();
+	switch (g_pEnemy[enemyNum].enemyKind) {
+	case WALKINGENEMY_1:
+		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = false;
 		}
+		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+
+		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
+																						  //エネミーのX座標がプレイヤーのX座標より小さかったら
+			if (player->WindowPos.x < g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX = -g_pEnemy[enemyNum].Speed;
+			}
+			//エネミーのX座標がプレイヤーのX座標より大きかったら
+			else if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
+				//-方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
+			}
+		}
+		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
+			g_pEnemy[enemyNum].MovementX = 0;
+			g_pEnemy[enemyNum].MovementY = 0;
+		}
+		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
+
+		break;
+	case WALKINGENEMY_2:
+		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
+		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		break;
+	case WALKINGENEMY_3:
+		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
+		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		break;
+	case WALKINGENEMY_4://体当たり
+		//static bool attack;
+		//g_pEnemy[enemyNum].beLeft = false;
+		//if (g_pEnemy[enemyNum].EnemyBasePoint.x >= g_pEnemy[enemyNum].EnemyBasePoint.x - 10) {//PCが範囲内に入ったらフラグおｎ
+		//	attack = true;
+		//}
+		//if (g_pEnemy[enemyNum].EnemyBasePoint.x < g_pEnemy[enemyNum].EnemyBasePoint.x - 10){//範囲に入るまでOF
+		//	 attack = false;
+		//}
+		//if (attack == true) {//フラグONならSPEED＋＋
+		//	g_pEnemy[enemyNum].MovementX = 7;
+		//	g_pEnemy[enemyNum].MovementY = 0;
+		//}
+		//if (g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x-10) {//敵が移動上限超えたらフラグOF
+		//	attack == false;
+		//}
+		//if (attack == false|| g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x) {//フラグOFかつ敵の位置が初期位置より小さかったら元の位置に戻るまでSPEED－
+		//	g_pEnemy[enemyNum].MovementX = -3;
+		//	g_pEnemy[enemyNum].MovementY = 0;
+		//}
+		break;
+	case WALKINGENEMY_5:
+		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
+		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		break;
+	case WALKINGENEMY_HAS_KEY_1:
+		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
+		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		break;
+	case WALKINGENEMY_HAS_KEY_2:
+		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
+		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+
+		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 5) {//弾発射フレームより-5フレーム未満だったら中に入る
+																						  //エネミーのX座標がプレイヤーのX座標より小さかったら
+			if (player->WindowPos.x < g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX = -g_pEnemy[enemyNum].Speed;
+			}
+			//エネミーのX座標がプレイヤーのX座標より大きかったら
+			else if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
+				//-方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
+			}
+		}
+		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 5) {//発射フレームの-5フレーム以上あれば中に入る
+			g_pEnemy[enemyNum].MovementX = 0;
+			g_pEnemy[enemyNum].MovementY = 0;
+		}
+		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
+
+		break;
+	case WALKINGENEMY_HAS_KEY_3:
+		break;
+	case FLYINGENEMY1:
+		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 10) {//弾発射フレームより-5フレーム未満だったら中に入る
+																						  //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
+			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
+			}
+			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
+			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
+			}
+		}
+
+		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 10){//発射フレームの-5フレーム以上あれば中に入る
+			g_pEnemy[enemyNum].MovementX = 0;
+			g_pEnemy[enemyNum].MovementY = 0;
+		}
+		break;
+	case FLYINGENEMY2:
+		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
+		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		break;
+	case FLYINGENEMY3:
+		break;//未定
+	case FLYINGENEMY4:
+		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 10) {//弾発射フレームより-5フレーム未満だったら中に入る
+																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
+			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
+			}
+			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
+			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
+			}
+		}
+
+		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 10) {//発射フレームの-5フレーム以上あれば中に入る
+			g_pEnemy[enemyNum].MovementX = 0;
+			g_pEnemy[enemyNum].MovementY = 0;
+		}
+		break;
+	case FLYINGENEMY5:
+		break;//未定
+	case FLYINGENEMY_HAS_KEY1:
+		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 10) {//弾発射フレームより-5フレーム未満だったら中に入る
+																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
+			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
+			}
+			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
+			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
+				//+方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
+			}
+		}
+
+		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 10) {//発射フレームの-5フレーム以上あれば中に入る
+			g_pEnemy[enemyNum].MovementX = 0;
+			g_pEnemy[enemyNum].MovementY = 0;
+		}
+		break;
+	case FLYINGENEMY_HAS_KEY2:
+		break;
+	case FLYINGENEMY_HAS_KEY3:
+	case FIXEDBATTERY1:
+	case FIXEDBATTERY2:
+		g_pEnemy[enemyNum].beLeft = false;
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		break;
+
+
+	}
+
 
 	
 }
@@ -174,6 +331,7 @@ void EnemyPursuit(int enemyNum) {
 void MoveEnemy() {
 	int enemyMax = GetEnemyMax();
 	for (int i = 0; i < enemyMax; i++) {
+		//プレイヤーが左右どっちにいるのか見て向きを変える
 		if (g_pEnemy[i].beActive == true && g_pEnemy[i].beDead == false) {//デス、アクティブチェック
 			//各エネミーの座標に動く値を足す
 			g_pEnemy[i].WorldPos.x += g_pEnemy[i].MovementX;
@@ -211,70 +369,70 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_HAS_KEY_2:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_2;
-				g_pEnemy[enemyCount].Speed = 1;
+				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case WALKINGENEMY_HAS_KEY_3:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_3;
-				g_pEnemy[enemyCount].Speed = 1;
+				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case WALKINGENEMY_1:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 3*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case WALKINGENEMY_2:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_2;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 5*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case WALKINGENEMY_3:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_3;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case WALKINGENEMY_4:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_4;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 7;
+				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case WALKINGENEMY_5:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_5;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case FLYINGENEMY_HAS_KEY1:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY1;
-				g_pEnemy[enemyCount].Speed = 1;
+				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
@@ -283,7 +441,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY_HAS_KEY2:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY2;
-				g_pEnemy[enemyCount].Speed = 1;
+				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
@@ -292,7 +450,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY_HAS_KEY3:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY3;
-				g_pEnemy[enemyCount].Speed = 1;
+				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
@@ -301,57 +459,67 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY1:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY1;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case FLYINGENEMY2:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY2;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case FLYINGENEMY3:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY3;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 200;//?
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 1;//?
 				break;
 
 			case FLYINGENEMY4:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY4;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 20;
 				break;
 
 			case FLYINGENEMY5:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY5;
-				g_pEnemy[enemyCount].Speed = 1;
-				g_pEnemy[enemyCount].firingInterval = 200;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 200;//?
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 1;//?
 				break;
 
 			case FIXEDBATTERY1:
 				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY1;
 				g_pEnemy[enemyCount].Speed = 0;
-				g_pEnemy[enemyCount].firingInterval = 150;
+				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].size = 32;
 				g_pEnemy[enemyCount].Atk = 0;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 2147483647;
 				break;
+
+			case FIXEDBATTERY2:
+				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY2;
+				g_pEnemy[enemyCount].Speed = 0;
+				g_pEnemy[enemyCount].firingInterval =  5*60;
+				g_pEnemy[enemyCount].size = 32;
+				g_pEnemy[enemyCount].Atk = 0;
+				g_pEnemy[enemyCount].Hp = 2147483647;
+				break;
+
 
 			}
 
@@ -365,6 +533,8 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].beDead = false;//死んでいるか
 				g_pEnemy[enemyCount].beActive = false;//活動中か
 				g_pEnemy[enemyCount].beLeft = false;//左（右）どうっち向いてるか
+				g_pEnemy[enemyCount].EnemyBasePoint.x = g_pEnemy[enemyCount].WorldPos.x;//エネミーの初期座標
+				g_pEnemy[enemyCount].EnemyBasePoint.y = g_pEnemy[enemyCount].WorldPos.y;
 				enemyCount++;
 
 			}
