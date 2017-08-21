@@ -7,12 +7,22 @@
 #include"DirectXSound.h"
 #include"PlayerControl.h"
 #include"EnemyControl.h"
+#include"BlackOutRender.h"
+#include"Boss1Control.h"
+#include"Boss2Control.h"
+#include"Boss3Control.h"
+#include"Boss4Control.h"
 
 
 SCENE_ID RunMainScene(bool willbetrancefar) {
 
 	SCENE_ID nextscene = MAINSCENE;
 	Player* pPlayer = GetplayerData();
+	BlackOutData* blackOutData = GetBlackOutData();
+	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss3Data* pBoss3 = GetBoss3Data();
+	Boss4Data* pBoss4 = GetBoss4Data();
+
 
 	static int step = 0;
 
@@ -27,7 +37,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		//StageSelect();
 		MainSceneLoad(GetStage_ID());
 		MainSceneInit();
-		PlayBackSound(SOUND02, true, 10);
+		//PlayBackSound(SOUND02, true, 10);
 		step++;
 		break;
 
@@ -37,10 +47,29 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 
 		if (pPlayer->LifeReduced == 0) {
 			nextscene = GAMEOVERSCENE;
-			StopSound(SOUND02);
+			//StopSound(SOUND02);
+		}
+
+		if (pBoss1->isExistence&&pBoss1->isDead) {
+			blackOutData->BlackOutflg = true;
+			StageSelect(STAGE_2);
+			if (blackOutData->BlackOutNextState == BLACKOUT) {
+				step++;
 			}
-		//if(bossŽ€–S)step++
-		//if(stage4bossŽ€–S)scene = GAMECLEAR
+		}
+
+		if (pBoss3->isExistence&&pBoss3->isDead) {
+			blackOutData->BlackOutflg = true;
+			StageSelect(STAGE_4);
+			if (blackOutData->BlackOutNextState == BLACKOUT) {
+				step++;
+			}
+		}
+
+		if (pBoss4->isDead&&pBoss4->isExistence) {
+			blackOutData->BlackOutflg = true;
+			nextscene = GAMECLEARSCENE;
+		}
 		break;
 
 	case 2:

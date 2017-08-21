@@ -9,6 +9,6 @@ STAGE_ID GetStage_ID() {
 	return g_Stage_ID;
 }
 
-void StageSelect() {
-
+void StageSelect(STAGE_ID nextStage) {
+	g_Stage_ID = nextStage;
 }

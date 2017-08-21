@@ -41,6 +41,20 @@ void PlayerInit() {
 	switch (stage_ID) {
 	case STAGE_1:
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
+		g_player.Hp = 10000;
+		g_player.LifeReduced = 1;
+		break;
+
+	case STAGE_2:
+		CSVLoad("CSV/mainscene/stage2_gimmick.csv", map, MaxY, MaxX);
+		break;
+
+	case STAGE_3:
+		CSVLoad("CSV/mainscene/stage3_gimmick.csv", map, MaxY, MaxX);
+		break;
+
+	case STAGE_4:
+		CSVLoad("CSV/mainscene/stage4_gimmick.csv", map, MaxY, MaxX);
 		break;
 	}
 	
@@ -66,9 +80,7 @@ void PlayerInit() {
 	g_player.MovementX = g_player.MovementY = 0;
 	g_player.JumpPower = 0.0f;
 	g_player.Jumping = false;
-	g_player.Hp = 100;
 	g_player.beActive = true;
-	g_player.LifeReduced = 1;
 	g_player.beInvincible = false;
 	g_player.beLeft = false;
 	g_player.beDownSwing = false;
@@ -251,6 +263,11 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
+					if (pSearchBullet->BulletKind == NONREFLECT) {
+						DeleteBullet(&pSearchBullet);
+						continue;
+					}
+
 					if (pSearchBullet->wasReflect == false) {
 						pSearchBullet->wasReflect = true;
 						pSearchBullet->Rad = D3DXToRadian(180.0f);
@@ -267,6 +284,11 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
+					if (pSearchBullet->BulletKind == NONREFLECT) {
+						DeleteBullet(&pSearchBullet);
+						continue;
+					}
+
 					if (pSearchBullet->wasReflect == false) {
 						pSearchBullet->wasReflect = true;
 
@@ -288,7 +310,12 @@ void PlayerReflectMotion() {
 					20.0f,
 					pSearchBullet->WindowPos.x,
 					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2)) {
+					pSearchBullet->Size / 2)) 
+				{
+					if (pSearchBullet->BulletKind == NONREFLECT) {
+						DeleteBullet(&pSearchBullet);
+						continue;
+					}
 					if (pSearchBullet->wasReflect == false) {
 						pSearchBullet->wasReflect = true;
 
@@ -314,6 +341,10 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
+					if (pSearchBullet->BulletKind == NONREFLECT) {
+						DeleteBullet(&pSearchBullet);
+						continue;
+					}
 					if (pSearchBullet->wasReflect == false) {
 						pSearchBullet->wasReflect = true;
 						pSearchBullet->Rad = D3DXToRadian(0.0f);
@@ -331,6 +362,10 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
+					if (pSearchBullet->BulletKind == NONREFLECT) {
+						DeleteBullet(&pSearchBullet);
+						continue;
+					}
 					if (pSearchBullet->wasReflect == false) {
 						pSearchBullet->wasReflect = true;
 
@@ -352,7 +387,13 @@ void PlayerReflectMotion() {
 					20.0f,
 					pSearchBullet->WindowPos.x,
 					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2)) {
+					pSearchBullet->Size / 2)) 
+				{
+					if (pSearchBullet->BulletKind == NONREFLECT) {
+						DeleteBullet(&pSearchBullet);
+						continue;
+					}
+
 					if (pSearchBullet->wasReflect == false) {
 						pSearchBullet->wasReflect = true;
 

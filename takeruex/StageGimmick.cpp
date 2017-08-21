@@ -12,7 +12,6 @@
 #define KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG	0x0001
 #define KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG	0x0002
 #define KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG	0x0004
-#define SHUTTER_2_FLG						0x0012
 #define KEYNUM_FLYINGENEMY_HAS_KEY1_FLG		0x0008
 #define KEYNUM_FLYINGENEMY_HAS_KEY2_FLG		0x0010
 #define KEYNUM_FLYINGENEMY_HAS_KEY3_FLG		0x0020
@@ -151,7 +150,7 @@ void StageGimmickManage() {
 		OpenGate(SHUTTER_1);
 		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_1] = -1;
 	}
-	if ((gateflg & SHUTTER_2_FLG)) {
+	if ((gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG) && (gateflg & KEYNUM_FLYINGENEMY_HAS_KEY2_FLG)) {
 		OpenGate(SHUTTER_2);
 		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_2] = -1;
 		g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY2] = -1;
@@ -160,11 +159,22 @@ void StageGimmickManage() {
 	//boss用シャッターの処理
 	Boss1Data* pBoss1 = GetBoss1Data();
 
-	bool bossActiveflg;
+	bool bossActiveflg = false;
 	STAGE_ID stage_ID = GetStage_ID();
+	int a = 0;
 	switch (stage_ID) {
 	case STAGE_1:
 		bossActiveflg = pBoss1->isActive;
+		break;
+
+	case STAGE_2:
+		a = 110;
+		break;
+
+	case STAGE_3:
+		break;
+
+	case STAGE_4:
 		break;
 	}
 
@@ -184,7 +194,19 @@ void CloseGate(MapKind beforeMapKind, MapKind afterMapKind) {
 
 	switch (stage_ID) {
 	case STAGE_1:
-		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);//CSV呼び出し
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_2:
+		CSVLoad("CSV/mainscene/stage2_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_3:
+		CSVLoad("CSV/mainscene/stage3_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_4:
+		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
 		break;
 	}
 
@@ -209,7 +231,19 @@ void OpenGate(MapKind mapKind) {
 
 	switch (stage_ID) {
 	case STAGE_1:
-		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);//CSV呼び出し
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_2:
+		CSVLoad("CSV/mainscene/stage2_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_3:
+		CSVLoad("CSV/mainscene/stage3_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_4:
+		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
 		break;
 	}
 
@@ -231,29 +265,45 @@ void ComeBackCheckPoint() {
 	STAGE_ID stage_ID = GetStage_ID();
 	STAGEXYMAX maxX = GetStageXYMAX(stage_ID, X);
 	STAGEXYMAX maxY = GetStageXYMAX(stage_ID, Y);
-	int* gimmickData = (int*)malloc(sizeof(int)*maxX*maxY);
+	int* pGimmickData = (int*)malloc(sizeof(int)*maxX*maxY);
 
-	CSVLoad("CSV/mainscene/stage1_gimmick.csv", gimmickData, maxY, maxX);
+	switch (stage_ID) {
+	case STAGE_1:
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_2:
+		CSVLoad("CSV/mainscene/stage2_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_3:
+		CSVLoad("CSV/mainscene/stage3_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_4:
+		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+	}
 
 	D3DXVECTOR2 pos[3];
 	MapNumXY mapXY[3];
 	for (int i = 0; i < maxY; i++) {
 		for (int j = 0; j < maxX; j++) {
-			if ((*(gimmickData + (i*maxX + j)) == CHECKPOINT_2)) {
+			if ((*(pGimmickData + (i*maxX + j)) == CHECKPOINT_2)) {
 				mapXY[2] = { j,i };
 				PosSpecifyForMapchipNumber(&pos[2], &mapXY[2]);
 			}
-			if ((*(gimmickData + (i*maxX + j)) == CHECKPOINT_1)) {
+			if ((*(pGimmickData + (i*maxX + j)) == CHECKPOINT_1)) {
 				mapXY[1] = { j,i };
 				PosSpecifyForMapchipNumber(&pos[1], &mapXY[1]);
 			}
-			if ((*(gimmickData + (i*maxX + j)) == START)) {
+			if ((*(pGimmickData + (i*maxX + j)) == START)) {
 				mapXY[0] = { j,i };
 				PosSpecifyForMapchipNumber(&pos[0], &mapXY[0]);
 			}
 		}
 	}
-	free(gimmickData);
+	free(pGimmickData);
 
 	Player* player = GetplayerData();
 	D3DXVECTOR2* basePoint = GetBasePoint();

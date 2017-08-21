@@ -11,6 +11,7 @@ enum BULLETKIND{
 	BULLET03,//壁で4回反射する
 	FASTBULLET,//スピード１．３倍
 	POWERBULLET,//高威力
+	NONREFLECT,
 	HOMING
 };
 

@@ -104,6 +104,18 @@
     <ClCompile Include="Boss2Control.cpp">
       <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClCompile>
+    <ClCompile Include="Boss3Control.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss3Render.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss4Render.cpp">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss4Control.cpp">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -253,6 +265,18 @@
       <Filter>Application\MainScene\MainRender\Render</Filter>
     </ClInclude>
     <ClInclude Include="Boss2Control.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Control.h">
+      <Filter>Application\MainScene\MainControl\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss3Render.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss4Render.h">
+      <Filter>Application\MainScene\MainRender\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss4Control.h">
       <Filter>Application\MainScene\MainControl\Control</Filter>
     </ClInclude>
   </ItemGroup>

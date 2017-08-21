@@ -84,6 +84,18 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind) {
 		);
 		break;
 
+	case NONREFLECT:
+		newBullet->Speed = 6.0f;
+		newBullet->Atk = 10;
+		newBullet->Size = 22;
+		newBullet->ReflectMax = 1;
+		newBullet->SaveCoordinate = pPlayer->WindowPos;
+		newBullet->Rad = Calculate_rad(
+			newBullet->WindowPos.x,
+			newBullet->WindowPos.y,
+			newBullet->SaveCoordinate.x,
+			newBullet->SaveCoordinate.y
+		);
 	}
 }
 
