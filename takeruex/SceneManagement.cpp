@@ -3,6 +3,7 @@
 #include"MainScene.h"
 #include"TitleScene.h"
 #include"GameOver.h"
+#include"GameClear.h"
 
 static SCENE_ID g_currentScene_ID = TITLESCENE;
 static SCENE_ID g_nextScene_ID = TITLESCENE;
@@ -49,6 +50,15 @@ void SceneManage() {
 			blackOutData->BlackOutflg = true;
 		}
 		break;
+
+	case GAMECLEARSCENE:
+		tmpScene_ID = RunGameClearScene(releaseState);
+		if (tmpScene_ID != GAMECLEARSCENE) {
+			g_nextScene_ID = tmpScene_ID;
+			blackOutData->BlackOutflg = true;
+		}
+		break;
+
 	}
 	
 	if (releaseState) {

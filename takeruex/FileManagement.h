@@ -40,6 +40,9 @@ void TitleSceneLoad();
 //ゲームオーバーシーンの読み込み
 void GameOverSceneLoad();
 
+//ゲームクリアシーンの読み込み
+void GameClearSceneLoad();
+
 void CSVLoad(char* mapdata, int* map, int height, int width);
 
 void StageMapNumMaxInit();

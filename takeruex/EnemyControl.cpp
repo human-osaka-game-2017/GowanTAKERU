@@ -72,7 +72,19 @@ void EnemyInit() {
 	int* pGimmickData = (int*)malloc(sizeof(int)*maxX*maxY);
 	switch (stage_ID) {
 	case STAGE_1:
-		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);//CSVåƒÇ—èoÇµ
+		CSVLoad("CSV/mainscene/stage1_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_2:
+		CSVLoad("CSV/mainscene/stage2_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_3:
+		CSVLoad("CSV/mainscene/stage3_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_4:
+		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
 		break;
 	}
 

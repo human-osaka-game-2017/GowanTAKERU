@@ -61,6 +61,10 @@ BREAK:
 		g_Boss1.isDead = false;
 		g_Boss1.isActive = false;
 	}
+	else {
+		g_Boss1.isDead = false;
+		g_Boss1.isActive = false;
+	}
 
 	free(gimmickData);
 }
@@ -112,7 +116,7 @@ void Boss1Control() {
 			static int LARIATMiddleFrcnt = -1;
 			switch (g_Boss1.Boss1State) {
 			case NORMALSHOT:
-				BulletCreate(g_Boss1.WolrdPos, HOMING);
+				BulletCreate(g_Boss1.WolrdPos, BULLET01);
 				g_Boss1.saveActionCntForDUALSHOT++;
 				g_Boss1.saveActionCntForNORMALSHOT = 0;
 				g_Boss1.saveShotFrmcnt = 0;
@@ -172,13 +176,15 @@ void Boss1Control() {
 }
 
 void MoveBoss1() {
-	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
-	D3DXVECTOR2* basePoint = GetBasePoint();
-	g_Boss1.WolrdPos.x += g_Boss1.MovementX;
-	g_Boss1.WolrdPos.y += g_Boss1.MovementY;
-	g_Boss1.WindowPos.x = g_Boss1.WolrdPos.x - (basePoint->x - BasePoint0.x);
-	g_Boss1.WindowPos.y = g_Boss1.WolrdPos.y - (basePoint->y - BasePoint0.y);
-	g_Boss1.MovementX = g_Boss1.MovementY = 0;
+	if (g_Boss1.isExistence && !g_Boss1.isDead) {
+		D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+		D3DXVECTOR2* basePoint = GetBasePoint();
+		g_Boss1.WolrdPos.x += g_Boss1.MovementX;
+		g_Boss1.WolrdPos.y += g_Boss1.MovementY;
+		g_Boss1.WindowPos.x = g_Boss1.WolrdPos.x - (basePoint->x - BasePoint0.x);
+		g_Boss1.WindowPos.y = g_Boss1.WolrdPos.y - (basePoint->y - BasePoint0.y);
+		g_Boss1.MovementX = g_Boss1.MovementY = 0;
+	}
 }
 
 
@@ -253,7 +259,7 @@ float CalculateDUALSHOTDecidedValue(int bulletNum, float range) {
 	float decidedValue3 = (range - 600.0f) / 3600.0f + 100.0f;
 
 	//前回のDUALSHOTからのアクション数による判定値の計算
-	float decidedValue4 = 100.0f / (g_Boss1.saveActionCntForDUALSHOT + 1.5f);
+	float decidedValue4 = 100.0f / (g_Boss1.saveActionCntForDUALSHOT + 1.0f);
 
 	//平均値による一意な値の決定
 	float decidedValue = (decidedValue1 + decidedValue2 + decidedValue3 + decidedValue4) / 4;

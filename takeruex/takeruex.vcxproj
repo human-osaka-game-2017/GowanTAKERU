@@ -126,6 +126,10 @@
     <ClCompile Include="Boss1Render.cpp" />
     <ClCompile Include="Boss2Control.cpp" />
     <ClCompile Include="Boss2Render.cpp" />
+    <ClCompile Include="Boss3Control.cpp" />
+    <ClCompile Include="Boss3Render.cpp" />
+    <ClCompile Include="Boss4Control.cpp" />
+    <ClCompile Include="Boss4Render.cpp" />
     <ClCompile Include="BulletControl.cpp" />
     <ClCompile Include="BulletRender.cpp" />
     <ClCompile Include="DirectXGraphics.cpp" />
@@ -163,6 +167,10 @@
     <ClInclude Include="Boss1Render.h" />
     <ClInclude Include="Boss2Control.h" />
     <ClInclude Include="Boss2Render.h" />
+    <ClInclude Include="Boss3Control.h" />
+    <ClInclude Include="Boss3Render.h" />
+    <ClInclude Include="Boss4Control.h" />
+    <ClInclude Include="Boss4Render.h" />
     <ClInclude Include="BulletControl.h" />
     <ClInclude Include="BulletRender.h" />
     <ClInclude Include="CommonControl.h" />

@@ -103,7 +103,7 @@ void HitManage() {
 			if (SquareHit(&tmpPlayer, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size)) {
 
 				if (!player->beInvincible) {
-					PlayBackSound(SOUND01, false, 100);
+					//PlayBackSound(SOUND01, false, 100);
 
 					player->Hp -= pSearchBullet->Atk;
 
