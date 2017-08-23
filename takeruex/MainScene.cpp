@@ -52,8 +52,8 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 
 		if (pBoss1->isExistence&&pBoss1->isDead) {
 			blackOutData->BlackOutflg = true;
-			StageSelect(STAGE_2);
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
+				StageSelect(STAGE_2);
 				step++;
 			}
 		}

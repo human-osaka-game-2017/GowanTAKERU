@@ -23,6 +23,8 @@ Boss1Data* GetBoss1Data() {
 
 void Boss1Init() {
 
+	g_Boss1.isExistence = false;
+
 	STAGE_ID stage_ID = GetStage_ID();
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
@@ -30,20 +32,23 @@ void Boss1Init() {
 
 	switch (stage_ID) {
 	case STAGE_1:
+
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv", gimmickData, MaxY, MaxX);//CSV呼び出し
+
+		for (int i = 0; i < MaxY; i++) {
+			for (int j = 0; j < MaxX; j++) {
+				if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
+					g_Boss1.isExistence = true;
+					g_Boss1.WolrdPos.x = TIPSIZE*j;
+					g_Boss1.WolrdPos.y = TIPSIZE*i;
+					goto BREAK;
+				}
+			}
+		}
 		break;
 	}
 
-	for (int i = 0; i < MaxY; i++) {
-		for (int j = 0; j < MaxX; j++) {
-			if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
-				g_Boss1.isExistence = true;
-				g_Boss1.WolrdPos.x = TIPSIZE*j;
-				g_Boss1.WolrdPos.y = TIPSIZE*i;
-				goto BREAK;
-			}
-		}
-	}
+	
 
 BREAK:
 	if (g_Boss1.isExistence) {
@@ -116,7 +121,7 @@ void Boss1Control() {
 			static int LARIATMiddleFrcnt = -1;
 			switch (g_Boss1.Boss1State) {
 			case NORMALSHOT:
-				BulletCreate(g_Boss1.WolrdPos, BULLET01);
+				BulletCreate(g_Boss1.WolrdPos, HOMING);
 				g_Boss1.saveActionCntForDUALSHOT++;
 				g_Boss1.saveActionCntForNORMALSHOT = 0;
 				g_Boss1.saveShotFrmcnt = 0;
@@ -170,6 +175,8 @@ void Boss1Control() {
 				}
 				break;
 			}
+
+			g_Boss1.MovementY = 20;
 			g_Boss1.saveShotFrmcnt++;
 		}
 	}
@@ -232,13 +239,13 @@ float CalculateNORMALSHOTDecidedValue(int bulletNum, float range) {
 	float decidedValue1 = (5.0f / 9.0f * g_Boss1.saveShotFrmcnt) - 100.0f;
 
 	//画面上の弾の数による判定値の計算
-	float decidedValue2 = -(bulletNum / 10.0f) + 100.0f;
+	float decidedValue2 = -(bulletNum * 10.0f) + 100.0f;
 
 	//プレイヤーとの距離による判定値の計算
-	float decidedValue3 = (range - 700.0f) / 4900.0f + 100.0f;
+	float decidedValue3 = -(range - 700.0f) / 4900.0f + 100.0f;
 
 	//前回のNORMALSHOTからのアクション数による判定値の計算
-	float decidedValue4 = 100.0f / (g_Boss1.saveActionCntForNORMALSHOT + 1.0f);
+	float decidedValue4 = g_Boss1.saveActionCntForNORMALSHOT * 10.0f;
 
 	//平均値による一意な値の決定
 	float decidedValue = (decidedValue1 + decidedValue2 + decidedValue3 + decidedValue4) / 4;
@@ -253,13 +260,13 @@ float CalculateDUALSHOTDecidedValue(int bulletNum, float range) {
 	float decidedValue1 = (5.0f / 6.0f * g_Boss1.saveShotFrmcnt) - 200.0f;
 
 	//画面上の弾の数による判定値の計算
-	float decidedValue2 = -(bulletNum / 10.0f) + 100.0f;
+	float decidedValue2 = -(bulletNum * 10.0f) + 100.0f;
 
 	//プレイヤーとの距離による判定値の計算
 	float decidedValue3 = (range - 600.0f) / 3600.0f + 100.0f;
 
 	//前回のDUALSHOTからのアクション数による判定値の計算
-	float decidedValue4 = 100.0f / (g_Boss1.saveActionCntForDUALSHOT + 1.0f);
+	float decidedValue4 = g_Boss1.saveActionCntForDUALSHOT * 15.0f;
 
 	//平均値による一意な値の決定
 	float decidedValue = (decidedValue1 + decidedValue2 + decidedValue3 + decidedValue4) / 4;

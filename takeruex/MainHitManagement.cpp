@@ -10,6 +10,8 @@
 #include"DirectXSound.h"
 #include"BlackOutRender.h"
 #include"Boss1Control.h"
+#include"CommonControl.h"
+#include"Boss3Control.h"
 
 #include<Windows.h>
 #include<tchar.h>
@@ -20,14 +22,11 @@ void PushOutMap(const D3DXVECTOR2& Pos, float* MovementX, float* MovementY, floa
 
 void CollisionMapForBullet();
 
-#include<Windows.h>
-#include<tchar.h>
-#include<stdio.h>
-
 void HitManage() {
 
 	Player* player = GetplayerData();
 	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss3Data* pBoss3 = GetBoss3Data();
 	Bullet* pFirstBullet = GetFirstBulletAddress();
 	Enemy* enemy = GetEnemyData();
 	
@@ -67,10 +66,20 @@ void HitManage() {
 			PushOutMapFourPoint(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementY, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
 		}
 	}
+	KEYSTATE* Key = GetKey();
+	KeyCheck(&Key[KEY_P], DIK_P);
+	if (Key[KEY_P] == KEY_PUSH) {
+		for (int i = 0; i < enemyMax; i++) {
+			enemy[i].beDead = true;
+		}
+	}
 
 	//boss1とマップの押し出し処理
-	PushOutMap(pBoss1->WolrdPos, &pBoss1->MovementX, &pBoss1->MovementY, BOSS1WIDTH, BOSS1HEIGHT);
-	
+	PushOutMapFourPoint(pBoss1->WolrdPos, &pBoss1->MovementX, &pBoss1->MovementY, BOSS1WIDTH, BOSS1HEIGHT);
+	float a = pBoss3->MovementY;
+	//boss3とマップの押し出し処理
+	PushOutMapFourPoint(pBoss3->WolrdPos, &pBoss3->MovementX, &pBoss3->MovementY, BOSS3PNGWIDTH, BOSS3PNGHEIGHT);
+	a = pBoss3->MovementY;
 	//弾のマップとの反射処理
 	CollisionMapForBullet();
 
@@ -84,6 +93,49 @@ void HitManage() {
 					if (pBoss1->Hp <= 0) {
 						pBoss1->isDead = true;
 						pBoss1->isActive = false;
+					}
+					DeleteBullet(&pSearchBullet);
+					continue;
+				}
+			}
+		}
+
+		//ボス3と弾のダメージ計算とシールドの判定
+		if (pBoss3->isActive && !(pBoss3->isDead)) {
+			if (pSearchBullet->wasReflect) {
+				D3DXVECTOR2 boss3, shield1, shield2, shield3;
+				if (pBoss3->isLeft) {
+					boss3.x = pBoss3->WolrdPos.x + 5;
+					boss3.y = pBoss3->WolrdPos.y + 12;
+					shield1.x = pBoss3->WolrdPos.x - 61;
+					shield1.y = pBoss3->WolrdPos.y - 23;
+					shield2.x = pBoss3->WolrdPos.x - 84;
+					shield2.y = pBoss3->WolrdPos.y - 23;
+					shield3.x = pBoss3->WolrdPos.x - 108;
+					shield3.y = pBoss3->WolrdPos.y - 23;
+				}
+				else {
+					boss3.x = pBoss3->WolrdPos.x - 5;
+					boss3.y = pBoss3->WolrdPos.y + 12;
+					shield1.x = pBoss3->WolrdPos.x + 61;
+					shield1.y = pBoss3->WolrdPos.y - 23;
+					shield2.x = pBoss3->WolrdPos.x + 84;
+					shield2.y = pBoss3->WolrdPos.y - 23;
+					shield3.x = pBoss3->WolrdPos.x + 108;
+					shield3.y = pBoss3->WolrdPos.y - 23;
+				}
+				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &shield1, BOSS3SHIELD1WIDTH, BOSS3SHIELD1HEIGHT)||
+					SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &shield2, BOSS3SHIELD2WIDTH, BOSS3SHIELD2HEIGHT)||
+					SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &shield3, BOSS3SHIELD3WIDTH, BOSS3SHIELD3HEIGHT)
+					) {
+					DeleteBullet(&pSearchBullet);
+					continue;
+				}
+				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &boss3, BOSS3WIDTH, BOSS3HEIGHT)) {
+					pBoss3->Hp -= pSearchBullet->Atk;
+					if (pBoss3->Hp <= 0) {
+						pBoss3->isDead = true;
+						pBoss3->isActive = false;
 					}
 					DeleteBullet(&pSearchBullet);
 					continue;
@@ -158,17 +210,35 @@ void HitManage() {
 
 	//boss1とプレイヤーの直接のあたり判定
 	if (pBoss1->isActive && !(pBoss1->isDead)) {
-		D3DXVECTOR2 tmpPlayer = player->WindowPos;
+		D3DXVECTOR2 tmpPlayer = player->WorldPos;
 		if (player->beLeft) {
 			tmpPlayer.x += 15;
 		}
 		else {
 			tmpPlayer.x += -15;
 		}
-		if (SquareHit(&player->WindowPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss1->WindowPos, BOSS1WIDTH, BOSS1HEIGHT)) {
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss1->WolrdPos, BOSS1WIDTH, BOSS1HEIGHT)) {
 
 			if (!player->beInvincible) {
 				player->Hp -= pBoss1->Atk;
+				player->beInvincible = true;
+			}
+		}
+	}
+
+	//boss3とプレイヤーの直接のあたり判定
+	if (pBoss3->isActive && !(pBoss3->isDead)) {
+		D3DXVECTOR2 tmpPlayer = player->WorldPos;
+		if (player->beLeft) {
+			tmpPlayer.x += 15;
+		}
+		else {
+			tmpPlayer.x += -15;
+		}
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss3->WolrdPos, BOSS3PNGWIDTH, BOSS3PNGHEIGHT)) {
+
+			if (!player->beInvincible) {
+				player->Hp -= pBoss3->Atk;
 				player->beInvincible = true;
 			}
 		}

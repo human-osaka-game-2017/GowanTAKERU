@@ -10,7 +10,8 @@ enum BULLETKIND{
 	BULLET02,//壁で2回反射する
 	BULLET03,//壁で4回反射する
 	FASTBULLET,//スピード１．３倍
-	POWERBULLET,//高威力
+	POWERBULLET,//高威力 反射しない
+	POWERBULLET01,//高威力 反射する
 	NONREFLECT,
 	HOMING
 };
@@ -42,7 +43,7 @@ Bullet* GetBullet();
 Bullet* GetFirstBulletAddress();
 
 //指定された地点に弾を生成します
-//第一引数 発射地点
+//第一引数 ワールドポジションの発射地点
 //第二引数 生成する弾の種類
 void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind);
 

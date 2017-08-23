@@ -3,8 +3,20 @@
 
 #include<d3dx9.h>
 
+#define BOSS3PNGWIDTH		240.0f
+#define BOSS3PNGHEIGHT		256.0f
+#define BOSS3WIDTH			174.0f
+#define BOSS3HEIGHT		220.0f
+#define BOSS3MAXSPEED		0.5f
+#define BOSS3SHIELD1WIDTH	22.0f
+#define BOSS3SHIELD1HEIGHT	200.0f
+#define BOSS3SHIELD2WIDTH	24.0f
+#define BOSS3SHIELD2HEIGHT	180.0f
+#define BOSS3SHIELD3WIDTH	24.0f
+#define BOSS3SHIELD3HEIGHT	120.0f
+
 enum BOSS3STATE {
-	
+	BOSS3_NON,SHOTNORMALBULLET,SHOTPOWERBULLET,
 };
 
 struct Boss3Data {
@@ -12,10 +24,8 @@ struct Boss3Data {
 	D3DXVECTOR2 WindowPos;
 	BOSS3STATE Boss3State;
 	float MovementX, MovementY;
-	float a;//, ga;//加速度、重力加速度
 	int Hp;
 	int Atk;
-	//bool isJumping;
 	bool isLeft;
 	bool isDead;
 	bool isActive;
@@ -23,5 +33,11 @@ struct Boss3Data {
 };
 
 Boss3Data* GetBoss3Data();
+
+void Boss3Init();
+
+void Boss3Control();
+
+void MoveBoss3();
 
 #endif

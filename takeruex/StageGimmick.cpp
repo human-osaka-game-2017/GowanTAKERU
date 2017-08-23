@@ -8,6 +8,7 @@
 #include"BulletControl.h"
 #include"EnemyControl.h"
 #include"Boss1Control.h"
+#include"Boss3Control.h"
 
 #define KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG	0x0001
 #define KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG	0x0002
@@ -158,6 +159,7 @@ void StageGimmickManage() {
 
 	//boss用シャッターの処理
 	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss3Data* pBoss3 = GetBoss3Data();
 
 	bool bossActiveflg = false;
 	STAGE_ID stage_ID = GetStage_ID();
@@ -172,6 +174,7 @@ void StageGimmickManage() {
 		break;
 
 	case STAGE_3:
+		bossActiveflg = pBoss3->isActive;
 		break;
 
 	case STAGE_4:
@@ -183,6 +186,8 @@ void StageGimmickManage() {
 		CloseGate(BOSS_SHUTTER, WALL);
 		g_BossGateflg = true;
 	}
+
+
 }
 
 void CloseGate(MapKind beforeMapKind, MapKind afterMapKind) {

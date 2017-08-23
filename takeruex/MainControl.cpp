@@ -9,6 +9,7 @@
 #include"BlackOutRender.h"
 #include"Boss1Control.h"
 #include"Boss2Control.h"
+#include"Boss3Control.h"
 
 #include<d3dx9.h>
 
@@ -18,6 +19,7 @@ void MainControl() {
 	EnemyControl();
 	Boss1Control();
 	Boss2Control();
+	Boss3Control();
 	BulletControl();
 	HitManage();
 	StageGimmickManage();

@@ -10,6 +10,7 @@
 #include"BlackOutRender.h"
 #include"Boss1Render.h"
 #include"Boss2Render.h"
+#include"Boss3Render.h"
 
 void MainRender() {
 
@@ -30,6 +31,7 @@ void MainRender() {
 	EnemyRender();
 	Boss1Render();
 	Boss2Render();
+	Boss3Render();
 	BulletRender();
 	PlayerRender();
 	UIRender();

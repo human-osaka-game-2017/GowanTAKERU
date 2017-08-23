@@ -22,7 +22,7 @@ void TitleBackGroundRender() {
 
 #define TITLELOGO_HEIGHT 250
 #define TITLELOGO_WIDTH 800
-#define TITLELOGO_X 640
+#define TITLELOGO_X 670
 #define TITLELOGO_Y 525
 #define FADEFRM 180
 

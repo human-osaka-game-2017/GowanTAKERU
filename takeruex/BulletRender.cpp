@@ -40,6 +40,11 @@ void BulletRender() {
 				case NONREFLECT:
 					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE * 2;
 					break;
+
+				case POWERBULLET:
+					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE * 4;
+					DrawVertex[j].tv += pSearchBullet->Size / BULLETPNGSIZE;
+					break;
 				}
 			}
 

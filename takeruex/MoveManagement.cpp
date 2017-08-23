@@ -4,6 +4,7 @@
 #include"EnemyControl.h"
 #include"Boss1Control.h"
 #include"Boss2Control.h"
+#include"Boss3Control.h"
 
 void MoveManage() {
 	MovePlayer();
@@ -11,4 +12,5 @@ void MoveManage() {
 	MoveEnemy();
 	MoveBoss1();
 	MoveBoss2();
+	MoveBoss3();
 }

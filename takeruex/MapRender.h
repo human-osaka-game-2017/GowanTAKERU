@@ -59,6 +59,8 @@ enum MapKind {
 	DUMMY2,//予備隠し用
 	RESPAWN_POINT1,//リスポーン地点
 	RESPAWN_POINT2,
+	SHUTTER_4 = 91,
+	SHUTTER_5,
 
 };
 enum GimmickKind{ START = 40, CHECKPOINT_1=46, CHECKPOINT_2};

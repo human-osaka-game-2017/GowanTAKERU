@@ -13,9 +13,9 @@ void Boss1Render() {
 
 	CUSTOMVERTEX boss1[] = {
 		{ -BOSS1WIDTH / 2, -BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
-		{ BOSS1WIDTH / 2, -BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
-		{ BOSS1WIDTH / 2,  BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-		{ -BOSS1WIDTH / 2,  BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
+		{ BOSS1WIDTH / 2, -BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS1WIDTH / BOSSPNGSIZE,0.0f },
+		{ BOSS1WIDTH / 2,  BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS1WIDTH / BOSSPNGSIZE,BOSS1HEIGHT / BOSSPNGSIZE },
+		{ -BOSS1WIDTH / 2,  BOSS1HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,BOSS1HEIGHT / BOSSPNGSIZE }
 	};
 	if (pBoss1->isActive && !pBoss1->isDead) {
 		CUSTOMVERTEX drawVertex[4];
@@ -26,7 +26,7 @@ void Boss1Render() {
 		}
 
 		// テクスチャをステージに割り当てる
-		pD3Device->SetTexture(0, pTexture[BOSS1_TEX]);
+		pD3Device->SetTexture(0, pTexture[BOSS_TEX]);
 		// 描画
 		pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawVertex, sizeof(CUSTOMVERTEX));
 	}

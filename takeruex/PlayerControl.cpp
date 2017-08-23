@@ -37,7 +37,6 @@ void PlayerInit() {
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
 	int* map = (int*)malloc(sizeof(int)*MaxX*MaxY);
-
 	switch (stage_ID) {
 	case STAGE_1:
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
@@ -72,7 +71,7 @@ void PlayerInit() {
 	}
 	Break:
 	free(map);
-	
+	g_BasePoint.y = 544;
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
 	g_player.WindowPos.x = g_player.WorldPos.x - (g_BasePoint.x - BasePoint0.x);
@@ -263,7 +262,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT) {
+					if (pSearchBullet->BulletKind == NONREFLECT 
+						&& pSearchBullet->BulletKind ==POWERBULLET) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -284,7 +284,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT) {
+					if (pSearchBullet->BulletKind == NONREFLECT
+						&& pSearchBullet->BulletKind == POWERBULLET) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -312,7 +313,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2)) 
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT) {
+					if (pSearchBullet->BulletKind == NONREFLECT 
+						&& pSearchBullet->BulletKind == POWERBULLET) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -341,7 +343,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT) {
+					if (pSearchBullet->BulletKind == NONREFLECT 
+						&& pSearchBullet->BulletKind == POWERBULLET) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -362,7 +365,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT) {
+					if (pSearchBullet->BulletKind == NONREFLECT 
+						&& pSearchBullet->BulletKind == POWERBULLET) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -389,7 +393,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2)) 
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT) {
+					if (pSearchBullet->BulletKind == NONREFLECT 
+						&& pSearchBullet->BulletKind == POWERBULLET) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
