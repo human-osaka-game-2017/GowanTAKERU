@@ -122,8 +122,22 @@ void EnemyControl() {
 				EnemyPursuit(i);
 				g_pEnemy[i].bulletFrameCount++;
 				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー事に持っているは発射感覚になったら入る
-					
-					BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET1);
+					if (g_pEnemy[i].enemyKind == FLYINGENEMY1) {
+						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET1);
+					}
+					if (g_pEnemy[i].enemyKind == WALKINGENEMY_1 || WALKINGENEMY_2||WALKINGENEMY_6||
+						FLYINGENEMY1||FLYINGENEMY4|| FIXEDBATTERY1) {
+						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET2);
+					}
+					if (g_pEnemy[i].enemyKind == FIXEDBATTERY2) {
+						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET3);
+					}
+					if (g_pEnemy[i].enemyKind == WALKINGENEMY_5) {
+						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET4);
+					}
+					if (g_pEnemy[i].enemyKind == WALKINGENEMY_3) {
+						BulletCreate(g_pEnemy[i].WorldPos, HOMING);
+					}
 					if(g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval+30) {
 						g_pEnemy[i].bulletFrameCount = 0;
 					}
@@ -342,6 +356,13 @@ void EnemyPursuit(int enemyNum) {
 	case FLYINGENEMY_HAS_KEY3:
 	case FIXEDBATTERY1:
 	case FIXEDBATTERY2:
+		g_pEnemy[enemyNum].beLeft = false;
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		break;
+	case SWITCH_1:
+	case SWITCH_2:
+	case SWITCH_3:
 		g_pEnemy[enemyNum].beLeft = false;
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
@@ -575,7 +596,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				break;
 
 			case SWITCH_1:
-				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY2;
+				g_pEnemy[enemyCount].enemyKind = SWITCH_1;
 				g_pEnemy[enemyCount].Speed = 0;
 				g_pEnemy[enemyCount].firingInterval = 5 * 60;
 				g_pEnemy[enemyCount].Height = 70.0f;
@@ -585,7 +606,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				break;
 
 			case SWITCH_2:
-				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY2;
+				g_pEnemy[enemyCount].enemyKind = SWITCH_2;
 				g_pEnemy[enemyCount].Speed = 0;
 				g_pEnemy[enemyCount].firingInterval = 5 * 60;
 				g_pEnemy[enemyCount].Height = 70.0f;
@@ -595,7 +616,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				break;
 
 			case SWITCH_3:
-				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY2;
+				g_pEnemy[enemyCount].enemyKind = SWITCH_3;
 				g_pEnemy[enemyCount].Speed = 0;
 				g_pEnemy[enemyCount].firingInterval = 5 * 60;
 				g_pEnemy[enemyCount].Height = 70.0f;
