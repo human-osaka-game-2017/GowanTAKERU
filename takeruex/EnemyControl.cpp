@@ -177,11 +177,10 @@ void EnemyPursuit(int enemyNum) {
 	switch (g_pEnemy[enemyNum].enemyKind) {
 	case WALKINGENEMY_1:
 	case WALKINGENEMY_6:
-		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
+		}else{
+			g_pEnemy[enemyNum].beLeft = false;
 		}
 
 		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-5フレーム未満だったら中に入る
@@ -207,11 +206,11 @@ void EnemyPursuit(int enemyNum) {
 
 		break;
 	case WALKINGENEMY_2:
-		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
@@ -220,11 +219,11 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case WALKINGENEMY_3:
-		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
@@ -235,7 +234,12 @@ void EnemyPursuit(int enemyNum) {
 	case WALKINGENEMY_4://体当たり
 		static bool attack;
 		attack = false;
-		g_pEnemy[enemyNum].beLeft = false;
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
 		if (g_pEnemy[enemyNum].EnemyBasePoint.x-400 <= basepoint->x) {//PCが範囲内に入ったらフラグおｎ
 			attack = true;
 		}
@@ -258,11 +262,11 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case WALKINGENEMY_5:
-		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
@@ -272,11 +276,11 @@ void EnemyPursuit(int enemyNum) {
 		break;
 	case WALKINGENEMY_HAS_KEY_1:
 	case WALKINGENEMY_HAS_KEY_4:
-		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
@@ -286,11 +290,11 @@ void EnemyPursuit(int enemyNum) {
 		break;
 	case WALKINGENEMY_HAS_KEY_2:
 	case WALKINGENEMY_HAS_KEY_5:
-		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
 		}
 
 		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-5フレーム未満だったら中に入る
@@ -319,6 +323,12 @@ void EnemyPursuit(int enemyNum) {
 	case WALKINGENEMY_HAS_KEY_6:
 		break;
 	case FLYINGENEMY1:
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
 		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-30フレーム未満だったら中に入る
 																						  //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
@@ -341,11 +351,11 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case FLYINGENEMY2:
-		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].WindowPos.x < basepoint->x) {
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
@@ -356,6 +366,12 @@ void EnemyPursuit(int enemyNum) {
 	case FLYINGENEMY3:
 		break;//未定
 	case FLYINGENEMY4:
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
 		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-5フレーム未満だったら中に入る
 																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
@@ -380,6 +396,12 @@ void EnemyPursuit(int enemyNum) {
 	case FLYINGENEMY5:
 		break;//未定
 	case FLYINGENEMY_HAS_KEY1:
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
 		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-30フレーム未満だったら中に入る
 																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
@@ -402,7 +424,12 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case FLYINGENEMY_HAS_KEY2:
-		g_pEnemy[enemyNum].beLeft = false;
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
 		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
@@ -410,7 +437,12 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case FLYINGENEMY_HAS_KEY3:
-		g_pEnemy[enemyNum].beLeft = false;
+		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		else {
+			g_pEnemy[enemyNum].beLeft = false;
+		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
 		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {

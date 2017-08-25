@@ -84,6 +84,10 @@ void EnemyRender() {
 			
 			}
 
+			if (!enemy[i].beLeft) {
+				TurnVertex_tu(DrawVertex);
+			}
+
 			// テクスチャをステージに割り当てる
 			pD3Device->SetTexture(0, pTexture[ENEMY_TEX]);
 			// 描画
