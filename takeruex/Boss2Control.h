@@ -7,10 +7,6 @@ struct Boss2Data {
 	D3DXVECTOR2 WindowPos;
 	float MovementX, MovementY;
 	int Hp;
-	int saveShotFrmcnt;
-	int saveActionCntForNORMALSHOT;
-	int saveActionCntForDUALSHOT;
-	int saveDUALSHOTActionCntForLARIAT;
 	int Atk;
 	bool isLeft;//Œü‚«true‚Å¶Œü‚«
 	bool isDead;//¶€

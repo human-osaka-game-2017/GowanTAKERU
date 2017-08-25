@@ -77,10 +77,6 @@ BREAK:
 		g_Boss2.MovementX = g_Boss2.MovementY = 0;
 		g_Boss2.Hp = 70;
 		g_Boss2.Atk = 20;
-		g_Boss2.saveShotFrmcnt = 0;
-		g_Boss2.saveActionCntForNORMALSHOT = 0;
-		g_Boss2.saveActionCntForDUALSHOT = 0;
-		g_Boss2.saveDUALSHOTActionCntForLARIAT = 0;
 		g_Boss2.isLeft = true;
 		g_Boss2.isDead = false;
 		g_Boss2.isActive = false;
@@ -97,10 +93,20 @@ BREAK:
 
 void Boss2Control() {
 	static int Boss2FrameCount = 0;
-	if (Boss2FrameCount == 11 || Boss2FrameCount == 23 || Boss2FrameCount == 35 || Boss2FrameCount == 67 || Boss2FrameCount == 79) {
+	if (Boss2FrameCount <= 121) {//121フレーム以降はフレームカウントされないようにしている
+		Boss2FrameCount++;
+	}
+	//0.2秒感覚（12フレーム）でホーミング弾発射
+	if (Boss2FrameCount == 12 || Boss2FrameCount == 24 || Boss2FrameCount == 36 || Boss2FrameCount == 48 || Boss2FrameCount == 60) {
 		BulletCreate(g_Boss2.WorldPos, HOMING);
 	}
-
+	//1フレームで3.2ピクセル盾に動かす(1秒で192ピクセル分)
+	if (Boss2FrameCount >= 120) {
+		g_Boss2.MovementX = -3.2f;
+	}
+	if (Boss2FrameCount > 120) {
+		
+	}
 
 }
 

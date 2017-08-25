@@ -660,7 +660,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Speed = 0.0f;
 				g_pEnemy[enemyCount].firingInterval =  5*60;
 				g_pEnemy[enemyCount].Height = 60.0f;
-				g_pEnemy[enemyCount].Width = 60.0f;
+				g_pEnemy[enemyCount].Width = 60.0f; 
 				g_pEnemy[enemyCount].Atk = 20;
 				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
 				break;
