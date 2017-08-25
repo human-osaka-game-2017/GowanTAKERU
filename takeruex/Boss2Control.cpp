@@ -32,8 +32,8 @@ void Boss2Init() {
 			for (int j = 0; j < MaxX; j++) {
 				if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
 					g_Boss2.isExistence = true;
-					g_Boss2.WolrdPos.x = TIPSIZE*j;
-					g_Boss2.WolrdPos.y = TIPSIZE*i;
+					g_Boss2.WorldPos.x = TIPSIZE*j;
+					g_Boss2.WorldPos.y = TIPSIZE*i;
 					goto BREAK;
 				}
 			}
@@ -45,10 +45,10 @@ void Boss2Init() {
 
 		for (int i = 0; i < MaxY; i++) {
 			for (int j = 0; j < MaxX; j++) {
-				if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
+				if (gimmickData[j + i*MaxX] == BOSS_STAGE2) {
 					g_Boss2.isExistence = true;
-					g_Boss2.WolrdPos.x = TIPSIZE*j;
-					g_Boss2.WolrdPos.y = TIPSIZE*i;
+					g_Boss2.WorldPos.x = TIPSIZE*j;
+					g_Boss2.WorldPos.y = TIPSIZE*i;
 					goto BREAK;
 				}
 			}
@@ -64,8 +64,8 @@ void Boss2Init() {
 			for (int j = 0; j < MaxX; j++) {
 				if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
 					g_Boss2.isExistence = true;
-					g_Boss2.WolrdPos.x = TIPSIZE*j;
-					g_Boss2.WolrdPos.y = TIPSIZE*i;
+					g_Boss2.WorldPos.x = TIPSIZE*j;
+					g_Boss2.WorldPos.y = TIPSIZE*i;
 					goto BREAK;
 				}
 			}
@@ -96,9 +96,22 @@ BREAK:
 }
 
 void Boss2Control() {
+	static int Boss2FrameCount = 0;
+	if (Boss2FrameCount == 11 || Boss2FrameCount == 23 || Boss2FrameCount == 35 || Boss2FrameCount == 67 || Boss2FrameCount == 79) {
+		BulletCreate(g_Boss2.WorldPos, HOMING);
+	}
+
 
 }
 
 void MoveBoss2() {
-
+	if (g_Boss2.isExistence && !g_Boss2.isDead) {
+		D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+		D3DXVECTOR2* basePoint = GetBasePoint();
+		g_Boss2.WorldPos.x += g_Boss2.MovementX;
+		g_Boss2.WorldPos.y += g_Boss2.MovementY;
+		g_Boss2.WindowPos.x = g_Boss2.WorldPos.x - (basePoint->x - BasePoint0.x);
+		g_Boss2.WindowPos.y = g_Boss2.WorldPos.y - (basePoint->y - BasePoint0.y);
+		g_Boss2.MovementX = g_Boss2.MovementY = 0;
+	}
 }

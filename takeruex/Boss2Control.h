@@ -3,7 +3,7 @@
 #include<d3dx9.h>
 
 struct Boss2Data {
-	D3DXVECTOR2 WolrdPos;
+	D3DXVECTOR2 WorldPos;
 	D3DXVECTOR2 WindowPos;
 	float MovementX, MovementY;
 	int Hp;
