@@ -192,6 +192,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_3:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
@@ -202,6 +205,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_4://‘Ì“–‚½‚è
 		static bool attack;
@@ -223,6 +229,9 @@ void EnemyPursuit(int enemyNum) {
 		if (attack == false) {
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = 0;
+				if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+					g_pEnemy[enemyNum].bulletFrameCount = 0;
+				}
 		}
 		break;
 	case WALKINGENEMY_5:
@@ -234,6 +243,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_HAS_KEY_1:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
@@ -244,6 +256,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_HAS_KEY_2:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
@@ -308,6 +323,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case FLYINGENEMY3:
 		break;//–¢’è
@@ -358,13 +376,29 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case FLYINGENEMY_HAS_KEY2:
+		g_pEnemy[enemyNum].beLeft = false;
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case FLYINGENEMY_HAS_KEY3:
+		g_pEnemy[enemyNum].beLeft = false;
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
+		break;
 	case FIXEDBATTERY1:
 	case FIXEDBATTERY2:
 		g_pEnemy[enemyNum].beLeft = false;
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case SWITCH_1:
 	case SWITCH_2:
@@ -439,6 +473,27 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Width = 68.0f;
 				g_pEnemy[enemyCount].Atk = 20;
 				g_pEnemy[enemyCount].Hp = 10;
+				break;
+			case WALKINGENEMY_HAS_KEY_4:
+				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 3 * 60;
+				g_pEnemy[enemyCount].Height = 118.0f;
+				g_pEnemy[enemyCount].Width = 68.0f;
+				g_pEnemy[enemyCount].Atk = 20;
+				g_pEnemy[enemyCount].Hp = 30;
+				break;
+
+			case WALKINGENEMY_HAS_KEY_5:
+				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
+				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].firingInterval = 3 * 60;
+				g_pEnemy[enemyCount].Height = 118.0f;
+				g_pEnemy[enemyCount].Width = 68.0f;
+				g_pEnemy[enemyCount].Atk = 20;
+				g_pEnemy[enemyCount].Hp = 30;
+				break;
+			case WALKINGENEMY_HAS_KEY_6:
 				break;
 
 			case WALKINGENEMY_1:
