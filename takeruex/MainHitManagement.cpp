@@ -11,6 +11,7 @@
 #include"BlackOutRender.h"
 #include"Boss1Control.h"
 #include"CommonControl.h"
+#include"Boss2Control.h"
 #include"Boss3Control.h"
 #include"Boss4Control.h"
 
@@ -27,6 +28,7 @@ void HitManage() {
 
 	Player* player = GetplayerData();
 	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss2Data* pBoss2 = GetBoss2Data();
 	Boss3Data* pBoss3 = GetBoss3Data();
 	Boss4Data* pBoss4 = GetBoss4Data();
 	Bullet* pFirstBullet = GetFirstBulletAddress();
@@ -80,7 +82,8 @@ void HitManage() {
 
 	//boss1とマップの押し出し処理
 	PushOutMapFourPoint(pBoss1->WolrdPos, &pBoss1->MovementX, &pBoss1->MovementY, BOSS1WIDTH, BOSS1HEIGHT);
-
+	//boss2とマップの押し出し処理
+	PushOutMapFourPoint(pBoss2->WorldPos, &pBoss2->MovementX, &pBoss2->MovementY, BOSS2WIDTH, BOSS2HEIGHT);
 	//boss3とマップの押し出し処理
 	PushOutMapFourPoint(pBoss3->WolrdPos, &pBoss3->MovementX, &pBoss3->MovementY, BOSS3OBJWIDTH, BOSS3OBJHEIGHT);
 
@@ -106,6 +109,21 @@ void HitManage() {
 				}
 			}
 		}
+		//ボス２と球のダメージ計算
+		if (pBoss2->isActive && !(pBoss2->isDead)) {
+			if (pSearchBullet->wasReflect) {
+				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss2->WindowPos, BOSS2WIDTH, BOSS2HEIGHT)) {
+					pBoss2->Hp -= pSearchBullet->Atk;
+					if (pBoss2->Hp <= 0) {
+						pBoss2->isDead = true;
+						pBoss2->isActive = false;
+					}
+					DeleteBullet(&pSearchBullet);
+					continue;
+				}
+			}
+		}
+
 
 		//ボス3と弾のダメージ計算とシールドの判定
 		if (pBoss3->isActive && !(pBoss3->isDead)) {

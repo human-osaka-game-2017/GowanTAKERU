@@ -77,6 +77,7 @@ BREAK:
 	free(gimmickData);
 
 
+
 }
 
 void Boss2Control() {
@@ -94,7 +95,7 @@ void Boss2Control() {
 		g_Boss2.isActive = false;
 	}
 
-	if (g_Boss2.isExistence ==true && !g_Boss2.isDead==false&&g_Boss2.isActive==true) {
+	if (g_Boss2.isExistence && !g_Boss2.isDead&&g_Boss2.isActive) {
 		static int Boss2FrameCount = 0;//エネミーの動作を始めてからのフレーム数をかぞえる
 		static int bulletFrameCount = 0;//発射までのフレーム数を数える
 
@@ -109,8 +110,8 @@ void Boss2Control() {
 			BulletCreate(g_Boss2.WorldPos, HOMING);
 		}
 		//1フレームで3.2ピクセル盾に動かす(1秒で192ピクセル分)
-		if (Boss2FrameCount >= 120) {
-			g_Boss2.MovementX = -3.2f;
+		if (Boss2FrameCount >= 60) {
+			g_Boss2.MovementX = -1.5f;
 		}
 		//メイン動作
 		if (Boss2FrameCount > 120) {
