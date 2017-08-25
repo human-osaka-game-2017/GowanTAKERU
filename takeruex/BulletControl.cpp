@@ -265,12 +265,12 @@ void DeleteALLBullet() {
 
 		//ÅŒã”ö‚ÌŽž
 		if (pSearchBullet->next == NULL) {
-
 			//g_firstBullet‚Ímalloc‚¶‚á‚È‚¢‚©‚çŠJ•ú‚µ‚È‚­‚Ä‚¢‚¢
-			if (pSearchBullet != &g_firstBullet) {
-				free(pSearchBullet);
+			if (pSearchBullet == &g_firstBullet) {
 				break;
 			}
+			free(pSearchBullet);
+			break;
 		}
 
 		pSearchBullet = pSearchBullet->next;
