@@ -65,6 +65,9 @@ BREAK:
 		g_Boss2.isLeft = true;
 		g_Boss2.isDead = false;
 		g_Boss2.isActive = false;
+		g_Boss2.hasLanding = false;
+		g_Boss2.hasDamage = false;
+		g_Boss2.lastbullet = NOTHING;
 	}
 	else {
 		g_Boss2.isDead = false;
@@ -77,7 +80,12 @@ BREAK:
 }
 
 void Boss2Control() {
-		static int Boss2FrameCount = 0;
+		static int Boss2FrameCount = 0;//エネミーの動作を始めてからのフレーム数をかぞえる
+		static int bulletFrameCount = 0;//発射までのフレーム数を数える
+
+		//アクティブか死んでないかボスが出るマップかをチェック
+
+		//開幕ループ
 		if (Boss2FrameCount <= 121) {//121フレーム以降はフレームカウントされないようにしている
 			Boss2FrameCount++;
 		}
@@ -89,10 +97,47 @@ void Boss2Control() {
 		if (Boss2FrameCount >= 120) {
 			g_Boss2.MovementX = -3.2f;
 		}
+		//メイン動作
 		if (Boss2FrameCount > 120) {
+			if (g_Boss2.hasDamage == true) {
+				//g_Boss2.BranchPoint.x = g_Boss2.WorldPos.x;
+				//g_Boss2.BranchPoint.y = g_Boss2.WorldPos.y;
+			}
+			if (g_Boss2.hasDamage == false) {
+				D3DXVECTOR2 LeftTop = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };
+				D3DXVECTOR2 RightTop = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };
+				D3DXVECTOR2 LeftBottom = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
+				D3DXVECTOR2 RightBottom = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
+				if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {//ボスがマップチップに触れたら
+					if (g_Boss2.hasLanding == false) {//奇数回触れたら真
+						g_Boss2.hasLanding = true;
+					}
+					if (g_Boss2.hasLanding == true) {//偶数回触れたら偽
+						g_Boss2.hasLanding = false;
+					}
+				}
+				if (g_Boss2.hasLanding == false) {//偽なら上昇
+					g_Boss2.MovementX = 0;
+					g_Boss2.MovementY = 3.4f;
+				}
+				if (g_Boss2.hasLanding == true) {//真なら下降
+					g_Boss2.MovementX = 0;
+					g_Boss2.MovementY = -3.4f;
+				}
+				bulletFrameCount++;
+				if (bulletFrameCount == 60) {
+					if (g_Boss2.lastbullet == NOTHING || HOMING) {//前回撃った球が初期状態もしくはホーミングだった場合
+						BulletCreate(g_Boss2.WorldPos, BULLETTARGET2);
+					}
+					if (g_Boss2.lastbullet == BULLETTARGET2) {//前回撃った球が2番だった場合
+						BulletCreate(g_Boss2.WorldPos, HOMING);
+					}
+					bulletFrameCount = 0;//球を打ったら初期化
 
+				}
+
+			}
 		}
-
 }
 
 void MoveBoss2() {

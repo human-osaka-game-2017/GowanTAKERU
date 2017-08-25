@@ -305,6 +305,7 @@ void EnemyPursuit(int enemyNum) {
 
 		break;
 	case WALKINGENEMY_HAS_KEY_3:
+	case WALKINGENEMY_HAS_KEY_6:
 		break;
 	case FLYINGENEMY1:
 		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-30フレーム未満だったら中に入る
