@@ -24,7 +24,7 @@ void Boss2Render() {
 			drawVertex[j].y += pBoss2->WindowPos.y;
 		}
 
-		TrimingVertex(drawVertex, 0.0f, 512.0f, BOSS2WIDTH, BOSS2HEIGHT, ENEMYPNGSIZE, ENEMYPNGSIZE);
+		TrimingVertex(drawVertex, 256.0f, 512.0f, BOSS2WIDTH, BOSS2HEIGHT, ENEMYPNGSIZE, ENEMYPNGSIZE);
 
 		if (!pBoss2->isLeft) {
 			TurnVertex_tu(drawVertex);

@@ -25,6 +25,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 	Player* pPlayer = GetplayerData();
 	BlackOutData* blackOutData = GetBlackOutData();
 	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss2Data* pBoss2 = GetBoss2Data();
 	Boss3Data* pBoss3 = GetBoss3Data();
 	Boss4Data* pBoss4 = GetBoss4Data();
 
@@ -85,6 +86,16 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 				step++;
 				StopBGM(stage_ID, true);
 				StageSelect(STAGE_2);
+			}
+		}
+
+		if (pBoss2->isExistence&&pBoss2->isDead) {
+			g_isScreenTransition = false;
+			blackOutData->BlackOutflg = true;
+			if (blackOutData->BlackOutNextState == BLACKOUT) {
+				step++;
+				StopBGM(stage_ID, true);
+				StageSelect(STAGE_3);
 			}
 		}
 

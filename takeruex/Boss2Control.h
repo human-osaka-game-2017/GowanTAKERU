@@ -1,8 +1,8 @@
 #ifndef BOSS2CONTROL_H
 #define BOSS2CONTROL_H
 #include<d3dx9.h>
-#define BOSS2WIDTH 114
-#define BOSS2HEIGHT 152
+#define BOSS2WIDTH 168
+#define BOSS2HEIGHT 197
 
 struct Boss2Data {
 	D3DXVECTOR2 WorldPos;

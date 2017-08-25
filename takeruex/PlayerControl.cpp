@@ -41,7 +41,7 @@ void PlayerInit() {
 	switch (stage_ID) {
 	case STAGE_1:
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
-		g_player.Hp = 100;
+		g_player.Hp = 10000;
 		g_player.LifeReduced = 3;
 		break;
 

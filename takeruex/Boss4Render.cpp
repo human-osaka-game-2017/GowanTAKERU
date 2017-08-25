@@ -25,7 +25,7 @@ void Boss4Render() {
 			drawVertex[j].y += pBoss4->WindowPos.y;
 		}
 
-		//TrimingVertex(~~~~);
+		TrimingVertex(drawVertex, 768.0f, 512.0f, BOSS4WIDTH, BOSS4HEIGHT, ENEMYPNGSIZE, ENEMYPNGSIZE);
 
 		TurnVertex_tu(drawVertex);
 
