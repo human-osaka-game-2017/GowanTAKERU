@@ -10,7 +10,7 @@ void Boss2Render() {
 
 	Boss2Data* pBoss2 = GetBoss2Data();
 
-	CUSTOMVERTEX boss1[] = {
+	CUSTOMVERTEX boss2[] = {
 		{ -BOSS2WIDTH / 2, -BOSS2HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,0.0f },
 		{ BOSS2WIDTH / 2, -BOSS2HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS2WIDTH / ENEMYPNGSIZE,0.0f },
 		{ BOSS2WIDTH / 2,  BOSS2HEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS2WIDTH / ENEMYPNGSIZE,BOSS2HEIGHT / ENEMYPNGSIZE },
@@ -19,7 +19,7 @@ void Boss2Render() {
 	if (pBoss2->isActive && !pBoss2->isDead) {
 		CUSTOMVERTEX drawVertex[4];
 		for (int j = 0; j < 4; j++) {
-			drawVertex[j] = boss1[j];
+			drawVertex[j] = boss2[j];
 			drawVertex[j].x += pBoss2->WindowPos.x;
 			drawVertex[j].y += pBoss2->WindowPos.y;
 		}
