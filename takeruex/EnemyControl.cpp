@@ -137,8 +137,13 @@ void EnemyControl() {
 					if (g_pEnemy[i].enemyKind == FLYINGENEMY1) {//えねみーカインドごとに入るところが違う（打つ弾が違う
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET1);
 					}
-					if (g_pEnemy[i].enemyKind == WALKINGENEMY_1 || WALKINGENEMY_2||WALKINGENEMY_6||
-						FLYINGENEMY1||FLYINGENEMY4|| FIXEDBATTERY1|| FLYINGENEMY2) {
+					if (g_pEnemy[i].enemyKind == WALKINGENEMY_1 ||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_2 ||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_6 ||
+						g_pEnemy[i].enemyKind == FLYINGENEMY1	||
+						g_pEnemy[i].enemyKind == FLYINGENEMY4	||
+						g_pEnemy[i].enemyKind == FIXEDBATTERY1	|| 
+						g_pEnemy[i].enemyKind == FLYINGENEMY2) {
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET2);
 					}
 					if (g_pEnemy[i].enemyKind == FIXEDBATTERY2) {

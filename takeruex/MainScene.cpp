@@ -79,21 +79,21 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 
 		//stage‘JˆÚ
 		if (pBoss1->isExistence&&pBoss1->isDead) {
-			StopBGM(stage_ID, true);
 			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
 				step++;
+				StopBGM(stage_ID, true);
 				StageSelect(STAGE_2);
 			}
 		}
 
 		if (pBoss3->isExistence&&pBoss3->isDead) {
-			StopBGM(stage_ID, true);
 			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
 				step++;
+				StopBGM(stage_ID, true);
 				StageSelect(STAGE_4);
 			}
 		}
@@ -107,7 +107,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		break;
 
 	case 2:
-		DeleteALLBullet();
+		//DeleteALLBullet();
 		FreeEnemyData();
 		FreeMapData();
 		ReleaseTexture(MAINSCENE_TEXMAX);
