@@ -80,6 +80,21 @@ BREAK:
 }
 
 void Boss2Control() {
+	if (g_Boss2.isExistence && !g_Boss2.isDead) {
+	//活動状態かどうか
+	D3DXVECTOR2 LeftTop = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };
+	D3DXVECTOR2 RightTop = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };
+	D3DXVECTOR2 LeftBottom = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
+	D3DXVECTOR2 RightBottom = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
+	if (-(2 * TIPSIZE) < g_Boss2.WindowPos.x && g_Boss2.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
+		-(2 * TIPSIZE) < g_Boss2.WindowPos.y && g_Boss2.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
+		g_Boss2.isActive = true;
+	}
+	else {
+		g_Boss2.isActive = false;
+	}
+
+	if (g_Boss2.isExistence ==true && !g_Boss2.isDead==false&&g_Boss2.isActive==true) {
 		static int Boss2FrameCount = 0;//エネミーの動作を始めてからのフレーム数をかぞえる
 		static int bulletFrameCount = 0;//発射までのフレーム数を数える
 
@@ -100,17 +115,54 @@ void Boss2Control() {
 		//メイン動作
 		if (Boss2FrameCount > 120) {
 			if (g_Boss2.hasDamage == true) {//メイン動作の枝
-				static bool BranchCount= false;
-				//g_Boss2.BranchPoint.x = g_Boss2.WorldPos.x;
-				//g_Boss2.BranchPoint.y = g_Boss2.WorldPos.y;
+				static bool BranchCount = false;
+				static int MovingDistance = 0;//移動距離を記録
+
+				if (BranchCount == true) {//枝のメインルート
+					static int count = 0;//秒数えるためのカウント
+					count++;
+					if (count <= 6 && count > 7) {//0.2秒止まる
+						g_Boss2.MovementX = g_Boss2.MovementY = 0;
+						MovingDistance += g_Boss2.MovementX;
+					}
+					if (count >= 7 && MovingDistance >= 210) {
+						g_Boss2.MovementX = 5.0f;
+						MovingDistance += g_Boss2.MovementX;
+
+						if (count == 55) {
+							BulletCreate(g_Boss2.WorldPos, HOMING);
+						}
+					}
+					if (MovingDistance > 210) {
+						g_Boss2.MovementX = -5.0f;
+						MovingDistance += 5.0f;
+						if (count == 115) {
+							BulletCreate(g_Boss2.WorldPos, BULLETNORMAL3);
+						}
+					}
+					if (count == 170) {
+						BulletCreate(g_Boss2.WorldPos, BULLETNORMAL3);
+					}
+					if (MovingDistance <= 420) {
+						g_Boss2.MovementX = g_Boss2.MovementY = 0;
+						static int LastCount = 0;
+						LastCount++;
+						if (LastCount <= 60) {//カウントの初期化
+							LastCount = 0;
+							MovingDistance = 0;
+							count = 0;
+							BranchCount = false;
+							g_Boss2.hasDamage == false;
+						}
+					}
+
+
+				}
 			}
 
 			//メイン動作の本
 			if (g_Boss2.hasDamage == false) {
-				D3DXVECTOR2 LeftTop = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };
-				D3DXVECTOR2 RightTop = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };
-				D3DXVECTOR2 LeftBottom = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
-				D3DXVECTOR2 RightBottom = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
+
 				if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {//ボスがマップチップに触れたら
 					if (g_Boss2.hasLanding == false) {//奇数回触れたら真
 						g_Boss2.hasLanding = true;
@@ -141,6 +193,8 @@ void Boss2Control() {
 
 			}
 		}
+		}
+	}
 }
 
 void MoveBoss2() {
