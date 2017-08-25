@@ -9,10 +9,11 @@
 
 #include<time.h>
 
-#define JUMPV0 -6.0f
-#define HIGHJUMPV0 -15.0f
-#define BOSS4GRAVITY 0.619907f
-#define BOSS4SPEED 5.0f
+#define JUMPV0 -8.03f
+#define HIGHJUMPV0 -11.1f
+#define BOSS4GRAVITY 0.2f
+#define BOSS4SPEEDMAX 5.0f
+#define BOSS4SPEED 2.80f
 
 struct Pos {
 	float posX, posY;
@@ -131,7 +132,7 @@ void Boss4Control() {
 
 bool Boss4InitialControl() {
 
-	float moveSpeed = -3.0f;
+	float moveSpeed = -2.75f;
 	float jumpPower = -10.0f;
 
 	D3DXVECTOR2 LeftBottom = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
@@ -165,9 +166,9 @@ bool Boss4InitialControl() {
 void Boss4BasicControl() {
 
 	//データ群
-	Pos pointA = { 371 * TIPSIZE,20 * TIPSIZE };
-	Pos pointB = { 379 * TIPSIZE,16 * TIPSIZE };
-	Pos pointC = { 387 * TIPSIZE,20 * TIPSIZE };
+	Pos pointA = { 373 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
+	Pos pointB = { 381 * TIPSIZE + (2 / TIPSIZE),16 * TIPSIZE };
+	Pos pointC = { 382 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
 
 	D3DXVECTOR2 LeftTop = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
 	D3DXVECTOR2 RightTop = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
@@ -268,17 +269,23 @@ void Boss4BasicControl() {
 			BOSS4POS currentPoint;
 			if (CheckInPoint(pointA, LeftTop, RightBottom)) {
 				currentPoint = POINT_A;
+				g_Boss4.MovementX += pointA.posX - g_Boss4.WolrdPos.x;
+
 			}
 			if (CheckInPoint(pointB, LeftTop, RightBottom)) {
 				currentPoint = POINT_B;
+				g_Boss4.MovementX += pointB.posX - g_Boss4.WolrdPos.x;
+
 			}
 			if (CheckInPoint(pointC, LeftTop, RightBottom)) {
 				currentPoint = POINT_C;
+				g_Boss4.MovementX += pointC.posX - g_Boss4.WolrdPos.x;
+
 			}
 
 			//それを踏まえてランダムで決める
 			do {
-				g_Boss4.Boss4JumpState = (BOSS4JUMPSTATE)Random(1, 4);
+				g_Boss4.Boss4JumpState = (BOSS4JUMPSTATE)Random(1, 6);
 				if (g_Boss4.Boss4JumpState == JUMP) {
 					break;
 				}
@@ -288,7 +295,7 @@ void Boss4BasicControl() {
 					}
 				}
 				if (currentPoint == POINT_B) {
-					if (g_Boss4.Boss4JumpState == RIGHTJUMP || g_Boss4.Boss4JumpState == LEFTJUMP) {
+					if (g_Boss4.Boss4JumpState == POSB_RJUMP || g_Boss4.Boss4JumpState == POSB_LJUMP) {
 						break;
 					}
 				}
@@ -307,6 +314,11 @@ void Boss4BasicControl() {
 				g_Boss4.ga = JUMPV0;
 				break;
 
+			case POSB_RJUMP:
+			case POSB_LJUMP:
+				g_Boss4.ga = 0.5f + JUMPV0;
+				break;
+
 			case LEFTHIGHJUMP:
 			case RIGHTHIGHJUMP:
 				g_Boss4.ga = HIGHJUMPV0;
@@ -321,22 +333,30 @@ void Boss4BasicControl() {
 
 	case GROUND:
 	case JUMP:
-		g_Boss4.MovementX = 0;
+		g_Boss4.MovementX += 0;
 		break;
 
 	case RIGHTJUMP:
 	case RIGHTHIGHJUMP:
-		g_Boss4.MovementX = BOSS4SPEED;
+		g_Boss4.MovementX += BOSS4SPEEDMAX;
 		break;
 
 	case LEFTJUMP:
 	case LEFTHIGHJUMP:
-		g_Boss4.MovementX = -BOSS4SPEED;
+		g_Boss4.MovementX += -BOSS4SPEEDMAX;
+		break;
+
+	case POSB_RJUMP:
+		g_Boss4.MovementX += BOSS4SPEED;
+		break;
+
+	case POSB_LJUMP:
+		g_Boss4.MovementX += -BOSS4SPEED;
 		break;
 	}
 
 	g_Boss4.ga += BOSS4GRAVITY;
-	g_Boss4.MovementY = g_Boss4.ga;
+	g_Boss4.MovementY += g_Boss4.ga;
 }
 
 void MoveBoss4() {
