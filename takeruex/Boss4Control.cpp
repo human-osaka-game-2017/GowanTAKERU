@@ -10,7 +10,7 @@
 #include<time.h>
 
 #define JUMPV0 -6.0f
-#define HIGHJUMPV0 -20.0f
+#define HIGHJUMPV0 -15.0f
 #define BOSS4GRAVITY 0.2f
 #define BOSS4SPEED 5.0f
 
