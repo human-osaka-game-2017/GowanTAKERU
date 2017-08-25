@@ -37,8 +37,7 @@ void PlayerInit() {
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
 	int* map = (int*)malloc(sizeof(int)*MaxX*MaxY);
-	g_player.Hp = 100;
-	g_player.LifeReduced = 3;
+	
 	switch (stage_ID) {
 	case STAGE_1:
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
