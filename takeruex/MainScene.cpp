@@ -13,6 +13,7 @@
 #include"Boss4Control.h"
 #include"StageGimmick.h"
 #include"CommonControl.h"
+#include"BulletControl.h"
 
 bool g_isScreenTransition = false;
 
@@ -106,6 +107,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		break;
 
 	case 2:
+		DeleteALLBullet();
 		FreeEnemyData();
 		FreeMapData();
 		ReleaseTexture(MAINSCENE_TEXMAX);

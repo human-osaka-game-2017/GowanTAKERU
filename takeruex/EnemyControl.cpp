@@ -47,6 +47,9 @@ void CountEnemy(int maxX,int maxY,int* pGimmickData) {
 			case WALKINGENEMY_HAS_KEY_1:
 			case WALKINGENEMY_HAS_KEY_2:
 			case WALKINGENEMY_HAS_KEY_3:
+			case WALKINGENEMY_HAS_KEY_4:
+			case WALKINGENEMY_HAS_KEY_5:
+			case WALKINGENEMY_HAS_KEY_6:
 			case FLYINGENEMY1:
 			case FLYINGENEMY2:
 			case FLYINGENEMY3:
