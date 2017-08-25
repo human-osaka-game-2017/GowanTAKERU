@@ -14,11 +14,11 @@
 void SetEnemyData(int maxX, int maxY, int* pGimmickData);
 void EnemyPursuit(int enemyNum);
 
-Enemy* g_pEnemy;//魔ロックする　んでそれをフリーしてくれ（関数作ってくれ）
+Enemy* g_pEnemy;//
 
 int g_EnemyMaxCount = 0;
 
-Enemy* GetEnemyData() {//データよこせよ魔ロックしたやつ
+Enemy* GetEnemyData() {//
 	return g_pEnemy;
 }
 
@@ -130,12 +130,12 @@ void EnemyControl() {
 			if (g_pEnemy[i].beActive == true && g_pEnemy[i].beDead == false) {
 				EnemyPursuit(i);
 				g_pEnemy[i].bulletFrameCount++;
-				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー事に持っているは発射感覚になったら入る
-					if (g_pEnemy[i].enemyKind == FLYINGENEMY1) {
+				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー毎に持っている発射感覚になったら入る
+					if (g_pEnemy[i].enemyKind == FLYINGENEMY1) {//えねみーカインドごとに入るところが違う（打つ弾が違う
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET1);
 					}
 					if (g_pEnemy[i].enemyKind == WALKINGENEMY_1 || WALKINGENEMY_2||WALKINGENEMY_6||
-						FLYINGENEMY1||FLYINGENEMY4|| FIXEDBATTERY1) {
+						FLYINGENEMY1||FLYINGENEMY4|| FIXEDBATTERY1|| FLYINGENEMY2) {
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET2);
 					}
 					if (g_pEnemy[i].enemyKind == FIXEDBATTERY2) {
@@ -201,6 +201,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_3:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
@@ -211,6 +214,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_4://体当たり
 		static bool attack;
@@ -232,6 +238,9 @@ void EnemyPursuit(int enemyNum) {
 		if (attack == false) {
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = 0;
+				if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+					g_pEnemy[enemyNum].bulletFrameCount = 0;
+				}
 		}
 		break;
 	case WALKINGENEMY_5:
@@ -243,6 +252,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_HAS_KEY_1:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
@@ -253,6 +265,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case WALKINGENEMY_HAS_KEY_2:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
@@ -287,7 +302,7 @@ void EnemyPursuit(int enemyNum) {
 	case WALKINGENEMY_HAS_KEY_3:
 		break;
 	case FLYINGENEMY1:
-		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-5フレーム未満だったら中に入る
+		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-30フレーム未満だったら中に入る
 																						  //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
 				//+方向にエネミーを動かす
@@ -300,7 +315,7 @@ void EnemyPursuit(int enemyNum) {
 			}
 		}
 
-		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30){//発射フレームの-5フレーム以上あれば中に入る
+		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30){//発射フレームの-30フレーム以上あれば中に入る
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = 0;
 			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
@@ -317,6 +332,9 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case FLYINGENEMY3:
 		break;//未定
@@ -345,7 +363,7 @@ void EnemyPursuit(int enemyNum) {
 	case FLYINGENEMY5:
 		break;//未定
 	case FLYINGENEMY_HAS_KEY1:
-		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-5フレーム未満だったら中に入る
+		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-30フレーム未満だったら中に入る
 																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
 				//+方向にエネミーを動かす
@@ -358,7 +376,7 @@ void EnemyPursuit(int enemyNum) {
 			}
 		}
 
-		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-5フレーム以上あれば中に入る
+		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-30フレーム以上あれば中に入る
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = 0;
 			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
@@ -367,13 +385,29 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case FLYINGENEMY_HAS_KEY2:
+		g_pEnemy[enemyNum].beLeft = false;
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case FLYINGENEMY_HAS_KEY3:
+		g_pEnemy[enemyNum].beLeft = false;
+		g_pEnemy[enemyNum].MovementX = 0;
+		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
+		break;
 	case FIXEDBATTERY1:
 	case FIXEDBATTERY2:
 		g_pEnemy[enemyNum].beLeft = false;
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
+		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+			g_pEnemy[enemyNum].bulletFrameCount = 0;
+		}
 		break;
 	case SWITCH_1:
 	case SWITCH_2:
@@ -422,7 +456,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_HAS_KEY_1:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_1;
-				g_pEnemy[enemyCount].Speed = 1;
+				g_pEnemy[enemyCount].Speed = 1.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
@@ -432,7 +466,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_HAS_KEY_2:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_2;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
@@ -442,17 +476,38 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_HAS_KEY_3://未定
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_3;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
 				g_pEnemy[enemyCount].Atk = 20;
 				g_pEnemy[enemyCount].Hp = 10;
 				break;
+			case WALKINGENEMY_HAS_KEY_4:
+				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
+				g_pEnemy[enemyCount].Speed = 3.0f;
+				g_pEnemy[enemyCount].firingInterval = 3 * 60;
+				g_pEnemy[enemyCount].Height = 118.0f;
+				g_pEnemy[enemyCount].Width = 68.0f;
+				g_pEnemy[enemyCount].Atk = 20;
+				g_pEnemy[enemyCount].Hp = 30;
+				break;
+
+			case WALKINGENEMY_HAS_KEY_5:
+				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
+				g_pEnemy[enemyCount].Speed = 3.0f;
+				g_pEnemy[enemyCount].firingInterval = 3 * 60;
+				g_pEnemy[enemyCount].Height = 118.0f;
+				g_pEnemy[enemyCount].Width = 68.0f;
+				g_pEnemy[enemyCount].Atk = 20;
+				g_pEnemy[enemyCount].Hp = 30;
+				break;
+			case WALKINGENEMY_HAS_KEY_6:
+				break;
 
 			case WALKINGENEMY_1:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 3*60;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
@@ -462,7 +517,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_2:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_2;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 5*60;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
@@ -472,7 +527,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_3:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_3;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
@@ -482,7 +537,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_4:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_4;
-				g_pEnemy[enemyCount].Speed = 7;
+				g_pEnemy[enemyCount].Speed = 7.0f;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -492,7 +547,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_5:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_5;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -502,7 +557,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case WALKINGENEMY_6:
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_6;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 4 * 60;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -512,7 +567,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY_HAS_KEY1://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY1;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -522,7 +577,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY_HAS_KEY2:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY2;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -532,7 +587,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY_HAS_KEY3://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY3;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -542,7 +597,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY1:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY1;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -552,7 +607,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY2:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY2;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 0.0f;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -562,7 +617,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY3://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY3;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;//?
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -572,7 +627,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY4:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY4;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -582,7 +637,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY5://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY5;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 200;//?
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
@@ -592,7 +647,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FIXEDBATTERY1:
 				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY1;
-				g_pEnemy[enemyCount].Speed = 0;
+				g_pEnemy[enemyCount].Speed = 0.0f;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 60.0f;
 				g_pEnemy[enemyCount].Width = 60.0f;
@@ -602,7 +657,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FIXEDBATTERY2:
 				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY2;
-				g_pEnemy[enemyCount].Speed = 0;
+				g_pEnemy[enemyCount].Speed = 0.0f;
 				g_pEnemy[enemyCount].firingInterval =  5*60;
 				g_pEnemy[enemyCount].Height = 60.0f;
 				g_pEnemy[enemyCount].Width = 60.0f;
@@ -612,7 +667,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case SWITCH_1:
 				g_pEnemy[enemyCount].enemyKind = SWITCH_1;
-				g_pEnemy[enemyCount].Speed = 0;
+				g_pEnemy[enemyCount].Speed = 0.0f;
 				g_pEnemy[enemyCount].firingInterval = 5 * 60;
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
@@ -622,7 +677,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case SWITCH_2:
 				g_pEnemy[enemyCount].enemyKind = SWITCH_2;
-				g_pEnemy[enemyCount].Speed = 0;
+				g_pEnemy[enemyCount].Speed = 0.0f;
 				g_pEnemy[enemyCount].firingInterval = 5 * 60;
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
@@ -632,7 +687,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case SWITCH_3:
 				g_pEnemy[enemyCount].enemyKind = SWITCH_3;
-				g_pEnemy[enemyCount].Speed = 0;
+				g_pEnemy[enemyCount].Speed = 0.0f;
 				g_pEnemy[enemyCount].firingInterval = 5 * 60;
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
