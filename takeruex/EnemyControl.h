@@ -18,9 +18,8 @@ struct Enemy {
 	bool beDead;//死んでいるか
 	bool beActive;//活動中か
 	bool beLeft;//左（右）どっち向いてるか
-	//float Height;//画像のｻｲｽﾞ高さ
-	//float Width;//画像サイズの幅
-
+	float Height;//画像のｻｲｽﾞ高さ
+	float Width;//画像サイズの幅
 
 };
 

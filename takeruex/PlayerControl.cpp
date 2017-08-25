@@ -65,7 +65,7 @@ void PlayerInit() {
 	
 	for (int i = 0; i < MaxY; i++){
 		for (int j = 0; j < MaxX; j++) {
-			if (*(map + (i*MaxX + j)) == START) {
+			if (*(map + (i*MaxX + j)) == STARTLOCATION) {
 
 				MapNumXY playerstartMapNum = { j,i };
 				PosSpecifyForMapchipNumber(&g_player.WorldPos, &playerstartMapNum);

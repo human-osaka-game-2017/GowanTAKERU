@@ -299,15 +299,16 @@ void ComeBackCheckPoint() {
 	MapNumXY mapXY[3];
 	for (int i = 0; i < maxY; i++) {
 		for (int j = 0; j < maxX; j++) {
-			if ((*(pGimmickData + (i*maxX + j)) == CHECKPOINT_2)) {
+			
+			if ((*(pGimmickData + (i*maxX + j)) == RESPAWN_POINT2)) {
 				mapXY[2] = { j,i };
 				PosSpecifyForMapchipNumber(&pos[2], &mapXY[2]);
 			}
-			if ((*(pGimmickData + (i*maxX + j)) == CHECKPOINT_1)) {
+			if ((*(pGimmickData + (i*maxX + j)) == RESPAWN_POINT1)) {
 				mapXY[1] = { j,i };
 				PosSpecifyForMapchipNumber(&pos[1], &mapXY[1]);
 			}
-			if ((*(pGimmickData + (i*maxX + j)) == START)) {
+			if ((*(pGimmickData + (i*maxX + j)) == STARTLOCATION)) {
 				mapXY[0] = { j,i };
 				PosSpecifyForMapchipNumber(&pos[0], &mapXY[0]);
 			}
