@@ -126,7 +126,7 @@ void EnemyControl() {
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET1);
 					}
 					if (g_pEnemy[i].enemyKind == WALKINGENEMY_1 || WALKINGENEMY_2||WALKINGENEMY_6||
-						FLYINGENEMY1||FLYINGENEMY4|| FIXEDBATTERY1) {
+						FLYINGENEMY1||FLYINGENEMY4|| FIXEDBATTERY1|| FLYINGENEMY2) {
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET2);
 					}
 					if (g_pEnemy[i].enemyKind == FIXEDBATTERY2) {
@@ -543,7 +543,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FLYINGENEMY2:
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY2;
-				g_pEnemy[enemyCount].Speed = 3;
+				g_pEnemy[enemyCount].Speed = 0;
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
