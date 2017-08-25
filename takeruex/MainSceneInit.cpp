@@ -13,7 +13,7 @@ void MainSceneInit() {
 	EnemyInit();
 	BulletInit();
 	Boss1Init();
-	//Boss2Init();
+	Boss2Init();
 	Boss3Init();
 	Boss4Init();
 	StageGimmickInit();

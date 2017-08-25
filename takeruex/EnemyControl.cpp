@@ -143,12 +143,12 @@ void EnemyControl() {
 						g_pEnemy[i].enemyKind == FLYINGENEMY1	||
 						g_pEnemy[i].enemyKind == FLYINGENEMY4	||
 						g_pEnemy[i].enemyKind == FIXEDBATTERY1	|| 
-						g_pEnemy[i].enemyKind == FLYINGENEMY2||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_1||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_2||
-						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY1||
-						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY2||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_4||
+						g_pEnemy[i].enemyKind == FLYINGENEMY2	||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_1	||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_2	||
+						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY1	||
+						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY2	||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_4	||
 						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_5) {
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET2);
 					}
@@ -501,7 +501,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Hp = 10;
 				break;
 			case WALKINGENEMY_HAS_KEY_4:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
+				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_4;
 				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 3 * 60;
 				g_pEnemy[enemyCount].Height = 118.0f;
@@ -511,7 +511,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				break;
 
 			case WALKINGENEMY_HAS_KEY_5:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
+				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_5;
 				g_pEnemy[enemyCount].Speed = 3.0f;
 				g_pEnemy[enemyCount].firingInterval = 3 * 60;
 				g_pEnemy[enemyCount].Height = 118.0f;

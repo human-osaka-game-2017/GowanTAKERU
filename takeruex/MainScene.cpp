@@ -75,7 +75,8 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		if (pPlayer->LifeReduced == 0) {
 			g_isScreenTransition = true;
 			nextscene = GAMEOVERSCENE;
-			//StopSound(SOUND02);
+			StopBGM(stage_ID, true);
+			StopBGM(stage_ID, false);
 		}
 
 		//stage‘JˆÚ

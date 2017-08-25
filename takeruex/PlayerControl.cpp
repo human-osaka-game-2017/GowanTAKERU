@@ -8,6 +8,7 @@
 #include"BulletControl.h"
 #include"MainHitManagement.h"
 #include"FileManagement.h"
+#include"DirectXSound.h"
 
 #define COMMON_ANIM_INTERVAL	6
 #define LAND__ANIM_INTERVAL		3
@@ -37,7 +38,8 @@ void PlayerInit() {
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
 	int* map = (int*)malloc(sizeof(int)*MaxX*MaxY);
-	
+	g_player.Hp = 10000;
+	g_player.LifeReduced = 3;
 	switch (stage_ID) {
 	case STAGE_1:
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
@@ -58,7 +60,7 @@ void PlayerInit() {
 		break;
 
 	case STAGE_5:
-		g_player.Hp = 100;
+		g_player.Hp = 10000;
 		g_player.LifeReduced = 3;
 		CSVLoad("CSV/mainscene/stage5_gimmick.csv", map, MaxY, MaxX);
 		break;
@@ -174,6 +176,7 @@ void SetPlayerMovement() {
 		if (Key[KEY_C] == KEY_PUSH) {
 			g_player.JumpPower = PLAYERJUMPPOWER;
 			g_player.Jumping = true;
+			PlayBackSound(MAINSCENE_SE_JUMP, false, 10);
 		}
 	}
 
@@ -250,11 +253,13 @@ void PlayerReflectMotion() {
 		if (Key[KEY_Z] == KEY_PUSH)
 		{
 			g_player.beDownSwing = true;
+			PlayBackSound(MAINSCENE_SE_SWING, false, 10);
 
 		}
 		if (Key[KEY_X] == KEY_PUSH) {
 
 			g_player.beUPSwing = true;
+			PlayBackSound(MAINSCENE_SE_SWING, false, 10);
 		}
 	}
 	Bullet* pFirstBullet = GetFirstBulletAddress();
@@ -279,6 +284,7 @@ void PlayerReflectMotion() {
 						pSearchBullet->wasReflect = true;
 						pSearchBullet->Rad = D3DXToRadian(180.0f);
 						pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+						PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 					}
 				}
 			}
@@ -303,10 +309,12 @@ void PlayerReflectMotion() {
 						if (g_player.beUPSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(150.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 						if (g_player.beDownSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(210.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 					}
 				}
@@ -331,10 +339,12 @@ void PlayerReflectMotion() {
 						if (g_player.beUPSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(120.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 						if (g_player.beDownSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(240.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 					}
 				}
@@ -359,6 +369,7 @@ void PlayerReflectMotion() {
 						pSearchBullet->wasReflect = true;
 						pSearchBullet->Rad = D3DXToRadian(0.0f);
 						pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+						PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 
 					}
 				}
@@ -383,10 +394,12 @@ void PlayerReflectMotion() {
 						if (g_player.beUPSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(30.f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 						if (g_player.beDownSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(-30.f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 					}
 				}
@@ -412,10 +425,12 @@ void PlayerReflectMotion() {
 						if (g_player.beUPSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(60.f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 						if (g_player.beDownSwing == true) {
 							pSearchBullet->Rad = D3DXToRadian(-60.f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 					}
 				}

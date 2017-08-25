@@ -42,12 +42,15 @@ void EnemyRender() {
 			case WALKINGENEMY_HAS_KEY_3:
 				TrimingVertex(DrawVertex, 0.0f, 0.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
 				break;
+
 			case WALKINGENEMY_4:
 				TrimingVertex(DrawVertex, 256.0f, 0.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
 				break;
 
 			case WALKINGENEMY_6:
-				TrimingVertex(DrawVertex, 0.0f, 128.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
+			case WALKINGENEMY_HAS_KEY_4:
+			case WALKINGENEMY_HAS_KEY_5:
+				TrimingVertex(DrawVertex, 128.0f, 0.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
 				break;
 
 			case FLYINGENEMY1://‹ó’†“G

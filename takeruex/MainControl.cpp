@@ -19,7 +19,7 @@ void MainControl() {
 	PlayerControl();
 	EnemyControl();
 	Boss1Control();
-	//Boss2Control();
+	Boss2Control();
 	Boss3Control();
 	Boss4Control();
 	BulletControl();

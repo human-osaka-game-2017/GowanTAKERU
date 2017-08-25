@@ -125,76 +125,76 @@ void StageGimmickManage() {
 	int gateflg = 0;
 
 	//敵の死んでいる鍵持ちの数を数える
-	//スイッチのフラグチェック
 	int enemyMax = GetEnemyMax();
 	for (int i = 0; i < enemyMax; i++) {
 
 		switch (pEnemy[i].enemyKind) {
-		case KEYNUM_SWITCH1:
+		case SWITCH_1:
 			if (pEnemy[i].Hp != SEITCHMAXHP) {
-				gateflg = gateflg | KEYNUM_SWITCH1_FLG;
+				gateKeyNumCnt[KEYNUM_SWITCH1]++;
 			}
 			break;
-		case KEYNUM_SWITCH2:
+		case SWITCH_2:
 			if (pEnemy[i].Hp != SEITCHMAXHP) {
-				gateflg = gateflg | KEYNUM_SWITCH2_FLG;
+				gateKeyNumCnt[KEYNUM_SWITCH2]++;
 			}
 			break;
-		case KEYNUM_SWITCH3:
+		case SWITCH_3:
 			if (pEnemy[i].Hp != SEITCHMAXHP) {
-				gateflg = gateflg | KEYNUM_SWITCH3_FLG;
+				gateKeyNumCnt[KEYNUM_SWITCH3]++;
 			}
 			break;
+		}
 
-		default:
-			if (pEnemy[i].beDead) {
-				switch (pEnemy[i].enemyKind)
-				{
-				case WALKINGENEMY_HAS_KEY_1:
-					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_1]++;
-					break;
+		if (pEnemy[i].beDead) {
+			switch (pEnemy[i].enemyKind)
+			{
+			case WALKINGENEMY_HAS_KEY_1:
+				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_1]++;
+				break;
 
-				case WALKINGENEMY_HAS_KEY_2:
-					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_2]++;
-					break;
+			case WALKINGENEMY_HAS_KEY_2:
+				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_2]++;
+				break;
 
-				case WALKINGENEMY_HAS_KEY_3:
-					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_3]++;
-					break;
+			case WALKINGENEMY_HAS_KEY_3:
+				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_3]++;
+				break;
 
-				case WALKINGENEMY_HAS_KEY_4:
-					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_4]++;
-					break;
+			case WALKINGENEMY_HAS_KEY_4:
+				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_4]++;
+				break;
 
-				case WALKINGENEMY_HAS_KEY_5:
-					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_5]++;
-					break;
+			case WALKINGENEMY_HAS_KEY_5:
+				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_5]++;
+				break;
 
-				case WALKINGENEMY_HAS_KEY_6:
-					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_6]++;
-					break;
+			case WALKINGENEMY_HAS_KEY_6:
+				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_6]++;
+				break;
 
-				case FLYINGENEMY_HAS_KEY1:
-					gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY1]++;
-					break;
+			case FLYINGENEMY_HAS_KEY1:
+				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY1]++;
+				break;
 
-				case FLYINGENEMY_HAS_KEY2:
-					gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY2]++;
-					break;
+			case FLYINGENEMY_HAS_KEY2:
+				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY2]++;
+				break;
 
-				case FLYINGENEMY_HAS_KEY3:
-					gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY3]++;
-					break;
+			case FLYINGENEMY_HAS_KEY3:
+				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY3]++;
+				break;
 
-				}
 			}
 		}
 	}
 
 	//それぞれの設定された鍵持ちの数と死んでいる鍵持ちの数が一緒か調べ、同じならフラグを立てる
+	//スイッチのフラグチェック
 	for (int i = 0; i < KEYNUM_KIND_MAX; i++) {
 
 		if (!(g_GateKeyNum[i] == 0)) {
+
 			if (gateKeyNumCnt[i] == g_GateKeyNum[i]) {
 				switch (i) {
 				case KEYNUM_WALKINGENEMY_HAS_KEY_1:
@@ -224,7 +224,15 @@ void StageGimmickManage() {
 				case KEYNUM_FLYINGENEMY_HAS_KEY3:
 					gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY3_FLG;
 					break;
-
+				case KEYNUM_SWITCH1:
+						gateflg = gateflg | KEYNUM_SWITCH1_FLG;
+					break;
+				case KEYNUM_SWITCH2:
+						gateflg = gateflg | KEYNUM_SWITCH2_FLG;
+					break;
+				case KEYNUM_SWITCH3:
+						gateflg = gateflg | KEYNUM_SWITCH3_FLG;
+					break;
 				}
 			}
 		}
