@@ -13,12 +13,13 @@ struct Enemy {
 	float MovementY;
 	int Atk;
 	int Hp;
-	int bulletFrameCount;//弾を撃つフラグを立てるためのフレームを図っている
-	int firingInterval;//発射感覚
+	float bulletFrameCount;//弾を撃つフラグを立てるためのフレームを図っている
+	float firingInterval;//発射感覚
 	bool beDead;//死んでいるか
 	bool beActive;//活動中か
 	bool beLeft;//左（右）どっち向いてるか
-	int size;
+	//float Height;//画像のｻｲｽﾞ高さ
+	//float Width;//画像サイズの幅
 
 
 };
