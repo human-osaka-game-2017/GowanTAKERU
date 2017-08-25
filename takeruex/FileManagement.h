@@ -29,7 +29,7 @@ void FreeTexture();
 
 int* GetMapData();
 
-void MainSceneSoundLoad(bool boss);
+//void MainSceneSoundLoad(bool boss);
 
 //mainsceneのテキスチャとマップの読み込み
 //Releseを行ってください

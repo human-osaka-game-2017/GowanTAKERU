@@ -1,5 +1,4 @@
 #include"MainScene.h"
-#include"StageSelect.h"
 #include"FileManagement.h"
 #include"MainRender.h"
 #include"MainControl.h"
@@ -35,6 +34,8 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		step = 2;
 	}
 
+	STAGE_ID stage_ID = GetStage_ID();
+
 	switch (step) {
 
 	case 0:
@@ -43,11 +44,10 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		if (Key[KEY_T] == KEY_ON) {
 			StageSelect(STAGE_5);
 		}
-
-		MainSceneLoad(GetStage_ID());
+		MainSceneLoad(stage_ID);
+		PlayBGM(stage_ID, false);
 		//MainSceneSoundLoad(false);
 		MainSceneInit();
-		//PlayBackSound(MAINSCENE_BGM01, true, 10);
 		step++;
 		break;
 
@@ -105,12 +105,78 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		FreeMapData();
 		ReleaseTexture(MAINSCENE_TEXMAX);
 		FreeTexture();
-		//StopSound(MAINSCENE_BGM01);
-		FreeBuffer();
+		StopBGM(stage_ID, CheckBossActiveBoss());
+		//FreeBuffer();
 		//ReleaseBuffer();
 		step=0;
 		break;
 	}
 
 	return nextscene;
+}
+
+void PlayBGM(STAGE_ID stage_ID, bool boss) {
+	if (!boss) {
+		switch (stage_ID) {
+		case STAGE_1:
+			PlayBackSound(MAINSCENE_STAGEBGM01, true, 10);
+			break;
+		case STAGE_2:
+			PlayBackSound(MAINSCENE_STAGEBGM02, true, 10);
+			break;
+		case STAGE_3:
+			PlayBackSound(MAINSCENE_STAGEBGM03, true, 10);
+			break;
+		case STAGE_4:
+			PlayBackSound(MAINSCENE_STAGEBGM04, true, 10);
+			break;
+		}
+	}
+	else {
+		switch (stage_ID) {
+		case STAGE_1:
+		case STAGE_3:
+			PlayBackSound(MAINSCENE_BOSSBGM01, true, 10);
+			break;
+		case STAGE_2:
+			PlayBackSound(MAINSCENE_BOSSBGM02, true, 10);
+			break;
+		case STAGE_4:
+			PlayBackSound(MAINSCENE_BOSSBGM03, true, 10);
+			break;
+		}
+	}
+}
+
+void StopBGM(STAGE_ID stage_ID, bool boss) {
+	if (!boss) {
+		switch (stage_ID) {
+		case STAGE_1:
+			StopSound(MAINSCENE_STAGEBGM01);
+			break;
+		case STAGE_2:
+			StopSound(MAINSCENE_STAGEBGM02);
+			break;
+		case STAGE_3:
+			StopSound(MAINSCENE_STAGEBGM03);
+			break;
+		case STAGE_4:
+			StopSound(MAINSCENE_STAGEBGM04);
+			break;
+		}
+	}
+	else {
+		switch (stage_ID) {
+		case STAGE_1:
+		case STAGE_3:
+			StopSound(MAINSCENE_BOSSBGM01);
+			break;
+		case STAGE_2:
+			StopSound(MAINSCENE_BOSSBGM02);
+			break;
+		case STAGE_4:
+			StopSound(MAINSCENE_BOSSBGM03);
+			break;
+		}
+	}
 }

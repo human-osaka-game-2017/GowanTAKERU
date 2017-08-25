@@ -2,10 +2,11 @@
 #include<dsound.h>
 
 IDirectSound8* g_pDS8;
-IDirectSoundBuffer8** g_pDSBuffer;
+//IDirectSoundBuffer8** g_pDSBuffer;
+IDirectSoundBuffer8* g_pDSBuffer[SOUND_MAX];
 
 void SetBuffer(int num) {
-	g_pDSBuffer = (IDirectSoundBuffer8**)malloc(sizeof(IDirectSoundBuffer8*) * num);
+	//g_pDSBuffer = (IDirectSoundBuffer8**)malloc(sizeof(IDirectSoundBuffer8*) * num);
 }
 
 void FreeBuffer() {
