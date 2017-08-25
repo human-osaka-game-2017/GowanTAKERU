@@ -114,7 +114,7 @@ void HitManage() {
 			if (pSearchBullet->wasReflect) {
 				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss2->WindowPos, BOSS2WIDTH, BOSS2HEIGHT)) {
 					pBoss2->Hp -= pSearchBullet->Atk;
-					pBoss2->hasDamage = true;
+					/*pBoss2->hasDamage = true;*/
 					if (pBoss2->Hp <= 0) {
 						pBoss2->isDead = true;
 						pBoss2->isActive = false;
