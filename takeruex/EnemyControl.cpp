@@ -153,6 +153,7 @@ void EnemyPursuit(int enemyNum) {
 	D3DXVECTOR2* basepoint = GetBasePoint();
 	switch (g_pEnemy[enemyNum].enemyKind) {
 	case WALKINGENEMY_1:
+	case WALKINGENEMY_6:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
 			g_pEnemy[enemyNum].beLeft = false;
 		}
@@ -204,19 +205,24 @@ void EnemyPursuit(int enemyNum) {
 		break;
 	case WALKINGENEMY_4://体当たり
 		static bool attack;
+		attack = false;
 		g_pEnemy[enemyNum].beLeft = false;
-		if (g_pEnemy[enemyNum].EnemyBasePoint.x >= g_pEnemy[enemyNum].EnemyBasePoint.x - 100) {//PCが範囲内に入ったらフラグおｎ
+		if (g_pEnemy[enemyNum].EnemyBasePoint.x-400 <= basepoint->x) {//PCが範囲内に入ったらフラグおｎ
 			attack = true;
 		}
-		if (g_pEnemy[enemyNum].EnemyBasePoint.x < g_pEnemy[enemyNum].EnemyBasePoint.x - 100){//範囲に入るまでOF
+		if (g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x - 400){//範囲に入るまでOF
 			 attack = false;
 		}
-		if (attack == true) {//フラグONならSPEED＋＋
-			g_pEnemy[enemyNum].MovementX = 7;
+		if (attack == true) {//フラグONならSPEED---
+			g_pEnemy[enemyNum].MovementX = -7;
 			g_pEnemy[enemyNum].MovementY = 0;
 		}
-		if (g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x-100) {//敵が移動上限超えたらフラグOF
+		if (g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x-400) {//敵が移動上限超えたらフラグOF
 			attack == false;
+		}
+		if (attack == false) {
+			g_pEnemy[enemyNum].MovementX = 0;
+			g_pEnemy[enemyNum].MovementY = 0;
 		}
 		break;
 	case WALKINGENEMY_5:
@@ -411,8 +417,8 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 10;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Atk = 20;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
 			case WALKINGENEMY_HAS_KEY_2:
@@ -421,11 +427,11 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].firingInterval = 200;
 				g_pEnemy[enemyCount].Height = 118.0f;
 				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
+				g_pEnemy[enemyCount].Atk = 30;
 				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_3:
+			case WALKINGENEMY_HAS_KEY_3://未定
 				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_3;
 				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
@@ -495,7 +501,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Hp = 20;
 				break;
 
-			case FLYINGENEMY_HAS_KEY1:
+			case FLYINGENEMY_HAS_KEY1://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY1;
 				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
@@ -512,10 +518,10 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 88.0f;
 				g_pEnemy[enemyCount].Width = 100.0f;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
-			case FLYINGENEMY_HAS_KEY3:
+			case FLYINGENEMY_HAS_KEY3://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY3;
 				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;
@@ -545,7 +551,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Hp = 10;
 				break;
 
-			case FLYINGENEMY3:
+			case FLYINGENEMY3://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY3;
 				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;//?
@@ -565,7 +571,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Hp = 20;
 				break;
 
-			case FLYINGENEMY5:
+			case FLYINGENEMY5://未定
 				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY5;
 				g_pEnemy[enemyCount].Speed = 3;
 				g_pEnemy[enemyCount].firingInterval = 200;//?
@@ -581,7 +587,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].firingInterval = 4*60;
 				g_pEnemy[enemyCount].Height = 60.0f;
 				g_pEnemy[enemyCount].Width = 60.0f;
-				g_pEnemy[enemyCount].Atk = 0;
+				g_pEnemy[enemyCount].Atk = 20;
 				g_pEnemy[enemyCount].Hp = 2147483647;
 				break;
 
@@ -591,7 +597,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].firingInterval =  5*60;
 				g_pEnemy[enemyCount].Height = 60.0f;
 				g_pEnemy[enemyCount].Width = 60.0f;
-				g_pEnemy[enemyCount].Atk = 0;
+				g_pEnemy[enemyCount].Atk = 20;
 				g_pEnemy[enemyCount].Hp = 2147483647;
 				break;
 
