@@ -12,7 +12,7 @@ void MoveManage() {
 	MoveBullet();
 	MoveEnemy();
 	MoveBoss1();
-	MoveBoss2();
+	//MoveBoss2();
 	MoveBoss3();
 	MoveBoss4();
 }

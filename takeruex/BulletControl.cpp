@@ -267,6 +267,7 @@ void DeleteALLBullet() {
 		if (pSearchBullet->next == NULL) {
 			//g_firstBullet‚Ímalloc‚¶‚á‚È‚¢‚©‚çŠJ•ú‚µ‚È‚­‚Ä‚¢‚¢
 			if (pSearchBullet == &g_firstBullet) {
+				int a = 0;
 				break;
 			}
 			free(pSearchBullet);

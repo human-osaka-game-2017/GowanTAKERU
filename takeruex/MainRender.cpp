@@ -31,7 +31,7 @@ void MainRender() {
 	MapRender();
 	EnemyRender();
 	Boss1Render();
-	Boss2Render();
+	//Boss2Render();
 	Boss3Render();
 	Boss4Render();
 	BulletRender();
