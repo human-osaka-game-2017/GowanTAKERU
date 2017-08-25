@@ -9,6 +9,7 @@
 #include"EnemyControl.h"
 #include"Boss1Control.h"
 #include"Boss3Control.h"
+#include"Boss2Control.h"
 #include"Boss4Control.h"
 #include"MainScene.h"
 
@@ -433,6 +434,8 @@ void ComeBackCheckPoint() {
 		PosSpecifyForMapchipNumber(basePoint, &mapXY[0]);
 		basePoint->y = 544;
 	}
+
+	basePoint->y = 544;
 	
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 	player->WindowPos.x = player->WorldPos.x - (basePoint->x - BasePoint0.x);
@@ -441,7 +444,9 @@ void ComeBackCheckPoint() {
 	EnemyInit();
 	BulletInit();
 	Boss1Init();
+	Boss2Init();
 	Boss3Init();
+	Boss4Init();
 	StageGimmickInit();
 
 	int* mapdata = GetMapData();

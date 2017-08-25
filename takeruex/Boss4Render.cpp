@@ -27,7 +27,9 @@ void Boss4Render() {
 
 		TrimingVertex(drawVertex, 768.0f, 512.0f, BOSS4WIDTH, BOSS4HEIGHT, ENEMYPNGSIZE, ENEMYPNGSIZE);
 
-		TurnVertex_tu(drawVertex);
+		if (!pBoss4->isLeft) {
+			TurnVertex_tu(drawVertex);
+		}
 
 		// テクスチャをステージに割り当てる
 		pD3Device->SetTexture(0, pTexture[ENEMY_TEX]);
