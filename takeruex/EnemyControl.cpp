@@ -122,7 +122,7 @@ void EnemyControl() {
 				EnemyPursuit(i);
 				g_pEnemy[i].bulletFrameCount++;
 				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー事に持っているは発射感覚になったら入る
-					BulletCreate(g_pEnemy[i].WorldPos,BULLET01);
+					BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET1);
 					g_pEnemy[i].bulletFrameCount = 0;
 				}
 			}

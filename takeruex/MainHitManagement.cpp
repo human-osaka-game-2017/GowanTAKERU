@@ -12,6 +12,7 @@
 #include"Boss1Control.h"
 #include"CommonControl.h"
 #include"Boss3Control.h"
+#include"Boss4Control.h"
 
 #include<Windows.h>
 #include<tchar.h>
@@ -27,6 +28,7 @@ void HitManage() {
 	Player* player = GetplayerData();
 	Boss1Data* pBoss1 = GetBoss1Data();
 	Boss3Data* pBoss3 = GetBoss3Data();
+	Boss4Data* pBoss4 = GetBoss4Data();
 	Bullet* pFirstBullet = GetFirstBulletAddress();
 	Enemy* enemy = GetEnemyData();
 	
@@ -66,6 +68,8 @@ void HitManage() {
 			PushOutMapFourPoint(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementY, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
 		}
 	}
+
+	//デバッグ用
 	KEYSTATE* Key = GetKey();
 	KeyCheck(&Key[KEY_P], DIK_P);
 	if (Key[KEY_P] == KEY_PUSH) {
@@ -76,10 +80,13 @@ void HitManage() {
 
 	//boss1とマップの押し出し処理
 	PushOutMapFourPoint(pBoss1->WolrdPos, &pBoss1->MovementX, &pBoss1->MovementY, BOSS1WIDTH, BOSS1HEIGHT);
-	float a = pBoss3->MovementY;
+
 	//boss3とマップの押し出し処理
-	PushOutMapFourPoint(pBoss3->WolrdPos, &pBoss3->MovementX, &pBoss3->MovementY, BOSS3PNGWIDTH, BOSS3PNGHEIGHT);
-	a = pBoss3->MovementY;
+	PushOutMapFourPoint(pBoss3->WolrdPos, &pBoss3->MovementX, &pBoss3->MovementY, BOSS3OBJWIDTH, BOSS3OBJHEIGHT);
+
+	//boss4とマップの押し出し処理
+	PushOutMapFourPoint(pBoss4->WolrdPos, &pBoss4->MovementX, &pBoss4->MovementY, BOSS4WIDTH, BOSS4HEIGHT);
+
 	//弾のマップとの反射処理
 	CollisionMapForBullet();
 
@@ -124,18 +131,33 @@ void HitManage() {
 					shield3.x = pBoss3->WolrdPos.x + 108;
 					shield3.y = pBoss3->WolrdPos.y - 23;
 				}
-				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &shield1, BOSS3SHIELD1WIDTH, BOSS3SHIELD1HEIGHT)||
-					SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &shield2, BOSS3SHIELD2WIDTH, BOSS3SHIELD2HEIGHT)||
-					SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &shield3, BOSS3SHIELD3WIDTH, BOSS3SHIELD3HEIGHT)
+				if (SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield1, BOSS3SHIELD1WIDTH, BOSS3SHIELD1HEIGHT)||
+					SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield2, BOSS3SHIELD2WIDTH, BOSS3SHIELD2HEIGHT)||
+					SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield3, BOSS3SHIELD3WIDTH, BOSS3SHIELD3HEIGHT)
 					) {
 					DeleteBullet(&pSearchBullet);
 					continue;
 				}
-				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &boss3, BOSS3WIDTH, BOSS3HEIGHT)) {
+				if (SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &boss3, BOSS3WIDTH, BOSS3HEIGHT)) {
 					pBoss3->Hp -= pSearchBullet->Atk;
 					if (pBoss3->Hp <= 0) {
 						pBoss3->isDead = true;
 						pBoss3->isActive = false;
+					}
+					DeleteBullet(&pSearchBullet);
+					continue;
+				}
+			}
+		}
+
+		//ボス4と弾のダメージ計算
+		if (pBoss4->isActive && !(pBoss4->isDead)) {
+			if (pSearchBullet->wasReflect) {
+				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss4->WindowPos, BOSS4WIDTH, BOSS4HEIGHT)) {
+					pBoss4->Hp -= pSearchBullet->Atk;
+					if (pBoss4->Hp <= 0) {
+						pBoss4->isDead = true;
+						pBoss4->isActive = false;
 					}
 					DeleteBullet(&pSearchBullet);
 					continue;
@@ -176,7 +198,7 @@ void HitManage() {
 
 						enemy[j].Hp -= pSearchBullet->Atk;
 
-						if (enemy[j].Hp < 0) {
+						if (enemy[j].Hp <= 0) {
 							enemy[j].beActive = false;
 							enemy[j].beDead = true;
 						}
@@ -235,10 +257,28 @@ void HitManage() {
 		else {
 			tmpPlayer.x += -15;
 		}
-		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss3->WolrdPos, BOSS3PNGWIDTH, BOSS3PNGHEIGHT)) {
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss3->WolrdPos, BOSS3OBJWIDTH, BOSS3OBJHEIGHT)) {
 
 			if (!player->beInvincible) {
 				player->Hp -= pBoss3->Atk;
+				player->beInvincible = true;
+			}
+		}
+	}
+
+	//boss4とプレイヤーの直接のあたり判定
+	if (pBoss4->isActive && !(pBoss4->isDead)) {
+		D3DXVECTOR2 tmpPlayer = player->WorldPos;
+		if (player->beLeft) {
+			tmpPlayer.x += 15;
+		}
+		else {
+			tmpPlayer.x += -15;
+		}
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss4->WolrdPos, BOSS4WIDTH, BOSS4HEIGHT)) {
+
+			if (!player->beInvincible) {
+				player->Hp -= pBoss1->Atk;
 				player->beInvincible = true;
 			}
 		}

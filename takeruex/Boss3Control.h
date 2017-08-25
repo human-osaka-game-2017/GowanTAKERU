@@ -3,11 +3,15 @@
 
 #include<d3dx9.h>
 
-#define BOSS3PNGWIDTH		240.0f
-#define BOSS3PNGHEIGHT		256.0f
+//シールドも含めた大きさ
+#define BOSS3OBJWIDTH		240.0f
+#define BOSS3OBJHEIGHT		256.0f
+
+//ボス３本体の大きさ
 #define BOSS3WIDTH			174.0f
-#define BOSS3HEIGHT		220.0f
+#define BOSS3HEIGHT			220.0f
 #define BOSS3MAXSPEED		0.5f
+
 #define BOSS3SHIELD1WIDTH	22.0f
 #define BOSS3SHIELD1HEIGHT	200.0f
 #define BOSS3SHIELD2WIDTH	24.0f

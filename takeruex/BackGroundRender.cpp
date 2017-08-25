@@ -17,7 +17,7 @@ void BackgroundRender() {
 	};
 
 		// テクスチャをステージに割り当てる
-		pD3Device->SetTexture(0, pTexture[BACKGROUND_TEX]);
+		pD3Device->SetTexture(0, pTexture[BACKGROUND1_TEX]);
 		// 描画
 		pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, Backgrond, sizeof(CUSTOMVERTEX));
 }

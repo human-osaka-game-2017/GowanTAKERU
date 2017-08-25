@@ -5,6 +5,7 @@
 #include"Boss1Control.h"
 #include"Boss2Control.h"
 #include"Boss3Control.h"
+#include"Boss4Control.h"
 
 void MoveManage() {
 	MovePlayer();
@@ -13,4 +14,5 @@ void MoveManage() {
 	MoveBoss1();
 	MoveBoss2();
 	MoveBoss3();
+	MoveBoss4();
 }

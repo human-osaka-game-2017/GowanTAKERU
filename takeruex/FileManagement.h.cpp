@@ -96,25 +96,66 @@ void TitleSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "Picture/TitleScene/titlebackground.png", &g_pTexture[TITLE_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/TitleScene/pushZkeylogo.png", &g_pTexture[TITLELOGO_TEX]);
 
-	CreateBufferForWave("Sound/SE_Start.wav", SOUND03);
+	//CreateBufferForWave("Sound/BGM_title.wav", SOUND03);
 }
 
+void MainSceneSoundLoad(bool boss) {
+
+	STAGE_ID srage_ID = GetStage_ID();
+
+	switch (srage_ID) {
+	STAGE_1:
+		if (boss) {
+			CreateBufferForWave("Sound/BGM_boss1.wav", MAINSCENE_BGM01);
+		}
+		else {
+			CreateBufferForWave("Sound/BGM_stage1.wav", MAINSCENE_BGM01);
+		}
+		break;
+	STAGE_2:
+		if (boss) {
+			CreateBufferForWave("Sound/BGM_boss2.wav", MAINSCENE_BGM01);
+		}
+		else {
+			CreateBufferForWave("Sound/BGM_stage2.wav", MAINSCENE_BGM01);
+		}
+		break;
+	STAGE_3:
+		if (boss) {
+			CreateBufferForWave("Sound/BGM_boss1.wav", MAINSCENE_BGM01);
+		}
+		else {
+			CreateBufferForWave("Sound/BGM_stage3.wav", MAINSCENE_BGM01);
+		}
+		break;
+	STAGE_4:
+		if (boss) {
+			CreateBufferForWave("Sound/BGM_boss4.wav", MAINSCENE_BGM01);
+		}
+		else {
+			CreateBufferForWave("Sound/BGM_stage4.wav", MAINSCENE_BGM01);
+		}
+		break;
+	}
+}
 void MainSceneLoad(STAGE_ID stage_ID) {
 
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 	g_pTexture=(LPDIRECT3DTEXTURE9*)malloc(sizeof(LPDIRECT3DTEXTURE9)*MAINSCENE_TEXMAX);
 
-	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/MapTip.png", &g_pTexture[MAP_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/background.png", &g_pTexture[BACKGROUND_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/bullet.png", &g_pTexture[BULLET_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/MapChip.png", &g_pTexture[MAP_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/background.png", &g_pTexture[BACKGROUND1_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/bullets.png", &g_pTexture[BULLET_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/player.png", &g_pTexture[PLAYER_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/enemy1.png", &g_pTexture[ENEMY01_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/enemys.png", &g_pTexture[ENEMY_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp0.png", &g_pTexture[HPUI_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp1.png", &g_pTexture[HPUIIN_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/boss.png", &g_pTexture[BOSS_TEX]);
 
-	CreateBufferForWave("Sound/SE_ShotBom1.wav", SOUND01);
-	CreateBufferForWave("Sound/BGM_Stage.wav", SOUND02);
+	//SetBuffer(MAINSCENE_SOUNDMAX);
+
+	//CreateBufferForWave("Sound/SE_attack.wav", MAINSCENE_SE_ATTACK);
+	//CreateBufferForWave("Sound/SE_jump.wav", MAINSCENE_SE_JUMP);
+	//CreateBufferForWave("Sound/SE_swing.wav", MAINSCENE_SE_SWING);
 
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
@@ -138,6 +179,9 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 		CSVLoad("CSV/mainscene/stage4_map.csv", g_mapData, MaxY, MaxX);
 		break;
 
+	case STAGE_5:
+		CSVLoad("CSV/mainscene/stage5_map.csv", g_mapData, MaxY, MaxX);
+		break;
 	}
 }
 
@@ -149,14 +193,18 @@ void GameOverSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "Picture/GameOverScene/gameoverlogo.png", &g_pTexture[GAMEOVERLOGO_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/GameOverScene/pushZkeylogo.png", &g_pTexture[GAMEOVERPUSH_Z_KEY_TEX]);
 
+	//CreateBufferForWave("Sound/BGM_gameover.wav", SOUND02);
+
 }
 
 void GameClearSceneLoad() {
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 	g_pTexture = (LPDIRECT3DTEXTURE9*)malloc(sizeof(LPDIRECT3DTEXTURE9)*GAMECLEAR_TEXMAX);
 
-	D3DXCreateTextureFromFile(pD3Device, "Picture/GameClearScene/gameclearroll.png", &g_pTexture[GAMECLEARROLL_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/GameClearScene/StaffRoll.png", &g_pTexture[GAMECLEARROLL_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/GameClearScene/pushZkeylogo.png", &g_pTexture[GAMECLEARPUSH_Z_KEY_TEX]);
+
+	//CreateBufferForWave("Sound/BGM_gameclear.wav", SOUND02);
 }
 
 void FreeMapData() {
@@ -202,6 +250,21 @@ STAGEXYMAX GetStageXYMAX(STAGE_ID stage_ID, X_OR_Y XOrY) {
 		}
 		else {
 			return g_MapNumMax[5];
+		}
+
+	case STAGE_4:
+		if (XOrY == X) {
+			return g_MapNumMax[6];
+		}
+		else {
+			return g_MapNumMax[7];
+		}
+	case STAGE_5:
+		if (XOrY == X) {
+			return g_MapNumMax[8];
+		}
+		else {
+			return g_MapNumMax[9];
 		}
 	}
 }

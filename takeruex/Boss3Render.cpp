@@ -12,22 +12,30 @@ void Boss3Render() {
 	Boss3Data* pBoss3 = GetBoss3Data();
 
 	CUSTOMVERTEX Boss3[] = {
-		{ -BOSS3PNGWIDTH / 2, -BOSS3PNGHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,BOSS3PNGHEIGHT / BOSSPNGSIZE },
-		{ BOSS3PNGWIDTH / 2, -BOSS3PNGHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS3PNGWIDTH / BOSSPNGSIZE,BOSS3PNGHEIGHT / BOSSPNGSIZE },
-		{ BOSS3PNGWIDTH / 2,  BOSS3PNGHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS3PNGWIDTH / BOSSPNGSIZE,BOSS3PNGHEIGHT / BOSSPNGSIZE*2 },
-		{ -BOSS3PNGWIDTH / 2,  BOSS3PNGHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,BOSS3PNGHEIGHT / BOSSPNGSIZE*2 }
+		{ -BOSS3OBJWIDTH / 2, -BOSS3OBJHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,BOSS3OBJHEIGHT / ENEMYPNGSIZE },
+		{ BOSS3OBJWIDTH / 2, -BOSS3OBJHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS3OBJWIDTH / ENEMYPNGSIZE,BOSS3OBJHEIGHT / ENEMYPNGSIZE },
+		{ BOSS3OBJWIDTH / 2,  BOSS3OBJHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS3OBJWIDTH / ENEMYPNGSIZE,BOSS3OBJHEIGHT / ENEMYPNGSIZE},
+		{ -BOSS3OBJWIDTH / 2,  BOSS3OBJHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,BOSS3OBJHEIGHT / ENEMYPNGSIZE }
 	};
 	if (pBoss3->isActive && !pBoss3->isDead) {
-		CUSTOMVERTEX drawVertex[4];
+		CUSTOMVERTEX drawBoss3Vertex[4];
+		CUSTOMVERTEX drawShieldVertex[4];
 		for (int j = 0; j < 4; j++) {
-			drawVertex[j] = Boss3[j];
-			drawVertex[j].x += pBoss3->WindowPos.x;
-			drawVertex[j].y += pBoss3->WindowPos.y;
+			drawBoss3Vertex[j] = Boss3[j];
+			drawShieldVertex[j] = Boss3[j];
+			drawBoss3Vertex[j].x += pBoss3->WindowPos.x;
+			drawShieldVertex[j].x += pBoss3->WindowPos.x;
+			drawBoss3Vertex[j].y += pBoss3->WindowPos.y;
+			drawShieldVertex[j].y += pBoss3->WindowPos.y;
 		}
 
+		//TrimingVertex(~~~~);
+
 		// テクスチャをステージに割り当てる
-		pD3Device->SetTexture(0, pTexture[BOSS_TEX]);
+		pD3Device->SetTexture(0, pTexture[ENEMY_TEX]);
 		// 描画
-		pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawVertex, sizeof(CUSTOMVERTEX));
+		pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawBoss3Vertex, sizeof(CUSTOMVERTEX));
+		// 描画
+		pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, drawShieldVertex, sizeof(CUSTOMVERTEX));
 	}
 }

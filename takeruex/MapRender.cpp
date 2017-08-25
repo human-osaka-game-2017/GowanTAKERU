@@ -63,7 +63,7 @@ void MapRender() {
 						switch (map[j + i*MaxX]) {
 
 						case FLOOR:
-								drawMapVertex[k].tv += 0.125 * 1;
+							drawMapVertex[k].tv += 0.125 * 1;
 							break;
 
 						case WALL:
@@ -81,8 +81,88 @@ void MapRender() {
 							drawMapVertex[k].tu += 0.125 * 3;
 							break;
 
+						case FLOOR2:
+							drawMapVertex[k].tv += 0.125 * 2;
+							break;
+
+						case WALL2:
+							drawMapVertex[k].tv += 0.125 * 2;
+							drawMapVertex[k].tu += 0.125;
+							break;
+
+						case BLOCK2:
+							drawMapVertex[k].tv += 0.125 * 2;
+							drawMapVertex[k].tu += 0.125 * 2;
+							break;
+
+						case CEILING2:
+							drawMapVertex[k].tv += 0.125 * 2;
+							drawMapVertex[k].tu += 0.125 * 3;
+							break;
+
+						case FLOOR3:
+							drawMapVertex[k].tv += 0.125 * 3;
+							break;
+
+						case WALL3:
+							drawMapVertex[k].tv += 0.125 * 3;
+							drawMapVertex[k].tu += 0.125;
+							break;
+
+						case BLOCK3:
+							drawMapVertex[k].tv += 0.125 * 3;
+							drawMapVertex[k].tu += 0.125 * 2;
+							break;
+
+						case CEILING3:
+							drawMapVertex[k].tv += 0.125 * 3;
+							drawMapVertex[k].tu += 0.125 * 3;
+							break;
+
+						case FLOOR4:
+							drawMapVertex[k].tv += 0.125 * 4;
+							break;
+
+						case WALL4:
+							drawMapVertex[k].tv += 0.125 * 4;
+							drawMapVertex[k].tu += 0.125;
+							break;
+
+						case BLOCK4:
+							drawMapVertex[k].tv += 0.125 * 4;
+							drawMapVertex[k].tu += 0.125 * 2;
+							break;
+
+						case CEILING4:
+							drawMapVertex[k].tv += 0.125 * 4;
+							drawMapVertex[k].tu += 0.125 * 3;
+							break;
+
 						case UPNEEDLE:
 							break;
+
+						case RIGHTNEEDLE:
+							drawMapVertex[k].tu += 0.125 * 1;
+							TurnVertex_tu(drawMapVertex);
+							break;
+
+						case LEFTNEEDLE:
+							drawMapVertex[k].tu += 0.125 * 1;
+							break;
+
+						case SHUTTER_1:
+						case SHUTTER_2:
+						case SHUTTER_3:
+						case SHUTTER_4:
+						case SHUTTER_5:
+						case SHUTTER_A:
+						case SHUTTER_B:
+						case SHUTTER_C:
+							drawMapVertex[k].tu += 0.125 * 4;
+							int a = 0;
+							break;
+
+
 						}
 					}
 

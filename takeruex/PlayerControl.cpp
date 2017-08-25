@@ -40,8 +40,8 @@ void PlayerInit() {
 	switch (stage_ID) {
 	case STAGE_1:
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
-		g_player.Hp = 10000;
-		g_player.LifeReduced = 1;
+		g_player.Hp = 100;
+		g_player.LifeReduced = 2;
 		break;
 
 	case STAGE_2:
@@ -54,6 +54,12 @@ void PlayerInit() {
 
 	case STAGE_4:
 		CSVLoad("CSV/mainscene/stage4_gimmick.csv", map, MaxY, MaxX);
+		break;
+
+	case STAGE_5:
+		g_player.Hp = 100;
+		g_player.LifeReduced = 2;
+		CSVLoad("CSV/mainscene/stage5_gimmick.csv", map, MaxY, MaxX);
 		break;
 	}
 	
@@ -196,7 +202,7 @@ void MovePlayer() {
 	if (g_player.WindowPos.x < 300 && g_player.beLeft) {
 		g_BasePoint.x += g_player.MovementX;
 	}
-	else if(700 < g_player.WindowPos.x && !g_player.beLeft) {
+	else if(650 < g_player.WindowPos.x && !g_player.beLeft) {
 		g_BasePoint.x += g_player.MovementX;
 	}
 	else {
@@ -262,8 +268,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT 
-						&& pSearchBullet->BulletKind ==POWERBULLET) {
+					if (pSearchBullet->BulletKind == NONREFLECTTARGET1 
+						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -284,8 +290,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT
-						&& pSearchBullet->BulletKind == POWERBULLET) {
+					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -313,8 +319,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2)) 
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT 
-						&& pSearchBullet->BulletKind == POWERBULLET) {
+					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -343,8 +349,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT 
-						&& pSearchBullet->BulletKind == POWERBULLET) {
+					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -365,8 +371,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2))
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT 
-						&& pSearchBullet->BulletKind == POWERBULLET) {
+					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}
@@ -393,8 +399,8 @@ void PlayerReflectMotion() {
 					pSearchBullet->WindowPos.y,
 					pSearchBullet->Size / 2)) 
 				{
-					if (pSearchBullet->BulletKind == NONREFLECT 
-						&& pSearchBullet->BulletKind == POWERBULLET) {
+					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
 						DeleteBullet(&pSearchBullet);
 						continue;
 					}

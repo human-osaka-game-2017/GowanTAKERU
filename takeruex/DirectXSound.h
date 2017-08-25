@@ -3,11 +3,20 @@
 
 #include<Windows.h>
 
-enum SOUND_ID { SOUND01,SOUND02, SOUND03, SOUNDMAX };
+enum MAINSCENESOUND_ID { MAINSCENE_BGM01, MAINSCENE_SE_ATTACK, MAINSCENE_SE_JUMP, MAINSCENE_SE_SWING, MAINSCENE_SOUNDMAX };
+enum TITLESCENESOUND_ID { TITLESCENE_BGM01, TITLESCENE_SOUNDMAX };
+enum GAMECLEARSCENESOUND_ID { GAMECLEAR_BGM01, GAMECLEAR_SOUNDMAX };
+enum GAMEOVERSCENESOUND_ID { GAMEOVERSCENE_BGM01, GAMEOVER_SOUNDMAX };
 
 //Directsoundの初期化を行います
 //第一引数 ウィンドウのハンドル
 void DirectXSoundInit(HWND hWnd);
+
+//bufferを動的に確保します
+void SetBuffer(int num);
+
+//動的に確保した物の開放
+void FreeBuffer();
 
 //バッファをwaveファイルから作成します。バッファはグローバルです。
 //第一引数 waveファイルへのパス
@@ -25,9 +34,10 @@ void PlayBackSound(int soundID, bool loop, LONG volume);
 void StopSound(int soundID);
 
 //バッファのリリース
-void ReleaseBuffer();
+void ReleaseBuffer(int soundMax);
 
 //サウンドデバイスのリリース
 void ReleaseSoundDevice();
+
 #endif
 

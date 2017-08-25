@@ -2,7 +2,15 @@
 #include<dsound.h>
 
 IDirectSound8* g_pDS8;
-IDirectSoundBuffer8* g_pDSBuffer[SOUNDMAX];
+IDirectSoundBuffer8** g_pDSBuffer;
+
+void SetBuffer(int num) {
+	g_pDSBuffer = (IDirectSoundBuffer8**)malloc(sizeof(IDirectSoundBuffer8*) * num);
+}
+
+void FreeBuffer() {
+	free(*g_pDSBuffer);
+}
 
 void DirectXSoundInit(HWND hWnd) {
 
@@ -134,8 +142,8 @@ void StopSound(int soundID) {
 //	g_pDSBuffer[soundID]->
 //}
 
-void ReleaseBuffer() {
-	for (int i = 0; i < SOUNDMAX; i++) {
+void ReleaseBuffer(int soundMax) {
+	for (int i = 0; i < soundMax; i++) {
 		if (g_pDSBuffer[i] != NULL) {
 			g_pDSBuffer[i]->Release();
 			g_pDSBuffer[i] = NULL;

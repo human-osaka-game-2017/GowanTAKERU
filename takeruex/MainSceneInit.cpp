@@ -6,6 +6,7 @@
 #include"StageGimmick.h"
 #include"Boss2Control.h"
 #include"Boss3Control.h"
+#include"Boss4Control.h"
 
 void MainSceneInit() {
 	PlayerInit();
@@ -14,5 +15,6 @@ void MainSceneInit() {
 	Boss1Init();
 	Boss2Init();
 	Boss3Init();
+	Boss4Init();
 	StageGimmickInit();
 }

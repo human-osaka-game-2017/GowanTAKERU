@@ -10,6 +10,7 @@
 #include"Boss1Control.h"
 #include"Boss2Control.h"
 #include"Boss3Control.h"
+#include"Boss4Control.h"
 
 #include<d3dx9.h>
 
@@ -20,26 +21,11 @@ void MainControl() {
 	Boss1Control();
 	Boss2Control();
 	Boss3Control();
+	Boss4Control();
 	BulletControl();
 	HitManage();
 	StageGimmickManage();
 	MoveManage();
-
-	//player‚ÌŽ€–S”»’è
-	Player* player = GetplayerData();
-	BlackOutData* blackOutData = GetBlackOutData();
-
-	if (player->Hp <= 0) {
-
-		player->Hp = 100;
-		player->LifeReduced--;
-
-		blackOutData->BlackOutflg = true;
-	}
-
-	if (blackOutData->BlackOutNextState==BLACKOUT) {
-		ComeBackCheckPoint();
-	}
 	
 }
 

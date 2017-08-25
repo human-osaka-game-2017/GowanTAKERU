@@ -11,6 +11,7 @@
 #include"Boss1Render.h"
 #include"Boss2Render.h"
 #include"Boss3Render.h"
+#include"Boss4Render.h"
 
 void MainRender() {
 
@@ -32,6 +33,7 @@ void MainRender() {
 	Boss1Render();
 	Boss2Render();
 	Boss3Render();
+	Boss4Render();
 	BulletRender();
 	PlayerRender();
 	UIRender();
@@ -56,5 +58,20 @@ void TurnVertex_tu(CUSTOMVERTEX* vertex) {
 	tmpVertex.tu = vertex[3].tu;
 	vertex[3].tu = vertex[2].tu;
 	vertex[2].tu = tmpVertex.tu;
+
+}
+
+void TrimingVertex(CUSTOMVERTEX* vertex, float leftTopTu, float leftTopTv, float width, float height,float pngWidth,float pngHeight) {
+	vertex[0].tu = leftTopTu / pngWidth;
+	vertex[0].tv = leftTopTv / pngHeight;
+
+	vertex[1].tu = (leftTopTu + width) / pngWidth;
+	vertex[1].tv = leftTopTv / pngHeight;
+
+	vertex[2].tu = (leftTopTu + width) / pngWidth;
+	vertex[2].tv = (leftTopTv + height) / pngHeight;
+
+	vertex[3].tu = leftTopTu / pngWidth;
+	vertex[3].tv = (leftTopTv + height) / pngHeight;
 
 }

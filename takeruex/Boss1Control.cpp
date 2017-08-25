@@ -46,6 +46,22 @@ void Boss1Init() {
 			}
 		}
 		break;
+
+	case STAGE_5:
+
+		CSVLoad("CSV/mainscene/stage5_gimmick.csv", gimmickData, MaxY, MaxX);//CSVŒÄ‚Ño‚µ
+
+		for (int i = 0; i < MaxY; i++) {
+			for (int j = 0; j < MaxX; j++) {
+				if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
+					g_Boss1.isExistence = true;
+					g_Boss1.WolrdPos.x = TIPSIZE*j;
+					g_Boss1.WolrdPos.y = TIPSIZE*i;
+					goto BREAK;
+				}
+			}
+		}
+		break;
 	}
 
 	
@@ -121,7 +137,7 @@ void Boss1Control() {
 			static int LARIATMiddleFrcnt = -1;
 			switch (g_Boss1.Boss1State) {
 			case NORMALSHOT:
-				BulletCreate(g_Boss1.WolrdPos, HOMING);
+				BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
 				g_Boss1.saveActionCntForDUALSHOT++;
 				g_Boss1.saveActionCntForNORMALSHOT = 0;
 				g_Boss1.saveShotFrmcnt = 0;
@@ -131,11 +147,11 @@ void Boss1Control() {
 
 			case DUALSHOT:
 				if (DUALSHOTMiddleFrcnt == 0) {
-					BulletCreate(g_Boss1.WolrdPos, BULLET01);
+					BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
 				}
 				
 				if (DUALSHOTMiddleFrcnt == DUALSHOTINTERVALS) {
-					BulletCreate(g_Boss1.WolrdPos, BULLET01);
+					BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
 					g_Boss1.saveActionCntForDUALSHOT = 0;
 					g_Boss1.saveActionCntForNORMALSHOT++;
 					g_Boss1.saveDUALSHOTActionCntForLARIAT++;

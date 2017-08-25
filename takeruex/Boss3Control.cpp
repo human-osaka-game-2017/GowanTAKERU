@@ -38,6 +38,22 @@ void Boss3Init() {
 			}
 		}
 		break;
+
+	case STAGE_5:
+
+		CSVLoad("CSV/mainscene/stage5_gimmick.csv", gimmickData, MaxY, MaxX);//CSVŒÄ‚Ño‚µ
+
+		for (int i = 0; i < MaxY; i++) {
+			for (int j = 0; j < MaxX; j++) {
+				if (gimmickData[j + i*MaxX] == BOSS_STAGE3) {
+					g_Boss3.isExistence = true;
+					g_Boss3.WolrdPos.x = TIPSIZE*j;
+					g_Boss3.WolrdPos.y = TIPSIZE*i;
+					goto BREAK;
+				}
+			}
+		}
+		break;
 	}
 
 BREAK:
@@ -81,11 +97,11 @@ void Boss3Control() {
 		if (g_Boss3.isActive) {
 			if (!(g_Frcnt % 180)) {
 				if (g_Frcnt == 900) {
-					BulletCreate(g_Boss3.WolrdPos, POWERBULLET);
+					BulletCreate(g_Boss3.WolrdPos, NONREFLECTTARGET2);
 					g_Frcnt = 0;
 				}
 				else {
-					BulletCreate(g_Boss3.WolrdPos, BULLET01);
+					BulletCreate(g_Boss3.WolrdPos, BULLETTARGET3);
 				}
 			}
 

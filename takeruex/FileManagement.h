@@ -29,6 +29,8 @@ void FreeTexture();
 
 int* GetMapData();
 
+void MainSceneSoundLoad(bool boss);
+
 //mainsceneのテキスチャとマップの読み込み
 //Releseを行ってください
 void MainSceneLoad(STAGE_ID stage_ID);

@@ -29,7 +29,17 @@ void BulletRender() {
 			if (!pSearchBullet->wasReflect) {
 				switch (pSearchBullet->BulletKind) {
 
-				case BULLET01:
+				case BULLETNORMAL1:
+				case BULLETNORMAL2:
+				case BULLETNORMAL3:
+				case BULLETNORMAL4:
+				case BULLETNORMAL5:
+				case BULLETTARGET1:
+				case BULLETTARGET2:
+				case BULLETTARGET3:
+				case BULLETTARGET4:
+				case BULLETTARGET5:
+				case BULLETTARGET6:
 					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE;
 					break;
 
@@ -37,17 +47,16 @@ void BulletRender() {
 					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE * 3;
 					break;
 
-				case NONREFLECT:
+				case NONREFLECTTARGET1:
 					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE * 2;
 					break;
 
-				case POWERBULLET:
-					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE * 4;
+				case NONREFLECTTARGET2:
+					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE * 3;
 					DrawVertex[j].tv += pSearchBullet->Size / BULLETPNGSIZE;
 					break;
 				}
 			}
-
 		}
 			// テクスチャをステージに割り当てる
 			pD3Device->SetTexture(0, pTexture[BULLET_TEX]);

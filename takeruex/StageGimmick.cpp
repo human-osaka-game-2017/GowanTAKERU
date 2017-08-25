@@ -9,6 +9,7 @@
 #include"EnemyControl.h"
 #include"Boss1Control.h"
 #include"Boss3Control.h"
+#include"Boss4Control.h"
 
 #define KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG	0x0001
 #define KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG	0x0002
@@ -17,6 +18,7 @@
 #define KEYNUM_FLYINGENEMY_HAS_KEY2_FLG		0x0010
 #define KEYNUM_FLYINGENEMY_HAS_KEY3_FLG		0x0020
 
+//何度も行わないためのフラグ
 static bool g_BossGateflg = false;
 
 //プロトタイプ宣言
@@ -160,27 +162,18 @@ void StageGimmickManage() {
 	//boss用シャッターの処理
 	Boss1Data* pBoss1 = GetBoss1Data();
 	Boss3Data* pBoss3 = GetBoss3Data();
+	Boss4Data* pBoss4 = GetBoss4Data();
 
 	bool bossActiveflg = false;
-	STAGE_ID stage_ID = GetStage_ID();
-	int a = 0;
-	switch (stage_ID) {
-	case STAGE_1:
+	if (pBoss1->isExistence && pBoss1->isActive) {
 		bossActiveflg = pBoss1->isActive;
-		break;
-
-	case STAGE_2:
-		a = 110;
-		break;
-
-	case STAGE_3:
-		bossActiveflg = pBoss3->isActive;
-		break;
-
-	case STAGE_4:
-		break;
 	}
-
+	if (pBoss3->isExistence && pBoss3->isActive) {
+		bossActiveflg = pBoss3->isActive;
+	}
+	if (pBoss4->isExistence && pBoss4->isActive) {
+		bossActiveflg = pBoss4->isActive;
+	}
 
 	if (bossActiveflg && !g_BossGateflg) {
 		CloseGate(BOSS_SHUTTER, WALL);
@@ -212,6 +205,10 @@ void CloseGate(MapKind beforeMapKind, MapKind afterMapKind) {
 
 	case STAGE_4:
 		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_5:
+		CSVLoad("CSV/mainscene/stage5_gimmick.csv", pGimmickData, maxY, maxX);
 		break;
 	}
 
@@ -249,6 +246,10 @@ void OpenGate(MapKind mapKind) {
 
 	case STAGE_4:
 		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
+
+	case STAGE_5:
+		CSVLoad("CSV/mainscene/stage5_gimmick.csv", pGimmickData, maxY, maxX);
 		break;
 	}
 
@@ -288,6 +289,10 @@ void ComeBackCheckPoint() {
 	case STAGE_4:
 		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
 		break;
+
+	case STAGE_5:
+		CSVLoad("CSV/mainscene/stage5_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
 	}
 
 	D3DXVECTOR2 pos[3];
@@ -326,6 +331,7 @@ void ComeBackCheckPoint() {
 		player->WorldPos = pos[0];
 		mapXY[0].NumY -= 5;
 		PosSpecifyForMapchipNumber(basePoint, &mapXY[0]);
+		basePoint->y = 544;
 	}
 	
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
@@ -334,7 +340,30 @@ void ComeBackCheckPoint() {
 
 	EnemyInit();
 	BulletInit();
+	Boss1Init();
+	Boss3Init();
+	StageGimmickInit();
 
 	int* mapdata = GetMapData();
-	CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, maxY, maxX);
+	switch (stage_ID) {
+	case STAGE_1:
+		CSVLoad("CSV/mainscene/stage1_map.csv", mapdata, maxY, maxX);
+		break;
+
+	case STAGE_2:
+		CSVLoad("CSV/mainscene/stage2_map.csv", mapdata, maxY, maxX);
+		break;
+
+	case STAGE_3:
+		CSVLoad("CSV/mainscene/stage3_map.csv", mapdata, maxY, maxX);
+		break;
+
+	case STAGE_4:
+		CSVLoad("CSV/mainscene/stage4_map.csv", mapdata, maxY, maxX);
+		break;
+
+	case STAGE_5:
+		CSVLoad("CSV/mainscene/stage5_map.csv", mapdata, maxY, maxX);
+		break;
+	}
 }

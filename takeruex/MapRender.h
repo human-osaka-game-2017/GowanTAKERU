@@ -8,7 +8,7 @@
 #define RENDERSTAGE1MAPCHIPNUM_WIDTH 44
 
 //マップチップのサイズです
-#define TIPSIZE 32 
+#define TIPSIZE 32.0f
 
 enum MapKind {  
 	NOTHING, 
@@ -59,6 +59,18 @@ enum MapKind {
 	DUMMY2,//予備隠し用
 	RESPAWN_POINT1,//リスポーン地点
 	RESPAWN_POINT2,
+	FLOOR2 = 61,
+	WALL2,
+	BLOCK2,
+	CEILING2,//天井 
+	FLOOR3,
+	WALL3,
+	BLOCK3,
+	CEILING3,//天井 
+	FLOOR4,
+	WALL4,
+	BLOCK4,
+	CEILING4,//天井 
 	SHUTTER_4 = 91,
 	SHUTTER_5,
 

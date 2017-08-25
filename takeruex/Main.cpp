@@ -6,6 +6,8 @@
 #include"FileManagement.h"
 #include"MainRender.h"
 #include"TitleRender.h"
+#include"GameClearRender.h"
+#include"GameOverRender.h"
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
@@ -100,14 +102,38 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	switch (scene_ID) {
 	case MAINSCENE:
 		num = MAINSCENE_TEXMAX;
+		break;
 	case TITLESCENE:
 		num = TITLESCENE_TEXMAX;
+		break;
+	case GAMECLEARSCENE:
+		num = GAMECLEAR_TEXMAX;
+		break;
+	case GAMEOVERSCENE:
+		num = GAMECLEAR_TEXMAX;
+		break;
 	}
 	ReleaseTexture(num);
 	FreeTexture();
-	ReleaseBuffer();
-	ReleaseSoundDevice();
 	ReleaseBlackOutTexture();
+
+	//switch (scene_ID) {
+	//case MAINSCENE:
+	//	num = MAINSCENE_SOUNDMAX;
+	//	break;
+	//case TITLESCENE:
+	//	num = TITLESCENE_SOUNDMAX;
+	//	break;
+	//case GAMECLEARSCENE:
+	//	num = GAMECLEAR_SOUNDMAX;
+	//	break;
+	//case GAMEOVERSCENE:
+	//	num = GAMECLEAR_SOUNDMAX;
+	//	break;
+	//}
+	//ReleaseBuffer(num);
+
+	ReleaseSoundDevice();
 	FreeDxInput();
 	FreeDxGraphics();
 
