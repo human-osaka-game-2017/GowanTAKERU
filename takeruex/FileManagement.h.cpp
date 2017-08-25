@@ -150,7 +150,9 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/enemys.png", &g_pTexture[ENEMY_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp0.png", &g_pTexture[HPUI_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/hp1.png", &g_pTexture[HPUIIN_TEX]);
-
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/retryicon.png", &g_pTexture[RETRYICON_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/fonts.png", &g_pTexture[FONT_TEX]);
+	
 	//SetBuffer(MAINSCENE_SOUNDMAX);
 
 	//CreateBufferForWave("Sound/SE_attack.wav", MAINSCENE_SE_ATTACK);
