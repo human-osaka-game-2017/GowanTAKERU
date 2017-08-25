@@ -99,10 +99,13 @@ void Boss2Control() {
 		}
 		//メイン動作
 		if (Boss2FrameCount > 120) {
-			if (g_Boss2.hasDamage == true) {
+			if (g_Boss2.hasDamage == true) {//メイン動作の枝
+				static bool BranchCount= false;
 				//g_Boss2.BranchPoint.x = g_Boss2.WorldPos.x;
 				//g_Boss2.BranchPoint.y = g_Boss2.WorldPos.y;
 			}
+
+			//メイン動作の本
 			if (g_Boss2.hasDamage == false) {
 				D3DXVECTOR2 LeftTop = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };
 				D3DXVECTOR2 RightTop = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) };

@@ -143,7 +143,13 @@ void EnemyControl() {
 						g_pEnemy[i].enemyKind == FLYINGENEMY1	||
 						g_pEnemy[i].enemyKind == FLYINGENEMY4	||
 						g_pEnemy[i].enemyKind == FIXEDBATTERY1	|| 
-						g_pEnemy[i].enemyKind == FLYINGENEMY2) {
+						g_pEnemy[i].enemyKind == FLYINGENEMY2||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_1||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_2||
+						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY1||
+						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY2||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_4||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_5) {
 						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET2);
 					}
 					if (g_pEnemy[i].enemyKind == FIXEDBATTERY2) {
