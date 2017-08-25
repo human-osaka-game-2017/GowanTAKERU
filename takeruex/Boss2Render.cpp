@@ -18,6 +18,7 @@ void Boss2Render() {
 	};
 	if (pBoss2->isActive && !pBoss2->isDead) {
 		CUSTOMVERTEX drawVertex[4];
+		
 		for (int j = 0; j < 4; j++) {
 			drawVertex[j] = boss2[j];
 			drawVertex[j].x += pBoss2->WindowPos.x;
