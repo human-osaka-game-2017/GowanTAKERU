@@ -43,6 +43,7 @@ void CountEnemy(int maxX,int maxY,int* pGimmickData) {
 			case WALKINGENEMY_3:
 			case WALKINGENEMY_4:
 			case WALKINGENEMY_5:
+			case WALKINGENEMY_6:
 			case WALKINGENEMY_HAS_KEY_1:
 			case WALKINGENEMY_HAS_KEY_2:
 			case WALKINGENEMY_HAS_KEY_3:
@@ -56,6 +57,9 @@ void CountEnemy(int maxX,int maxY,int* pGimmickData) {
 			case FLYINGENEMY_HAS_KEY3:
 			case FIXEDBATTERY1:
 			case FIXEDBATTERY2:
+			case SWITCH_1:
+			case SWITCH_2:
+			case SWITCH_3:
 				g_EnemyMaxCount++;
 				break;
 			}
@@ -86,6 +90,10 @@ void EnemyInit() {
 	case STAGE_4:
 		CSVLoad("CSV/mainscene/stage4_gimmick.csv", pGimmickData, maxY, maxX);
 		break;
+
+	case STAGE_5:
+		CSVLoad("CSV/mainscene/stage5_gimmick.csv", pGimmickData, maxY, maxX);
+		break;
 	}
 
 	CountEnemy(maxX, maxY, pGimmickData);
@@ -94,6 +102,7 @@ void EnemyInit() {
 	g_pEnemy = (Enemy*)malloc(sizeof(Enemy)*g_EnemyMaxCount);
 
 	SetEnemyData(maxX, maxY, pGimmickData);
+
 	free(pGimmickData);
 }
 
@@ -588,7 +597,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 60.0f;
 				g_pEnemy[enemyCount].Width = 60.0f;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 2147483647;
+				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
 				break;
 
 			case FIXEDBATTERY2:
@@ -598,7 +607,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 60.0f;
 				g_pEnemy[enemyCount].Width = 60.0f;
 				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 2147483647;
+				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
 				break;
 
 			case SWITCH_1:
@@ -608,7 +617,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
 				g_pEnemy[enemyCount].Atk = 0;
-				g_pEnemy[enemyCount].Hp = 2147483647;
+				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
 				break;
 
 			case SWITCH_2:
@@ -618,7 +627,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
 				g_pEnemy[enemyCount].Atk = 0;
-				g_pEnemy[enemyCount].Hp = 2147483647;
+				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
 				break;
 
 			case SWITCH_3:
@@ -628,7 +637,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
 				g_pEnemy[enemyCount].Atk = 0;
-				g_pEnemy[enemyCount].Hp = 2147483647;
+				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
 				break;
 			}
 

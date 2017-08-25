@@ -2,8 +2,7 @@
 #include"FileManagement.h"
 #include<stdio.h>
 
-STAGE_ID g_Stage_ID = STAGE_1;
-
+STAGE_ID g_Stage_ID = STAGE_3;
 
 STAGE_ID GetStage_ID() {
 	return g_Stage_ID;

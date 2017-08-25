@@ -3,6 +3,8 @@
 #include<d3dx9.h> 
 #define ENEMYGRAVITY 3//エネミーにかかる重力
 
+#define SEITCHMAXHP 2147483647
+
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;

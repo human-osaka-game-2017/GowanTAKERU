@@ -29,7 +29,13 @@ void Boss3Render() {
 			drawShieldVertex[j].y += pBoss3->WindowPos.y;
 		}
 
-		//TrimingVertex(~~~~);
+		TrimingVertex(drawBoss3Vertex,512.0f,512.0f, BOSS3OBJWIDTH, BOSS3OBJHEIGHT, ENEMYPNGSIZE, ENEMYPNGSIZE);
+		TrimingVertex(drawShieldVertex, 512.0f, 768.0f, BOSS3OBJWIDTH, BOSS3OBJHEIGHT, ENEMYPNGSIZE, ENEMYPNGSIZE);
+
+		if (!pBoss3->isLeft) {
+			TurnVertex_tu(drawBoss3Vertex);
+			TurnVertex_tu(drawShieldVertex);
+		}
 
 		// テクスチャをステージに割り当てる
 		pD3Device->SetTexture(0, pTexture[ENEMY_TEX]);

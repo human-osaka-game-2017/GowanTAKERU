@@ -44,6 +44,8 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		if (Key[KEY_T] == KEY_ON) {
 			StageSelect(STAGE_5);
 		}
+
+		stage_ID = GetStage_ID();
 		MainSceneLoad(stage_ID);
 		PlayBGM(stage_ID, false);
 		//MainSceneSoundLoad(false);
@@ -76,6 +78,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 
 		//stage‘JˆÚ
 		if (pBoss1->isExistence&&pBoss1->isDead) {
+			StopBGM(stage_ID, true);
 			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
@@ -85,15 +88,17 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		}
 
 		if (pBoss3->isExistence&&pBoss3->isDead) {
+			StopBGM(stage_ID, true);
 			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
-			StageSelect(STAGE_4);
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
 				step++;
+				StageSelect(STAGE_4);
 			}
 		}
 
 		if (pBoss4->isDead&&pBoss4->isExistence) {
+			StopBGM(stage_ID, true);
 			g_isScreenTransition = true;
 			blackOutData->BlackOutflg = true;
 			nextscene = GAMECLEARSCENE;
@@ -105,7 +110,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		FreeMapData();
 		ReleaseTexture(MAINSCENE_TEXMAX);
 		FreeTexture();
-		StopBGM(stage_ID, CheckBossActiveBoss());
+		
 		//FreeBuffer();
 		//ReleaseBuffer();
 		step=0;

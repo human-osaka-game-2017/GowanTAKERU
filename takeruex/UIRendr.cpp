@@ -84,7 +84,7 @@ void UIRender()
 		trimPosY = 144.0f * 5;
 	}
 	else {
-		trimPosX = 108.0f * (player->LifeReduced -1);
+		trimPosX = 108.0f * (player->LifeReduced-2);
 		trimPosY = 144.0f * 4;
 	}
 

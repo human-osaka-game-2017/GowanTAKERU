@@ -18,6 +18,12 @@
 #define KEYNUM_FLYINGENEMY_HAS_KEY1_FLG		0x0008
 #define KEYNUM_FLYINGENEMY_HAS_KEY2_FLG		0x0010
 #define KEYNUM_FLYINGENEMY_HAS_KEY3_FLG		0x0020
+#define KEYNUM_SWITCH1_FLG					0x0040
+#define KEYNUM_SWITCH2_FLG					0x0080
+#define KEYNUM_SWITCH3_FLG					0x0100
+#define KEYNUM_WALKINGENEMY_HAS_KEY_4_FLG	0x0200
+#define KEYNUM_WALKINGENEMY_HAS_KEY_5_FLG	0x0400
+#define KEYNUM_WALKINGENEMY_HAS_KEY_6_FLG	0x0800
 
 //何度も行わないためのフラグ
 static bool g_BossGateflg = false;
@@ -30,9 +36,15 @@ enum KEYNUM_KIND {
 	KEYNUM_WALKINGENEMY_HAS_KEY_1,
 	KEYNUM_WALKINGENEMY_HAS_KEY_2,
 	KEYNUM_WALKINGENEMY_HAS_KEY_3,
+	KEYNUM_WALKINGENEMY_HAS_KEY_4,
+	KEYNUM_WALKINGENEMY_HAS_KEY_5,
+	KEYNUM_WALKINGENEMY_HAS_KEY_6,
 	KEYNUM_FLYINGENEMY_HAS_KEY1,
 	KEYNUM_FLYINGENEMY_HAS_KEY2,
 	KEYNUM_FLYINGENEMY_HAS_KEY3,
+	KEYNUM_SWITCH1,
+	KEYNUM_SWITCH2,
+	KEYNUM_SWITCH3,
 	KEYNUM_KIND_MAX
 };
 
@@ -65,6 +77,18 @@ void StageGimmickInit() {
 			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_3]++;
 			break;
 
+		case WALKINGENEMY_HAS_KEY_4:
+			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_4]++;
+			break;
+
+		case WALKINGENEMY_HAS_KEY_5:
+			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_5]++;
+			break;
+
+		case WALKINGENEMY_HAS_KEY_6:
+			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_6]++;
+			break;
+
 		case FLYINGENEMY_HAS_KEY1:
 			g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY1]++;
 			break;
@@ -76,6 +100,18 @@ void StageGimmickInit() {
 		case FLYINGENEMY_HAS_KEY3:
 			g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY3]++;
 			break;
+
+		case SWITCH_1:
+			g_GateKeyNum[KEYNUM_SWITCH1]++;
+			break;
+
+		case SWITCH_2:
+			g_GateKeyNum[KEYNUM_SWITCH2]++;
+			break;
+
+		case SWITCH_3:
+			g_GateKeyNum[KEYNUM_SWITCH3]++;
+			break;
 		}
 	}
 }
@@ -86,65 +122,110 @@ void StageGimmickManage() {
 
 	int gateKeyNumCnt[KEYNUM_KIND_MAX] = { 0 };
 
+	int gateflg = 0;
+
 	//敵の死んでいる鍵持ちの数を数える
+	//スイッチのフラグチェック
 	int enemyMax = GetEnemyMax();
 	for (int i = 0; i < enemyMax; i++) {
 
-		if (pEnemy[i].beDead) {
-			switch (pEnemy[i].enemyKind)
-			{
-			case WALKINGENEMY_HAS_KEY_1:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_1]++;
-				break;
+		switch (pEnemy[i].enemyKind) {
+		case KEYNUM_SWITCH1:
+			if (pEnemy[i].Hp != SEITCHMAXHP) {
+				gateflg = gateflg | KEYNUM_SWITCH1_FLG;
+			}
+			break;
+		case KEYNUM_SWITCH2:
+			if (pEnemy[i].Hp != SEITCHMAXHP) {
+				gateflg = gateflg | KEYNUM_SWITCH2_FLG;
+			}
+			break;
+		case KEYNUM_SWITCH3:
+			if (pEnemy[i].Hp != SEITCHMAXHP) {
+				gateflg = gateflg | KEYNUM_SWITCH3_FLG;
+			}
+			break;
 
-			case WALKINGENEMY_HAS_KEY_2:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_2]++;
-				break;
+		default:
+			if (pEnemy[i].beDead) {
+				switch (pEnemy[i].enemyKind)
+				{
+				case WALKINGENEMY_HAS_KEY_1:
+					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_1]++;
+					break;
 
-			case WALKINGENEMY_HAS_KEY_3:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_3]++;
-				break;
+				case WALKINGENEMY_HAS_KEY_2:
+					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_2]++;
+					break;
 
-			case FLYINGENEMY_HAS_KEY1:
-				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY1]++;
-				break;
+				case WALKINGENEMY_HAS_KEY_3:
+					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_3]++;
+					break;
 
-			case FLYINGENEMY_HAS_KEY2:
-				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY2]++;
-				break;
+				case WALKINGENEMY_HAS_KEY_4:
+					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_4]++;
+					break;
 
-			case FLYINGENEMY_HAS_KEY3:
-				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY3]++;
-				break;
+				case WALKINGENEMY_HAS_KEY_5:
+					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_5]++;
+					break;
+
+				case WALKINGENEMY_HAS_KEY_6:
+					gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_6]++;
+					break;
+
+				case FLYINGENEMY_HAS_KEY1:
+					gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY1]++;
+					break;
+
+				case FLYINGENEMY_HAS_KEY2:
+					gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY2]++;
+					break;
+
+				case FLYINGENEMY_HAS_KEY3:
+					gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY3]++;
+					break;
+
+				}
 			}
 		}
 	}
 
-	int gateflg = 0;
-
 	//それぞれの設定された鍵持ちの数と死んでいる鍵持ちの数が一緒か調べ、同じならフラグを立てる
 	for (int i = 0; i < KEYNUM_KIND_MAX; i++) {
 
-		if (gateKeyNumCnt[i] == g_GateKeyNum[i]) {
-			switch (i) {
-			case KEYNUM_WALKINGENEMY_HAS_KEY_1:
-				gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG;
-				break;
-			case KEYNUM_WALKINGENEMY_HAS_KEY_2:
-				gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG;
-				break;
-			case KEYNUM_WALKINGENEMY_HAS_KEY_3:
-				gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG;
-				break;
-			case KEYNUM_FLYINGENEMY_HAS_KEY1:
-				gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY1_FLG;
-				break;
-			case KEYNUM_FLYINGENEMY_HAS_KEY2:
-				gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY2_FLG;
-				break;
-			case KEYNUM_FLYINGENEMY_HAS_KEY3:
-				gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY3_FLG;
-				break;
+		if (!(g_GateKeyNum[i] == 0)) {
+			if (gateKeyNumCnt[i] == g_GateKeyNum[i]) {
+				switch (i) {
+				case KEYNUM_WALKINGENEMY_HAS_KEY_1:
+					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG;
+					break;
+				case KEYNUM_WALKINGENEMY_HAS_KEY_2:
+					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG;
+					break;
+				case KEYNUM_WALKINGENEMY_HAS_KEY_3:
+					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG;
+					break;
+				case KEYNUM_WALKINGENEMY_HAS_KEY_4:
+					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_4_FLG;
+					break;
+				case KEYNUM_WALKINGENEMY_HAS_KEY_5:
+					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_5_FLG;
+					break;
+				case KEYNUM_WALKINGENEMY_HAS_KEY_6:
+					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_6_FLG;
+					break;
+				case KEYNUM_FLYINGENEMY_HAS_KEY1:
+					gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY1_FLG;
+					break;
+				case KEYNUM_FLYINGENEMY_HAS_KEY2:
+					gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY2_FLG;
+					break;
+				case KEYNUM_FLYINGENEMY_HAS_KEY3:
+					gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY3_FLG;
+					break;
+
+				}
 			}
 		}
 	}
@@ -159,6 +240,23 @@ void StageGimmickManage() {
 		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_2] = -1;
 		g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY2] = -1;
 	}
+	if (gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_4_FLG) {
+		OpenGate(SHUTTER_4);
+		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_4] = -1;
+	}
+	if (gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_5_FLG) {
+		OpenGate(SHUTTER_5);
+		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_5] = -1;
+	}
+	if (gateflg & KEYNUM_SWITCH1_FLG) {
+		OpenGate(SHUTTER_A);
+	};
+	if (gateflg & KEYNUM_SWITCH2_FLG) {
+		OpenGate(SHUTTER_B);
+	};
+	if (gateflg & KEYNUM_SWITCH3_FLG) {
+		OpenGate(SHUTTER_C);
+	};
 
 	bool bossActiveflg = CheckBossActiveBoss();
 
@@ -213,6 +311,7 @@ void CloseGate(MapKind beforeMapKind, MapKind afterMapKind) {
 
 		}
 	}
+	free(pGimmickData);
 }
 
 void OpenGate(MapKind mapKind) {
@@ -254,6 +353,7 @@ void OpenGate(MapKind mapKind) {
 
 		}
 	}
+	free(pGimmickData);
 }
 
 //チェックポイントは必ず二つ

@@ -176,6 +176,7 @@ void Boss1Control() {
 						g_Boss1.a = 0;
 						g_Boss1.saveActionCntForDUALSHOT++;
 						g_Boss1.saveActionCntForNORMALSHOT++;
+						g_Boss1.isLeft = false;
 					}
 				}
 				else {
@@ -187,6 +188,7 @@ void Boss1Control() {
 						g_Boss1.a = 0;
 						g_Boss1.saveActionCntForDUALSHOT++;
 						g_Boss1.saveActionCntForNORMALSHOT++;
+						g_Boss1.isLeft = true;
 					}
 				}
 				break;
