@@ -8,6 +8,8 @@ struct Boss2Data {
 	float MovementX, MovementY;
 	int Hp;
 	int Atk;
+	bool hasLanding;//マップチップとの設置判定のフラグ
+	bool hasDamage;//ダメージを与えられたかどうかのフラグ
 	bool isLeft;//向きtrueで左向き
 	bool isDead;//生死
 	bool isActive;//描画アクティブかどうか

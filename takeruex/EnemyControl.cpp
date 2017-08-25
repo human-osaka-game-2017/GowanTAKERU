@@ -203,7 +203,7 @@ void EnemyPursuit(int enemyNum) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = 0;
+		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
 			g_pEnemy[enemyNum].bulletFrameCount = 0;
 		}
@@ -216,7 +216,7 @@ void EnemyPursuit(int enemyNum) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = 0;
+		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
 			g_pEnemy[enemyNum].bulletFrameCount = 0;
 		}
@@ -233,14 +233,14 @@ void EnemyPursuit(int enemyNum) {
 		}
 		if (attack == true) {//フラグONならSPEED---
 			g_pEnemy[enemyNum].MovementX = -7;
-			g_pEnemy[enemyNum].MovementY = 0;
+			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 		}
 		if (g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x-400) {//敵が移動上限超えたらフラグOF
 			attack == false;
 		}
 		if (attack == false) {
 			g_pEnemy[enemyNum].MovementX = 0;
-			g_pEnemy[enemyNum].MovementY = 0;
+			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 				if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
 					g_pEnemy[enemyNum].bulletFrameCount = 0;
 				}
@@ -254,12 +254,13 @@ void EnemyPursuit(int enemyNum) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = 0;
+		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
 			g_pEnemy[enemyNum].bulletFrameCount = 0;
 		}
 		break;
 	case WALKINGENEMY_HAS_KEY_1:
+	case WALKINGENEMY_HAS_KEY_4:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
 			g_pEnemy[enemyNum].beLeft = false;
 		}
@@ -267,12 +268,13 @@ void EnemyPursuit(int enemyNum) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = 0;
+		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
 			g_pEnemy[enemyNum].bulletFrameCount = 0;
 		}
 		break;
 	case WALKINGENEMY_HAS_KEY_2:
+	case WALKINGENEMY_HAS_KEY_5:
 		if (g_pEnemy[enemyNum].WindowPos.x > basepoint->x) {
 			g_pEnemy[enemyNum].beLeft = false;
 		}

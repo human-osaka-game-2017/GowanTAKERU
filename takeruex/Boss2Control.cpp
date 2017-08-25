@@ -24,21 +24,6 @@ void Boss2Init() {
 	int* gimmickData = (int*)malloc(sizeof(int)*MaxX*MaxY);
 
 	switch (stage_ID) {
-	case STAGE_1:
-
-		CSVLoad("CSV/mainscene/stage1_gimmick.csv", gimmickData, MaxY, MaxX);//CSV呼び出し
-
-		for (int i = 0; i < MaxY; i++) {
-			for (int j = 0; j < MaxX; j++) {
-				if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
-					g_Boss2.isExistence = true;
-					g_Boss2.WorldPos.x = TIPSIZE*j;
-					g_Boss2.WorldPos.y = TIPSIZE*i;
-					goto BREAK;
-				}
-			}
-		}
-		break;
 	case STAGE_2:
 
 		CSVLoad("CSV/mainscene/stage2_gimmick.csv", gimmickData, MaxY, MaxX);//CSV呼び出し
@@ -62,7 +47,7 @@ void Boss2Init() {
 
 		for (int i = 0; i < MaxY; i++) {
 			for (int j = 0; j < MaxX; j++) {
-				if (gimmickData[j + i*MaxX] == BOSS_STAGE1) {
+				if (gimmickData[j + i*MaxX] == BOSS_STAGE2) {
 					g_Boss2.isExistence = true;
 					g_Boss2.WorldPos.x = TIPSIZE*j;
 					g_Boss2.WorldPos.y = TIPSIZE*i;
@@ -92,21 +77,21 @@ BREAK:
 }
 
 void Boss2Control() {
-	static int Boss2FrameCount = 0;
-	if (Boss2FrameCount <= 121) {//121フレーム以降はフレームカウントされないようにしている
-		Boss2FrameCount++;
-	}
-	//0.2秒感覚（12フレーム）でホーミング弾発射
-	if (Boss2FrameCount == 12 || Boss2FrameCount == 24 || Boss2FrameCount == 36 || Boss2FrameCount == 48 || Boss2FrameCount == 60) {
-		BulletCreate(g_Boss2.WorldPos, HOMING);
-	}
-	//1フレームで3.2ピクセル盾に動かす(1秒で192ピクセル分)
-	if (Boss2FrameCount >= 120) {
-		g_Boss2.MovementX = -3.2f;
-	}
-	if (Boss2FrameCount > 120) {
-		
-	}
+		static int Boss2FrameCount = 0;
+		if (Boss2FrameCount <= 121) {//121フレーム以降はフレームカウントされないようにしている
+			Boss2FrameCount++;
+		}
+		//0.2秒感覚（12フレーム）でホーミング弾発射
+		if (Boss2FrameCount == 12 || Boss2FrameCount == 24 || Boss2FrameCount == 36 || Boss2FrameCount == 48 || Boss2FrameCount == 60) {
+			BulletCreate(g_Boss2.WorldPos, HOMING);
+		}
+		//1フレームで3.2ピクセル盾に動かす(1秒で192ピクセル分)
+		if (Boss2FrameCount >= 120) {
+			g_Boss2.MovementX = -3.2f;
+		}
+		if (Boss2FrameCount > 120) {
+
+		}
 
 }
 
