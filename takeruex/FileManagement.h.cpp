@@ -96,48 +96,48 @@ void TitleSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "Picture/TitleScene/titlebackground.png", &g_pTexture[TITLE_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/TitleScene/pushZkeylogo.png", &g_pTexture[TITLELOGO_TEX]);
 
-	//CreateBufferForWave("Sound/BGM_title.wav", SOUND03);
+	CreateBufferForWave("Sound/BGM_title.wav", TITLESCENE_BGM01);
 }
 
-void MainSceneSoundLoad(bool boss) {
-
-	STAGE_ID srage_ID = GetStage_ID();
-
-	switch (srage_ID) {
-	STAGE_1:
-		if (boss) {
-			CreateBufferForWave("Sound/BGM_boss1.wav", MAINSCENE_BGM01);
-		}
-		else {
-			CreateBufferForWave("Sound/BGM_stage1.wav", MAINSCENE_BGM01);
-		}
-		break;
-	STAGE_2:
-		if (boss) {
-			CreateBufferForWave("Sound/BGM_boss2.wav", MAINSCENE_BGM01);
-		}
-		else {
-			CreateBufferForWave("Sound/BGM_stage2.wav", MAINSCENE_BGM01);
-		}
-		break;
-	STAGE_3:
-		if (boss) {
-			CreateBufferForWave("Sound/BGM_boss1.wav", MAINSCENE_BGM01);
-		}
-		else {
-			CreateBufferForWave("Sound/BGM_stage3.wav", MAINSCENE_BGM01);
-		}
-		break;
-	STAGE_4:
-		if (boss) {
-			CreateBufferForWave("Sound/BGM_boss4.wav", MAINSCENE_BGM01);
-		}
-		else {
-			CreateBufferForWave("Sound/BGM_stage4.wav", MAINSCENE_BGM01);
-		}
-		break;
-	}
-}
+//void MainSceneSoundLoad(bool boss) {
+//
+//	STAGE_ID srage_ID = GetStage_ID();
+//
+//	switch (srage_ID) {
+//	STAGE_1:
+//		if (boss) {
+//			CreateBufferForWave("Sound/BGM_boss1.wav", MAINSCENE_BGM01);
+//		}
+//		else {
+//			CreateBufferForWave("Sound/BGM_stage1.wav", MAINSCENE_BGM01);
+//		}
+//		break;
+//	STAGE_2:
+//		if (boss) {
+//			CreateBufferForWave("Sound/BGM_boss2.wav", MAINSCENE_BGM01);
+//		}
+//		else {
+//			CreateBufferForWave("Sound/BGM_stage2.wav", MAINSCENE_BGM01);
+//		}
+//		break;
+//	STAGE_3:
+//		if (boss) {
+//			CreateBufferForWave("Sound/BGM_boss1.wav", MAINSCENE_BGM01);
+//		}
+//		else {
+//			CreateBufferForWave("Sound/BGM_stage3.wav", MAINSCENE_BGM01);
+//		}
+//		break;
+//	STAGE_4:
+//		if (boss) {
+//			CreateBufferForWave("Sound/BGM_boss4.wav", MAINSCENE_BGM01);
+//		}
+//		else {
+//			CreateBufferForWave("Sound/BGM_stage4.wav", MAINSCENE_BGM01);
+//		}
+//		break;
+//	}
+//}
 void MainSceneLoad(STAGE_ID stage_ID) {
 
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
@@ -155,9 +155,16 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 	
 	//SetBuffer(MAINSCENE_SOUNDMAX);
 
-	//CreateBufferForWave("Sound/SE_attack.wav", MAINSCENE_SE_ATTACK);
-	//CreateBufferForWave("Sound/SE_jump.wav", MAINSCENE_SE_JUMP);
-	//CreateBufferForWave("Sound/SE_swing.wav", MAINSCENE_SE_SWING);
+	CreateBufferForWave("Sound/SE_attack.wav", MAINSCENE_SE_ATTACK);
+	CreateBufferForWave("Sound/SE_jump.wav", MAINSCENE_SE_JUMP);
+	CreateBufferForWave("Sound/SE_swing.wav", MAINSCENE_SE_SWING);
+	CreateBufferForWave("Sound/BGM_stage1.wav", MAINSCENE_STAGEBGM01);
+	CreateBufferForWave("Sound/BGM_stage2.wav", MAINSCENE_STAGEBGM02);
+	CreateBufferForWave("Sound/BGM_stage3.wav", MAINSCENE_STAGEBGM03);
+	CreateBufferForWave("Sound/BGM_stage4.wav", MAINSCENE_STAGEBGM04);
+	CreateBufferForWave("Sound/BGM_boss1.wav", MAINSCENE_BOSSBGM01);
+	CreateBufferForWave("Sound/BGM_boss2.wav", MAINSCENE_BOSSBGM02);
+	CreateBufferForWave("Sound/BGM_boss4.wav", MAINSCENE_BOSSBGM03);
 
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
@@ -195,7 +202,7 @@ void GameOverSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "Picture/GameOverScene/gameoverlogo.png", &g_pTexture[GAMEOVERLOGO_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/GameOverScene/pushZkeylogo.png", &g_pTexture[GAMEOVERPUSH_Z_KEY_TEX]);
 
-	//CreateBufferForWave("Sound/BGM_gameover.wav", SOUND02);
+	CreateBufferForWave("Sound/BGM_gameover.wav", GAMEOVERSCENE_BGM01);
 
 }
 
@@ -206,7 +213,7 @@ void GameClearSceneLoad() {
 	D3DXCreateTextureFromFile(pD3Device, "Picture/GameClearScene/StaffRoll.png", &g_pTexture[GAMECLEARROLL_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/GameClearScene/pushZkeylogo.png", &g_pTexture[GAMECLEARPUSH_Z_KEY_TEX]);
 
-	//CreateBufferForWave("Sound/BGM_gameclear.wav", SOUND02);
+	CreateBufferForWave("Sound/BGM_gameclear.wav", GAMECLEAR_BGM01);
 }
 
 void FreeMapData() {

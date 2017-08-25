@@ -27,6 +27,7 @@ SCENE_ID RunTitleScene(bool willbetrancefar) {
 	case 0:
 		TitleSceneLoad();
 		nextsceneflg = false;
+		PlayBackSound(TITLESCENE_BGM01, true, 50);
 		step++;
 		break;
 
@@ -35,7 +36,6 @@ SCENE_ID RunTitleScene(bool willbetrancefar) {
 		if (key[KEY_Z] == KEY_PUSH) {
 			nextscene_ID = MAINSCENE;
 			nextsceneflg = true;
-			//PlayBackSound(SOUND03, false,50);
 		}
 
 		TitleRender(nextsceneflg);
@@ -45,6 +45,7 @@ SCENE_ID RunTitleScene(bool willbetrancefar) {
 	case 2:
 		ReleaseTexture(TITLESCENE_TEXMAX);
 		FreeTexture();
+		StopSound(TITLESCENE_BGM01);
 		step = 0;
 		break;
 	}

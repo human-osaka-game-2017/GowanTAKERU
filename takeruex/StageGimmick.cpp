@@ -10,6 +10,7 @@
 #include"Boss1Control.h"
 #include"Boss3Control.h"
 #include"Boss4Control.h"
+#include"MainScene.h"
 
 #define KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG	0x0001
 #define KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG	0x0002
@@ -159,23 +160,10 @@ void StageGimmickManage() {
 		g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY2] = -1;
 	}
 
-	//boss用シャッターの処理
-	Boss1Data* pBoss1 = GetBoss1Data();
-	Boss3Data* pBoss3 = GetBoss3Data();
-	Boss4Data* pBoss4 = GetBoss4Data();
-
-	bool bossActiveflg = false;
-	if (pBoss1->isExistence && pBoss1->isActive) {
-		bossActiveflg = pBoss1->isActive;
-	}
-	if (pBoss3->isExistence && pBoss3->isActive) {
-		bossActiveflg = pBoss3->isActive;
-	}
-	if (pBoss4->isExistence && pBoss4->isActive) {
-		bossActiveflg = pBoss4->isActive;
-	}
+	bool bossActiveflg = CheckBossActiveBoss();
 
 	if (bossActiveflg && !g_BossGateflg) {
+		
 		CloseGate(BOSS_SHUTTER, WALL);
 		g_BossGateflg = true;
 	}
@@ -189,6 +177,9 @@ void CloseGate(MapKind beforeMapKind, MapKind afterMapKind) {
 	STAGEXYMAX maxX = GetStageXYMAX(stage_ID, X);
 	STAGEXYMAX maxY = GetStageXYMAX(stage_ID, Y);
 	int* pGimmickData = (int*)malloc(sizeof(int)*maxX*maxY);
+
+	StopBGM(stage_ID, false);
+	PlayBGM(stage_ID, true);
 
 	switch (stage_ID) {
 	case STAGE_1:
@@ -367,4 +358,23 @@ void ComeBackCheckPoint() {
 		CSVLoad("CSV/mainscene/stage5_map.csv", mapdata, maxY, maxX);
 		break;
 	}
+}
+bool CheckBossActiveBoss() {
+	//boss用シャッターの処理
+	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss3Data* pBoss3 = GetBoss3Data();
+	Boss4Data* pBoss4 = GetBoss4Data();
+
+	bool bossActiveflg = false;
+	if (pBoss1->isExistence && pBoss1->isActive) {
+		bossActiveflg = pBoss1->isActive;
+	}
+	if (pBoss3->isExistence && pBoss3->isActive) {
+		bossActiveflg = pBoss3->isActive;
+	}
+	if (pBoss4->isExistence && pBoss4->isActive) {
+		bossActiveflg = pBoss4->isActive;
+	}
+
+	return bossActiveflg;
 }

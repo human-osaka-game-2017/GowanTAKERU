@@ -4,4 +4,5 @@
 void StageGimmickInit();
 void StageGimmickManage();
 void ComeBackCheckPoint();
+bool CheckBossActiveBoss();
 #endif
