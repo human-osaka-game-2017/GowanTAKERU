@@ -260,173 +260,310 @@ void PlayerReflectMotion() {
 			PlayBackSound(MAINSCENE_SE_SWING, false, 10);
 		}
 	}
+
+	float armRadius = 25.0f;
+
 	Bullet* pFirstBullet = GetFirstBulletAddress();
-	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next){
+	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
 
-		if (g_player.beLeft) {
-			if (frcnt != 0 && frcnt < 12) {
-				if (CircleHit(g_player.WindowPos.x - 30,
-					g_player.WindowPos.y,
-					20.0f,
-					pSearchBullet->WindowPos.x,
-					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2))
-				{
-					if (pSearchBullet->BulletKind == NONREFLECTTARGET1 
-						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
-						DeleteBullet(&pSearchBullet);
-						continue;
+		//íeÇØÇÈíeÇ©Ç«Ç§Ç©
+		if (!pSearchBullet->wasReflect) {
+
+			//ÉAÉbÉvÉXÉEÉBÉìÉOíÜ
+			if (g_player.beUPSwing) {
+
+				//ç∂å¸Ç´íÜ
+				if (g_player.beLeft) {
+
+					if (frcnt < SWING_INTERVAL) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x - 27,
+							g_player.WindowPos.y + 10,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(180.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
+						}
 					}
+					else if (frcnt < (SWING_INTERVAL * 2)) {
 
-					if (pSearchBullet->wasReflect == false) {
-						pSearchBullet->wasReflect = true;
-						pSearchBullet->Rad = D3DXToRadian(180.0f);
-						pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
-						PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
-					}
-				}
-			}
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x - 30,
+							g_player.WindowPos.y - 20,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
 
-			if (12 < frcnt && frcnt < 24) {
-				if (CircleHit(g_player.WindowPos.x - 30,
-					g_player.WindowPos.y - 20,
-					20.0f,
-					pSearchBullet->WindowPos.x,
-					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2))
-				{
-					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
-						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
-						DeleteBullet(&pSearchBullet);
-						continue;
-					}
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
 
-					if (pSearchBullet->wasReflect == false) {
-						pSearchBullet->wasReflect = true;
-
-						if (g_player.beUPSwing == true) {
+							pSearchBullet->wasReflect = true;
 							pSearchBullet->Rad = D3DXToRadian(150.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
-						if (g_player.beDownSwing == true) {
+					}
+					else if (frcnt < (SWING_INTERVAL * 3)) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x - 27,
+							g_player.WindowPos.y - 50,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(120.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
+						}
+					}
+				}
+
+				//âEå¸Ç´íÜ
+				else {
+					if (frcnt < SWING_INTERVAL) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x + 27,
+							g_player.WindowPos.y + 10,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(0.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
+						}
+					}
+					else if (frcnt < (SWING_INTERVAL * 2)) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x + 30,
+							g_player.WindowPos.y - 20,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(30.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
+						}
+					}
+					else if (frcnt < (SWING_INTERVAL * 3)) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x + 27,
+							g_player.WindowPos.y - 50,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(60.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
+						}
+					}
+				}
+			}
+
+			//downswingíÜ
+			else if (g_player.beDownSwing) {
+
+				//ç∂å¸Ç´íÜ
+				if (g_player.beLeft) {
+
+					if (frcnt < SWING_INTERVAL) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x - 27,
+							g_player.WindowPos.y - 50,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(180.0f);
+							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
+							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
+						}
+					}
+					else if (frcnt < (SWING_INTERVAL * 2)) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x - 27,
+							g_player.WindowPos.y - 20,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
 							pSearchBullet->Rad = D3DXToRadian(210.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 					}
-				}
-			}
+					else if (frcnt < (SWING_INTERVAL * 3)) {
 
-			if (24 < frcnt && frcnt < 36) {
-				if (CircleHit(g_player.WindowPos.x - 30,
-					g_player.WindowPos.y - 50,
-					20.0f,
-					pSearchBullet->WindowPos.x,
-					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2)) 
-				{
-					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
-						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
-						DeleteBullet(&pSearchBullet);
-						continue;
-					}
-					if (pSearchBullet->wasReflect == false) {
-						pSearchBullet->wasReflect = true;
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x - 27,
+							g_player.WindowPos.y + 10,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
 
-						if (g_player.beUPSwing == true) {
-							pSearchBullet->Rad = D3DXToRadian(120.0f);
-							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
-							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
-						}
-						if (g_player.beDownSwing == true) {
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
 							pSearchBullet->Rad = D3DXToRadian(240.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 					}
 				}
-			}
-		}
-		else {
 
-			if (frcnt != 0 && frcnt < 12) {
-				if (CircleHit(g_player.WindowPos.x + 30,
-					g_player.WindowPos.y,
-					20.0f,
-					pSearchBullet->WindowPos.x,
-					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2))
-				{
-					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
-						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
-						DeleteBullet(&pSearchBullet);
-						continue;
-					}
-					if (pSearchBullet->wasReflect == false) {
-						pSearchBullet->wasReflect = true;
-						pSearchBullet->Rad = D3DXToRadian(0.0f);
-						pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
-						PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
+				//âEå¸Ç´íÜ
+				else {
+					if (frcnt < SWING_INTERVAL) {
 
-					}
-				}
-			}
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x + 27,
+							g_player.WindowPos.y - 50,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
 
-			if (12 < frcnt && frcnt < 24) {
-				if (CircleHit(g_player.WindowPos.x + 30,
-					g_player.WindowPos.y - 20,
-					20.0f,
-					pSearchBullet->WindowPos.x,
-					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2))
-				{
-					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
-						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
-						DeleteBullet(&pSearchBullet);
-						continue;
-					}
-					if (pSearchBullet->wasReflect == false) {
-						pSearchBullet->wasReflect = true;
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
 
-						if (g_player.beUPSwing == true) {
-							pSearchBullet->Rad = D3DXToRadian(30.f);
-							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
-							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
-						}
-						if (g_player.beDownSwing == true) {
-							pSearchBullet->Rad = D3DXToRadian(-30.f);
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(0.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
 					}
-				}
-			}
+					else if (frcnt < (SWING_INTERVAL * 2)) {
 
-			if (24 < frcnt && frcnt < 36) {
-				if (CircleHit(g_player.WindowPos.x + 30,
-					g_player.WindowPos.y - 50,
-					20.0f,
-					pSearchBullet->WindowPos.x,
-					pSearchBullet->WindowPos.y,
-					pSearchBullet->Size / 2)) 
-				{
-					if (pSearchBullet->BulletKind == NONREFLECTTARGET1
-						|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
-						DeleteBullet(&pSearchBullet);
-						continue;
-					}
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x + 27,
+							g_player.WindowPos.y - 20,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
 
-					if (pSearchBullet->wasReflect == false) {
-						pSearchBullet->wasReflect = true;
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
 
-						if (g_player.beUPSwing == true) {
-							pSearchBullet->Rad = D3DXToRadian(60.f);
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(330.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
-						if (g_player.beDownSwing == true) {
-							pSearchBullet->Rad = D3DXToRadian(-60.f);
+					}
+					else if (frcnt < (SWING_INTERVAL * 3)) {
+
+						//Ç†ÇΩÇËîªíË
+						if (CircleHit(g_player.WindowPos.x + 27,
+							g_player.WindowPos.y + 10,
+							armRadius,
+							pSearchBullet->WindowPos.x,
+							pSearchBullet->WindowPos.y,
+							pSearchBullet->Size / 2)) {
+
+							//íeÇØÇ»Ç¢íeÇÃîªíË
+							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
+								|| pSearchBullet->BulletKind == NONREFLECTTARGET2) {
+								DeleteBullet(&pSearchBullet);
+								continue;
+							}
+
+							pSearchBullet->wasReflect = true;
+							pSearchBullet->Rad = D3DXToRadian(300.0f);
 							pSearchBullet->SaveCoordinate = pSearchBullet->WorldPos;
 							PlayBackSound(MAINSCENE_SE_ATTACK, false, 10);
 						}
@@ -436,7 +573,7 @@ void PlayerReflectMotion() {
 		}
 	}
 
-	if (frcnt >= 36) {
+	if (frcnt == 36) {
 		g_player.beDownSwing = false;
 		g_player.beUPSwing = false;
 		frcnt = 0;

@@ -1,5 +1,5 @@
 #include"Boss4Control.h"
-#include"StageSelect.h"5
+#include"StageSelect.h"
 #include"FileManagement.h"
 #include"MapRender.h"
 #include"MapControl.h"

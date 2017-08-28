@@ -93,3 +93,7 @@ void UIRender()
 	// •`‰æ
 	pD3Device->DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, fontDrawVertex, sizeof(CUSTOMVERTEX));
 }
+
+void FontRender() {
+
+}

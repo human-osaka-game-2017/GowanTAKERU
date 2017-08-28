@@ -6,12 +6,12 @@
 #include"PlayerRender.h"
 #include"BulletRender.h"
 #include"EnemyRender.h"
-#include"UIRender.h"
 #include"BlackOutRender.h"
 #include"Boss1Render.h"
 #include"Boss2Render.h"
 #include"Boss3Render.h"
 #include"Boss4Render.h"
+#include"UIRendr.h"
 
 void MainRender() {
 
@@ -36,6 +36,16 @@ void MainRender() {
 	Boss4Render();
 	BulletRender();
 	PlayerRender();
+
+	static int frcnt = 0;
+	if (frcnt < 600) {
+		FontRender();
+	}
+	else {
+		frcnt = 0;
+	}
+	frcnt++;
+
 	UIRender();
 
 	BlackOutData* blackOutData = GetBlackOutData();

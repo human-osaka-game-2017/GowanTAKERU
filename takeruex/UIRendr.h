@@ -3,6 +3,6 @@
 
 void UIRender();
 
-
+void FontRender();
 
 #endif

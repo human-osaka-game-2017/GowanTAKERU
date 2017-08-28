@@ -40,11 +40,23 @@ void HitManage() {
 
 	D3DXVECTOR2 playerRightBottom;
 	D3DXVECTOR2 playerLeftBottom;
-	playerRightBottom.x = player->WorldPos.x + PLAYERSIZEWIDTH / 2;
-	playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2;
+	D3DXVECTOR2 playerRightTop;
+	D3DXVECTOR2 playerLeftTop;
+	playerRightTop.x = playerRightBottom.x = player->WorldPos.x + PLAYERSIZEWIDTH / 2 + 1;
+	playerLeftTop.x = playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2 - 1;
 	playerRightBottom.y= playerLeftBottom.y= player->WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
+	playerRightTop.y = playerLeftTop.y = player->WorldPos.y - PLAYERSIZEHEIGHT / 2 - 1;
+
 	if (!player->beInvincible) {
 		if (MapKindSpecifyForPos(&playerRightBottom) == UPNEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == UPNEEDLE) {
+			player->Hp -= 10;
+			player->beInvincible = true;
+		}
+		if (MapKindSpecifyForPos(&playerRightBottom) == LEFTNEEDLE || MapKindSpecifyForPos(&playerRightTop) == LEFTNEEDLE) {
+			player->Hp -= 10;
+			player->beInvincible = true;
+		}
+		if (MapKindSpecifyForPos(&playerRightBottom) == RIGHTNEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == RIGHTNEEDLE) {
 			player->Hp -= 10;
 			player->beInvincible = true;
 		}
@@ -513,6 +525,11 @@ void CollisionMapForBullet() {
 
 		if (MapKindSpecifyForPos(&Left) != NOTHING) {
 
+			if (MapKindSpecifyForPos(&Left) != RIGHTNEEDLE) {
+				DeleteBullet(&pSearchBullet);
+				continue;
+			}
+
 			pSearchBullet->ReflectCnt++;
 			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
 				DeleteBullet(&pSearchBullet);
@@ -532,6 +549,12 @@ void CollisionMapForBullet() {
 		}
 
 		else if (MapKindSpecifyForPos(&Right) != NOTHING) {
+
+			if (MapKindSpecifyForPos(&Left) != LEFTNEEDLE) {
+				DeleteBullet(&pSearchBullet);
+				continue;
+			}
+
 			pSearchBullet->ReflectCnt++;
 			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
 				DeleteBullet(&pSearchBullet);
@@ -550,6 +573,12 @@ void CollisionMapForBullet() {
 
 		}
 		else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
+
+			if (MapKindSpecifyForPos(&Left) != UPNEEDLE) {
+				DeleteBullet(&pSearchBullet);
+				continue;
+			}
+
 			pSearchBullet->ReflectCnt++;
 			if (pSearchBullet->ReflectCnt == pSearchBullet->ReflectMax) {
 				DeleteBullet(&pSearchBullet);
