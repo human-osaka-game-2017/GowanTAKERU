@@ -1,17 +1,23 @@
 #ifndef BOSS2CONTROL_H
 #define BOSS2CONTROL_H
+
 #include<d3dx9.h>
+
 #define BOSS2WIDTH 168
 #define BOSS2HEIGHT 197
+
+enum BOSS2STATE {
+	UDMOVE,GOLEFT,GOPOSB
+};
 
 struct Boss2Data {
 	D3DXVECTOR2 WorldPos;
 	D3DXVECTOR2 WindowPos;
-	D3DXVECTOR2 BranchPoint;//ルート分岐した位置を覚えておく
+	BOSS2STATE boss2State;//ルート分岐した位置を覚えておく
 	float MovementX, MovementY;
 	int Hp;
 	int Atk;
-	bool hasLanding;//マップチップとの設置判定のフラグ
+	bool UporDown_UP;
 	bool hasDamage;//ダメージを与えられたかどうかのフラグ
 	bool isLeft;//向きtrueで左向き
 	bool isDead;//生死

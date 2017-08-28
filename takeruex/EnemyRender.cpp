@@ -68,7 +68,7 @@ void EnemyRender() {
 
 			case FIXEDBATTERY1://ŒÅ’è–C‘ä
 			case FIXEDBATTERY2:
-				TrimingVertex(DrawVertex, 0, 320.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
+				TrimingVertex(DrawVertex, 0.0f, 320.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
 				break;
 
 			case SWITCH_1:

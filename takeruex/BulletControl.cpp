@@ -84,6 +84,15 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind, float
 		newBullet->Rad = 0;
 		break;
 
+	case BULLETNORMAL4:
+		newBullet->ReflectMax = 3;
+		newBullet->Speed = 6.0f;
+		newBullet->Atk = 10;
+		newBullet->Size = 22;
+		newBullet->SaveCoordinate = pPlayer->WindowPos;
+		newBullet->Rad = 0;
+		break;
+
 	case BULLETTARGET1:
 		newBullet->ReflectMax = 1;
 		newBullet->Speed = 6.0f;
