@@ -280,7 +280,7 @@ void Boss4BasicControl() {
 			}
 			if (CheckInPoint(pointC, LeftTop, RightBottom)) {
 				currentPoint = POINT_C;
-				g_Boss4.MovementX +=ttttttttttttttttttttttz pointC.posX - g_Boss4.WolrdPos.x;
+				g_Boss4.MovementX +=pointC.posX - g_Boss4.WolrdPos.x;
 
 			}
 

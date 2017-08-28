@@ -190,7 +190,7 @@ void EnemyPursuit(int enemyNum) {
 				g_pEnemy[enemyNum].MovementX = -g_pEnemy[enemyNum].Speed;
 			}
 			//エネミーのX座標がプレイヤーのX座標より大きかったら
-			else if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
+			 if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
 				//-方向にエネミーを動かす
 				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
 			}
@@ -304,7 +304,7 @@ void EnemyPursuit(int enemyNum) {
 				g_pEnemy[enemyNum].MovementX = -g_pEnemy[enemyNum].Speed;
 			}
 			//エネミーのX座標がプレイヤーのX座標より大きかったら
-			else if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
+			if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
 				//-方向にエネミーを動かす
 				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
 			}
@@ -332,13 +332,13 @@ void EnemyPursuit(int enemyNum) {
 		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-30フレーム未満だったら中に入る
 																						  //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
-				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
+				//-方向にエネミーを動かす
+				g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
 			}
 			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
 			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
 				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
+				g_pEnemy[enemyNum].MovementX += g_pEnemy[enemyNum].Speed;
 			}
 		}
 
@@ -376,7 +376,7 @@ void EnemyPursuit(int enemyNum) {
 																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
 				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
+				g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
 			}
 			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
 			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
@@ -406,7 +406,7 @@ void EnemyPursuit(int enemyNum) {
 																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
 			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
 				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX -= -g_pEnemy[enemyNum].Speed;
+				g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
 			}
 			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
 			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
