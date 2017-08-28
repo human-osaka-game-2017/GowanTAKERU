@@ -38,12 +38,9 @@ void PlayerInit() {
 	int MaxX = GetStageXYMAX(stage_ID, X);
 	int MaxY = GetStageXYMAX(stage_ID, Y);
 	int* map = (int*)malloc(sizeof(int)*MaxX*MaxY);
-	g_player.Hp = 10000;
-	g_player.LifeReduced = 3;
 	switch (stage_ID) {
 	case STAGE_1:
 		CSVLoad("CSV/mainscene/stage1_gimmick.csv",map, MaxY, MaxX);
-		g_player.Hp = 10000;
 		g_player.LifeReduced = 3;
 		break;
 
@@ -60,7 +57,7 @@ void PlayerInit() {
 		break;
 
 	case STAGE_5:
-		g_player.Hp = 10000;
+		g_player.Hp = 100;
 		g_player.LifeReduced = 3;
 		CSVLoad("CSV/mainscene/stage5_gimmick.csv", map, MaxY, MaxX);
 		break;
@@ -83,6 +80,7 @@ void PlayerInit() {
 	g_BasePoint.y = 544;
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
+	g_player.Hp = 100;
 	g_player.WindowPos.x = g_player.WorldPos.x - (g_BasePoint.x - BasePoint0.x);
 	g_player.WindowPos.y = g_player.WorldPos.y - (g_BasePoint.y - BasePoint0.y);
 	g_player.MovementX = g_player.MovementY = 0;

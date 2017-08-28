@@ -73,6 +73,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		}
 
 		if (pPlayer->LifeReduced == 0) {
+			StageSelect(STAGE_1);
 			g_isScreenTransition = true;
 			nextscene = GAMEOVERSCENE;
 			StopBGM(stage_ID, true);

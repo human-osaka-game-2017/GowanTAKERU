@@ -86,7 +86,6 @@ void HitManage() {
 	PushOutMapFourPoint(pBoss2->WorldPos, &pBoss2->MovementX, &pBoss2->MovementY, BOSS2WIDTH, BOSS2HEIGHT);
 	//boss3とマップの押し出し処理
 	PushOutMapFourPoint(pBoss3->WolrdPos, &pBoss3->MovementX, &pBoss3->MovementY, BOSS3OBJWIDTH, BOSS3OBJHEIGHT);
-
 	//boss4とマップの押し出し処理
 	PushOutMapFourPoint(pBoss4->WolrdPos, &pBoss4->MovementX, &pBoss4->MovementY, BOSS4WIDTH, BOSS4HEIGHT);
 
@@ -114,7 +113,7 @@ void HitManage() {
 			if (pSearchBullet->wasReflect) {
 				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss2->WindowPos, BOSS2WIDTH, BOSS2HEIGHT)) {
 					pBoss2->Hp -= pSearchBullet->Atk;
-					/*pBoss2->hasDamage = true;*/
+					pBoss2->hasDamage = true;
 					if (pBoss2->Hp <= 0) {
 						pBoss2->isDead = true;
 						pBoss2->isActive = false;
@@ -266,6 +265,22 @@ void HitManage() {
 			}
 		}
 	}
+	if (pBoss2->isActive && !(pBoss2->isDead)) {
+		D3DXVECTOR2 tmpPlayer = player->WorldPos;
+		if (player->beLeft) {
+			tmpPlayer.x += 15;
+		}
+		else {
+			tmpPlayer.x += -15;
+		}
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss2->WorldPos, BOSS2WIDTH, BOSS2HEIGHT)) {
+
+			if (!player->beInvincible) {
+				player->Hp -= pBoss2->Atk;
+				player->beInvincible = true;
+			}
+		}
+	}
 
 	//boss3とプレイヤーの直接のあたり判定
 	if (pBoss3->isActive && !(pBoss3->isDead)) {
@@ -369,7 +384,7 @@ void PushOutMapFourPoint(const D3DXVECTOR2& Pos, float* MovementX, float* Moveme
 	Left.x = Pos.x - (width / 2) + *MovementX - 1;
 	Right.x = Pos.x + (width / 2) + *MovementX;
 	Top.x = Bottom.x = Pos.x + *MovementX;
-	Top.y = Pos.y - (height / 2) + *MovementY;
+	Top.y = Pos.y - (height / 2) + *MovementY - 1;
 	Bottom.y = Pos.y + (height / 2) + *MovementY + 1;
 	Left.y = Right.y = Pos.y + *MovementY;
 
@@ -387,7 +402,8 @@ void PushOutMapFourPoint(const D3DXVECTOR2& Pos, float* MovementX, float* Moveme
 
 	MapchipNumberSpecify(&tmpNum, &Top);
 	if (MapKindSpecify(&tmpNum) != NOTHING) {
-		*MovementY += Top.y - ((tmpNum.NumY + 1) * TIPSIZE);
+		*MovementY += Top.y - ((tmpNum.NumY + 1) * TIPSIZE) + 1;
+
 	}
 
 	MapchipNumberSpecify(&tmpNum, &Bottom);
