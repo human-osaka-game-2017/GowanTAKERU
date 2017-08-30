@@ -151,7 +151,12 @@ void Boss1Control() {
 				}
 				
 				if (DUALSHOTMiddleFrcnt == DUALSHOTINTERVALS) {
-					BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
+					if (g_Boss1.isLeft) {
+						BulletCreate(g_Boss1.WolrdPos, BULLETTARGET2,-30.0f);
+					}
+					else {
+						BulletCreate(g_Boss1.WolrdPos, BULLETTARGET2,30.0f);
+					}
 					g_Boss1.saveActionCntForDUALSHOT = 0;
 					g_Boss1.saveActionCntForNORMALSHOT++;
 					g_Boss1.saveDUALSHOTActionCntForLARIAT++;
@@ -176,6 +181,7 @@ void Boss1Control() {
 						g_Boss1.a = 0;
 						g_Boss1.saveActionCntForDUALSHOT++;
 						g_Boss1.saveActionCntForNORMALSHOT++;
+						g_Boss1.saveDUALSHOTActionCntForLARIAT = 0;
 						g_Boss1.isLeft = false;
 					}
 				}
@@ -188,6 +194,7 @@ void Boss1Control() {
 						g_Boss1.a = 0;
 						g_Boss1.saveActionCntForDUALSHOT++;
 						g_Boss1.saveActionCntForNORMALSHOT++;
+						g_Boss1.saveDUALSHOTActionCntForLARIAT = 0;
 						g_Boss1.isLeft = true;
 					}
 				}
@@ -217,13 +224,13 @@ BOSS1STATE DecidedBoss1State(float range, int bulletNum) {
 
 	float DecidedValue[BOSS1STATE_MAX];
 
-	DecidedValue[NORMALSHOT] = CalculateNORMALSHOTDecidedValue(bulletNum, range);
+	DecidedValue[NORMALSHOT] = CalculateNORMALSHOTDecidedValue(bulletNum, range) + Random(-10.0f, 20.0f);
 
-	DecidedValue[DUALSHOT]= CalculateDUALSHOTDecidedValue(bulletNum, range);
+	DecidedValue[DUALSHOT] = CalculateDUALSHOTDecidedValue(bulletNum, range) + Random(-10.0f, 20.0f);
 
-	DecidedValue[LARIAT]= CalculateLARIATDecidedValue(range);
+	DecidedValue[LARIAT] = CalculateLARIATDecidedValue(range) + Random(-10.0f, 10.0f);
 
-	DecidedValue[BOSS1_NON] = ((100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[LARIAT])) / 3;
+	DecidedValue[BOSS1_NON] = ((100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[NORMALSHOT]) + (100.0f - DecidedValue[LARIAT])) / 3 + Random(-10.0f, 10.0f);
 
 	//最も大きい値を決定
 	float* Max = &DecidedValue[BOSS1_NON];
@@ -263,7 +270,7 @@ float CalculateNORMALSHOTDecidedValue(int bulletNum, float range) {
 	float decidedValue3 = -(range - 700.0f) / 4900.0f + 100.0f;
 
 	//前回のNORMALSHOTからのアクション数による判定値の計算
-	float decidedValue4 = g_Boss1.saveActionCntForNORMALSHOT * 10.0f;
+	float decidedValue4 = g_Boss1.saveActionCntForNORMALSHOT * 30.0f;
 
 	//平均値による一意な値の決定
 	float decidedValue = (decidedValue1 + decidedValue2 + decidedValue3 + decidedValue4) / 4;
@@ -284,7 +291,7 @@ float CalculateDUALSHOTDecidedValue(int bulletNum, float range) {
 	float decidedValue3 = (range - 600.0f) / 3600.0f + 100.0f;
 
 	//前回のDUALSHOTからのアクション数による判定値の計算
-	float decidedValue4 = g_Boss1.saveActionCntForDUALSHOT * 15.0f;
+	float decidedValue4 = g_Boss1.saveActionCntForDUALSHOT * 30.0f;
 
 	//平均値による一意な値の決定
 	float decidedValue = (decidedValue1 + decidedValue2 + decidedValue3 + decidedValue4) / 4;
@@ -301,7 +308,7 @@ float CalculateLARIATDecidedValue(float range) {
 	float decidedValue2 = -((float)pow((double)range, 2) / 16384.0f) + 100.0f;
 
 	//前回のLARIATからのDUALSHOT数による判定値の計算
-	float decidedValue3 = (20.0f*g_Boss1.saveDUALSHOTActionCntForLARIAT) - 100.0f;
+	float decidedValue3 = (100.0f * g_Boss1.saveDUALSHOTActionCntForLARIAT) - (400.0f);
 
 	//平均値による一意な値の決定
 	float decidedValue = (decidedValue1 + decidedValue2 + decidedValue3) / 3;

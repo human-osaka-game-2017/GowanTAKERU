@@ -142,30 +142,30 @@ void SetPlayerMovement() {
 	D3DXVECTOR2 PlayerRightTop;
 	D3DXVECTOR2 playerRightBottom;
 	D3DXVECTOR2 playerLeftBottom;
+	D3DXVECTOR2 playerCenterTop;
+	D3DXVECTOR2 playerCenterBottom;
 	MapNumXY PlayerLeftTopMapNum;
 	MapNumXY PlayerRightTopMapNum;
 	MapNumXY PlayerRightBottomMapNum;
 	MapNumXY PlayerLeftBottomMapNum;
+	MapNumXY playerCenterTopMapNum;
+	MapNumXY playerCenterBottomMapNum;
 
-	if (g_player.beLeft) {
-		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDTH / 2 - 30;
-		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDTH / 2;
-	}
-	else {
-		PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDTH / 2;
-		PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDTH / 2 + 30;
-	}
-	
-	playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
+	PlayerRightTop.x = playerRightBottom.x = g_player.WorldPos.x + PLAYERSIZEWIDTH / 2;
+	PlayerLeftTop.x = playerLeftBottom.x = g_player.WorldPos.x - PLAYERSIZEWIDTH / 2;
+	playerCenterBottom.x = playerCenterTop.x = g_player.WorldPos.x;
+	playerCenterBottom.y = playerLeftBottom.y = playerRightBottom.y = g_player.WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
 
 	MapchipNumberSpecify(&PlayerRightBottomMapNum, &playerRightBottom);
 	MapchipNumberSpecify(&PlayerLeftBottomMapNum, &playerLeftBottom);
+	MapchipNumberSpecify(&playerCenterBottomMapNum, &playerCenterBottom);
 
 	static int frcnt = 0;
 
 	//プレイヤーの足下が床
 	if (MapKindSpecify(&PlayerRightBottomMapNum) != NOTHING ||
-		MapKindSpecify(&PlayerLeftBottomMapNum) != NOTHING) {
+		MapKindSpecify(&PlayerLeftBottomMapNum) != NOTHING ||
+		MapKindSpecify(&playerCenterBottomMapNum) != NOTHING) {
 	
 		g_player.JumpPower = 0.0f;
 		g_player.Jumping = false;
@@ -187,11 +187,15 @@ void SetPlayerMovement() {
 		}
 	}
 
-	PlayerLeftTop.y = PlayerRightTop.y = g_player.WorldPos.y - PLAYERSIZEHEIGHT / 2 + 10 + g_player.JumpPower;
+	//天井に当たった時
+	playerCenterTop.y = PlayerRightTop.y = PlayerLeftTop.y = g_player.WorldPos.y - PLAYERSIZEHEIGHT / 2 + g_player.JumpPower - 1;
 	MapchipNumberSpecify(&PlayerLeftTopMapNum, &PlayerLeftTop);
 	MapchipNumberSpecify(&PlayerRightTopMapNum, &PlayerRightTop);
+	MapchipNumberSpecify(&playerCenterTopMapNum, &playerCenterTop);
 
-	if (MapKindSpecify(&PlayerLeftTopMapNum) == FLOOR || MapKindSpecify(&PlayerRightTopMapNum) != NOTHING) {
+	if (MapKindSpecify(&PlayerLeftTopMapNum) != NOTHING
+		|| MapKindSpecify(&PlayerRightTopMapNum) != NOTHING
+		|| MapKindSpecify(&playerCenterTopMapNum) != NOTHING) {
 		g_player.JumpPower = 0;
 	}
 
@@ -278,7 +282,7 @@ void PlayerReflectMotion() {
 					if (frcnt < SWING_INTERVAL) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x - 27,
+						if (CircleHit(g_player.WindowPos.x - 27.0f - 14.0f,
 							g_player.WindowPos.y + 10,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -301,7 +305,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 2)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x - 30,
+						if (CircleHit(g_player.WindowPos.x - 30.0f - 14.0f,
 							g_player.WindowPos.y - 20,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -324,7 +328,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 3)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x - 27,
+						if (CircleHit(g_player.WindowPos.x - 27 - 14.0f,
 							g_player.WindowPos.y - 50,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -351,7 +355,7 @@ void PlayerReflectMotion() {
 					if (frcnt < SWING_INTERVAL) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x + 27,
+						if (CircleHit(g_player.WindowPos.x + 27.0f + 14.0f,
 							g_player.WindowPos.y + 10,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -374,7 +378,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 2)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x + 30,
+						if (CircleHit(g_player.WindowPos.x + 30.0f + 14.0f,
 							g_player.WindowPos.y - 20,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -397,7 +401,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 3)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x + 27,
+						if (CircleHit(g_player.WindowPos.x + 27.0f +14.0f,
 							g_player.WindowPos.y - 50,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -429,7 +433,7 @@ void PlayerReflectMotion() {
 					if (frcnt < SWING_INTERVAL) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x - 27,
+						if (CircleHit(g_player.WindowPos.x - 27.0f - 14.0f,
 							g_player.WindowPos.y - 50,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -452,7 +456,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 2)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x - 27,
+						if (CircleHit(g_player.WindowPos.x - 27.0f - 14.0f,
 							g_player.WindowPos.y - 20,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -475,7 +479,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 3)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x - 27,
+						if (CircleHit(g_player.WindowPos.x - 27.0f - 14.0f,
 							g_player.WindowPos.y + 10,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -502,7 +506,7 @@ void PlayerReflectMotion() {
 					if (frcnt < SWING_INTERVAL) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x + 27,
+						if (CircleHit(g_player.WindowPos.x + 27.0f +14.0f,
 							g_player.WindowPos.y - 50,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -525,7 +529,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 2)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x + 27,
+						if (CircleHit(g_player.WindowPos.x + 27.0f + 14.0f,
 							g_player.WindowPos.y - 20,
 							armRadius,
 							pSearchBullet->WindowPos.x,
@@ -548,7 +552,7 @@ void PlayerReflectMotion() {
 					else if (frcnt < (SWING_INTERVAL * 3)) {
 
 						//あたり判定
-						if (CircleHit(g_player.WindowPos.x + 27,
+						if (CircleHit(g_player.WindowPos.x + 27.0f + 14.0f,
 							g_player.WindowPos.y + 10,
 							armRadius,
 							pSearchBullet->WindowPos.x,

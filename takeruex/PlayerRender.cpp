@@ -14,31 +14,38 @@ void PlayerRender() {
 		LPDIRECT3DTEXTURE9* pTexture = GetTexture();
 
 		CUSTOMVERTEX Player[] = {
-			{ -PLAYERSIZEWIDTH / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-			{ PLAYERSIZEWIDTH / 2,-PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDTH / 1024.0f - 1 / 1024.0f,0.0f },
-			{ PLAYERSIZEWIDTH / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEWIDTH / 1024.0f - 1 / 1024.0f,PLAYERSIZEHEIGHT / 1024.0f },
-			{ -PLAYERSIZEWIDTH / 2,PLAYERSIZEHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,PLAYERSIZEHEIGHT / 1024.0f }
+			{ -PLAYERSIZEPNGWIDTH / 2,-PLAYERSIZEPNGHEIGHT / 2,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
+			{ PLAYERSIZEPNGWIDTH / 2,-PLAYERSIZEPNGHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEPNGWIDTH / 1024.0f - 1 / 1024.0f,0.0f },
+			{ PLAYERSIZEPNGWIDTH / 2,PLAYERSIZEPNGHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,PLAYERSIZEPNGWIDTH / 1024.0f - 1 / 1024.0f,PLAYERSIZEPNGHEIGHT / 1024.0f },
+			{ -PLAYERSIZEPNGWIDTH / 2,PLAYERSIZEPNGHEIGHT / 2,0.5f,1.0f,0xFFFFFFFF,0.0f,PLAYERSIZEPNGHEIGHT / 1024.0f }
 		};
 
 		CUSTOMVERTEX CurrentDrawVertex[4];
 		for (int i = 0; i < 4; i++) {
 			CurrentDrawVertex[i] = Player[i];
-			CurrentDrawVertex[i].x += player->WindowPos.x;
-			CurrentDrawVertex[i].y += player->WindowPos.y;
 
+			if (player->beLeft) {
+				CurrentDrawVertex[i].x += player->WindowPos.x - 14.0f;
+				CurrentDrawVertex[i].y += player->WindowPos.y - 6.0f;
+			}
+			else {
+				CurrentDrawVertex[i].x += player->WindowPos.x + 14.0f;
+				CurrentDrawVertex[i].y += player->WindowPos.y - 6.0f;
+			}
+			
 			int trimX = player->currentAnimState % 10;
-			int trimY = player->currentAnimState / 10;;
+			int trimY = player->currentAnimState / 10;
 
 			//runswingíÜÇÃó·äOèàóùÅiâÊëúÇÃèÍèäÇ…ÇÊÇÈÇ‡ÇÃÅj
 			if ((RUNDOWNSWING1 <= player->currentAnimState) && (player->currentAnimState <= RUNUPSWING6)) {
-				CurrentDrawVertex[i].tu += PLAYERSIZEWIDTH * trimY / 1024.f;
-				CurrentDrawVertex[i].tv += PLAYERSIZEHEIGHT * trimX / 1024.f;
+				CurrentDrawVertex[i].tu += PLAYERSIZEPNGWIDTH * trimY / 1024.f;
+				CurrentDrawVertex[i].tv += PLAYERSIZEPNGHEIGHT * trimX / 1024.f;
 			}
 			//ÇªÇ§Ç≈Ç»Ç¢Ç»ÇÁ
 			else {
 
-				CurrentDrawVertex[i].tu += PLAYERSIZEWIDTH * trimX / 1024.f;
-				CurrentDrawVertex[i].tv += PLAYERSIZEHEIGHT * trimY / 1024.f;
+				CurrentDrawVertex[i].tu += PLAYERSIZEPNGWIDTH * trimX / 1024.f;
+				CurrentDrawVertex[i].tv += PLAYERSIZEPNGHEIGHT * trimY / 1024.f;
 
 			}
 		}

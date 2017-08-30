@@ -7,12 +7,12 @@
 #include"CommonRender.h"
 #include"BulletControl.h"
 
-#include<time.h>
+#include<d3dx9.h>
 
-#define JUMPV0 -8.03f
+#define JUMPV0 -9.03f
 #define HIGHJUMPV0 -11.1f
-#define BOSS4GRAVITY 0.2f
-#define BOSS4SPEEDMAX 5.0f
+#define BOSS4GRAVITY 0.0234f
+#define BOSS4SPEEDMAX 4.0f
 #define BOSS4SPEED 2.80f
 
 struct Pos {
@@ -47,16 +47,16 @@ void Boss4Init() {
 	int* gimmickData = (int*)malloc(sizeof(int)*MaxX*MaxY);
 
 	switch (stage_ID) {
-	case STAGE_3:
+	case STAGE_4:
 
-		CSVLoad("CSV/mainscene/stage3_gimmick.csv", gimmickData, MaxY, MaxX);//CSV呼び出し
+		CSVLoad("CSV/mainscene/stage4_gimmick.csv", gimmickData, MaxY, MaxX);//CSV呼び出し
 
 		for (int i = 0; i < MaxY; i++) {
 			for (int j = 0; j < MaxX; j++) {
 				if (gimmickData[j + i*MaxX] == BOSS_STAGE4) {
 					g_Boss4.isExistence = true;
 					g_Boss4.WolrdPos.x = TIPSIZE*j;
-					g_Boss4.WolrdPos.y = TIPSIZE*i;
+					g_Boss4.WolrdPos.y = TIPSIZE*i + 5;
 					goto BREAK;
 				}
 			}
@@ -167,9 +167,15 @@ bool Boss4InitialControl() {
 void Boss4BasicControl() {
 
 	//データ群
-	Pos pointA = { 373 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
+	Pos pointA = { 389 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
 	Pos pointB = { 381 * TIPSIZE + (2 / TIPSIZE),16 * TIPSIZE };
-	Pos pointC = { 382 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
+	Pos pointC = { 373 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
+
+	static D3DXVECTOR2 prePos = g_Boss4.WolrdPos;
+	if (prePos != g_Boss4.WolrdPos) {
+		int a = 0;
+	}
+	prePos = g_Boss4.WolrdPos;
 
 	D3DXVECTOR2 LeftTop = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
 	D3DXVECTOR2 RightTop = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
@@ -291,7 +297,7 @@ void Boss4BasicControl() {
 					break;
 				}
 				if (currentPoint == POINT_A) {
-					if (g_Boss4.Boss4JumpState == RIGHTJUMP || g_Boss4.Boss4JumpState == RIGHTHIGHJUMP) {
+					if (g_Boss4.Boss4JumpState == LEFTJUMP || g_Boss4.Boss4JumpState == LEFTHIGHJUMP) {
 						break;
 					}
 				}
@@ -301,7 +307,7 @@ void Boss4BasicControl() {
 					}
 				}
 				if (currentPoint == POINT_C) {
-					if (g_Boss4.Boss4JumpState == LEFTJUMP || g_Boss4.Boss4JumpState == LEFTHIGHJUMP) {
+					if (g_Boss4.Boss4JumpState == RIGHTJUMP || g_Boss4.Boss4JumpState == RIGHTHIGHJUMP) {
 						break;
 					}
 				}
@@ -379,19 +385,4 @@ bool CheckInPoint(const Pos& Point, const D3DXVECTOR2& LeftTop, const D3DXVECTOR
 		}
 	}
 	return false;
-}
-
-//-----------------------------------
-//ランダム生成関数
-//-----------------------------------
-//min<=random<=max
-int Random(int min, int max) {
-	static bool seedrandom = false;
-
-	if (seedrandom == false) {
-		srand((unsigned int)time(NULL));
-		seedrandom = true;
-	}
-
-	return min + rand() % (max + 1);
 }

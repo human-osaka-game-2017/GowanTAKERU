@@ -34,52 +34,70 @@ void HitManage() {
 	Bullet* pFirstBullet = GetFirstBulletAddress();
 	Enemy* enemy = GetEnemyData();
 	
-
 	//プレイヤーとマップの処理
 	static int frcntInvincible;
 
+	D3DXVECTOR2 playerLeftTop;
+	D3DXVECTOR2 playerRightTop;
 	D3DXVECTOR2 playerRightBottom;
 	D3DXVECTOR2 playerLeftBottom;
-	D3DXVECTOR2 playerRightTop;
-	D3DXVECTOR2 playerLeftTop;
-	playerRightTop.x = playerRightBottom.x = player->WorldPos.x + PLAYERSIZEWIDTH / 2 + 1;
-	playerLeftTop.x = playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2 - 1;
-	playerRightBottom.y= playerLeftBottom.y= player->WorldPos.y + PLAYERSIZEHEIGHT / 2 + 1;
-	playerRightTop.y = playerLeftTop.y = player->WorldPos.y - PLAYERSIZEHEIGHT / 2 - 1;
+	D3DXVECTOR2 playerCenterTop;
+	D3DXVECTOR2 playerCenterBottom;
+	D3DXVECTOR2 playerCenterRight;
+	D3DXVECTOR2 playerCenterLeft;
 
 	if (!player->beInvincible) {
-		if (MapKindSpecifyForPos(&playerRightBottom) == UPNEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == UPNEEDLE) {
+
+		//上向き針の判定
+		playerRightBottom.x = player->WorldPos.x + PLAYERSIZEWIDTH / 2.0f;
+		playerLeftBottom.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2.0f;
+		playerCenterBottom.x = player->WorldPos.x;
+		playerRightBottom.y = playerLeftBottom.y = playerCenterBottom.y = player->WorldPos.y + PLAYERSIZEHEIGHT / 2.0f + 1.0f;
+		if (MapKindSpecifyForPos(&playerRightBottom) == UPNEEDLE
+			|| MapKindSpecifyForPos(&playerLeftBottom) == UPNEEDLE
+			|| MapKindSpecifyForPos(&playerCenterBottom) == UPNEEDLE) {
 			player->Hp -= 10;
 			player->beInvincible = true;
 		}
-		if (MapKindSpecifyForPos(&playerRightBottom) == LEFTNEEDLE || MapKindSpecifyForPos(&playerRightTop) == LEFTNEEDLE) {
+
+		//落とし穴の判定
+		if (MapKindSpecifyForPos(&playerRightBottom) == HOLE
+			|| MapKindSpecifyForPos(&playerLeftBottom) == HOLE
+			|| MapKindSpecifyForPos(&playerCenterBottom) == HOLE) {
+			player->Hp = 0;
+		}
+
+		//左向き針の判定
+		playerRightTop.y = player->WorldPos.y - PLAYERSIZEHEIGHT / 2.0f;
+		playerRightBottom.y = player->WorldPos.y + PLAYERSIZEHEIGHT / 2.0f;
+		playerCenterRight.y = player->WorldPos.y;
+		playerRightTop.x = playerRightBottom.x = playerCenterRight.x = player->WorldPos.x + PLAYERSIZEWIDTH / 2.0f + 1.0f;
+		if (MapKindSpecifyForPos(&playerRightBottom) == LEFTNEEDLE
+			|| MapKindSpecifyForPos(&playerRightTop) == LEFTNEEDLE
+			|| MapKindSpecifyForPos(&playerCenterRight) == LEFTNEEDLE) {
 			player->Hp -= 10;
 			player->beInvincible = true;
 		}
+
+		//右向き針の判定
+		playerLeftTop.y = player->WorldPos.y - PLAYERSIZEHEIGHT / 2.0f;
+		playerLeftBottom.y = player->WorldPos.y + PLAYERSIZEHEIGHT / 2.0f;
+		playerCenterLeft.y = player->WorldPos.y;
+		playerLeftTop.x = playerLeftBottom.x = playerCenterLeft.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2.0f - 1.0f;
 		if (MapKindSpecifyForPos(&playerRightBottom) == RIGHTNEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == RIGHTNEEDLE) {
 			player->Hp -= 10;
 			player->beInvincible = true;
 		}
 	}
-	if (MapKindSpecifyForPos(&playerRightBottom) == HOLE || MapKindSpecifyForPos(&playerLeftBottom) == HOLE) {
-		player->Hp = 0;
-	}
 
-	D3DXVECTOR2 tmp = player->WorldPos;
-	tmp.y += 5;
-	if (player->beLeft) {
-		tmp.x -= 15;
-	}
-	else {
-		tmp.x += 15;
-	}
-	PushOutMap(tmp, &player->MovementX, &player->MovementY, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT - 10);
+	//playerとマップの押し出し処理
+	PushOutMap(player->WorldPos, &player->MovementX, &player->MovementY, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT);
 
 	//エネミーとマップの押し出し処理
 	int enemyMax = GetEnemyMax();
 	for (int i = 0; i < enemyMax; i++) {
 		if (enemy[i].beActive && !enemy[i].beDead) {
-			PushOutMapFourPoint(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementY, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT);
+			PushOutMapFourPoint(enemy[i].WorldPos, &enemy[i].MovementX, &enemy[i].MovementY, enemy[i].Width, enemy[i].Height);
 		}
 	}
 
@@ -196,15 +214,8 @@ void HitManage() {
 		}
 
 		//プレイヤーと弾のダメージ計算と無敵時間の考慮
-		D3DXVECTOR2 tmpPlayer = player->WindowPos;
-		if (player->beLeft) {
-			tmpPlayer.x += 15;
-		}
-		else {
-			tmpPlayer.x += -15;
-		}
 		if(!pSearchBullet->wasReflect){
-			if (SquareHit(&tmpPlayer, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size)) {
+			if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size)) {
 
 				if (!player->beInvincible) {
 					//PlayBackSound(SOUND01, false, 100);
@@ -224,7 +235,7 @@ void HitManage() {
 		for (int j = 0; j < enemyMax; j++) {
 			if (enemy[j].beActive == true && enemy[j].beDead == false) {
 				if (pSearchBullet->wasReflect) {
-					if (SquareHit(&pSearchBullet->WindowPos, pFirstBullet->Size, pFirstBullet->Size, &enemy[j].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+					if (SquareHit(&pSearchBullet->WorldPos, pFirstBullet->Size, pFirstBullet->Size, &enemy[j].WorldPos, enemy[j].Width, enemy[j].Height)) {
 
 						enemy[j].Hp -= pSearchBullet->Atk;
 
@@ -243,14 +254,7 @@ void HitManage() {
 	//エネミーとプレイヤーの直接のあたり判定
 	for (int i = 0; i < enemyMax; i++) {
 		if (enemy[i].beActive && !enemy[i].beDead) {
-			D3DXVECTOR2 tmpPlayer = player->WindowPos;
-			if (player->beLeft) {
-				tmpPlayer.x += 15;
-			}
-			else {
-				tmpPlayer.x += -15;
-			}
-			if (SquareHit(&player->WindowPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &enemy[i].WindowPos, ENEMYRESIZEWIDTH, ENEMYRESIZEHEIGHT)) {
+			if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &enemy[i].WorldPos, enemy[i].Width, enemy[i].Height)) {
 
 				if (!player->beInvincible) {
 					player->Hp -= enemy[i].Atk;
@@ -262,14 +266,12 @@ void HitManage() {
 
 	//boss1とプレイヤーの直接のあたり判定
 	if (pBoss1->isActive && !(pBoss1->isDead)) {
-		D3DXVECTOR2 tmpPlayer = player->WorldPos;
+		D3DXVECTOR2 tmpBoss1 = pBoss1->WolrdPos;
 		if (player->beLeft) {
-			tmpPlayer.x += 15;
+			tmpBoss1.y += 40;
 		}
-		else {
-			tmpPlayer.x += -15;
-		}
-		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss1->WolrdPos, BOSS1WIDTH, BOSS1HEIGHT)) {
+
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pBoss1->WolrdPos, BOSS1WIDTH-20, BOSS1HEIGHT - 20)) {
 
 			if (!player->beInvincible) {
 				player->Hp -= pBoss1->Atk;
@@ -278,14 +280,7 @@ void HitManage() {
 		}
 	}
 	if (pBoss2->isActive && !(pBoss2->isDead)) {
-		D3DXVECTOR2 tmpPlayer = player->WorldPos;
-		if (player->beLeft) {
-			tmpPlayer.x += 15;
-		}
-		else {
-			tmpPlayer.x += -15;
-		}
-		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss2->WorldPos, BOSS2WIDTH, BOSS2HEIGHT)) {
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pBoss2->WorldPos, BOSS2WIDTH, BOSS2HEIGHT)) {
 
 			if (!player->beInvincible) {
 				player->Hp -= pBoss2->Atk;
@@ -296,14 +291,7 @@ void HitManage() {
 
 	//boss3とプレイヤーの直接のあたり判定
 	if (pBoss3->isActive && !(pBoss3->isDead)) {
-		D3DXVECTOR2 tmpPlayer = player->WorldPos;
-		if (player->beLeft) {
-			tmpPlayer.x += 15;
-		}
-		else {
-			tmpPlayer.x += -15;
-		}
-		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss3->WolrdPos, BOSS3OBJWIDTH, BOSS3OBJHEIGHT)) {
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pBoss3->WolrdPos, BOSS3OBJWIDTH, BOSS3OBJHEIGHT)) {
 
 			if (!player->beInvincible) {
 				player->Hp -= pBoss3->Atk;
@@ -314,14 +302,7 @@ void HitManage() {
 
 	//boss4とプレイヤーの直接のあたり判定
 	if (pBoss4->isActive && !(pBoss4->isDead)) {
-		D3DXVECTOR2 tmpPlayer = player->WorldPos;
-		if (player->beLeft) {
-			tmpPlayer.x += 15;
-		}
-		else {
-			tmpPlayer.x += -15;
-		}
-		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH - 30, PLAYERSIZEHEIGHT, &pBoss4->WolrdPos, BOSS4WIDTH, BOSS4HEIGHT)) {
+		if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pBoss4->WolrdPos, BOSS4WIDTH, BOSS4HEIGHT)) {
 
 			if (!player->beInvincible) {
 				player->Hp -= pBoss1->Atk;
@@ -525,7 +506,7 @@ void CollisionMapForBullet() {
 
 		if (MapKindSpecifyForPos(&Left) != NOTHING) {
 
-			if (MapKindSpecifyForPos(&Left) != RIGHTNEEDLE) {
+			if (MapKindSpecifyForPos(&Left) == RIGHTNEEDLE) {
 				DeleteBullet(&pSearchBullet);
 				continue;
 			}
@@ -550,7 +531,7 @@ void CollisionMapForBullet() {
 
 		else if (MapKindSpecifyForPos(&Right) != NOTHING) {
 
-			if (MapKindSpecifyForPos(&Left) != LEFTNEEDLE) {
+			if (MapKindSpecifyForPos(&Right) == LEFTNEEDLE) {
 				DeleteBullet(&pSearchBullet);
 				continue;
 			}
@@ -574,7 +555,7 @@ void CollisionMapForBullet() {
 		}
 		else if (MapKindSpecifyForPos(&Bottom) != NOTHING) {
 
-			if (MapKindSpecifyForPos(&Left) != UPNEEDLE) {
+			if (MapKindSpecifyForPos(&Bottom) == UPNEEDLE) {
 				DeleteBullet(&pSearchBullet);
 				continue;
 			}

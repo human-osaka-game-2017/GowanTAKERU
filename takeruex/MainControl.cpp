@@ -11,8 +11,8 @@
 #include"Boss2Control.h"
 #include"Boss3Control.h"
 #include"Boss4Control.h"
+#include<time.h>
 
-#include<d3dx9.h>
 
 void MainControl() {
 
@@ -74,6 +74,21 @@ double Calculate_rad(float x1, float y1, float x2, float y2) {
 float Calculate_distance(float x1, float y1, float x2, float y2) {
 
 	return (float)sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+}
+
+//-----------------------------------
+//ƒ‰ƒ“ƒ_ƒ€¶¬ŠÖ”
+//-----------------------------------
+//min<=random<=max
+int Random(int min, int max) {
+	static bool seedrandom = false;
+
+	if (seedrandom == false) {
+		srand((unsigned int)time(NULL));
+		seedrandom = true;
+	}
+
+	return min + rand() % (max + 1);
 }
 
 //struct VertexInfo {
