@@ -6,6 +6,7 @@
 #include"PlayerControl.h"
 #include"CommonRender.h"
 #include"BulletControl.h"
+#include"DirectXSound.h"
 
 #include<d3dx9.h>
 
@@ -93,11 +94,13 @@ BREAK:
 		g_Boss4.isLeft = true;
 		g_Boss4.isDead = false;
 		g_Boss4.isActive = false;
+		g_Boss4.goNextStage = false;
 
 	}
 	else {
 		g_Boss4.isDead = false;
 		g_Boss4.isActive = false;
+		g_Boss4.goNextStage = false;
 	}
 
 	free(gimmickData);
@@ -105,29 +108,42 @@ BREAK:
 
 void Boss4Control() {
 
-	if (g_Boss4.isExistence && !g_Boss4.isDead) {
-
-		//活動状態かチェック
-		D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
-		D3DXVECTOR2* basePoint = GetBasePoint();
-		g_Boss4.WindowPos.x = g_Boss4.WolrdPos.x - (basePoint->x - BasePoint0.x);
-		g_Boss4.WindowPos.y = g_Boss4.WolrdPos.y - (basePoint->y - BasePoint0.y);
-		if (-(2 * TIPSIZE) < g_Boss4.WindowPos.x && g_Boss4.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
-			-(2 * TIPSIZE) < g_Boss4.WindowPos.y && g_Boss4.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
-			g_Boss4.isActive = true;
-		}
-		else {
-			g_Boss4.isActive = false;
-		}
-
-		//活動状態である
-		if (g_Boss4.isActive) {
-			if (!g_isControlInitial) {
-				g_isControlInitial = Boss4InitialControl();
+	if (g_Boss4.isExistence) {
+		if (!g_Boss4.isDead) {
+			//活動状態かチェック
+			D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+			D3DXVECTOR2* basePoint = GetBasePoint();
+			g_Boss4.WindowPos.x = g_Boss4.WolrdPos.x - (basePoint->x - BasePoint0.x);
+			g_Boss4.WindowPos.y = g_Boss4.WolrdPos.y - (basePoint->y - BasePoint0.y);
+			if (-(2 * TIPSIZE) < g_Boss4.WindowPos.x && g_Boss4.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
+				-(2 * TIPSIZE) < g_Boss4.WindowPos.y && g_Boss4.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
+				g_Boss4.isActive = true;
 			}
 			else {
-				Boss4BasicControl();
+				g_Boss4.isActive = false;
 			}
+
+			//活動状態である
+			if (g_Boss4.isActive) {
+				if (!g_isControlInitial) {
+					g_isControlInitial = Boss4InitialControl();
+				}
+				else {
+					Boss4BasicControl();
+				}
+			}
+		}
+		else {
+			static int frcnt = 0;
+			if (frcnt == 0) {
+				StopSound(MAINSCENE_BOSSBGM01);
+				DeleteALLBullet();
+			}
+			if (frcnt == 300) {
+				frcnt = 0;
+				g_Boss4.goNextStage = true;
+			}
+			frcnt++;
 		}
 	}
 }

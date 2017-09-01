@@ -6,7 +6,7 @@
 
 #define GAMECLEARWIDTH 1280
 #define GAMECLEARHEIGTH 3000
-#define ROLLSPEED 5
+#define ROLLSPEED 2
 
 struct GameClearObj {
 	//‚±‚Ì“_‚ğ¶‰º‚Æ‚µ‚Ä‰æ‘œ‚ª“WŠJ‚³‚ê‚é

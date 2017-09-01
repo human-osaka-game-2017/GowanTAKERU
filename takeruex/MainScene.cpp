@@ -82,14 +82,17 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		}
 
 		//stage‘JˆÚ
-		if (pBoss1->isExistence&&pBoss1->isDead) {
-			g_isScreenTransition = false;
+		if (pBoss1->isExistence&&pBoss1->goNextStage) {
+			/*g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
 				step++;
-				StopBGM(stage_ID, true);
 				StageSelect(STAGE_2);
-			}
+			}*/
+			StopBGM(stage_ID, true);
+			g_isScreenTransition = true;
+			blackOutData->BlackOutflg = true;
+			nextscene = GAMECLEARSCENE;
 		}
 
 		if (pBoss2->isExistence&&pBoss2->isDead) {
@@ -97,22 +100,20 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
 				step++;
-				StopBGM(stage_ID, true);
 				StageSelect(STAGE_3);
 			}
 		}
 
-		if (pBoss3->isExistence&&pBoss3->isDead) {
+		if (pBoss3->isExistence&&pBoss3->goNextStage) {
 			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
 				step++;
-				StopBGM(stage_ID, true);
 				StageSelect(STAGE_4);
 			}
 		}
 
-		if (pBoss4->isDead&&pBoss4->isExistence) {
+		if (pBoss4->goNextStage&&pBoss4->isExistence) {
 			StopBGM(stage_ID, true);
 			g_isScreenTransition = true;
 			blackOutData->BlackOutflg = true;
@@ -121,7 +122,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		break;
 
 	case 2:
-		//DeleteALLBullet();
+		DeleteALLBullet();
 		FreeEnemyData();
 		FreeMapData();
 		ReleaseTexture(MAINSCENE_TEXMAX);

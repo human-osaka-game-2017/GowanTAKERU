@@ -28,6 +28,7 @@ struct Boss1Data {
 	bool isDead;
 	bool isActive;
 	bool isExistence;//ë∂ç›ÇµÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©
+	bool goNextStage;
 };
 
 Boss1Data* GetBoss1Data();

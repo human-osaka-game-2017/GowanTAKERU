@@ -6,6 +6,7 @@
 #include"MainControl.h"
 #include"BulletControl.h"
 #include"MapControl.h"
+#include"DirectXSound.h"
 
 #define DUALSHOTINTERVALS 60
 #define MAXHP 70.0f
@@ -84,10 +85,12 @@ BREAK:
 		g_Boss1.isLeft = true;
 		g_Boss1.isDead = false;
 		g_Boss1.isActive = false;
+		g_Boss1.goNextStage = false;
 	}
 	else {
 		g_Boss1.isDead = false;
 		g_Boss1.isActive = false;
+		g_Boss1.goNextStage = false;
 	}
 
 	free(gimmickData);
@@ -95,109 +98,122 @@ BREAK:
 
 
 void Boss1Control() {
-	
-	if (g_Boss1.isExistence && !g_Boss1.isDead) {
+	if (g_Boss1.isExistence) {
+		if (!g_Boss1.isDead) {
 
-		//活動状態かチェック
-		D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
-		D3DXVECTOR2* basePoint = GetBasePoint();
-		g_Boss1.WindowPos.x = g_Boss1.WolrdPos.x - (basePoint->x - BasePoint0.x);
-		g_Boss1.WindowPos.y = g_Boss1.WolrdPos.y - (basePoint->y - BasePoint0.y);
-		if (-(2 * TIPSIZE) < g_Boss1.WindowPos.x && g_Boss1.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
-			-(2 * TIPSIZE) < g_Boss1.WindowPos.y && g_Boss1.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
-			g_Boss1.isActive = true;
-		}
-		else {
-			g_Boss1.isActive = false;
-		}
-
-		//活動状態である
-		if (g_Boss1.isActive) {
-
-			//知覚する
-			Player* pPlayer = GetplayerData();
-
-			float range = Calculate_distance(g_Boss1.WolrdPos.x, g_Boss1.WolrdPos.y, pPlayer->WorldPos.x, pPlayer->WorldPos.y);
-			if (range < 0) {
-				range *= -1;
+			//活動状態かチェック
+			D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+			D3DXVECTOR2* basePoint = GetBasePoint();
+			g_Boss1.WindowPos.x = g_Boss1.WolrdPos.x - (basePoint->x - BasePoint0.x);
+			g_Boss1.WindowPos.y = g_Boss1.WolrdPos.y - (basePoint->y - BasePoint0.y);
+			if (-(2 * TIPSIZE) < g_Boss1.WindowPos.x && g_Boss1.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
+				-(2 * TIPSIZE) < g_Boss1.WindowPos.y && g_Boss1.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
+				g_Boss1.isActive = true;
 			}
-			
-			int bulletNum = 0;
-
-			Bullet* pFirstBullet = GetFirstBulletAddress();
-			for (Bullet* SearchBullet = pFirstBullet->next; SearchBullet !=NULL; SearchBullet= SearchBullet->next) {
-				
-				bulletNum++;
+			else {
+				g_Boss1.isActive = false;
 			}
 
-			//意思決定
-			if (g_Boss1.Boss1State == BOSS1_NON) {
-				g_Boss1.Boss1State = DecidedBoss1State(range, bulletNum);
-			}
+			//活動状態である
+			if (g_Boss1.isActive) {
 
-			//行動
-			static int DUALSHOTMiddleFrcnt = 0;
-			switch (g_Boss1.Boss1State) {
-			case NORMALSHOT:
-				BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
-				g_Boss1.saveActionCntForNORMALSHOT++;
-				g_Boss1.saveShotFrmcnt = 0;
-				g_Boss1.Boss1State = BOSS1_NON;
-				break;
+				//知覚する
+				Player* pPlayer = GetplayerData();
 
-			case DUALSHOT:
-				if (DUALSHOTMiddleFrcnt == 0) {
-					BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
+				float range = Calculate_distance(g_Boss1.WolrdPos.x, g_Boss1.WolrdPos.y, pPlayer->WorldPos.x, pPlayer->WorldPos.y);
+				if (range < 0) {
+					range *= -1;
 				}
 
-				DUALSHOTMiddleFrcnt++;
+				int bulletNum = 0;
 
-				if (DUALSHOTMiddleFrcnt == DUALSHOTINTERVALS) {
-					g_Boss1.saveActionCntForDUALSHOT++;
+				Bullet* pFirstBullet = GetFirstBulletAddress();
+				for (Bullet* SearchBullet = pFirstBullet->next; SearchBullet != NULL; SearchBullet = SearchBullet->next) {
+
+					bulletNum++;
+				}
+
+				//意思決定
+				if (g_Boss1.Boss1State == BOSS1_NON) {
+					g_Boss1.Boss1State = DecidedBoss1State(range, bulletNum);
+				}
+
+				//行動
+				static int DUALSHOTMiddleFrcnt = 0;
+				switch (g_Boss1.Boss1State) {
+				case NORMALSHOT:
+					BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
+					g_Boss1.saveActionCntForNORMALSHOT++;
 					g_Boss1.saveShotFrmcnt = 0;
 					g_Boss1.Boss1State = BOSS1_NON;
-					DUALSHOTMiddleFrcnt = 0;
+					break;
+
+				case DUALSHOT:
+					if (DUALSHOTMiddleFrcnt == 0) {
+						BulletCreate(g_Boss1.WolrdPos, BULLETTARGET1);
+					}
+
+					DUALSHOTMiddleFrcnt++;
+
+					if (DUALSHOTMiddleFrcnt == DUALSHOTINTERVALS) {
+						g_Boss1.saveActionCntForDUALSHOT++;
+						g_Boss1.saveShotFrmcnt = 0;
+						g_Boss1.Boss1State = BOSS1_NON;
+						DUALSHOTMiddleFrcnt = 0;
+						if (g_Boss1.isLeft) {
+							BulletCreate(g_Boss1.WolrdPos, BULLETTARGET2, -30.0f);
+						}
+						else {
+							BulletCreate(g_Boss1.WolrdPos, BULLETTARGET2, 30.0f);
+						}
+					}
+					break;
+
+				case LARIAT:
+					if (g_Boss1.a < BOSS1MAXSPEED) {
+						g_Boss1.a += 0.2;
+					}
+
 					if (g_Boss1.isLeft) {
-						BulletCreate(g_Boss1.WolrdPos, BULLETTARGET2,-30.0f);
+						g_Boss1.MovementX += -g_Boss1.a;
+						D3DXVECTOR2 boss1Left = g_Boss1.WolrdPos;
+						boss1Left.x = g_Boss1.WolrdPos.x - (BOSS1WIDTH / 2) + g_Boss1.MovementX;
+						if (MapKindSpecifyForPos(&boss1Left) != NOTHING) {
+							g_Boss1.Boss1State = BOSS1_NON;
+							g_Boss1.a = 0;
+							g_Boss1.saveActionCntForLARIAT++;
+							g_Boss1.isLeft = false;
+						}
 					}
 					else {
-						BulletCreate(g_Boss1.WolrdPos, BULLETTARGET2,30.0f);
+						g_Boss1.MovementX += g_Boss1.a;
+						D3DXVECTOR2 boss1Right = g_Boss1.WolrdPos;
+						boss1Right.x = g_Boss1.WolrdPos.x + (BOSS1WIDTH / 2) + g_Boss1.MovementX;
+						if (MapKindSpecifyForPos(&boss1Right) != NOTHING) {
+							g_Boss1.Boss1State = BOSS1_NON;
+							g_Boss1.a = 0;
+							g_Boss1.saveActionCntForLARIAT++;
+							g_Boss1.isLeft = true;
+						}
 					}
+					break;
 				}
-				break;
 
-			case LARIAT:
-				if (g_Boss1.a < BOSS1MAXSPEED) {
-					g_Boss1.a += 0.2;
-				}
-
-				if (g_Boss1.isLeft) {
-					g_Boss1.MovementX += -g_Boss1.a;
-					D3DXVECTOR2 boss1Left = g_Boss1.WolrdPos;
-					boss1Left.x = g_Boss1.WolrdPos.x - (BOSS1WIDTH / 2) + g_Boss1.MovementX;
-					if (MapKindSpecifyForPos(&boss1Left) != NOTHING) {
-						g_Boss1.Boss1State = BOSS1_NON;
-						g_Boss1.a = 0;
-						g_Boss1.saveActionCntForLARIAT++;
-						g_Boss1.isLeft = false;
-					}
-				}
-				else {
-					g_Boss1.MovementX += g_Boss1.a;
-					D3DXVECTOR2 boss1Right = g_Boss1.WolrdPos;
-					boss1Right.x = g_Boss1.WolrdPos.x + (BOSS1WIDTH / 2) + g_Boss1.MovementX;
-					if (MapKindSpecifyForPos(&boss1Right) != NOTHING) {
-						g_Boss1.Boss1State = BOSS1_NON;
-						g_Boss1.a = 0;
-						g_Boss1.saveActionCntForLARIAT++;
-						g_Boss1.isLeft = true;
-					}
-				}
-				break;
+				g_Boss1.MovementY = 20;
+				g_Boss1.saveShotFrmcnt++;
 			}
-
-			g_Boss1.MovementY = 20;
-			g_Boss1.saveShotFrmcnt++;
+		}
+		else {
+			static int frcnt = 0;
+			if (frcnt == 0) {
+				StopSound(MAINSCENE_BOSSBGM01);
+				DeleteALLBullet();
+			}
+			if (frcnt == 300) {
+				frcnt = 0;
+				g_Boss1.goNextStage = true;
+			}
+			frcnt++;
 		}
 	}
 }

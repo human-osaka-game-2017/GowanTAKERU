@@ -5,6 +5,7 @@
 #include"GameClearRender.h"
 #include"DirectXGraphics.h"
 #include"BlackOutRender.h"
+#include"DirectXSound.h"
 
 void InitGameClear(GameClearObj* gameclear);
 void GameClearRender(bool pushkey, GameClearObj* pGameclear);
@@ -24,13 +25,15 @@ SCENE_ID RunGameClearScene(bool willbetrancefar) {
 	if (willbetrancefar) {
 		step = 2;
 	}
-
+	static int frcnt = 0;
 	switch (step) {
 	case 0:
 		GameClearSceneLoad();
 		nextsceneflg = false;
 		InitGameClear(&gameClear);
+		PlayBackSound(GAMECLEAR_BGM01, false, 100);
 		step++;
+		frcnt = 0;
 		break;
 
 	case 1:
@@ -39,11 +42,12 @@ SCENE_ID RunGameClearScene(bool willbetrancefar) {
 			nextscene_ID = TITLESCENE;
 			nextsceneflg = true;
 		}
-
-		if (gameClear.Pos.y > DISPLAY_HEIGHT) {
-			gameClear.Pos.y += -ROLLSPEED;
+		if (frcnt > 180) {
+			if (gameClear.Pos.y > DISPLAY_HEIGHT) {
+				gameClear.Pos.y += -ROLLSPEED;
+			}
 		}
-
+		frcnt++;
 		GameClearRender(nextsceneflg,&gameClear);
 
 		break;

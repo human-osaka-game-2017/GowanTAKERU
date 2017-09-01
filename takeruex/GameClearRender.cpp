@@ -28,10 +28,10 @@ void GameCleaRollRender(GameClearObj* pGameClear) {
 }
 
 
-#define GAMECLEARPUSH_Z_KEY_HEIGHT 250
-#define GAMECLEARPUSH_Z_KEY_WIDTH 800
-#define GAMECLEARPUSH_Z_KEY_X 640
-#define GAMECLEARPUSH_Z_KEY_Y 525
+#define GAMECLEARPUSH_Z_KEY_HEIGHT 100
+#define GAMECLEARPUSH_Z_KEY_WIDTH 320
+#define GAMECLEARPUSH_Z_KEY_X 1100
+#define GAMECLEARPUSH_Z_KEY_Y 650
 #define FADEFRM 180
 
 void GameClearPushZkeyRender(bool pushKey) {

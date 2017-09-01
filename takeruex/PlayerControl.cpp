@@ -134,6 +134,7 @@ void SetPlayerMovement() {
 	KeyCheck(&Key[KEY_LEFT], DIK_LEFT);
 	KeyCheck(&Key[KEY_RIGHT], DIK_RIGHT);
 	KeyCheck(&Key[KEY_C], DIK_C);
+	KeyCheck(&Key[KEY_UP], DIK_UP);
 
 
 	if (Key[KEY_LEFT] == KEY_ON) {
@@ -188,7 +189,7 @@ void SetPlayerMovement() {
 		g_player.Jumping = false;
 		frcnt = 0;
 
-		if (Key[KEY_C] == KEY_PUSH) {
+		if (Key[KEY_C] == KEY_PUSH || Key[KEY_UP] == KEY_PUSH) {
 			g_player.JumpPower = PLAYERJUMPPOWER;
 			g_player.Jumping = true;
 			PlayBackSound(MAINSCENE_SE_JUMP, false, 10);
@@ -198,7 +199,7 @@ void SetPlayerMovement() {
 	if (g_player.Jumping) {
 		frcnt++;
 		if (frcnt != 0 && frcnt < 15) {
-			if (Key[KEY_C] == KEY_ON) {
+			if (Key[KEY_C] == KEY_ON || Key[KEY_UP] == KEY_ON) {
 				g_player.JumpPower -= 0.25;
 			}
 		}

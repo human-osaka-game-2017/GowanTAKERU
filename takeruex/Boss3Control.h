@@ -34,6 +34,7 @@ struct Boss3Data {
 	bool isDead;
 	bool isActive;
 	bool isExistence;//ë∂ç›ÇµÇƒÇ¢ÇÈÇ©Ç«Ç§Ç©
+	bool goNextStage;
 };
 
 Boss3Data* GetBoss3Data();

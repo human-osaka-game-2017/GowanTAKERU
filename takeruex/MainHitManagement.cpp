@@ -216,19 +216,25 @@ void HitManage() {
 		}
 
 		//プレイヤーと弾のダメージ計算と無敵時間の考慮
+		bool waitTime = false;
+		if (pBoss1->goNextStage || pBoss3->goNextStage || pBoss4->goNextStage) {
+			waitTime = true;
+		}
 		if(!pSearchBullet->wasReflect){
-			if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size)) {
+			if (!waitTime) {
+				if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size)) {
 
-				if (!player->beInvincible) {
-					//PlayBackSound(SOUND01, false, 100);
+					if (!player->beInvincible) {
+						//PlayBackSound(SOUND01, false, 100);
 
-					player->Hp -= pSearchBullet->Atk;
+						player->Hp -= pSearchBullet->Atk;
 
-					player->beInvincible = true;
+						player->beInvincible = true;
+					}
+
+					DeleteBullet(&pSearchBullet);
+					continue;
 				}
-
-				DeleteBullet(&pSearchBullet);
-				continue;
 			}
 		}
 
@@ -256,7 +262,7 @@ void HitManage() {
 	//エネミーとプレイヤーの直接のあたり判定
 	for (int i = 0; i < enemyMax; i++) {
 		if (enemy[i].beActive && !enemy[i].beDead) {
-			if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &enemy[i].WorldPos, enemy[i].Width, enemy[i].Height)) {
+			if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT - 10.0f, &enemy[i].WorldPos, enemy[i].Width, enemy[i].Height)) {
 
 				if (!player->beInvincible) {
 					player->Hp -= enemy[i].Atk;

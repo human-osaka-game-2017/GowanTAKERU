@@ -274,9 +274,9 @@ void DeleteALLBullet() {
 
 		//ÅŒã”ö‚ÌŽž
 		if (pSearchBullet->next == NULL) {
+			g_firstBullet.next = NULL;
 			//g_firstBullet‚Ímalloc‚¶‚á‚È‚¢‚©‚çŠJ•ú‚µ‚È‚­‚Ä‚¢‚¢
 			if (pSearchBullet == &g_firstBullet) {
-				int a = 0;
 				break;
 			}
 			free(pSearchBullet);
@@ -284,6 +284,9 @@ void DeleteALLBullet() {
 		}
 
 		pSearchBullet = pSearchBullet->next;
-		free(pSearchBullet->previous);
+		//g_firstBullet‚Ímalloc‚¶‚á‚È‚¢‚©‚çŠJ•ú‚µ‚È‚­‚Ä‚¢‚¢
+		if (pSearchBullet->previous != &g_firstBullet) {
+			free(pSearchBullet->previous);
+		}
 	}
 }
