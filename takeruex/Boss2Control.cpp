@@ -21,6 +21,9 @@ void UPDOWN_MOVE();
 void HitMove();
 
 Boss2Data g_Boss2;
+static int g_GoPosBFrcnt = 0;
+static int g_HitMoveFrcnt = 0;
+static bool g_Goleft = true;
 
 Boss2Data* GetBoss2Data() {
 	return &g_Boss2;
@@ -71,6 +74,7 @@ void Boss2Init() {
 	}
 BREAK:
 	if (g_Boss2.isExistence) {
+		SetStopScrollPos(g_Boss2.WorldPos.x);
 		g_Boss2.MovementX = g_Boss2.MovementY = 0;
 		g_Boss2.Hp = 70;
 		g_Boss2.Atk = 20;
@@ -81,6 +85,10 @@ BREAK:
 		g_Boss2.goNextStage = false;
 		g_Boss2.lastbullet = NOTHING;
 		g_Boss2.boss2State = GOPOSB;
+
+		g_GoPosBFrcnt = 0;
+		g_HitMoveFrcnt = 0;
+		g_Goleft = true;
 	}
 	else {
 		g_Boss2.isDead = false;
@@ -111,7 +119,7 @@ void Boss2Control() {
 			//äàìÆèÛë‘Ç≈Ç†ÇÈ
 			if (g_Boss2.isActive) {
 
-				if (g_Boss2.hasDamage) {
+				if (g_Boss2.hasDamage && g_Boss2.boss2State != GOPOSB) {
 					g_Boss2.boss2State = GOLEFT;
 				}
 
@@ -158,37 +166,34 @@ void MoveBoss2() {
 
 void GoPosB() {
 
-	static int frcnt = 0;
-	static bool goleft = true;
-
-	if ((frcnt % 12) == 0) {
+	if ((g_GoPosBFrcnt % 12) == 0) {
 		BulletCreate(g_Boss2.WorldPos, HOMING);
 	}
 
-	if (goleft) {
+	if (g_Goleft) {
 		g_Boss2.MovementX -= SPEED_X;
 	}
 	else {
 		g_Boss2.MovementY += SPEED_Y;
 	}
 
-	if (frcnt == 26) {
-		goleft = false;
+	if (g_GoPosBFrcnt == 26) {
+		g_Goleft = false;
 	}
 
-	if (frcnt == 85) {
+	if (g_GoPosBFrcnt == 85) {
 		g_Boss2.boss2State = UDMOVE;
-		frcnt = 0;
+		g_GoPosBFrcnt = 0;
 	}
-	frcnt++;
+	g_GoPosBFrcnt++;
 }
 
 void UPDOWN_MOVE() {
 
-	D3DXVECTOR2 LeftTop = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) - 1 };
-	D3DXVECTOR2 RightTop = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) - 1 };
-	D3DXVECTOR2 LeftBottom = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
-	D3DXVECTOR2 RightBottom = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
+	//D3DXVECTOR2 LeftTop = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) - 1 };
+	//D3DXVECTOR2 RightTop = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) - 1 };
+	//D3DXVECTOR2 LeftBottom = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
+	//D3DXVECTOR2 RightBottom = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y + BOSS2HEIGHT / 2) + 1 };
 
 	static int frcnt = 0;
 	if (frcnt%120 == 60) {
@@ -215,38 +220,31 @@ void UPDOWN_MOVE() {
 }
 
 void HitMove() {
-	Pos pointB = { 539 * TIPSIZE,20 * TIPSIZE };
-	static int frcnt = 0;
-	static bool right = false;
-	if (6 < frcnt) {
-		if (frcnt == 24) {
-			BulletCreate(g_Boss2.WorldPos, HOMING);
-		}
-		if (frcnt == 54) {
-			BulletCreate(g_Boss2.WorldPos, BULLETTARGET3);
-		}
-		if (frcnt == 84) {
-			BulletCreate(g_Boss2.WorldPos, BULLETTARGET3);
-		}
 
-		if (g_Boss2.WorldPos.x < pointB.posX - 210) {
-			right = true;
-		}
+	if (6 < g_HitMoveFrcnt) {
 
-		if (right) {
-			if (g_Boss2.WorldPos.x > pointB.posX) {
-				frcnt = 0;
-				right = false;
-				g_Boss2.hasDamage = false;
-				g_Boss2.boss2State = UDMOVE;
-			}
-			else{
-				g_Boss2.MovementX = SPEED_X;
-			}
-		}
-		else {
+		if (g_HitMoveFrcnt < 48) {
 			g_Boss2.MovementX = -SPEED_X;
 		}
+		else if(g_HitMoveFrcnt < 90){
+			g_Boss2.MovementX = SPEED_X;
+		}
+
+		if (g_HitMoveFrcnt == 30) {
+			BulletCreate(g_Boss2.WorldPos, HOMING);
+		}
+
+		if (g_HitMoveFrcnt == 60) {
+			BulletCreate(g_Boss2.WorldPos, BULLETTARGET3);
+		}
+
+		if (g_HitMoveFrcnt == 90) {
+			BulletCreate(g_Boss2.WorldPos, BULLETTARGET3);
+			g_HitMoveFrcnt = 0;
+			g_Boss2.hasDamage = false;
+			g_Boss2.boss2State = UDMOVE;
+		}
 	}
-	frcnt++;
+
+	g_HitMoveFrcnt++;
 }
