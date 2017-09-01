@@ -83,19 +83,15 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 
 		//stage‘JˆÚ
 		if (pBoss1->isExistence&&pBoss1->goNextStage) {
-			/*g_isScreenTransition = false;
+			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {
 				step++;
 				StageSelect(STAGE_2);
-			}*/
-			StopBGM(stage_ID, true);
-			g_isScreenTransition = true;
-			blackOutData->BlackOutflg = true;
-			nextscene = GAMECLEARSCENE;
+			}
 		}
 
-		if (pBoss2->isExistence&&pBoss2->isDead) {
+		if (pBoss2->isExistence&&pBoss2->goNextStage) {
 			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 			if (blackOutData->BlackOutNextState == BLACKOUT) {

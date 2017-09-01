@@ -7,9 +7,12 @@
 #include"CommonRender.h"
 #include"DirectXSound.h"
 #include"BulletControl.h"
+#include"MainControl.h"
 
 Boss3Data g_Boss3;
 static int g_Frcnt = 0;
+static int g_shotCnt = 0;
+
 
 Boss3Data* GetBoss3Data() {
 	return &g_Boss3;
@@ -72,6 +75,7 @@ BREAK:
 		g_Boss3.goNextStage = false;
 
 		g_Frcnt = 0;
+		g_shotCnt = 0;
 	}
 	else {
 		g_Boss3.isDead = false;
@@ -101,14 +105,60 @@ void Boss3Control() {
 			}
 
 			if (g_Boss3.isActive) {
-				if (!(g_Frcnt % 180)) {
-					if (g_Frcnt == 900) {
-						BulletCreate(g_Boss3.WolrdPos, NONREFLECTTARGET2);
-						g_Frcnt = 0;
+
+				static int shotInterval = 78.0f *  (Random(70, 130) / 100.0f);
+
+				if (g_Frcnt == shotInterval) {
+
+					shotInterval = 78.0f*(Random(70, 130) / 100.0f);
+
+					//”­ŽËˆÊ’u‚ðŒˆ‚ß‚é
+					D3DXVECTOR2 tmpPos;
+					tmpPos = g_Boss3.WolrdPos;
+
+					//’e‚ð‘Å‚Â
+					if (g_shotCnt % 10 == 9) {
+						if (g_Boss3.isLeft) {
+							tmpPos.x += 32.0f;
+							tmpPos.y += -20.0f;
+						}
+						else {
+							tmpPos.x += -32.0f;
+							tmpPos.y += -20.0f;
+						}
+						BulletCreate(tmpPos, NONREFLECTTARGET2);
 					}
 					else {
-						BulletCreate(g_Boss3.WolrdPos, BULLETTARGET3);
+						if (g_Boss3.isLeft) {
+							tmpPos.x += 32.0f;
+							tmpPos.y += -20.0f;
+							if (g_shotCnt % 3 == 0) {
+								BulletCreate(tmpPos, BULLETNORMAL1,164.8f);
+							}
+							else if(g_shotCnt % 3 == 1){
+								BulletCreate(tmpPos, BULLETNORMAL1,120.6f);
+							}
+							else {
+								BulletCreate(tmpPos, BULLETTARGET3);
+							}
+						}
+						else {
+							tmpPos.x += -32.0f;
+							tmpPos.y += -20.0f;
+							if (g_shotCnt % 3 == 0) {
+								BulletCreate(tmpPos, BULLETNORMAL1,59.4f);
+							}
+							else if(g_shotCnt % 3 == 1){
+								BulletCreate(tmpPos, BULLETNORMAL1,15.2f);
+							}
+							else {
+								BulletCreate(tmpPos, BULLETTARGET3);
+							}
+						}
 					}
+
+					g_shotCnt++;
+					g_Frcnt = 0;
 				}
 
 				Player* pPlayer = GetplayerData();

@@ -23,6 +23,7 @@ struct Boss2Data {
 	bool isDead;//生死
 	bool isActive;//描画アクティブかどうか
 	bool isExistence;//存在しているかどうか
+	bool goNextStage;
 	int lastbullet;//前に打った球がどれか記憶する
 };
 

@@ -59,7 +59,7 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind, float
 
 	case BULLETNORMAL1:
 		newBullet->ReflectMax = 5;
-		newBullet->Speed = 5.0f;
+		newBullet->Speed = 6.0f;
 		newBullet->Atk = 10;
 		newBullet->Size = 22;
 		newBullet->SaveCoordinate = pPlayer->WindowPos;
@@ -175,12 +175,13 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind, float
 			newBullet->SaveCoordinate.x,
 			newBullet->SaveCoordinate.y
 		);
+		break;
 
 	case NONREFLECTTARGET2:
 		newBullet->ReflectMax = 3;
 		newBullet->Speed = 5.0f;
 		newBullet->Atk = 25;
-		newBullet->Size = 22;
+		newBullet->Size = 44;
 		newBullet->SaveCoordinate = pPlayer->WindowPos;
 		newBullet->Rad = Calculate_rad(
 			newBullet->WindowPos.x,
@@ -188,6 +189,7 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind, float
 			newBullet->SaveCoordinate.x,
 			newBullet->SaveCoordinate.y
 		);
+		break;
 
 	case HOMING:
 		newBullet->ReflectMax = 1;
@@ -201,6 +203,7 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, BULLETKIND bulletKind, float
 			newBullet->SaveCoordinate.x,
 			newBullet->SaveCoordinate.y
 		);
+		break;
 	}
 
 	newBullet->Rad += D3DXToRadian(plusDeg);

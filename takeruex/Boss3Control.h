@@ -10,7 +10,7 @@
 //ƒ{ƒX‚R–{‘Ì‚Ì‘å‚«‚³
 #define BOSS3WIDTH			174.0f
 #define BOSS3HEIGHT			220.0f
-#define BOSS3MAXSPEED		0.5f
+#define BOSS3MAXSPEED		0.1f
 
 #define BOSS3SHIELD1WIDTH	22.0f
 #define BOSS3SHIELD1HEIGHT	200.0f

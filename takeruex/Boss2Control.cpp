@@ -7,6 +7,7 @@
 #include"BulletControl.h"
 #include"MapControl.h"
 #include"BulletControl.h"
+#include"DirectXSound.h"
 
 #define SPEED_X 5.0f
 #define SPEED_Y 3.3f
@@ -77,53 +78,67 @@ BREAK:
 		g_Boss2.isDead = false;
 		g_Boss2.isActive = false;
 		g_Boss2.hasDamage = false;
+		g_Boss2.goNextStage = false;
 		g_Boss2.lastbullet = NOTHING;
 		g_Boss2.boss2State = GOPOSB;
 	}
 	else {
 		g_Boss2.isDead = false;
 		g_Boss2.isActive = false;
+		g_Boss2.goNextStage = false;
 	}
 
 	free(gimmickData);
-
-
-
 }
 
 void Boss2Control() {
-	if (g_Boss2.isExistence && !g_Boss2.isDead) {
-		//活動状態かチェック
-		D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
-		D3DXVECTOR2* basePoint = GetBasePoint();
-		g_Boss2.WindowPos.x = g_Boss2.WorldPos.x - (basePoint->x - BasePoint0.x);
-		g_Boss2.WindowPos.y = g_Boss2.WorldPos.y - (basePoint->y - BasePoint0.y);
-		if (-(2 * TIPSIZE) < g_Boss2.WindowPos.x && g_Boss2.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
-			-(2 * TIPSIZE) < g_Boss2.WindowPos.y && g_Boss2.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
-			g_Boss2.isActive = true;
+	if (g_Boss2.isExistence) {
+		if (!g_Boss2.isDead) {
+
+			//活動状態かチェック
+			D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+			D3DXVECTOR2* basePoint = GetBasePoint();
+			g_Boss2.WindowPos.x = g_Boss2.WorldPos.x - (basePoint->x - BasePoint0.x);
+			g_Boss2.WindowPos.y = g_Boss2.WorldPos.y - (basePoint->y - BasePoint0.y);
+			if (-(2 * TIPSIZE) < g_Boss2.WindowPos.x && g_Boss2.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
+				-(2 * TIPSIZE) < g_Boss2.WindowPos.y && g_Boss2.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
+				g_Boss2.isActive = true;
+			}
+			else {
+				g_Boss2.isActive = false;
+			}
+
+			//活動状態である
+			if (g_Boss2.isActive) {
+
+				if (g_Boss2.hasDamage) {
+					g_Boss2.boss2State = GOLEFT;
+				}
+
+				switch (g_Boss2.boss2State) {
+				case UDMOVE:
+					UPDOWN_MOVE();
+					break;
+				case GOPOSB:
+					GoPosB();
+					break;
+				case GOLEFT:
+					HitMove();
+					break;
+				}
+			}
 		}
 		else {
-			g_Boss2.isActive = false;
-		}
-
-		//活動状態である
-		if (g_Boss2.isActive) {
-
-			if (g_Boss2.hasDamage) {
-				g_Boss2.boss2State = GOLEFT;
+			static int frcnt = 0;
+			if (frcnt == 0) {
+				StopSound(MAINSCENE_BOSSBGM02);
+				DeleteALLBullet();
 			}
-
-			switch (g_Boss2.boss2State) {
-			case UDMOVE:
-				UPDOWN_MOVE();
-				break;
-			case GOPOSB:
-				GoPosB();
-				break;
-			case GOLEFT:
-				HitMove();
-				break;
+			if (frcnt == 300) {
+				frcnt = 0;
+				g_Boss2.goNextStage = true;
 			}
+			frcnt++;
 		}
 	}
 }

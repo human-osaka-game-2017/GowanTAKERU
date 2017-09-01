@@ -52,8 +52,7 @@ void BulletRender() {
 					break;
 
 				case NONREFLECTTARGET2:
-					DrawVertex[j].tu += pSearchBullet->Size / BULLETPNGSIZE * 3;
-					DrawVertex[j].tv += pSearchBullet->Size / BULLETPNGSIZE;
+					TrimingVertex(DrawVertex, 66.0f, 22.0f, pSearchBullet->Size, pSearchBullet->Size, 128.0f, 128.0f);
 					break;
 				}
 			}

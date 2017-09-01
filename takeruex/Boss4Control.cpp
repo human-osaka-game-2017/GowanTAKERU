@@ -136,7 +136,7 @@ void Boss4Control() {
 		else {
 			static int frcnt = 0;
 			if (frcnt == 0) {
-				StopSound(MAINSCENE_BOSSBGM01);
+				StopSound(MAINSCENE_BOSSBGM03);
 				DeleteALLBullet();
 			}
 			if (frcnt == 300) {
