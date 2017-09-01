@@ -5,10 +5,14 @@
 
 #define SEITCHMAXHP 2147483647
 
+enum enemyRushDistance {
+	RushDistance =300//突進距離
+};
 struct Enemy { 
 	D3DXVECTOR2 WindowPos;
 	D3DXVECTOR2 WorldPos;
 	D3DXVECTOR2 EnemyBasePoint;
+	D3DXVECTOR2 FrontWorldPos;
 	int  enemyKind;//エネミーの種類
 	float Speed;
 	float MovementX;//エネミーの1フレーム当たりの移動量
@@ -22,6 +26,8 @@ struct Enemy {
 	bool beLeft;//左（右）どっち向いてるか
 	float Height;//画像のｻｲｽﾞ高さ
 	float Width;//画像サイズの幅
+	bool Rush;//突進のフラグ
+
 
 };
 

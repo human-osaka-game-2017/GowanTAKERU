@@ -144,6 +144,7 @@ void EnemyControl() {
 						g_pEnemy[i].enemyKind == FLYINGENEMY1	||
 						g_pEnemy[i].enemyKind == FLYINGENEMY4	||
 						g_pEnemy[i].enemyKind == FIXEDBATTERY1  ||
+						g_pEnemy[i].enemyKind == WALKINGENEMY_4 ||
 						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_1	||
 						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_2	||
 						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY1	||
@@ -173,12 +174,12 @@ void EnemyControl() {
 
 void EnemyPursuit(int enemyNum) {
 	Player* player = GetplayerData();
-	D3DXVECTOR2* basepoint = GetBasePoint();
 	//床判定のための足元位置
 	//                                           敵世界座標X－幅/2－１　　　　　　　　　　　　　　　　　　　　　　敵世界座標Y＋高さ/２＋１
 	D3DXVECTOR2 EnemyLeftFoot = D3DXVECTOR2(g_pEnemy[enemyNum].WorldPos.x -g_pEnemy[enemyNum].Width/2 - 1, g_pEnemy[enemyNum].WorldPos.y + g_pEnemy[enemyNum].Height/2+1);//左足
 	//                                            敵世界座標X＋幅/２＋１　　　　　　　　　　　　　　　　　　　　　　敵世界座標Y＋高さ/２＋１
 	D3DXVECTOR2 EnemyRightFoot = D3DXVECTOR2(g_pEnemy[enemyNum].WorldPos.x + g_pEnemy[enemyNum].Width/2 + 1, g_pEnemy[enemyNum].WorldPos.y + g_pEnemy[enemyNum].Height/2+1);//右足
+
 	switch (g_pEnemy[enemyNum].enemyKind) {
 	case WALKINGENEMY_1:
 	case WALKINGENEMY_6:
@@ -241,28 +242,39 @@ void EnemyPursuit(int enemyNum) {
 		}
 		break;
 	case WALKINGENEMY_4://体当たり
-		static bool attack;
-		attack = false;
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
+		if (g_pEnemy[enemyNum].WorldPos.x > player->WorldPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
 		else {
 			g_pEnemy[enemyNum].beLeft = false;
 		}
-		if (g_pEnemy[enemyNum].EnemyBasePoint.x - 400 <= basepoint->x) {//PCが範囲内に入ったらフラグおｎ
-			attack = true;
+		 //敵POP地点よりー突進距離以上にプレイヤーがいる　かつ　エネミーのPOP地点より手前ににプレイヤーがいる　かつ　敵の世界座標がPOP座標より-突進距離以内の範囲　
+		//かつ　前フレームの世界座標以下の場合にいるとき
+		if (g_pEnemy[enemyNum].EnemyBasePoint.x - RushDistance <= player->WorldPos.x && g_pEnemy[enemyNum].EnemyBasePoint.x>player->WorldPos.x 
+			&& g_pEnemy[enemyNum].WorldPos.x>= g_pEnemy[enemyNum].EnemyBasePoint.x - RushDistance&&g_pEnemy[enemyNum].FrontWorldPos.x>=g_pEnemy[enemyNum].WorldPos.x) {//PCが範囲内に入ったらフラグおｎ
+			g_pEnemy[enemyNum].Rush = true;
 		}
-		if (g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x - 400) {//範囲に入るまでOF
-			attack = false;
+		//自機の世界座標が突進距離範囲外　またわ　敵の世界座標が突進範囲に達している　またわ　前フレームの世界座標より大きい場合　場合フラグOFF
+		if (g_pEnemy[enemyNum].EnemyBasePoint.x - RushDistance >= player->WorldPos.x|| g_pEnemy[enemyNum].EnemyBasePoint.x- RushDistance >= g_pEnemy[enemyNum].WorldPos.x || g_pEnemy[enemyNum].FrontWorldPos.x<g_pEnemy[enemyNum].WorldPos.x) {//突進範囲に入るまでOFF　
+			g_pEnemy[enemyNum].Rush = false;
 		}
-		if (attack == true) {//フラグONならSPEED---
-			g_pEnemy[enemyNum].MovementX = -7;
+		if (g_pEnemy[enemyNum].Rush == true) {//フラグONならSPEED---
+			g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
 			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
+			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+				g_pEnemy[enemyNum].bulletFrameCount = 0;
+			}
 		}
-		if (g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x - 400) {//敵が移動上限超えたらフラグOF
-			attack == false;
+		//フラグOFFかつPOP位置じゃない場合
+		if (g_pEnemy[enemyNum].Rush == false && g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x) {
+			g_pEnemy[enemyNum].MovementX = 2;
+			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
+			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
+				g_pEnemy[enemyNum].bulletFrameCount = 0;
+			}
 		}
-		if (attack == false) {
+		//フラグがOFFで敵の世界座標がPOP地点と同じ場合動かない
+		if (g_pEnemy[enemyNum].Rush == false && g_pEnemy[enemyNum].WorldPos.x==g_pEnemy[enemyNum].EnemyBasePoint.x) {
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
@@ -481,6 +493,9 @@ void EnemyPursuit(int enemyNum) {
 
 
 		}
+		g_pEnemy[enemyNum].FrontWorldPos.x = g_pEnemy[enemyNum].WorldPos.x;
+		g_pEnemy[enemyNum].FrontWorldPos.y = g_pEnemy[enemyNum].WorldPos.y;
+
 }
 	
 
@@ -767,6 +782,9 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].beLeft = false;//左（右）どうっち向いてるか
 				g_pEnemy[enemyCount].EnemyBasePoint.x = g_pEnemy[enemyCount].WorldPos.x;//エネミーの初期座標
 				g_pEnemy[enemyCount].EnemyBasePoint.y = g_pEnemy[enemyCount].WorldPos.y;
+				g_pEnemy[enemyCount].FrontWorldPos.x = g_pEnemy[enemyCount].WorldPos.x;//1フレーム前の敵の座標
+				g_pEnemy[enemyCount].FrontWorldPos.y = g_pEnemy[enemyCount].WorldPos.y;
+				g_pEnemy[enemyCount].Rush = false;
 				enemyCount++;
 
 			}
