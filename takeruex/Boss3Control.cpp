@@ -58,6 +58,7 @@ void Boss3Init() {
 
 BREAK:
 	if (g_Boss3.isExistence) {
+		SetStopScrollPos(g_Boss3.WolrdPos.x);
 		g_Boss3.Boss3State = BOSS3_NON;
 		g_Boss3.MovementX = g_Boss3.MovementY = 0;
 		g_Boss3.Hp = 100;

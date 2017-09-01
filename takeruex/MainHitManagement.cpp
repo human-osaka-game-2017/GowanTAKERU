@@ -84,7 +84,9 @@ void HitManage() {
 		playerLeftBottom.y = player->WorldPos.y + PLAYERSIZEHEIGHT / 2.0f;
 		playerCenterLeft.y = player->WorldPos.y;
 		playerLeftTop.x = playerLeftBottom.x = playerCenterLeft.x = player->WorldPos.x - PLAYERSIZEWIDTH / 2.0f - 1.0f;
-		if (MapKindSpecifyForPos(&playerRightBottom) == RIGHTNEEDLE || MapKindSpecifyForPos(&playerLeftBottom) == RIGHTNEEDLE) {
+		if (MapKindSpecifyForPos(&playerLeftTop) == RIGHTNEEDLE
+			|| MapKindSpecifyForPos(&playerLeftBottom) == RIGHTNEEDLE
+			|| MapKindSpecifyForPos(&playerCenterLeft) == RIGHTNEEDLE) {
 			player->Hp -= 10;
 			player->beInvincible = true;
 		}

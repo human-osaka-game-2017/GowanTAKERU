@@ -23,6 +23,13 @@ struct Player {
 	bool beActive;
 };
 
+struct BossScroll {
+	bool StopScroll;
+	float StopPos;
+};
+void SetStopScroll(bool scroll);
+void SetStopScrollPos(float scrollPos);
+
 //playerのデータ使いたい人はつかってね
 Player* GetplayerData();
 

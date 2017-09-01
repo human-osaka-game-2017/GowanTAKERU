@@ -61,6 +61,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 
 		if (pPlayer->Hp <= 0) {
 
+			pPlayer->beActive = false;
 			g_isScreenTransition = false;
 			blackOutData->BlackOutflg = true;
 

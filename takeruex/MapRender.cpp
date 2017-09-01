@@ -150,6 +150,10 @@ void MapRender() {
 							drawMapVertex[k].tu += 0.125 * 1;
 							break;
 
+						case DANGEROUS:
+							drawMapVertex[k].tu += 0.125 * 2;
+							break;
+
 						case SHUTTER_1:
 						case SHUTTER_2:
 						case SHUTTER_3:

@@ -81,6 +81,7 @@ void Boss4Init() {
 
 BREAK:
 	if (g_Boss4.isExistence) {
+		SetStopScrollPos(g_Boss4.WolrdPos.x);
 		g_Boss4.Boss4JumpState = GROUND;
 		g_Boss4.MovementX = g_Boss4.MovementY = 0;
 		g_Boss4.Hp = 100;

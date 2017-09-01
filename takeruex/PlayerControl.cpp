@@ -9,6 +9,7 @@
 #include"MainHitManagement.h"
 #include"FileManagement.h"
 #include"DirectXSound.h"
+#include"StageGimmick.h"
 
 #define COMMON_ANIM_INTERVAL	6
 #define LAND__ANIM_INTERVAL		3
@@ -23,6 +24,20 @@ void DecidePlayerAnimMotion();
 
 Player g_player;
 static D3DXVECTOR2 g_BasePoint = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+BossScroll g_ScrollRock;
+
+//bool GetStopScroll() {
+//	return g_ScrollRock.StopScroll;
+//}
+
+void SetStopScroll(bool scroll) {
+	g_ScrollRock.StopScroll = scroll;
+}
+
+void SetStopScrollPos(float scrollPosX) {
+	scrollPosX -= TIPSIZE * 14;
+	g_ScrollRock.StopPos = scrollPosX;
+}
 
 D3DXVECTOR2* GetBasePoint() {
 	return &g_BasePoint;
@@ -33,6 +48,8 @@ Player* GetplayerData() {
 }
 
 void PlayerInit() {
+
+	g_ScrollRock.StopScroll = false;
 
 	STAGE_ID stage_ID = GetStage_ID();
 	int MaxX = GetStageXYMAX(stage_ID, X);
@@ -205,27 +222,34 @@ void SetPlayerMovement() {
 void MovePlayer() {
 
 	g_player.WorldPos.x += g_player.MovementX;
-	if (g_player.WindowPos.x < 300 && g_player.beLeft) {
-		g_BasePoint.x += g_player.MovementX;
-	}
-	else if(650 < g_player.WindowPos.x && !g_player.beLeft) {
-		g_BasePoint.x += g_player.MovementX;
-	}
-	else {
-		g_player.WindowPos.x += g_player.MovementX;
-	}
-
 	g_player.WorldPos.y += g_player.MovementY;
 
-	/*if (g_player.WindowPos.y < 200 && g_player.MovementY < 0) {
-		g_BasePoint.y += g_player.MovementY;
+	if (!g_ScrollRock.StopScroll) {
+		g_ScrollRock.StopScroll = CheckBossActiveBoss();
 	}
-	else if (400 < g_player.WindowPos.y && 0 < g_player.MovementY) {
-		g_BasePoint.y += g_player.MovementY;
+
+	if (g_ScrollRock.StopScroll) {
+		if (g_BasePoint.x <= g_ScrollRock.StopPos) {
+			g_BasePoint.x += 2.5f;
+		}
 	}
-	else {*/
-		g_player.WindowPos.y += g_player.MovementY;
-	
+	else {
+		if (g_player.WindowPos.x < 300 && g_player.beLeft) {
+
+			//ˆê”Ô¶‚ÌŒÅ’è
+			if (!(g_BasePoint.x < DISPLAY_WIDTH / 2 + 5.0f)) {
+				g_BasePoint.x += g_player.MovementX;
+			}
+		}
+		else if (650 < g_player.WindowPos.x && !g_player.beLeft) {
+			g_BasePoint.x += g_player.MovementX;
+		}
+	}
+
+	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+
+	g_player.WindowPos.x = g_player.WorldPos.x - (g_BasePoint.x - BasePoint0.x);
+	g_player.WindowPos.y = g_player.WorldPos.y - (g_BasePoint.y - BasePoint0.y);
 
 	DecidePlayerAnimMotion();
 

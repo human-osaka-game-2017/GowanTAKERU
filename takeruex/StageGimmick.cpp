@@ -441,6 +441,8 @@ void ComeBackCheckPoint() {
 	player->WindowPos.x = player->WorldPos.x - (basePoint->x - BasePoint0.x);
 	player->WindowPos.y = player->WorldPos.y - (basePoint->y - BasePoint0.y);
 
+	player->beActive = true;
+	SetStopScroll(false);
 	EnemyInit();
 	BulletInit();
 	Boss1Init();
@@ -472,9 +474,11 @@ void ComeBackCheckPoint() {
 		break;
 	}
 }
+
 bool CheckBossActiveBoss() {
 	//boss用シャッターの処理
 	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss2Data* pBoss2 = GetBoss2Data();
 	Boss3Data* pBoss3 = GetBoss3Data();
 	Boss4Data* pBoss4 = GetBoss4Data();
 
@@ -484,6 +488,9 @@ bool CheckBossActiveBoss() {
 	}
 	if (pBoss3->isExistence && pBoss3->isActive) {
 		bossActiveflg = pBoss3->isActive;
+	}
+	if (pBoss2->isExistence && pBoss2->isActive) {
+		bossActiveflg = pBoss2->isActive;
 	}
 	if (pBoss4->isExistence && pBoss4->isActive) {
 		bossActiveflg = pBoss4->isActive;
