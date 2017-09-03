@@ -50,5 +50,7 @@ enum KEYKIND
 enum KEYSTATE* GetKey();
 void KeyCheck(KEYSTATE* Key, int DIK);
 
+void OutputDebug_Number(float outputNum);
+
 #endif 
 
