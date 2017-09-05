@@ -100,14 +100,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				frcnt++;
 			}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 			if (currenttime - prevtime >= 1000) {
-				OutputDebug_Number((float)frcnt);
+				OutputDebug_Number((float)frcnt, hWnd);
 				frcnt = 0;
 				prevtime = currenttime;
 
 			}
-#endif _DEBUG
+//#endif _DEBUG
 
 		}
 		//timeEndPeriod(1);
@@ -157,7 +157,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	return (int)msg.wParam;
 }
 
-void OutputDebug_Number(float outputNum) {
+void OutputDebug_Number(float outputNum, HWND hWnd) {
 
 	/*int digit = (int)log10((double)outputNum) + 1;
 		TCHAR* buff = (TCHAR*)malloc(sizeof(TCHAR)*digit);
@@ -169,5 +169,6 @@ void OutputDebug_Number(float outputNum) {
 	TCHAR buff[256];
 	_stprintf_s(buff, 256, _T("%f\n"), outputNum);
 	OutputDebugString(buff);
+	SetWindowText(hWnd, buff);
 
 }
