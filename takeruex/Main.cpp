@@ -2,6 +2,7 @@
 #include"DirectXInput.h"
 #include"DirectXSound.h"
 #include"CommonRender.h"
+#include"CommonControl.h"
 #include"SceneManagement.h"
 #include"FileManagement.h"
 #include"MainRender.h"
@@ -9,6 +10,10 @@
 #include"GameClearRender.h"
 #include"GameOverRender.h"
 #include"BulletControl.h"
+
+#include<tchar.h>
+#include<stdio.h>
+//#include<math.h>
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
@@ -73,10 +78,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
-	DWORD oldtime = timeGetTime();
-	DWORD currenttime;
 
-	timeBeginPeriod(1);
+	DWORD prevtime = timeGetTime();
+	DWORD currenttime;
+	int frcnt = 0;
+
+	//timeBeginPeriod(1);
 
 	while (msg.message != WM_QUIT) {
 
@@ -85,18 +92,25 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			DispatchMessage(&msg);
 		}
 		else {
+
 			currenttime = timeGetTime();
-			if (currenttime - oldtime >= 1000 / 60) {
-				oldtime = currenttime;
 
+			if (currenttime - prevtime >= 1000 / 60) {
 				SceneManage();
+				frcnt++;
+			}
+
+#ifdef _DEBUG
+			if (currenttime - prevtime >= 1000) {
+				OutputDebug_Number((float)frcnt);
+				frcnt = 0;
+				prevtime = currenttime;
 
 			}
-			else {
-				Sleep(1);
-			}
+#endif _DEBUG
+
 		}
-		timeEndPeriod(1);
+		//timeEndPeriod(1);
 	}
 
 	//ÉäÉäÅ[ÉX
@@ -141,4 +155,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	FreeDxGraphics();
 
 	return (int)msg.wParam;
+}
+
+void OutputDebug_Number(float outputNum) {
+
+	/*int digit = (int)log10((double)outputNum) + 1;
+		TCHAR* buff = (TCHAR*)malloc(sizeof(TCHAR)*digit);
+	_stprintf_s(buff, digit, _T("%d\n"), outputNum);
+	OutputDebugString(buff);*/
+
+	//char *buff2 = (char*)malloc(256);
+	//sprintf(buff2, "%d", 110);
+	TCHAR buff[256];
+	_stprintf_s(buff, 256, _T("%f\n"), outputNum);
+	OutputDebugString(buff);
+
 }
