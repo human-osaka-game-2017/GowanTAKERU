@@ -14,6 +14,15 @@ float Calculate_distance(float x1, float y1, float x2, float y2);
 
 int Random(int min, int max);
 
+enum GO_NEXT_STAGE_STATE{
+	STARTWAIT,//ウェイトが始まる１フレーム目
+	WAITING,//ウェイト中
+	RUNNING//通常ゲーム中
+
+};
+
+GO_NEXT_STAGE_STATE GetGoNextStageWait();
+
 //void PreventIntoPos(D3DXVECTOR2& oldPos, D3DXVECTOR2* currentPos, float width, float height);
 
 #endif

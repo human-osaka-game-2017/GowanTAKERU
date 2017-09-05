@@ -199,6 +199,16 @@ void Boss1Control() {
 					break;
 				}
 
+				if (g_Boss1.Boss1State != LARIAT) {
+					if (pPlayer->WorldPos.x < g_Boss1.WolrdPos.x) {
+						g_Boss1.isLeft = true;
+						g_Boss1.MovementX = -BOSS1SPEED;
+					}
+					else {
+						g_Boss1.isLeft = false;
+						g_Boss1.MovementX = BOSS1SPEED;
+					}
+				}
 				g_Boss1.MovementY = 20;
 				g_Boss1.saveShotFrmcnt++;
 			}

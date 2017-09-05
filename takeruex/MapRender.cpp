@@ -151,6 +151,9 @@ void MapRender() {
 					case SHUTTER6:
 					case SHUTTER7:
 					case SHUTTER8:
+						TrimingVertex(drawMapVertex, TIPSIZE * 4, TIPSIZE * 1, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
+
 					case BOSS_SHUTTER:
 						TrimingVertex(drawMapVertex, TIPSIZE * 4, TIPSIZE * 0, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
 						break;

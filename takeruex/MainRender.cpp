@@ -1,4 +1,5 @@
 #include"MainRender.h"
+#include"MainControl.h"
 #include"DirectXGraphics.h"
 #include"CommonRender.h"
 #include"BackGroundRender.h"
@@ -37,14 +38,27 @@ void MainRender() {
 	BulletRender();
 	PlayerRender();
 
-	static int frcnt = 0;
-	if (frcnt < 600) {
-		FontRender();
+	GO_NEXT_STAGE_STATE goNextStageState = GetGoNextStageWait();
+	if(goNextStageState != RUNNING){
+
+		bool startup = false;
+		if (goNextStageState = STARTWAIT) {
+			startup = true;
+		}
+
+		FontRender(100.0f + FONTWIDTH * 0, 300.0f + FONTHEIGHT * 0, FONT_S, startup);
+		FontRender(100.0f + FONTWIDTH * 1, 300.0f + FONTHEIGHT * 0, FONT_T, startup);
+		FontRender(100.0f + FONTWIDTH * 2, 300.0f + FONTHEIGHT * 0, FONT_A, startup);
+		FontRender(100.0f + FONTWIDTH * 3, 300.0f + FONTHEIGHT * 0, FONT_G, startup);
+		FontRender(100.0f + FONTWIDTH * 4, 300.0f + FONTHEIGHT * 0, FONT_E, startup);
+		FontRender(100.0f + FONTWIDTH * 6, 300.0f + FONTHEIGHT * 0, FONT_C, startup);
+		FontRender(100.0f + FONTWIDTH * 7, 300.0f + FONTHEIGHT * 0, FONT_L, startup);
+		FontRender(100.0f + FONTWIDTH * 8, 300.0f + FONTHEIGHT * 0, FONT_E, startup);
+		FontRender(100.0f + FONTWIDTH * 9, 300.0f + FONTHEIGHT * 0, FONT_A, startup);
+		FontRender(100.0f + FONTWIDTH * 10, 300.0f + FONTHEIGHT * 0, FONT_R, startup);
+		FontRender(100.0f + FONTWIDTH * 11, 300.0f + FONTHEIGHT * 0, FONT_SURPRISED, startup);
+
 	}
-	else {
-		frcnt = 0;
-	}
-	frcnt++;
 
 	UIRender();
 

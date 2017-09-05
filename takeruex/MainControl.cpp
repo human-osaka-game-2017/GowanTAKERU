@@ -29,6 +29,32 @@ void MainControl() {
 	
 }
 
+GO_NEXT_STAGE_STATE GetGoNextStageWait() {
+	Boss1Data* pBoss1 = GetBoss1Data();
+	Boss2Data* pBoss2 = GetBoss2Data();
+	Boss3Data* pBoss3 = GetBoss3Data();
+	Boss4Data* pBoss4 = GetBoss4Data();
+
+	static GO_NEXT_STAGE_STATE goNextStageWait = RUNNING;
+	if ((pBoss1->isDead && !pBoss1->goNextStage)|| 
+		(pBoss2->isDead && !pBoss2->goNextStage)||
+		(pBoss3->isDead && !pBoss3->goNextStage) ||
+		(pBoss4->isDead && !pBoss4->goNextStage)) {
+
+		if (goNextStageWait == RUNNING) {
+			goNextStageWait = STARTWAIT;
+		}
+		else {
+			goNextStageWait = WAITING;
+		}
+	}
+	else {
+		goNextStageWait = RUNNING;
+	}
+
+	return goNextStageWait;
+}
+
 double Calculate_rad(float x1, float y1, float x2, float y2) {
 
 	double rad= 0 ;
