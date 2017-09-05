@@ -32,57 +32,7 @@ void EnemyRender() {
 
 			}
 
-			switch (enemy[i].enemyKind) {
-			case WALKINGENEMY_1:
-			case WALKINGENEMY_2:
-			case WALKINGENEMY_3:
-			case WALKINGENEMY_5:
-			case WALKINGENEMY_HAS_KEY_1:
-			case WALKINGENEMY_HAS_KEY_2:
-			case WALKINGENEMY_HAS_KEY_3:
-				TrimingVertex(DrawVertex, 0.0f, 0.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				break;
-
-			case WALKINGENEMY_4:
-				TrimingVertex(DrawVertex, 256.0f, 0.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				break;
-
-			case WALKINGENEMY_6:
-			case WALKINGENEMY_HAS_KEY_4:
-			case WALKINGENEMY_HAS_KEY_5:
-				TrimingVertex(DrawVertex, 128.0f, 0.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				break;
-
-			case FLYINGENEMY1://‹ó’†“G
-			case FLYINGENEMY2:
-			case FLYINGENEMY3:
-			case FLYINGENEMY5:
-			case FLYINGENEMY_HAS_KEY1:
-			case FLYINGENEMY_HAS_KEY2:
-			case FLYINGENEMY_HAS_KEY3:
-				TrimingVertex(DrawVertex, 0.0f, 160.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				break;
-			case FLYINGENEMY4:
-				TrimingVertex(DrawVertex, 128.0f, 160.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				break;
-
-			case FIXEDBATTERY1://ŒÅ’è–C‘ä
-			case FIXEDBATTERY2:
-				TrimingVertex(DrawVertex, 0.0f, 320.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				break;
-
-			case SWITCH_1:
-			case SWITCH_2:
-			case SWITCH_3:
-				if (enemy[i].Hp == SEITCHMAXHP) {
-					TrimingVertex(DrawVertex, 128.0f, 320.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				}
-				else {
-					TrimingVertex(DrawVertex, 256.0f, 320.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
-				}
-				break;
-			
-			}
+				TrimingVertex(DrawVertex, enemy[i].tu, enemy[i].tv, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
 
 			if (!enemy[i].beLeft) {
 				TurnVertex_tu(DrawVertex);

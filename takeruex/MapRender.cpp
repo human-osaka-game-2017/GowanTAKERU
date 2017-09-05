@@ -58,116 +58,116 @@ void MapRender() {
 						drawMapVertex[k] = mapvertex[k];
 						drawMapVertex[k].x += -differenceX + TIPSIZE*j;
 						drawMapVertex[k].y += -differenceY + TIPSIZE*i;
+					}
 
+					switch (map[j + i*MaxX]) {
 
-						switch (map[j + i*MaxX]) {
+					case FLOOR1:
+						TrimingVertex(drawMapVertex, TIPSIZE * 0, TIPSIZE * 1, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case FLOOR:
-							drawMapVertex[k].tv += 0.125 * 1;
-							break;
+					case WALL1:
+						TrimingVertex(drawMapVertex, TIPSIZE * 1, TIPSIZE * 1, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case WALL:
-							drawMapVertex[k].tv += 0.125 * 1;
-							drawMapVertex[k].tu += 0.125;
-							break;
+					case BLOCK1:
+						TrimingVertex(drawMapVertex, TIPSIZE * 2, TIPSIZE * 1, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case BLOCK:
-							drawMapVertex[k].tv += 0.125 * 1;
-							drawMapVertex[k].tu += 0.125 * 2;
-							break;
+					case CEILING1:
+						TrimingVertex(drawMapVertex, TIPSIZE * 3, TIPSIZE * 1, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case CEILING:
-							drawMapVertex[k].tv += 0.125 * 1;
-							drawMapVertex[k].tu += 0.125 * 3;
-							break;
+					case FLOOR2:
+						TrimingVertex(drawMapVertex, TIPSIZE * 0, TIPSIZE * 2, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case FLOOR2:
-							drawMapVertex[k].tv += 0.125 * 2;
-							break;
+					case WALL2:
+						TrimingVertex(drawMapVertex, TIPSIZE * 1, TIPSIZE * 2, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case WALL2:
-							drawMapVertex[k].tv += 0.125 * 2;
-							drawMapVertex[k].tu += 0.125;
-							break;
+					case BLOCK2:
+						TrimingVertex(drawMapVertex, TIPSIZE * 2, TIPSIZE * 2, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case BLOCK2:
-							drawMapVertex[k].tv += 0.125 * 2;
-							drawMapVertex[k].tu += 0.125 * 2;
-							break;
+					case CEILING2:
+						TrimingVertex(drawMapVertex, TIPSIZE * 3, TIPSIZE * 2, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case CEILING2:
-							drawMapVertex[k].tv += 0.125 * 2;
-							drawMapVertex[k].tu += 0.125 * 3;
-							break;
+					case FLOOR3:
+						TrimingVertex(drawMapVertex, TIPSIZE * 0, TIPSIZE * 3, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case FLOOR3:
-							drawMapVertex[k].tv += 0.125 * 3;
-							break;
+					case WALL3:
+						TrimingVertex(drawMapVertex, TIPSIZE * 1, TIPSIZE * 3, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case WALL3:
-							drawMapVertex[k].tv += 0.125 * 3;
-							drawMapVertex[k].tu += 0.125;
-							break;
+					case BLOCK3:
+						TrimingVertex(drawMapVertex, TIPSIZE * 2, TIPSIZE * 3, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case BLOCK3:
-							drawMapVertex[k].tv += 0.125 * 3;
-							drawMapVertex[k].tu += 0.125 * 2;
-							break;
+					case CEILING3:
+						TrimingVertex(drawMapVertex, TIPSIZE * 3, TIPSIZE * 3, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case CEILING3:
-							drawMapVertex[k].tv += 0.125 * 3;
-							drawMapVertex[k].tu += 0.125 * 3;
-							break;
+					case FLOOR4:
+						TrimingVertex(drawMapVertex, TIPSIZE * 0, TIPSIZE * 4, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case FLOOR4:
-							drawMapVertex[k].tv += 0.125 * 4;
-							break;
+					case WALL4:
+						TrimingVertex(drawMapVertex, TIPSIZE * 1, TIPSIZE * 4, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case WALL4:
-							drawMapVertex[k].tv += 0.125 * 4;
-							drawMapVertex[k].tu += 0.125;
-							break;
+					case BLOCK4:
+						TrimingVertex(drawMapVertex, TIPSIZE * 2, TIPSIZE * 4, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case BLOCK4:
-							drawMapVertex[k].tv += 0.125 * 4;
-							drawMapVertex[k].tu += 0.125 * 2;
-							break;
+					case CEILING4:
+						TrimingVertex(drawMapVertex, TIPSIZE * 3, TIPSIZE * 4, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case CEILING4:
-							drawMapVertex[k].tv += 0.125 * 4;
-							drawMapVertex[k].tu += 0.125 * 3;
-							break;
+					case UPNEEDLE:
+						TrimingVertex(drawMapVertex, TIPSIZE * 0, TIPSIZE * 0, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case UPNEEDLE:
-							break;
+					case LEFTNEEDLE:
+						TrimingVertex(drawMapVertex, TIPSIZE * 1, TIPSIZE * 0, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case RIGHTNEEDLE:
-							drawMapVertex[k].tu += 0.125 * 1;
-							TurnVertex_tu(drawMapVertex);
-							break;
+					case RIGHTNEEDLE:
+						TrimingVertex(drawMapVertex, TIPSIZE * 1, TIPSIZE * 0, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						TurnVertex_tu(drawMapVertex);
+						break; 
 
-						case LEFTNEEDLE:
-							drawMapVertex[k].tu += 0.125 * 1;
-							break;
+					case DANGEROUS:
+						TrimingVertex(drawMapVertex, TIPSIZE * 2, TIPSIZE * 0, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case DANGEROUS:
-							drawMapVertex[k].tu += 0.125 * 2;
-							break;
+					case SHUTTER1:
+					case SHUTTER2:
+					case SHUTTER3:
+					case SHUTTER4:
+					case SHUTTER5:
+					case SHUTTER6:
+					case SHUTTER7:
+					case SHUTTER8:
+					case BOSS_SHUTTER:
+						TrimingVertex(drawMapVertex, TIPSIZE * 4, TIPSIZE * 0, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-						case SHUTTER_1:
-						case SHUTTER_2:
-						case SHUTTER_3:
-						case SHUTTER_4:
-						case SHUTTER_5:
-						case SHUTTER_A:
-						case SHUTTER_B:
-						case SHUTTER_C:
-							drawMapVertex[k].tu += 0.125 * 4;
-							int a = 0;
-							break;
+					case SHUTTER_A:
+					case SHUTTER_B:
+					case SHUTTER_C:
+						TrimingVertex(drawMapVertex, TIPSIZE * 4, TIPSIZE * 1, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 
-
-						}
+					case TRANSPARENTBLOCK:
+						TrimingVertex(drawMapVertex, TIPSIZE * 4, TIPSIZE * 2, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
+						
+					default:
+						TrimingVertex(drawMapVertex, TIPSIZE * 3, TIPSIZE * 0, TIPSIZE, TIPSIZE, MAPPNGSIZE, MAPPNGSIZE);
+						break;
 					}
 
 					if (map[j + i*MaxX] != NOTHING) {

@@ -3,6 +3,7 @@
 
 #include<d3dx9.h>
 #include"StageSelect.h"
+#include"EnemyControl.h"
 
 enum STAGEXYMAX {
 	STAGE1_XMAX,
@@ -50,5 +51,10 @@ void CSVLoad(char* mapdata, int* map, int height, int width);
 void StageMapNumMaxInit();
 
 STAGEXYMAX GetStageXYMAX(STAGE_ID stage_ID, X_OR_Y XOrY);
+
+//enemyÇÃÉfÅ[É^ì«Ç›éÊÇË
+void LoadEnemyDataCSV(EditableEnemyData pInEnemyData[]);
+
+void LoadBulletDataCSV(EditableBulletData* pInBulletData);
 
 #endif

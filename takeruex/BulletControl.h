@@ -5,21 +5,22 @@
 
 #define BULLETNUMBER 60
 
-enum BULLETKIND{//	反射回数		スピード		威力
-	BULLETNORMAL1,//	5				5			10
-	BULLETNORMAL2,//	4				7			10
-	BULLETNORMAL3,//	5				7			7
-	BULLETNORMAL4,//	3				6			10
-	BULLETNORMAL5,//
-	BULLETTARGET1,//	1				6			10
-	BULLETTARGET2,//	3				6			10
-	BULLETTARGET3,//	5				6			10
-	BULLETTARGET4,//	3				8			10
-	BULLETTARGET5,//	3				5			15
-	BULLETTARGET6,//
-	NONREFLECTTARGET1,//3				5			7
-	NONREFLECTTARGET2,//3				5			25
-	HOMING		  //	1				5			10
+enum BULLETKIND{
+	BULLETNORMAL1,
+	BULLETNORMAL2,
+	BULLETNORMAL3,
+	BULLETNORMAL4,
+	BULLETNORMAL5,
+	BULLETTARGET1,
+	BULLETTARGET2,
+	BULLETTARGET3,
+	BULLETTARGET4,
+	BULLETTARGET5,
+	BULLETTARGET6,
+	NONREFLECTTARGET1,
+	NONREFLECTTARGET2,
+	HOMING,		 
+	BULLET_MAX
 };
 
 struct Bullet {
@@ -41,7 +42,14 @@ struct Bullet {
 	Bullet* previous;
 };
 
-Bullet* GetBullet();
+struct EditableBulletData {
+	int Atk;
+	int ReflectMax;
+	float Size;
+	float tu, tv;
+};
+
+void LoadBulletData();
 
 //下のやり方でbulletを探索できます
 //Bullet* pFirstBullet = GetFirstBulletAddress();

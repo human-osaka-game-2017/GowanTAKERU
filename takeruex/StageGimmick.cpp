@@ -13,18 +13,21 @@
 #include"Boss4Control.h"
 #include"MainScene.h"
 
-#define KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG	0x0001
-#define KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG	0x0002
-#define KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG	0x0004
-#define KEYNUM_FLYINGENEMY_HAS_KEY1_FLG		0x0008
-#define KEYNUM_FLYINGENEMY_HAS_KEY2_FLG		0x0010
-#define KEYNUM_FLYINGENEMY_HAS_KEY3_FLG		0x0020
-#define KEYNUM_SWITCH1_FLG					0x0040
-#define KEYNUM_SWITCH2_FLG					0x0080
-#define KEYNUM_SWITCH3_FLG					0x0100
-#define KEYNUM_WALKINGENEMY_HAS_KEY_4_FLG	0x0200
-#define KEYNUM_WALKINGENEMY_HAS_KEY_5_FLG	0x0400
-#define KEYNUM_WALKINGENEMY_HAS_KEY_6_FLG	0x0800
+#define S_STOPENEMY_SHUTTER1_KEYNUMFLG		0x0001
+#define G_MOVEENEMY_SHUTTER2_KEYNUMFLG		0x0002
+#define S_MOVEENEMY_SHUTTER2_KEYNUMFLG		0x0004
+#define DUMMY_______SHUTTER3_KEYNUMFLG		0x0008
+#define DUMMY1______SHUTTER4_KEYNUMFLG		0x0010
+#define DUMMY2______SHUTTER4_KEYNUMFLG		0x0020
+#define G_MOVEENEMY_SHUTTER5_KEYNUMFLG		0x0040
+#define G_MOVEENEMY_SHUTTER6_KEYNUMFLG		0x0080
+#define DUMMY_______SHUTTER6_KEYNUMFLG		0x0100
+#define BOSS1_SHUTTER7_KEYNUMFLG			0x0200
+#define BOSS2_SHUTTER8_KEYNUMFLG			0x0400
+#define DUMMY_______SHUTTER8_KEYNUMFLG		0x0800
+#define KEYNUM_SWITCHA_FLG					0x1000
+#define KEYNUM_SWITCHB_FLG					0x2000
+#define KEYNUM_SWITCHC_FLG					0x4000
 
 //何度も行わないためのフラグ
 static bool g_BossGateflg = false;
@@ -34,18 +37,21 @@ void OpenGate(MapKind mapKind);
 void CloseGate(MapKind beforeMapKind, MapKind afterMapKind);
 
 enum KEYNUM_KIND {
-	KEYNUM_WALKINGENEMY_HAS_KEY_1,
-	KEYNUM_WALKINGENEMY_HAS_KEY_2,
-	KEYNUM_WALKINGENEMY_HAS_KEY_3,
-	KEYNUM_WALKINGENEMY_HAS_KEY_4,
-	KEYNUM_WALKINGENEMY_HAS_KEY_5,
-	KEYNUM_WALKINGENEMY_HAS_KEY_6,
-	KEYNUM_FLYINGENEMY_HAS_KEY1,
-	KEYNUM_FLYINGENEMY_HAS_KEY2,
-	KEYNUM_FLYINGENEMY_HAS_KEY3,
-	KEYNUM_SWITCH1,
-	KEYNUM_SWITCH2,
-	KEYNUM_SWITCH3,
+	S_STOPENEMY_SHUTTER1_KEYNUM,
+	G_MOVEENEMY_SHUTTER2_KEYNUM,
+	S_MOVEENEMY_SHUTTER2_KEYNUM,
+	DUMMY_______SHUTTER3_KEYNUM,//未確定
+	DUMMY1______SHUTTER4_KEYNUM,//未確定
+	DUMMY2______SHUTTER4_KEYNUM,//未確定
+	G_MOVEENEMY_SHUTTER5_KEYNUM,
+	G_MOVEENEMY_SHUTTER6_KEYNUM,
+	DUMMY_______SHUTTER6_KEYNUM,//未確定
+	BOSS1_SHUTTER7_KEYNUM,
+	BOSS2_SHUTTER8_KEYNUM,
+	DUMMY_______SHUTTER8_KEYNUM,//未確定
+	SWITCH_A_KEYNUM,
+	SWITCH_B_KEYNUM,
+	SWITCH_C_KEYNUM,
 	KEYNUM_KIND_MAX
 };
 
@@ -66,52 +72,64 @@ void StageGimmickInit() {
 	for (int i = 0; i < enemyMax; i++) {
 		switch (pEnemy[i].enemyKind) {
 
-		case WALKINGENEMY_HAS_KEY_1:
-			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_1]++;
+		case S_STOPENEMY_SHUTTER1_KEY:
+			g_GateKeyNum[S_STOPENEMY_SHUTTER1_KEYNUM]++;
 			break;
 
-		case WALKINGENEMY_HAS_KEY_2:
-			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_2]++;
+		case G_MOVEENEMY_SHUTTER2_KEY:
+			g_GateKeyNum[G_MOVEENEMY_SHUTTER2_KEYNUM]++;
 			break;
 
-		case WALKINGENEMY_HAS_KEY_3:
-			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_3]++;
+		case S_MOVEENEMY_SHUTTER2_KEY:
+			g_GateKeyNum[S_MOVEENEMY_SHUTTER2_KEYNUM]++;
 			break;
 
-		case WALKINGENEMY_HAS_KEY_4:
-			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_4]++;
+		case DUMMY_______SHUTTER3_KEY:
+			g_GateKeyNum[DUMMY_______SHUTTER3_KEYNUM]++;
 			break;
 
-		case WALKINGENEMY_HAS_KEY_5:
-			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_5]++;
+		case DUMMY1______SHUTTER4_KEY:
+			g_GateKeyNum[DUMMY1______SHUTTER4_KEYNUM]++;
 			break;
 
-		case WALKINGENEMY_HAS_KEY_6:
-			g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_6]++;
+		case DUMMY2______SHUTTER4_KEY:
+			g_GateKeyNum[DUMMY2______SHUTTER4_KEYNUM]++;
 			break;
 
-		case FLYINGENEMY_HAS_KEY1:
-			g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY1]++;
+		case G_MOVEENEMY_SHUTTER5_KEY:
+			g_GateKeyNum[G_MOVEENEMY_SHUTTER5_KEYNUM]++;
 			break;
 
-		case FLYINGENEMY_HAS_KEY2:
-			g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY2]++;
+		case G_MOVEENEMY_SHUTTER6_KEY:
+			g_GateKeyNum[G_MOVEENEMY_SHUTTER6_KEYNUM]++;
 			break;
 
-		case FLYINGENEMY_HAS_KEY3:
-			g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY3]++;
+		case DUMMY_______SHUTTER6_KEY:
+			g_GateKeyNum[DUMMY_______SHUTTER6_KEYNUM]++;
 			break;
 
-		case SWITCH_1:
-			g_GateKeyNum[KEYNUM_SWITCH1]++;
+		case BOSS1_SHUTTER7_KEY:
+			g_GateKeyNum[BOSS1_SHUTTER7_KEYNUM]++;
 			break;
 
-		case SWITCH_2:
-			g_GateKeyNum[KEYNUM_SWITCH2]++;
+		case BOSS2_SHUTTER8_KEY:
+			g_GateKeyNum[BOSS2_SHUTTER8_KEYNUM]++;
 			break;
 
-		case SWITCH_3:
-			g_GateKeyNum[KEYNUM_SWITCH3]++;
+		case DUMMY_______SHUTTER8_KEY:
+			g_GateKeyNum[DUMMY_______SHUTTER8_KEYNUM]++;
+			break;
+
+		case SWITCH_A:
+			g_GateKeyNum[SWITCH_A_KEYNUM]++;
+			break;
+
+		case SWITCH_B:
+			g_GateKeyNum[SWITCH_B_KEYNUM]++;
+			break;
+
+		case SWITCH_C:
+			g_GateKeyNum[SWITCH_C_KEYNUM]++;
 			break;
 		}
 	}
@@ -130,19 +148,19 @@ void StageGimmickManage() {
 	for (int i = 0; i < enemyMax; i++) {
 
 		switch (pEnemy[i].enemyKind) {
-		case SWITCH_1:
-			if (pEnemy[i].Hp != SEITCHMAXHP) {
-				gateKeyNumCnt[KEYNUM_SWITCH1]++;
+		case SWITCH_A:
+			if (pEnemy[i].Hp != INTMAX) {
+				gateKeyNumCnt[SWITCH_A_KEYNUM]++;
 			}
 			break;
-		case SWITCH_2:
-			if (pEnemy[i].Hp != SEITCHMAXHP) {
-				gateKeyNumCnt[KEYNUM_SWITCH2]++;
+		case SWITCH_B:
+			if (pEnemy[i].Hp != INTMAX) {
+				gateKeyNumCnt[SWITCH_B_KEYNUM]++;
 			}
 			break;
-		case SWITCH_3:
-			if (pEnemy[i].Hp != SEITCHMAXHP) {
-				gateKeyNumCnt[KEYNUM_SWITCH3]++;
+		case SWITCH_C:
+			if (pEnemy[i].Hp != INTMAX) {
+				gateKeyNumCnt[SWITCH_C_KEYNUM]++;
 			}
 			break;
 		}
@@ -150,40 +168,52 @@ void StageGimmickManage() {
 		if (pEnemy[i].beDead) {
 			switch (pEnemy[i].enemyKind)
 			{
-			case WALKINGENEMY_HAS_KEY_1:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_1]++;
+			case S_STOPENEMY_SHUTTER1_KEY:
+				gateKeyNumCnt[S_STOPENEMY_SHUTTER1_KEYNUM]++;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_2:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_2]++;
+			case G_MOVEENEMY_SHUTTER2_KEY:
+				gateKeyNumCnt[G_MOVEENEMY_SHUTTER2_KEYNUM]++;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_3:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_3]++;
+			case S_MOVEENEMY_SHUTTER2_KEY:
+				gateKeyNumCnt[S_MOVEENEMY_SHUTTER2_KEYNUM]++;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_4:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_4]++;
+			case DUMMY_______SHUTTER3_KEY:
+				gateKeyNumCnt[DUMMY_______SHUTTER3_KEYNUM]++;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_5:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_5]++;
+			case DUMMY1______SHUTTER4_KEY:
+				gateKeyNumCnt[DUMMY1______SHUTTER4_KEYNUM]++;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_6:
-				gateKeyNumCnt[KEYNUM_WALKINGENEMY_HAS_KEY_6]++;
+			case DUMMY2______SHUTTER4_KEY:
+				gateKeyNumCnt[DUMMY2______SHUTTER4_KEYNUM]++;
 				break;
 
-			case FLYINGENEMY_HAS_KEY1:
-				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY1]++;
+			case G_MOVEENEMY_SHUTTER5_KEY:
+				gateKeyNumCnt[G_MOVEENEMY_SHUTTER5_KEYNUM]++;
 				break;
 
-			case FLYINGENEMY_HAS_KEY2:
-				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY2]++;
+			case G_MOVEENEMY_SHUTTER6_KEY:
+				gateKeyNumCnt[G_MOVEENEMY_SHUTTER6_KEYNUM]++;
 				break;
 
-			case FLYINGENEMY_HAS_KEY3:
-				gateKeyNumCnt[KEYNUM_FLYINGENEMY_HAS_KEY3]++;
+			case DUMMY_______SHUTTER6_KEY:
+				gateKeyNumCnt[DUMMY_______SHUTTER6_KEYNUM]++;
+				break;
+
+			case BOSS1_SHUTTER7_KEY:
+				gateKeyNumCnt[BOSS1_SHUTTER7_KEYNUM]++;
+				break;
+
+			case BOSS2_SHUTTER8_KEY:
+				gateKeyNumCnt[BOSS2_SHUTTER8_KEYNUM]++;
+				break;
+
+			case DUMMY_______SHUTTER8_KEY:
+				gateKeyNumCnt[DUMMY_______SHUTTER8_KEYNUM]++;
 				break;
 
 			}
@@ -198,41 +228,64 @@ void StageGimmickManage() {
 
 			if (gateKeyNumCnt[i] == g_GateKeyNum[i]) {
 				switch (i) {
-				case KEYNUM_WALKINGENEMY_HAS_KEY_1:
-					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG;
+				case S_STOPENEMY_SHUTTER1_KEYNUM:
+					gateflg = gateflg | S_STOPENEMY_SHUTTER1_KEYNUMFLG;
 					break;
-				case KEYNUM_WALKINGENEMY_HAS_KEY_2:
-					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG;
+
+				case G_MOVEENEMY_SHUTTER2_KEYNUM:
+					gateflg = gateflg | G_MOVEENEMY_SHUTTER2_KEYNUMFLG;
 					break;
-				case KEYNUM_WALKINGENEMY_HAS_KEY_3:
-					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_3_FLG;
+
+				case S_MOVEENEMY_SHUTTER2_KEYNUM:
+					gateflg = gateflg | S_MOVEENEMY_SHUTTER2_KEYNUMFLG;
 					break;
-				case KEYNUM_WALKINGENEMY_HAS_KEY_4:
-					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_4_FLG;
+
+				case DUMMY_______SHUTTER3_KEYNUM:
+					gateflg = gateflg | DUMMY_______SHUTTER3_KEYNUMFLG;
 					break;
-				case KEYNUM_WALKINGENEMY_HAS_KEY_5:
-					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_5_FLG;
+
+				case DUMMY1______SHUTTER4_KEYNUM:
+					gateflg = gateflg | DUMMY1______SHUTTER4_KEYNUMFLG;
 					break;
-				case KEYNUM_WALKINGENEMY_HAS_KEY_6:
-					gateflg = gateflg | KEYNUM_WALKINGENEMY_HAS_KEY_6_FLG;
+
+				case DUMMY2______SHUTTER4_KEYNUM:
+					gateflg = gateflg | DUMMY2______SHUTTER4_KEYNUMFLG;
 					break;
-				case KEYNUM_FLYINGENEMY_HAS_KEY1:
-					gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY1_FLG;
+
+				case G_MOVEENEMY_SHUTTER5_KEYNUM:
+					gateflg = gateflg | G_MOVEENEMY_SHUTTER5_KEYNUMFLG;
 					break;
-				case KEYNUM_FLYINGENEMY_HAS_KEY2:
-					gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY2_FLG;
+
+				case G_MOVEENEMY_SHUTTER6_KEYNUM:
+					gateflg = gateflg | G_MOVEENEMY_SHUTTER6_KEYNUMFLG;
 					break;
-				case KEYNUM_FLYINGENEMY_HAS_KEY3:
-					gateflg = gateflg | KEYNUM_FLYINGENEMY_HAS_KEY3_FLG;
+
+				case DUMMY_______SHUTTER6_KEYNUM:
+					gateflg = gateflg | DUMMY_______SHUTTER6_KEYNUMFLG;
 					break;
-				case KEYNUM_SWITCH1:
-						gateflg = gateflg | KEYNUM_SWITCH1_FLG;
+
+				case BOSS1_SHUTTER7_KEYNUM:
+					gateflg = gateflg | BOSS1_SHUTTER7_KEYNUMFLG;
 					break;
-				case KEYNUM_SWITCH2:
-						gateflg = gateflg | KEYNUM_SWITCH2_FLG;
+
+				case BOSS2_SHUTTER8_KEYNUM:
+						gateflg = gateflg | BOSS2_SHUTTER8_KEYNUMFLG;
 					break;
-				case KEYNUM_SWITCH3:
-						gateflg = gateflg | KEYNUM_SWITCH3_FLG;
+
+				case DUMMY_______SHUTTER8_KEYNUM:
+						gateflg = gateflg | DUMMY_______SHUTTER8_KEYNUMFLG;
+					break;
+
+				case SWITCH_A_KEYNUM:
+						gateflg = gateflg | KEYNUM_SWITCHA_FLG;
+					break;
+
+				case SWITCH_B_KEYNUM:
+					gateflg = gateflg | KEYNUM_SWITCHB_FLG;
+					break;
+
+				case SWITCH_C_KEYNUM:
+					gateflg = gateflg | KEYNUM_SWITCHC_FLG;
 					break;
 				}
 			}
@@ -240,30 +293,50 @@ void StageGimmickManage() {
 	}
 
 	//シャッターとリンクさせる
-	if (gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_1_FLG) {
-		OpenGate(SHUTTER_1);
-		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_1] = -1;
+	if (gateflg & S_STOPENEMY_SHUTTER1_KEYNUMFLG) {
+		OpenGate(SHUTTER1);
+		g_GateKeyNum[S_STOPENEMY_SHUTTER1_KEYNUM] = -1;
 	}
-	if ((gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_2_FLG) && (gateflg & KEYNUM_FLYINGENEMY_HAS_KEY2_FLG)) {
-		OpenGate(SHUTTER_2);
-		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_2] = -1;
-		g_GateKeyNum[KEYNUM_FLYINGENEMY_HAS_KEY2] = -1;
+	if ((gateflg & G_MOVEENEMY_SHUTTER2_KEYNUMFLG) && (gateflg & S_MOVEENEMY_SHUTTER2_KEYNUMFLG)) {
+		OpenGate(SHUTTER2);
+		g_GateKeyNum[G_MOVEENEMY_SHUTTER2_KEYNUM] = -1;
+		g_GateKeyNum[S_MOVEENEMY_SHUTTER2_KEYNUM] = -1;
 	}
-	if (gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_4_FLG) {
-		OpenGate(SHUTTER_4);
-		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_4] = -1;
+	if (gateflg & DUMMY_______SHUTTER3_KEYNUMFLG) {
+		OpenGate(SHUTTER3);
+		g_GateKeyNum[DUMMY_______SHUTTER3_KEYNUM] = -1;
 	}
-	if (gateflg & KEYNUM_WALKINGENEMY_HAS_KEY_5_FLG) {
-		OpenGate(SHUTTER_5);
-		g_GateKeyNum[KEYNUM_WALKINGENEMY_HAS_KEY_5] = -1;
+	if ((gateflg & DUMMY1______SHUTTER4_KEYNUMFLG) && (gateflg & DUMMY2______SHUTTER4_KEYNUMFLG)) {
+		OpenGate(SHUTTER4);
+		g_GateKeyNum[DUMMY1______SHUTTER4_KEYNUM] = -1;
+		g_GateKeyNum[DUMMY2______SHUTTER4_KEYNUM] = -1;
 	}
-	if (gateflg & KEYNUM_SWITCH1_FLG) {
+
+	if (gateflg & G_MOVEENEMY_SHUTTER5_KEYNUMFLG) {
+		OpenGate(SHUTTER5);
+		g_GateKeyNum[G_MOVEENEMY_SHUTTER5_KEYNUM] = -1;
+	}
+	if ((gateflg & G_MOVEENEMY_SHUTTER6_KEYNUMFLG) && (gateflg & DUMMY_______SHUTTER6_KEYNUMFLG)) {
+		OpenGate(SHUTTER6);
+		g_GateKeyNum[G_MOVEENEMY_SHUTTER6_KEYNUM] = -1;
+		g_GateKeyNum[DUMMY_______SHUTTER6_KEYNUM] = -1;
+	}
+	if (gateflg & BOSS1_SHUTTER7_KEYNUMFLG) {
+		OpenGate(SHUTTER7);
+		g_GateKeyNum[BOSS1_SHUTTER7_KEYNUM] = -1;
+	}
+	if ((gateflg & BOSS2_SHUTTER8_KEYNUMFLG) && (gateflg & DUMMY_______SHUTTER8_KEYNUMFLG)) {
+		OpenGate(SHUTTER8);
+		g_GateKeyNum[BOSS2_SHUTTER8_KEYNUM] = -1;
+		g_GateKeyNum[DUMMY_______SHUTTER8_KEYNUM] = -1;
+	}
+	if (gateflg & KEYNUM_SWITCHA_FLG) {
 		OpenGate(SHUTTER_A);
 	};
-	if (gateflg & KEYNUM_SWITCH2_FLG) {
+	if (gateflg & KEYNUM_SWITCHB_FLG) {
 		OpenGate(SHUTTER_B);
 	};
-	if (gateflg & KEYNUM_SWITCH3_FLG) {
+	if (gateflg & KEYNUM_SWITCHC_FLG) {
 		OpenGate(SHUTTER_C);
 	};
 
@@ -271,7 +344,7 @@ void StageGimmickManage() {
 
 	if (bossActiveflg && !g_BossGateflg) {
 		
-		CloseGate(BOSS_SHUTTER, WALL);
+		CloseGate(BOSS_SHUTTER, BOSS_SHUTTER);
 		g_BossGateflg = true;
 	}
 

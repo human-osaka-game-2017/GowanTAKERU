@@ -4,16 +4,17 @@
 #include"MainControl.h"
 #include"MapControl.h"
 #include"CommonRender.h"
+#include"FileManagement.h"
 
-static Bullet g_bullet[BULLETNUMBER];
 static Bullet g_firstBullet;
-
-Bullet* GetBullet() {
-	return g_bullet;
-}
+static EditableBulletData g_BulletInitialData[BULLET_MAX];
 
 Bullet* GetFirstBulletAddress() {
 	return &g_firstBullet;
+}
+
+void LoadBulletData() {
+	LoadBulletDataCSV(g_BulletInitialData);
 }
 
 void BulletInit() {

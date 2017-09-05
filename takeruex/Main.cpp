@@ -8,6 +8,7 @@
 #include"TitleRender.h"
 #include"GameClearRender.h"
 #include"GameOverRender.h"
+#include"BulletControl.h"
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp) {
@@ -66,6 +67,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	DXInputKeybourdInit(hWnd, hInstance);
 	DirectXSoundInit(hWnd);
 	StageMapNumMaxInit();
+	LeadEnemyData();
+	//LoadBulletData();
 
 
 	MSG msg;

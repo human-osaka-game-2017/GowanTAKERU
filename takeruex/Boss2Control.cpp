@@ -76,7 +76,7 @@ BREAK:
 	if (g_Boss2.isExistence) {
 		SetStopScrollPos(g_Boss2.WorldPos.x);
 		g_Boss2.MovementX = g_Boss2.MovementY = 0;
-		g_Boss2.Hp = 70;
+		g_Boss2.Hp = 120;
 		g_Boss2.Atk = 20;
 		g_Boss2.isLeft = true;
 		g_Boss2.isDead = false;

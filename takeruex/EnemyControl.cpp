@@ -14,11 +14,16 @@
 void SetEnemyData(int maxX, int maxY, int* pGimmickData);
 void EnemyPursuit(int enemyNum);
 
+EditableEnemyData g_EnemyInitialData[ENEMY_KIND_MAX];
 Enemy* g_pEnemy;//
 
 int g_EnemyMaxCount = 0;
 
-Enemy* GetEnemyData() {//
+void LeadEnemyData() {
+	LoadEnemyDataCSV(g_EnemyInitialData);
+}
+
+Enemy* GetEnemyData() {
 	return g_pEnemy;
 }
 
@@ -38,31 +43,40 @@ void CountEnemy(int maxX,int maxY,int* pGimmickData) {
 		for (int j = 0; j < maxX; j++) {
 
 			switch (pGimmickData[j + i*maxX]) {
-			case WALKINGENEMY_1:
-			case WALKINGENEMY_2:
-			case WALKINGENEMY_3:
-			case WALKINGENEMY_4:
-			case WALKINGENEMY_5:
-			case WALKINGENEMY_6:
-			case WALKINGENEMY_HAS_KEY_1:
-			case WALKINGENEMY_HAS_KEY_2:
-			case WALKINGENEMY_HAS_KEY_3:
-			case WALKINGENEMY_HAS_KEY_4:
-			case WALKINGENEMY_HAS_KEY_5:
-			case WALKINGENEMY_HAS_KEY_6:
-			case FLYINGENEMY1:
-			case FLYINGENEMY2:
-			case FLYINGENEMY3:
-			case FLYINGENEMY4:
-			case FLYINGENEMY5:
-			case FLYINGENEMY_HAS_KEY1:
-			case FLYINGENEMY_HAS_KEY2:
-			case FLYINGENEMY_HAS_KEY3:
-			case FIXEDBATTERY1:
+			case S_STOPENEMY_SHUTTER1_KEY:
+			case G_MOVEENEMY_SHUTTER2_KEY:
+			case S_MOVEENEMY_SHUTTER2_KEY:
+			case DUMMY_______SHUTTER3_KEY://未確定
+			case DUMMY1______SHUTTER4_KEY://未確定
+			case DUMMY2______SHUTTER4_KEY://未確定
+			case G_MOVEENEMY_SHUTTER5_KEY:
+			case G_MOVEENEMY_SHUTTER6_KEY:
+			case DUMMY_______SHUTTER6_KEY://未確定
+			case BOSS1_SHUTTER7_KEY:
+			case BOSS2_SHUTTER8_KEY:
+			case DUMMY_______SHUTTER8_KEY://未確定
+			case G_STOPENEMY01://地上敵
+			case G_STOPENEMY02:
+			case G_STOPENEMY03:
+			case G_STOPENEMY04:
+			case G_MOVEENEMY01:
+			case G_MOVEENEMY02:
+			case G_MOVEENEMY03:
+			case G_MOVEENEMY04:
+			case G_LARIATENEMY01:
+			case G_LARIATENEMY02:
+			case S_STOPENEMY01://空中敵
+			case S_STOPENEMY02:
+			case S_STOPENEMY03:
+			case S_MOVEENEMY01:
+			case S_MOVEENEMY02:
+			case S_MOVEENEMY03:
+			case S_MOVEENEMY04:
+			case FIXEDBATTERY1://固定砲台
 			case FIXEDBATTERY2:
-			case SWITCH_1:
-			case SWITCH_2:
-			case SWITCH_3:
+			case SWITCH_A:
+			case SWITCH_B:
+			case SWITCH_C:
 				g_EnemyMaxCount++;
 				break;
 			}
@@ -111,8 +125,6 @@ void EnemyInit() {
 
 void EnemyControl() {
 
-
-
 	int enemyMax = GetEnemyMax();
 	for (int i = 0; i < enemyMax; i++) {
 		D3DXVECTOR2* basepoint = GetBasePoint();
@@ -135,36 +147,21 @@ void EnemyControl() {
 				EnemyPursuit(i);
 				g_pEnemy[i].bulletFrameCount++;
 				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー毎に持っている発射感覚になったら入る
-					if (g_pEnemy[i].enemyKind == FLYINGENEMY2) {//えねみーカインドごとに入るところが違う（打つ弾が違う
-						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET1);
+
+					if (g_pEnemy[i].beLeft) {
+						BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
 					}
-					if (g_pEnemy[i].enemyKind == WALKINGENEMY_1 ||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_2 ||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_6 ||
-						g_pEnemy[i].enemyKind == FLYINGENEMY1	||
-						g_pEnemy[i].enemyKind == FLYINGENEMY4	||
-						g_pEnemy[i].enemyKind == FIXEDBATTERY1  ||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_4 ||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_1	||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_2	||
-						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY1	||
-						g_pEnemy[i].enemyKind == FLYINGENEMY_HAS_KEY2	||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_4	||
-						g_pEnemy[i].enemyKind == WALKINGENEMY_HAS_KEY_5) {
-						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET2);
+					else {
+						if (g_pEnemy[i].BulletDeg < 180) {
+							BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 180.0f - g_pEnemy[i].BulletDeg);
+						}
+						else {
+							BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 540.0f - g_pEnemy[i].BulletDeg);
+						}
 					}
-					if (g_pEnemy[i].enemyKind == FIXEDBATTERY2) {
-						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET3);
-					}
-					if (g_pEnemy[i].enemyKind == WALKINGENEMY_5) {
-						BulletCreate(g_pEnemy[i].WorldPos, BULLETTARGET4);
-					}
-					if (g_pEnemy[i].enemyKind == WALKINGENEMY_3) {
-						BulletCreate(g_pEnemy[i].WorldPos, HOMING);
-					}
-					if(g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval+30) {
-						g_pEnemy[i].bulletFrameCount = 0;
-					}
+
+					g_pEnemy[i].bulletFrameCount = 0;
+
 				}
 			}
 		}
@@ -181,8 +178,13 @@ void EnemyPursuit(int enemyNum) {
 	D3DXVECTOR2 EnemyRightFoot = D3DXVECTOR2(g_pEnemy[enemyNum].WorldPos.x + g_pEnemy[enemyNum].Width/2 + 1, g_pEnemy[enemyNum].WorldPos.y + g_pEnemy[enemyNum].Height/2+1);//右足
 
 	switch (g_pEnemy[enemyNum].enemyKind) {
-	case WALKINGENEMY_1:
-	case WALKINGENEMY_6:
+	case G_MOVEENEMY_SHUTTER2_KEY:
+	case G_MOVEENEMY_SHUTTER5_KEY:
+	case G_MOVEENEMY_SHUTTER6_KEY:
+	case G_MOVEENEMY01:
+	case G_MOVEENEMY02:
+	case G_MOVEENEMY03:
+	case G_MOVEENEMY04:
 		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
@@ -205,17 +207,19 @@ void EnemyPursuit(int enemyNum) {
 				}
 			}
 		}
-		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-5フレーム以上あれば中に入る
+		if (g_pEnemy[enemyNum].bulletFrameCount <= 30 || g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-5フレーム以上あれば中に入る
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = 0;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
+	
 		}
 		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 
 		break;
-	case WALKINGENEMY_2:
+
+	case G_STOPENEMY01:
+	case G_STOPENEMY02:
+	case G_STOPENEMY03:
+	case G_STOPENEMY04:
 		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
@@ -224,24 +228,10 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
 		break;
-	case WALKINGENEMY_3:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
-		break;
-	case WALKINGENEMY_4://体当たり
+
+	case G_LARIATENEMY01://体当たり
+	case G_LARIATENEMY02:
 		if (g_pEnemy[enemyNum].WorldPos.x > player->WorldPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
@@ -261,93 +251,28 @@ void EnemyPursuit(int enemyNum) {
 		if (g_pEnemy[enemyNum].Rush == true) {//フラグONならSPEED---
 			g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
 			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
+	
 		}
 		//フラグOFFかつPOP位置じゃない場合
 		if (g_pEnemy[enemyNum].Rush == false && g_pEnemy[enemyNum].WorldPos.x <= g_pEnemy[enemyNum].EnemyBasePoint.x) {
 			g_pEnemy[enemyNum].MovementX = 2;
 			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
+	
 		}
 		//フラグがOFFで敵の世界座標がPOP地点と同じ場合動かない
 		if (g_pEnemy[enemyNum].Rush == false && g_pEnemy[enemyNum].WorldPos.x==g_pEnemy[enemyNum].EnemyBasePoint.x) {
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
+			
 		}
 		break;
-	case WALKINGENEMY_5:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
-		break;
-	case WALKINGENEMY_HAS_KEY_1:
-	case WALKINGENEMY_HAS_KEY_4:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
-		break;
-	case WALKINGENEMY_HAS_KEY_2:
-	case WALKINGENEMY_HAS_KEY_5:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
 
-		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-5フレーム未満だったら中に入る
-																						  //エネミーのX座標がプレイヤーのX座標より小さかったら
-			if (player->WindowPos.x < g_pEnemy[enemyNum].WindowPos.x) {
-				if (MapKindSpecifyForPos(&EnemyLeftFoot) != NOTHING) {
-					//-方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX = -g_pEnemy[enemyNum].Speed;
-				}
-			}
-			//エネミーのX座標がプレイヤーのX座標より大きかったら
-			if (player->WindowPos.x > g_pEnemy[enemyNum].WindowPos.x) {
-				if (MapKindSpecifyForPos(&EnemyRightFoot) != NOTHING) {
-					//+方向にエネミーを動かす
-					g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
-				}
-			}
-		}
-		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-5フレーム以上あれば中に入る
-			g_pEnemy[enemyNum].MovementX = 0;
-			g_pEnemy[enemyNum].MovementY = 0;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
-		}
-		g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
-
-		break;
-	case WALKINGENEMY_HAS_KEY_3:
-	case WALKINGENEMY_HAS_KEY_6:
-		break;
-	case FLYINGENEMY1:
+	case S_MOVEENEMY_SHUTTER2_KEY:
+	case S_MOVEENEMY01:
+	case S_MOVEENEMY02:
+	case S_MOVEENEMY03:
+	case S_MOVEENEMY04:
+	
 		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
@@ -367,88 +292,18 @@ void EnemyPursuit(int enemyNum) {
 			}
 		}
 
-		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-30フレーム以上あれば中に入る
+		if (g_pEnemy[enemyNum].bulletFrameCount <= 30 || g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-5フレーム以上あれば中に入る
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = 0;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
-		}
-		break;
-	case FLYINGENEMY2:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = 0;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
-		break;
-	case FLYINGENEMY3:
-		break;//未定
-	case FLYINGENEMY4:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-5フレーム未満だったら中に入る
-																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
-			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
-				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
-			}
-			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
-			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
-				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
-			}
-		}
 
-		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-5フレーム以上あれば中に入る
-			g_pEnemy[enemyNum].MovementX = 0;
-			g_pEnemy[enemyNum].MovementY = 0;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
 		}
 		break;
-	case FLYINGENEMY5:
-		break;//未定
-	case FLYINGENEMY_HAS_KEY1:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		if (g_pEnemy[enemyNum].bulletFrameCount < g_pEnemy[enemyNum].firingInterval - 30) {//弾発射フレームより-30フレーム未満だったら中に入る
-																						   //エネミーのX座標がプレイヤーのX座標+200の位置より大きかったら
-			if (player->WindowPos.x + 200 < g_pEnemy[enemyNum].WindowPos.x) {
-				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX -= g_pEnemy[enemyNum].Speed;
-			}
-			//エネミーのX座標がプレイヤーのX座標-200の位置より小さかったら
-			if (player->WindowPos.x - 200 > g_pEnemy[enemyNum].WindowPos.x) {
-				//+方向にエネミーを動かす
-				g_pEnemy[enemyNum].MovementX = g_pEnemy[enemyNum].Speed;
-			}
-		}
 
-		if (g_pEnemy[enemyNum].bulletFrameCount >= g_pEnemy[enemyNum].firingInterval - 30) {//発射フレームの-30フレーム以上あれば中に入る
-			g_pEnemy[enemyNum].MovementX = 0;
-			g_pEnemy[enemyNum].MovementY = 0;
-			if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-				g_pEnemy[enemyNum].bulletFrameCount = 0;
-			}
-		}
-		break;
-	case FLYINGENEMY_HAS_KEY2:
+	case S_STOPENEMY_SHUTTER1_KEY:
+	case S_STOPENEMY01:
+	case S_STOPENEMY02:
+	case S_STOPENEMY03:
+
 		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
 			g_pEnemy[enemyNum].beLeft = true;
 		}
@@ -457,42 +312,25 @@ void EnemyPursuit(int enemyNum) {
 		}
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
 		break;
-	case FLYINGENEMY_HAS_KEY3:
-		if (g_pEnemy[enemyNum].WindowPos.x > player->WindowPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
-		g_pEnemy[enemyNum].MovementX = 0;
-		g_pEnemy[enemyNum].MovementY = 0;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
-		break;
+
+
 	case FIXEDBATTERY1:
 	case FIXEDBATTERY2:
 		g_pEnemy[enemyNum].beLeft = false;
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
-		if (g_pEnemy[enemyNum].bulletFrameCount == g_pEnemy[enemyNum].firingInterval + 30) {
-			g_pEnemy[enemyNum].bulletFrameCount = 0;
-		}
 		break;
-	case SWITCH_1:
-	case SWITCH_2:
-	case SWITCH_3:
+
+	case SWITCH_A:
+	case SWITCH_B:
+	case SWITCH_C:
 		g_pEnemy[enemyNum].beLeft = false;
 		g_pEnemy[enemyNum].MovementX = 0;
 		g_pEnemy[enemyNum].MovementY = 0;
 		break;
-
-
 		}
+
 		g_pEnemy[enemyNum].FrontWorldPos.x = g_pEnemy[enemyNum].WorldPos.x;
 		g_pEnemy[enemyNum].FrontWorldPos.y = g_pEnemy[enemyNum].WorldPos.y;
 
@@ -528,246 +366,483 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			switch (pGimmickData[j + i*maxX]) {//もらった敵のデータを入れ込む
 
-			case WALKINGENEMY_HAS_KEY_1:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_1;
-				g_pEnemy[enemyCount].Speed = 1.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case S_STOPENEMY_SHUTTER1_KEY:
+				g_pEnemy[enemyCount].enemyKind = S_STOPENEMY_SHUTTER1_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[0].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[0].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[0].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[0].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[0].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[0].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[0].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[0].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[0].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[0].BulletDeg;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_2:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_2;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 30;
-				g_pEnemy[enemyCount].Hp = 10;
+			case G_MOVEENEMY_SHUTTER2_KEY:
+				g_pEnemy[enemyCount].enemyKind = G_MOVEENEMY_SHUTTER2_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[1].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[1].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[1].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[1].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[1].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[1].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[1].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[1].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[1].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[1].BulletDeg;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_3://未定
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_3;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
-				break;
-			case WALKINGENEMY_HAS_KEY_4:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_4;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 3 * 60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 30;
+			case S_MOVEENEMY_SHUTTER2_KEY://未定
+				g_pEnemy[enemyCount].enemyKind = S_MOVEENEMY_SHUTTER2_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[2].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[2].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[2].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[2].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[2].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[2].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[2].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[2].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[2].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[2].BulletDeg;
 				break;
 
-			case WALKINGENEMY_HAS_KEY_5:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_HAS_KEY_5;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 3 * 60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 30;
-				break;
-			case WALKINGENEMY_HAS_KEY_6:
-				break;
-
-			case WALKINGENEMY_1:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_1;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 3*60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case DUMMY_______SHUTTER3_KEY:
+				g_pEnemy[enemyCount].enemyKind = DUMMY_______SHUTTER3_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[3].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[3].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[3].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[3].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[3].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[3].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[3].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[3].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[3].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[3].BulletDeg;
 				break;
 
-			case WALKINGENEMY_2:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_2;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 5*60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case DUMMY1______SHUTTER4_KEY:
+				g_pEnemy[enemyCount].enemyKind = DUMMY1______SHUTTER4_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[4].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[4].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[4].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[4].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[4].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[4].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[4].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[4].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[4].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[4].BulletDeg;
 				break;
 
-			case WALKINGENEMY_3:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_3;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 4*60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 68.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case DUMMY2______SHUTTER4_KEY:
+				g_pEnemy[enemyCount].enemyKind = DUMMY2______SHUTTER4_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[5].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[5].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[5].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[5].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[5].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[5].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[5].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[5].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[5].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[5].BulletDeg;
 				break;
 
-			case WALKINGENEMY_4:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_4;
-				g_pEnemy[enemyCount].Speed = 7.0f;
-				g_pEnemy[enemyCount].firingInterval = 4*60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case G_MOVEENEMY_SHUTTER5_KEY:
+				g_pEnemy[enemyCount].enemyKind = G_MOVEENEMY_SHUTTER5_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[6].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[6].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[6].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[6].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[6].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[6].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[6].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[6].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[6].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[6].BulletDeg;
 				break;
 
-			case WALKINGENEMY_5:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_5;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 4*60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case G_MOVEENEMY_SHUTTER6_KEY:
+				g_pEnemy[enemyCount].enemyKind = G_MOVEENEMY_SHUTTER6_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[7].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[7].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[7].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[7].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[7].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[7].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[7].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[7].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[7].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[7].BulletDeg;
 				break;
 
-			case WALKINGENEMY_6:
-				g_pEnemy[enemyCount].enemyKind = WALKINGENEMY_6;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 4 * 60;
-				g_pEnemy[enemyCount].Height = 118.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 20;
+			case DUMMY_______SHUTTER6_KEY:
+				g_pEnemy[enemyCount].enemyKind = DUMMY_______SHUTTER6_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[8].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[8].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[8].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[8].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[8].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[8].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[8].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[8].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[8].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[8].BulletDeg;
 				break;
 
-			case FLYINGENEMY_HAS_KEY1://未定
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY1;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+			case BOSS1_SHUTTER7_KEY:
+				g_pEnemy[enemyCount].enemyKind = BOSS1_SHUTTER7_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[9].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[9].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[9].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[9].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[9].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[9].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[9].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[9].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[9].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[9].BulletDeg;
 				break;
 
-			case FLYINGENEMY_HAS_KEY2:
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY2;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case BOSS2_SHUTTER8_KEY:
+				g_pEnemy[enemyCount].enemyKind = BOSS2_SHUTTER8_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[10].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[10].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[10].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[10].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[10].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[10].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[10].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[10].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[10].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[10].BulletDeg;
 				break;
 
-			case FLYINGENEMY_HAS_KEY3://未定
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY_HAS_KEY3;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;
+			case DUMMY_______SHUTTER8_KEY:
+				g_pEnemy[enemyCount].enemyKind = DUMMY_______SHUTTER8_KEY;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[11].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[11].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[11].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[11].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[11].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[11].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[11].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[11].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[11].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[11].BulletDeg;
 				break;
 
-			case FLYINGENEMY1:
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY1;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 4*60;
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case G_STOPENEMY01://未定
+				g_pEnemy[enemyCount].enemyKind = G_STOPENEMY01;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[12].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[12].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[12].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[12].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[12].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[12].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[12].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[12].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[12].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[12].BulletDeg;
 				break;
 
-			case FLYINGENEMY2:
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY2;
-				g_pEnemy[enemyCount].Speed = 0.0f;
-				g_pEnemy[enemyCount].firingInterval = 4*60;
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 10;
+			case G_STOPENEMY02:
+				g_pEnemy[enemyCount].enemyKind = G_STOPENEMY02;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[13].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[13].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[13].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[13].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[13].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[13].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[13].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[13].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[13].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[13].BulletDeg;
 				break;
 
-			case FLYINGENEMY3://未定
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY3;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;//?
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;//?
+			case G_STOPENEMY03://未定
+				g_pEnemy[enemyCount].enemyKind = G_STOPENEMY03;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[14].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[14].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[14].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[14].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[14].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[14].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[14].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[14].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[14].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[14].BulletDeg;
 				break;
 
-			case FLYINGENEMY4:
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY4;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 4*60;
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 20;
+			case G_STOPENEMY04:
+				g_pEnemy[enemyCount].enemyKind = G_STOPENEMY04;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[15].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[15].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[15].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[15].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[15].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[15].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[15].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[15].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[15].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[15].BulletDeg;
 				break;
 
-			case FLYINGENEMY5://未定
-				g_pEnemy[enemyCount].enemyKind = FLYINGENEMY5;
-				g_pEnemy[enemyCount].Speed = 3.0f;
-				g_pEnemy[enemyCount].firingInterval = 200;//?
-				g_pEnemy[enemyCount].Height = 88.0f;
-				g_pEnemy[enemyCount].Width = 100.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = 1;//?
+			case G_MOVEENEMY01:
+				g_pEnemy[enemyCount].enemyKind = G_MOVEENEMY01;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[16].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[16].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[16].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[16].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[16].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[16].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[16].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[16].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[16].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[16].BulletDeg;
+				break;
+
+			case G_MOVEENEMY02://未定
+				g_pEnemy[enemyCount].enemyKind = G_MOVEENEMY02;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[17].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[17].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[17].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[17].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[17].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[17].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[17].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[17].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[17].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[17].BulletDeg;
+				break;
+
+			case G_MOVEENEMY03:
+				g_pEnemy[enemyCount].enemyKind = G_MOVEENEMY03;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[18].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[18].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[18].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[18].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[18].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[18].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[18].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[18].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[18].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[18].BulletDeg;
+				break;
+
+			case G_MOVEENEMY04://未定
+				g_pEnemy[enemyCount].enemyKind = G_MOVEENEMY04;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[19].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[19].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[19].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[19].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[19].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[19].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[19].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[19].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[19].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[19].BulletDeg;
+				break;
+
+			case G_LARIATENEMY01:
+				g_pEnemy[enemyCount].enemyKind = G_LARIATENEMY01;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[20].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[20].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[20].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[20].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[20].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[20].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[20].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[20].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[20].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[20].BulletDeg;
+				break;
+
+			case G_LARIATENEMY02:
+				g_pEnemy[enemyCount].enemyKind = G_LARIATENEMY02;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[21].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[21].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[21].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[21].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[21].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[21].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[21].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[21].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[21].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[21].BulletDeg;
+				break;
+
+			case S_STOPENEMY01:
+				g_pEnemy[enemyCount].enemyKind = S_STOPENEMY01;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[22].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[22].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[22].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[22].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[22].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[22].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[22].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[22].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[22].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[22].BulletDeg;
+				break;
+
+			case S_STOPENEMY02:
+				g_pEnemy[enemyCount].enemyKind = S_STOPENEMY02;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[23].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[23].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[23].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[23].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[23].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[23].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[23].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[23].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[23].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[23].BulletDeg;
+				break;
+
+			case S_STOPENEMY03:
+				g_pEnemy[enemyCount].enemyKind = S_STOPENEMY03;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[24].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[24].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[24].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[24].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[24].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[24].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[24].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[24].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[24].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[24].BulletDeg;
+				break;
+
+			case S_MOVEENEMY01:
+				g_pEnemy[enemyCount].enemyKind = S_MOVEENEMY01;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[25].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[25].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[25].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[25].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[25].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[25].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[25].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[25].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[25].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[25].BulletDeg;
+				break;
+
+			case S_MOVEENEMY02:
+				g_pEnemy[enemyCount].enemyKind = S_MOVEENEMY02;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[26].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[26].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[26].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[26].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[26].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[26].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[26].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[26].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[26].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[26].BulletDeg;
+				break;
+
+			case S_MOVEENEMY03:
+				g_pEnemy[enemyCount].enemyKind = S_MOVEENEMY03;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[27].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[27].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[27].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[27].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[27].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[27].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[27].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[27].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[27].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[27].BulletDeg;
+				break;
+
+			case S_MOVEENEMY04:
+				g_pEnemy[enemyCount].enemyKind = S_MOVEENEMY04;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[28].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[28].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[28].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[28].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[28].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[28].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[28].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[28].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[28].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[28].BulletDeg;
 				break;
 
 			case FIXEDBATTERY1:
 				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY1;
-				g_pEnemy[enemyCount].Speed = 0.0f;
-				g_pEnemy[enemyCount].firingInterval = 4*60;
-				g_pEnemy[enemyCount].Height = 60.0f;
-				g_pEnemy[enemyCount].Width = 60.0f;
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[29].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[29].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[29].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[29].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[29].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[29].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[29].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[29].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[29].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[29].BulletDeg;
 				break;
 
 			case FIXEDBATTERY2:
 				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY2;
-				g_pEnemy[enemyCount].Speed = 0.0f;
-				g_pEnemy[enemyCount].firingInterval =  5*60;
-				g_pEnemy[enemyCount].Height = 60.0f;
-				g_pEnemy[enemyCount].Width = 60.0f; 
-				g_pEnemy[enemyCount].Atk = 20;
-				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
+				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[30].Hp;
+				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[30].Speed;
+				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[30].ShotInterval * 60.0f);
+				g_pEnemy[enemyCount].Height = g_EnemyInitialData[30].Height;
+				g_pEnemy[enemyCount].Width = g_EnemyInitialData[30].Width;
+				g_pEnemy[enemyCount].Atk = g_EnemyInitialData[30].Atk;
+				g_pEnemy[enemyCount].tu = g_EnemyInitialData[30].tu;
+				g_pEnemy[enemyCount].tv = g_EnemyInitialData[30].tv;
+				g_pEnemy[enemyCount].BulletKind = g_EnemyInitialData[30].BulletKind;
+				g_pEnemy[enemyCount].BulletDeg = g_EnemyInitialData[30].BulletDeg;
 				break;
 
-			case SWITCH_1:
-				g_pEnemy[enemyCount].enemyKind = SWITCH_1;
-				g_pEnemy[enemyCount].Speed = 0.0f;
-				g_pEnemy[enemyCount].firingInterval = 5 * 60;
+			case SWITCH_A:
+				g_pEnemy[enemyCount].enemyKind = SWITCH_A;
+				g_pEnemy[enemyCount].Hp = INTMAX;
+				g_pEnemy[enemyCount].Speed =0.0f;
+				g_pEnemy[enemyCount].firingInterval = INTMAX;
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
-				g_pEnemy[enemyCount].Atk = 0;
-				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
+				g_pEnemy[enemyCount].Atk = 5.0f;
+				g_pEnemy[enemyCount].tu = 320.0f;
+				g_pEnemy[enemyCount].tv = 128.0f;
+				g_pEnemy[enemyCount].BulletKind = BULLETNORMAL1;
+				g_pEnemy[enemyCount].BulletDeg = 0.0f;
 				break;
 
-			case SWITCH_2:
-				g_pEnemy[enemyCount].enemyKind = SWITCH_2;
+			case SWITCH_B:
+				g_pEnemy[enemyCount].enemyKind = SWITCH_B;
+				g_pEnemy[enemyCount].Hp = INTMAX;
 				g_pEnemy[enemyCount].Speed = 0.0f;
-				g_pEnemy[enemyCount].firingInterval = 5 * 60;
+				g_pEnemy[enemyCount].firingInterval = INTMAX;
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
-				g_pEnemy[enemyCount].Atk = 0;
-				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
+				g_pEnemy[enemyCount].Atk = 5.0f;
+				g_pEnemy[enemyCount].tu = 320.0f;
+				g_pEnemy[enemyCount].tv = 128.0f;
+				g_pEnemy[enemyCount].BulletKind = BULLETNORMAL1;
+				g_pEnemy[enemyCount].BulletDeg = 0.0f;
 				break;
 
-			case SWITCH_3:
-				g_pEnemy[enemyCount].enemyKind = SWITCH_3;
+			case SWITCH_C:
+				g_pEnemy[enemyCount].enemyKind = SWITCH_C;
+				g_pEnemy[enemyCount].Hp = INTMAX;
 				g_pEnemy[enemyCount].Speed = 0.0f;
-				g_pEnemy[enemyCount].firingInterval = 5 * 60;
+				g_pEnemy[enemyCount].firingInterval = INTMAX;
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
-				g_pEnemy[enemyCount].Atk = 0;
-				g_pEnemy[enemyCount].Hp = SEITCHMAXHP;
+				g_pEnemy[enemyCount].Atk = 5.0f;
+				g_pEnemy[enemyCount].tu = 320.0f;
+				g_pEnemy[enemyCount].tv = 128.0f;
+				g_pEnemy[enemyCount].BulletKind = BULLETNORMAL1;
+				g_pEnemy[enemyCount].BulletDeg = 0.0f;
 				break;
+
+			
 			}
 
 			if (g_pEnemy[enemyCount].enemyKind != NOTHING) {

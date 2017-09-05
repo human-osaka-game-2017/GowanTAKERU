@@ -185,6 +185,7 @@ void HitManage() {
 					SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield2, BOSS3SHIELD2WIDTH, BOSS3SHIELD2HEIGHT)||
 					SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield3, BOSS3SHIELD3WIDTH, BOSS3SHIELD3HEIGHT)
 					) {
+					PlayBackSound(MAINSCENE_SE_BARRIER, false, 100);
 					DeleteBullet(&pSearchBullet);
 					continue;
 				}
@@ -194,6 +195,7 @@ void HitManage() {
 						pBoss3->isDead = true;
 						pBoss3->isActive = false;
 					}
+					PlayBackSound(MAINSCENE_SE_ENEMYDAMAGE, false, 100);
 					DeleteBullet(&pSearchBullet);
 					continue;
 				}

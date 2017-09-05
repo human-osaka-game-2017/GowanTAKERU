@@ -81,11 +81,37 @@ void CSVLoad(char* mapdata, int* map,int height,int width) {
 		for (int j = 0; j < width; j++)
 		{
 			//ƒ|ƒCƒ“ƒ^‚¸‚ç‚µ‚Ä‚Ü‚·
-			fscanf_s(pFile, "%d,", map + (j + i*width));
+			fscanf_s(pFile, "%d,", (map + (j + i*width)));
 		}
 	}
 	fclose(pFile);
 
+}
+
+void LoadEnemyDataCSV(EditableEnemyData pInEnemyData[]) {
+
+	FILE* pFile;
+
+	fopen_s(&pFile, "CSV/Mainscene/enemyData.csv", "r");
+
+	for (int i = 0; i < ENEMY_KIND_MAX; i++) {
+		int ID;
+		fscanf_s(pFile, "%d,%d,%d,%f,%f,%f,%d,%f,%f,%f,%f", &ID, &pInEnemyData[i].Hp, (int)&pInEnemyData[i].BulletKind, &pInEnemyData[i].BulletDeg, &pInEnemyData[i].ShotInterval, &pInEnemyData[i].Speed, &pInEnemyData[i].Atk,&pInEnemyData[i].tu, &pInEnemyData[i].tv, &pInEnemyData[i].Width, &pInEnemyData[i].Height);
+	}
+	fclose(pFile);
+}
+
+void LoadBulletDataCSV(EditableBulletData* pInBulletData) {
+
+	FILE* pFile;
+
+	fopen_s(&pFile, "CSV/Mainscene/BulletData.csv", "r");
+
+	for (int i = 0; i < BULLET_MAX; i++) {
+		int ID;
+		fscanf_s(pFile, "%d,%d,%d,%f,%f,%f", &ID, &pInBulletData[i].Atk, &pInBulletData[i].ReflectMax, &pInBulletData[i].Size, &pInBulletData[i].tu, &pInBulletData[i].tv);
+	}
+	fclose(pFile);
 }
 
 void TitleSceneLoad() {
@@ -158,6 +184,8 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 	CreateBufferForWave("Sound/SE_attack.wav", MAINSCENE_SE_ATTACK);
 	CreateBufferForWave("Sound/SE_jump.wav", MAINSCENE_SE_JUMP);
 	CreateBufferForWave("Sound/SE_swing.wav", MAINSCENE_SE_SWING);
+	CreateBufferForWave("Sound/SE_EnemyDamage.wav", MAINSCENE_SE_ENEMYDAMAGE);
+	CreateBufferForWave("Sound/SE_Barrier.wav", MAINSCENE_SE_BARRIER);
 	CreateBufferForWave("Sound/BGM_stage1.wav", MAINSCENE_STAGEBGM01);
 	CreateBufferForWave("Sound/BGM_stage2.wav", MAINSCENE_STAGEBGM02);
 	CreateBufferForWave("Sound/BGM_stage3.wav", MAINSCENE_STAGEBGM03);
@@ -173,23 +201,23 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 
 	switch (stage_ID) {
 	case STAGE_1:
-		CSVLoad("CSV/mainscene/stage1_map.csv", g_mapData, MaxY, MaxX);
+		CSVLoad("CSV/Mainscene/stage1_map.csv", g_mapData, MaxY, MaxX);
 		break;
 
 	case STAGE_2:
-		CSVLoad("CSV/mainscene/stage2_map.csv", g_mapData, MaxY, MaxX);
+		CSVLoad("CSV/Mainscene/stage2_map.csv", g_mapData, MaxY, MaxX);
 		break;
 
 	case STAGE_3:
-		CSVLoad("CSV/mainscene/stage3_map.csv", g_mapData, MaxY, MaxX);
+		CSVLoad("CSV/Mainscene/stage3_map.csv", g_mapData, MaxY, MaxX);
 		break;
 
 	case STAGE_4:
-		CSVLoad("CSV/mainscene/stage4_map.csv", g_mapData, MaxY, MaxX);
+		CSVLoad("CSV/Mainscene/stage4_map.csv", g_mapData, MaxY, MaxX);
 		break;
 
 	case STAGE_5:
-		CSVLoad("CSV/mainscene/stage5_map.csv", g_mapData, MaxY, MaxX);
+		CSVLoad("CSV/Mainscene/stage5_map.csv", g_mapData, MaxY, MaxX);
 		break;
 	}
 }
