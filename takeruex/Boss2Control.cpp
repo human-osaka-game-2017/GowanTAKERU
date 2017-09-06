@@ -167,7 +167,7 @@ void MoveBoss2() {
 void GoPosB() {
 
 	if ((g_GoPosBFrcnt % 12) == 0) {
-		BulletCreate(g_Boss2.WorldPos, HOMING);
+		BulletCreate(g_Boss2.WorldPos, HOMING1);
 	}
 
 	if (g_Goleft) {
@@ -197,7 +197,7 @@ void UPDOWN_MOVE() {
 
 	static int frcnt = 0;
 	if (frcnt%120 == 60) {
-		BulletCreate(g_Boss2.WorldPos, HOMING);
+		BulletCreate(g_Boss2.WorldPos, HOMING1);
 	}
 	if (frcnt % 120 == 119) {
 		BulletCreate(g_Boss2.WorldPos, BULLETNORMAL4, 210.0f);
@@ -231,7 +231,7 @@ void HitMove() {
 		}
 
 		if (g_HitMoveFrcnt == 30) {
-			BulletCreate(g_Boss2.WorldPos, HOMING);
+			BulletCreate(g_Boss2.WorldPos, HOMING1);
 		}
 
 		if (g_HitMoveFrcnt == 60) {

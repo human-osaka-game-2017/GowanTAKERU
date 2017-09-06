@@ -293,7 +293,11 @@ void PlayerReflectMotion() {
 	float armRadius = 25.0f;
 
 	Bullet* pFirstBullet = GetFirstBulletAddress();
+	EditableBulletData* BulletInitializeData = GetEditableBulletData();
+
 	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
+
+		int bulletKind = pFirstBullet->BulletKind;
 
 		//’e‚¯‚é’e‚©‚Ç‚¤‚©
 		if (!pSearchBullet->wasReflect) {
@@ -312,7 +316,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -335,7 +339,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -358,7 +362,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -385,7 +389,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -408,7 +412,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -431,7 +435,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -463,7 +467,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -486,7 +490,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -509,7 +513,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -536,7 +540,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -559,7 +563,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1
@@ -582,7 +586,7 @@ void PlayerReflectMotion() {
 							armRadius,
 							pSearchBullet->WindowPos.x,
 							pSearchBullet->WindowPos.y,
-							pSearchBullet->Size / 2)) {
+							BulletInitializeData[bulletKind].Size / 2)) {
 
 							//’e‚¯‚È‚¢’e‚Ì”»’è
 							if (pSearchBullet->BulletKind == NONREFLECTTARGET1

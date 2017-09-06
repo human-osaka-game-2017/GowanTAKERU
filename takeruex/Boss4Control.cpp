@@ -214,7 +214,7 @@ void Boss4BasicControl() {
 		BulletCreate(g_Boss4.WolrdPos, NONREFLECTTARGET1);
 	}
 	if (g_Boss4.FrCnt == 360) {
-		BulletCreate(g_Boss4.WolrdPos, HOMING);
+		BulletCreate(g_Boss4.WolrdPos, HOMING1);
 		g_Boss4.FrCnt = 0;
 	}
 	g_Boss4.FrCnt++;

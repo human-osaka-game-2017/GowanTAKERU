@@ -18,7 +18,7 @@ struct Enemy {
 	D3DXVECTOR2 WorldPos;
 	D3DXVECTOR2 EnemyBasePoint;
 	D3DXVECTOR2 FrontWorldPos;
-	BULLETKIND BulletKind;
+	int BulletKind;
 	int  enemyKind;//エネミーの種類
 	float Speed;
 	float MovementX;//エネミーの1フレーム当たりの移動量
@@ -39,7 +39,7 @@ struct Enemy {
 };
 
 struct EditableEnemyData {
-	BULLETKIND BulletKind;
+	int BulletKind;
 	float BulletDeg;
 	float ShotInterval;//発射間隔（秒数）
 	float Speed;

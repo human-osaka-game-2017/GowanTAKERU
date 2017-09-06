@@ -96,7 +96,7 @@ void LoadEnemyDataCSV(EditableEnemyData pInEnemyData[]) {
 
 	for (int i = 0; i < ENEMY_KIND_MAX; i++) {
 		int ID;
-		fscanf_s(pFile, "%d,%d,%d,%f,%f,%f,%d,%f,%f,%f,%f", &ID, &pInEnemyData[i].Hp, (int)&pInEnemyData[i].BulletKind, &pInEnemyData[i].BulletDeg, &pInEnemyData[i].ShotInterval, &pInEnemyData[i].Speed, &pInEnemyData[i].Atk,&pInEnemyData[i].tu, &pInEnemyData[i].tv, &pInEnemyData[i].Width, &pInEnemyData[i].Height);
+		fscanf_s(pFile, "%d,%d,%d,%f,%f,%f,%d,%f,%f,%f,%f", &ID, &pInEnemyData[i].Hp, &pInEnemyData[i].BulletKind, &pInEnemyData[i].BulletDeg, &pInEnemyData[i].ShotInterval, &pInEnemyData[i].Speed, &pInEnemyData[i].Atk,&pInEnemyData[i].tu, &pInEnemyData[i].tv, &pInEnemyData[i].Width, &pInEnemyData[i].Height);
 	}
 	fclose(pFile);
 }
@@ -109,7 +109,7 @@ void LoadBulletDataCSV(EditableBulletData* pInBulletData) {
 
 	for (int i = 0; i < BULLET_MAX; i++) {
 		int ID;
-		fscanf_s(pFile, "%d,%d,%d,%f,%f,%f", &ID, &pInBulletData[i].Atk, &pInBulletData[i].ReflectMax, &pInBulletData[i].Size, &pInBulletData[i].tu, &pInBulletData[i].tv);
+		fscanf_s(pFile, "%d,%d,%d,%f,%f,%f,%f", &ID, &pInBulletData[i].Atk, &pInBulletData[i].ReflectMax, &pInBulletData[i] .Speed, &pInBulletData[i].Size, &pInBulletData[i].tu, &pInBulletData[i].tv);
 	}
 	fclose(pFile);
 }
@@ -170,7 +170,11 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 	g_pTexture=(LPDIRECT3DTEXTURE9*)malloc(sizeof(LPDIRECT3DTEXTURE9)*MAINSCENE_TEXMAX);
 
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/MapChip.png", &g_pTexture[MAP_TEX]);
-	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/background.png", &g_pTexture[BACKGROUND1_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/stage1_background.png", &g_pTexture[STAGE_1_BACKGROUND_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/stage2_background.png", &g_pTexture[STAGE_2_BACKGROUND_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/stage3_background.png", &g_pTexture[STAGE_3_BACKGROUND_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/stage4_background.png", &g_pTexture[STAGE_4_BACKGROUND_TEX]);
+	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/stage5_background.png", &g_pTexture[STAGE_5_BACKGROUND_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/bullets.png", &g_pTexture[BULLET_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/player.png", &g_pTexture[PLAYER_TEX]);
 	D3DXCreateTextureFromFile(pD3Device, "Picture/MainScene/enemys.png", &g_pTexture[ENEMY_TEX]);

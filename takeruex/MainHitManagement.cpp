@@ -32,6 +32,7 @@ void HitManage() {
 	Boss3Data* pBoss3 = GetBoss3Data();
 	Boss4Data* pBoss4 = GetBoss4Data();
 	Bullet* pFirstBullet = GetFirstBulletAddress();
+	EditableBulletData* BulletInitializeData = GetEditableBulletData();
 	Enemy* enemy = GetEnemyData();
 	
 	//プレイヤーとマップの処理
@@ -126,10 +127,12 @@ void HitManage() {
 
 	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
 
+		int bulletKind = pFirstBullet->BulletKind;
+
 		//ボス１と弾のダメージ計算
 		if (pBoss1->isActive&&!(pBoss1->isDead)) {
 			if (pSearchBullet->wasReflect) {
-				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss1->WindowPos, BOSS1WIDTH, BOSS1HEIGHT)) {
+				if (SquareHit(&pSearchBullet->WindowPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &pBoss1->WindowPos, BOSS1WIDTH, BOSS1HEIGHT)) {
 					pBoss1->Hp -= pSearchBullet->Atk;
 					if (pBoss1->Hp <= 0) {
 						pBoss1->isDead = true;
@@ -143,7 +146,7 @@ void HitManage() {
 		//ボス２と球のダメージ計算
 		if (pBoss2->isActive && !(pBoss2->isDead)) {
 			if (pSearchBullet->wasReflect) {
-				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss2->WindowPos, BOSS2WIDTH, BOSS2HEIGHT)) {
+				if (SquareHit(&pSearchBullet->WindowPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &pBoss2->WindowPos, BOSS2WIDTH, BOSS2HEIGHT)) {
 					pBoss2->Hp -= pSearchBullet->Atk;
 					pBoss2->hasDamage = true;
 					if (pBoss2->Hp <= 0) {
@@ -181,15 +184,15 @@ void HitManage() {
 					shield3.x = pBoss3->WolrdPos.x + 108;
 					shield3.y = pBoss3->WolrdPos.y - 23;
 				}
-				if (SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield1, BOSS3SHIELD1WIDTH, BOSS3SHIELD1HEIGHT)||
-					SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield2, BOSS3SHIELD2WIDTH, BOSS3SHIELD2HEIGHT)||
-					SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &shield3, BOSS3SHIELD3WIDTH, BOSS3SHIELD3HEIGHT)
+				if (SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &shield1, BOSS3SHIELD1WIDTH, BOSS3SHIELD1HEIGHT)||
+					SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &shield2, BOSS3SHIELD2WIDTH, BOSS3SHIELD2HEIGHT)||
+					SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &shield3, BOSS3SHIELD3WIDTH, BOSS3SHIELD3HEIGHT)
 					) {
 					PlayBackSound(MAINSCENE_SE_BARRIER, false, 100);
 					DeleteBullet(&pSearchBullet);
 					continue;
 				}
-				if (SquareHit(&pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size, &boss3, BOSS3WIDTH, BOSS3HEIGHT)) {
+				if (SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &boss3, BOSS3WIDTH, BOSS3HEIGHT)) {
 					pBoss3->Hp -= pSearchBullet->Atk;
 					if (pBoss3->Hp <= 0) {
 						pBoss3->isDead = true;
@@ -205,7 +208,7 @@ void HitManage() {
 		//ボス4と弾のダメージ計算
 		if (pBoss4->isActive && !(pBoss4->isDead)) {
 			if (pSearchBullet->wasReflect) {
-				if (SquareHit(&pSearchBullet->WindowPos, pSearchBullet->Size, pSearchBullet->Size, &pBoss4->WindowPos, BOSS4WIDTH, BOSS4HEIGHT)) {
+				if (SquareHit(&pSearchBullet->WindowPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &pBoss4->WindowPos, BOSS4WIDTH, BOSS4HEIGHT)) {
 					pBoss4->Hp -= pSearchBullet->Atk;
 					if (pBoss4->Hp <= 0) {
 						pBoss4->isDead = true;
@@ -224,7 +227,7 @@ void HitManage() {
 		}
 		if(!pSearchBullet->wasReflect){
 			if (!waitTime) {
-				if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pSearchBullet->WorldPos, pSearchBullet->Size, pSearchBullet->Size)) {
+				if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size)) {
 
 					if (!player->beInvincible) {
 						//PlayBackSound(SOUND01, false, 100);
@@ -245,7 +248,7 @@ void HitManage() {
 		for (int j = 0; j < enemyMax; j++) {
 			if (enemy[j].beActive == true && enemy[j].beDead == false) {
 				if (pSearchBullet->wasReflect) {
-					if (SquareHit(&pSearchBullet->WorldPos, pFirstBullet->Size, pFirstBullet->Size, &enemy[j].WorldPos, enemy[j].Width, enemy[j].Height)) {
+					if (SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &enemy[j].WorldPos, enemy[j].Width, enemy[j].Height)) {
 
 						enemy[j].Hp -= pSearchBullet->Atk;
 
@@ -497,17 +500,21 @@ void PushOutMap(const D3DXVECTOR2& Pos,float* MovementX,float* MovementY, float 
 
 void CollisionMapForBullet() {
 	Bullet* pFirstBullet = GetFirstBulletAddress();
+	EditableBulletData* BulletInitializeData = GetEditableBulletData();
 	for (Bullet* pSearchBullet = pFirstBullet->next; pSearchBullet != NULL; pSearchBullet = pSearchBullet->next) {
+
+		int bulletKind = pSearchBullet->BulletKind;
+
 		D3DXVECTOR2 Left;
 		D3DXVECTOR2 Right;
 		D3DXVECTOR2 Bottom;
 		D3DXVECTOR2 Top;
 
-		Left.x = pSearchBullet->WorldPos.x - (pSearchBullet->Size / 2) + (pSearchBullet->MovementX) -1;
-		Right.x = pSearchBullet->WorldPos.x + (pSearchBullet->Size / 2) + (pSearchBullet->MovementX);
+		Left.x = pSearchBullet->WorldPos.x - (BulletInitializeData[bulletKind].Size / 2) + (pSearchBullet->MovementX) -1;
+		Right.x = pSearchBullet->WorldPos.x + (BulletInitializeData[bulletKind].Size / 2) + (pSearchBullet->MovementX);
 		Top.x = Bottom.x = pSearchBullet->WorldPos.x + (pSearchBullet->MovementX);
-		Top.y = pSearchBullet->WorldPos.y - (pSearchBullet->Size / 2) + (pSearchBullet->MovementY);
-		Bottom.y = pSearchBullet->WorldPos.y + (pSearchBullet->Size / 2) + (pSearchBullet->MovementY) + 1;
+		Top.y = pSearchBullet->WorldPos.y - (BulletInitializeData[bulletKind].Size / 2) + (pSearchBullet->MovementY);
+		Bottom.y = pSearchBullet->WorldPos.y + (BulletInitializeData[bulletKind].Size / 2) + (pSearchBullet->MovementY) + 1;
 		Left.y = Right.y = pSearchBullet->WorldPos.y + (pSearchBullet->MovementY);
 
 		D3DXVECTOR2 tmpPos;

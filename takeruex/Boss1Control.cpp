@@ -18,6 +18,7 @@ float CalculateDUALSHOTDecidedValue(int bulletNum, float range);
 float CalculateLARIATDecidedValue(float range);
 
 Boss1Data g_Boss1;
+static int g_frcnt = 0;
 
 Boss1Data* GetBoss1Data() {
 	return &g_Boss1;
@@ -71,6 +72,7 @@ void Boss1Init() {
 
 BREAK:
 	if (g_Boss1.isExistence) {
+		g_frcnt = 0;
 		SetStopScrollPos(g_Boss1.WolrdPos.x);
 		g_Boss1.Boss1State = BOSS1_NON;
 		g_Boss1.MovementX = g_Boss1.MovementY = 0;
@@ -214,16 +216,15 @@ void Boss1Control() {
 			}
 		}
 		else {
-			static int frcnt = 0;
-			if (frcnt == 0) {
+			if (g_frcnt == 0) {
 				StopSound(MAINSCENE_BOSSBGM01);
 				DeleteALLBullet();
 			}
-			if (frcnt == 300) {
-				frcnt = 0;
+			if (g_frcnt == 300) {
+				g_frcnt = 0;
 				g_Boss1.goNextStage = true;
 			}
-			frcnt++;
+			g_frcnt++;
 		}
 	}
 }

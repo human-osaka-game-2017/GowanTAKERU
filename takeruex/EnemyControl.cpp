@@ -148,15 +148,17 @@ void EnemyControl() {
 				g_pEnemy[i].bulletFrameCount++;
 				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー毎に持っている発射感覚になったら入る
 
-					if (g_pEnemy[i].beLeft) {
-						BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
-					}
-					else {
-						if (g_pEnemy[i].BulletDeg < 180) {
-							BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 180.0f - g_pEnemy[i].BulletDeg);
+					if (g_pEnemy[i].BulletKind / 10 == 0 || g_pEnemy[i].BulletKind / 10 == 2) {
+						if (g_pEnemy[i].beLeft) {
+							BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
 						}
 						else {
-							BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 540.0f - g_pEnemy[i].BulletDeg);
+							if (g_pEnemy[i].BulletDeg < 180) {
+								BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 180.0f - g_pEnemy[i].BulletDeg);
+							}
+							else {
+								BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 540.0f - g_pEnemy[i].BulletDeg);
+							}
 						}
 					}
 
