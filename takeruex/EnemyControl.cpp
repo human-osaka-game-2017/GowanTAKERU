@@ -237,12 +237,6 @@ void EnemyPursuit(int enemyNum) {
 
 	case G_LARIATENEMY01://体当たり
 	case G_LARIATENEMY02:
-		if (g_pEnemy[enemyNum].WorldPos.x > player->WorldPos.x) {
-			g_pEnemy[enemyNum].beLeft = true;
-		}
-		else {
-			g_pEnemy[enemyNum].beLeft = false;
-		}
 		 //敵POP地点よりー突進距離以上にプレイヤーがいる　かつ　エネミーのPOP地点より手前ににプレイヤーがいる　かつ　敵の世界座標がPOP座標より-突進距離以内の範囲　
 		//かつ　前フレームの世界座標以下の場合にいるとき
 		if (g_pEnemy[enemyNum].EnemyBasePoint.x - RushDistance <= player->WorldPos.x && g_pEnemy[enemyNum].EnemyBasePoint.x>player->WorldPos.x 
@@ -269,6 +263,17 @@ void EnemyPursuit(int enemyNum) {
 			g_pEnemy[enemyNum].MovementX = 0;
 			g_pEnemy[enemyNum].MovementY = ENEMYGRAVITY;
 			
+		}
+		if (g_pEnemy[enemyNum].Rush == true) {
+			g_pEnemy[enemyNum].beLeft = true;
+		}
+		if (g_pEnemy[enemyNum].Rush != true) {
+			if (g_pEnemy[enemyNum].WorldPos.x > player->WorldPos.x) {
+				g_pEnemy[enemyNum].beLeft = true;
+			}
+			else {
+				g_pEnemy[enemyNum].beLeft = false;
+			}
 		}
 		break;
 
