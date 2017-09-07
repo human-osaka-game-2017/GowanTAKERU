@@ -96,18 +96,17 @@ void UIRender()
 
 #define FONTPNGWIDTH 108.0f
 #define FONTPNGHEIGHT 144.0f
-#define FADEFRM 600
 
-void FontRender(float x, float y, FONT font, bool startup) {
+void FontRender(float x, float y,float width, float height,int maxfr, FONT font, bool startup) {
 
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 	LPDIRECT3DTEXTURE9* pTexture = GetTexture();
 
 	CUSTOMVERTEX Font[] = {
 		{ 0.0f,0.0f,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-		{ FONTWIDTH,0.0f,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
-		{ FONTWIDTH,FONTHEIGHT,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-		{ 0.0f,FONTHEIGHT,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
+		{ width,0.0f,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
+		{ width,height,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
+		{ 0.0f,height,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 	};
 
 	static int frcnt = 0;
@@ -116,8 +115,8 @@ void FontRender(float x, float y, FONT font, bool startup) {
 	}
 
 	DWORD color = 0xFFFFFFFF;
-	if (frcnt < FADEFRM) {
-		color = ((0xFF * frcnt / FADEFRM) << 24) | 0x00FFFFFF;
+	if (frcnt < maxfr) {
+		color = ((0xFF * frcnt / maxfr) << 24) | 0x00FFFFFF;
 	}
 
 	CUSTOMVERTEX fontDrawVertex[4];
@@ -214,11 +213,17 @@ void FontRender(float x, float y, FONT font, bool startup) {
 	case FONT_QUESTION:
 		TrimingVertex(fontDrawVertex, FONTPNGWIDTH * 2, FONTPNGHEIGHT * 3, 108.0f, 144.0f, 1024.0f, 1024.0f);
 		break;
+	case FONT_PLUS:
+		TrimingVertex(fontDrawVertex, FONTPNGWIDTH * 3, FONTPNGHEIGHT * 3, 108.0f, 144.0f, 1024.0f, 1024.0f);
+		break;
 	case FONT_MULTIPLY:
 		TrimingVertex(fontDrawVertex, FONTPNGWIDTH * 4, FONTPNGHEIGHT * 3, 108.0f, 144.0f, 1024.0f, 1024.0f);
 		break;
 	case FONT_COLON:
 		TrimingVertex(fontDrawVertex, FONTPNGWIDTH * 5, FONTPNGHEIGHT * 3, 108.0f, 144.0f, 1024.0f, 1024.0f);
+		break;
+	case FONT_RETRYICON:
+		TrimingVertex(fontDrawVertex, FONTPNGWIDTH * 6, FONTPNGHEIGHT * 3, 108.0f, 144.0f, 1024.0f, 1024.0f);
 		break;
 	case FONT_0:
 		TrimingVertex(fontDrawVertex, FONTPNGWIDTH * 0, FONTPNGHEIGHT * 5, 108.0f, 144.0f, 1024.0f, 1024.0f);

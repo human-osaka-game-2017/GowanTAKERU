@@ -17,7 +17,22 @@ void Boss3Render() {
 		{ BOSS3OBJWIDTH / 2,  BOSS3OBJHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,BOSS3OBJWIDTH / ENEMYPNGSIZE,BOSS3OBJHEIGHT / ENEMYPNGSIZE},
 		{ -BOSS3OBJWIDTH / 2,  BOSS3OBJHEIGHT / 2, 0.5f,1.0f,0xFFFFFFFF,0.0f,BOSS3OBJHEIGHT / ENEMYPNGSIZE }
 	};
-	if (pBoss3->isActive && !pBoss3->isDead) {
+	if (pBoss3->isActive) {
+
+		static int frcnt = 0;
+		DWORD color = 0xFFFFFFFF;
+		if (pBoss3->isDead) {
+			if (frcnt < BOSSNEXTSTAGEWAIT) {
+				color = ((0xFF * (BOSSMAXFRCNT - frcnt) / BOSSMAXFRCNT) << 24) | 0x00FFFFFF;
+			}
+			if (frcnt < BOSSMAXFRCNT) {
+				frcnt++;
+			}
+		}
+		else {
+			frcnt = 0;
+		}
+
 		CUSTOMVERTEX drawBoss3Vertex[4];
 		CUSTOMVERTEX drawShieldVertex[4];
 		for (int j = 0; j < 4; j++) {
@@ -27,6 +42,8 @@ void Boss3Render() {
 			drawShieldVertex[j].x += pBoss3->WindowPos.x;
 			drawBoss3Vertex[j].y += pBoss3->WindowPos.y;
 			drawShieldVertex[j].y += pBoss3->WindowPos.y;
+			drawBoss3Vertex[j].color = color;
+			drawShieldVertex[j].color = color;
 		}
 
 		TrimingVertex(drawBoss3Vertex,512.0f,512.0f, BOSS3OBJWIDTH, BOSS3OBJHEIGHT, ENEMYPNGSIZE, ENEMYPNGSIZE);

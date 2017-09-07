@@ -27,7 +27,7 @@ SCENE_ID RunTitleScene(bool willbetrancefar) {
 	case 0:
 		TitleSceneLoad();
 		nextsceneflg = false;
-		PlayBackSound(TITLESCENE_BGM01, true, 50);
+		PlayBackSound(TITLESCENE_BGM01, true, 10000000);
 		step++;
 		break;
 

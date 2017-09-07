@@ -161,6 +161,9 @@ void EnemyControl() {
 							}
 						}
 					}
+					else {
+						BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
+					}
 
 					g_pEnemy[i].bulletFrameCount = 0;
 
@@ -776,7 +779,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FIXEDBATTERY1:
 				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY1;
-				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[29].Hp;
+				g_pEnemy[enemyCount].Hp = INTMAX;
 				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[29].Speed;
 				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[29].ShotInterval * 60.0f);
 				g_pEnemy[enemyCount].Height = g_EnemyInitialData[29].Height;
@@ -790,7 +793,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 
 			case FIXEDBATTERY2:
 				g_pEnemy[enemyCount].enemyKind = FIXEDBATTERY2;
-				g_pEnemy[enemyCount].Hp = g_EnemyInitialData[30].Hp;
+				g_pEnemy[enemyCount].Hp = INTMAX;
 				g_pEnemy[enemyCount].Speed = g_EnemyInitialData[30].Speed;
 				g_pEnemy[enemyCount].firingInterval = (int)(g_EnemyInitialData[30].ShotInterval * 60.0f);
 				g_pEnemy[enemyCount].Height = g_EnemyInitialData[30].Height;
@@ -810,8 +813,8 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
 				g_pEnemy[enemyCount].Atk = 5.0f;
-				g_pEnemy[enemyCount].tu = 320.0f;
-				g_pEnemy[enemyCount].tv = 128.0f;
+				g_pEnemy[enemyCount].tu = 128.0f;
+				g_pEnemy[enemyCount].tv = 320.0f;
 				g_pEnemy[enemyCount].BulletKind = BULLETNORMAL1;
 				g_pEnemy[enemyCount].BulletDeg = 0.0f;
 				break;
@@ -824,8 +827,8 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
 				g_pEnemy[enemyCount].Atk = 5.0f;
-				g_pEnemy[enemyCount].tu = 320.0f;
-				g_pEnemy[enemyCount].tv = 128.0f;
+				g_pEnemy[enemyCount].tu = 128.0f;
+				g_pEnemy[enemyCount].tv = 320.0f;
 				g_pEnemy[enemyCount].BulletKind = BULLETNORMAL1;
 				g_pEnemy[enemyCount].BulletDeg = 0.0f;
 				break;
@@ -838,8 +841,8 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].Height = 70.0f;
 				g_pEnemy[enemyCount].Width = 38.0f;
 				g_pEnemy[enemyCount].Atk = 5.0f;
-				g_pEnemy[enemyCount].tu = 320.0f;
-				g_pEnemy[enemyCount].tv = 128.0f;
+				g_pEnemy[enemyCount].tu = 128.0f;
+				g_pEnemy[enemyCount].tv = 320.0f;
 				g_pEnemy[enemyCount].BulletKind = BULLETNORMAL1;
 				g_pEnemy[enemyCount].BulletDeg = 0.0f;
 				break;

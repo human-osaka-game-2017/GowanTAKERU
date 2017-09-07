@@ -20,6 +20,7 @@ void PlayerRender() {
 	};
 
 	CUSTOMVERTEX CurrentDrawVertex[4];
+	static int frcnt = 0;
 	for (int i = 0; i < 4; i++) {
 		CurrentDrawVertex[i] = Player[i];
 
@@ -35,23 +36,33 @@ void PlayerRender() {
 		int trimX = player->currentAnimState % 10;
 		int trimY = player->currentAnimState / 10;
 
-		//runswing中の例外処理（画像の場所によるもの）
 		if (!player->beActive) {
-			CurrentDrawVertex[i].tu += PLAYERSIZEPNGWIDTH * trimY / 1024.f;
-			CurrentDrawVertex[i].tv += PLAYERSIZEPNGHEIGHT * trimX / 1024.f;
+			if (frcnt < 7) {
+				CurrentDrawVertex[i].tu += PLAYERSIZEPNGWIDTH * 8.0f / 1024.f;
+				CurrentDrawVertex[i].tv += PLAYERSIZEPNGHEIGHT * 0.0f / 1024.f;
+			}
+			else {
+				CurrentDrawVertex[i].tu += PLAYERSIZEPNGWIDTH * 8.0f / 1024.f;
+				CurrentDrawVertex[i].tv += PLAYERSIZEPNGHEIGHT * 1.0f / 1024.f;
+			}
+			
 		}
+		//runswing中の例外処理（画像の場所によるもの）
 		else if ((RUNDOWNSWING1 <= player->currentAnimState) && (player->currentAnimState <= RUNUPSWING6)) {
 			CurrentDrawVertex[i].tu += PLAYERSIZEPNGWIDTH * trimY / 1024.f;
 			CurrentDrawVertex[i].tv += PLAYERSIZEPNGHEIGHT * trimX / 1024.f;
+			frcnt = 0;
 		}
 		//そうでないなら
 		else {
-
+			frcnt = 0;
 			CurrentDrawVertex[i].tu += PLAYERSIZEPNGWIDTH * trimX / 1024.f;
 			CurrentDrawVertex[i].tv += PLAYERSIZEPNGHEIGHT * trimY / 1024.f;
 
 		}
 	}
+
+	frcnt++;
 
 	if (player->beLeft) {
 		TurnVertex_tu(CurrentDrawVertex);

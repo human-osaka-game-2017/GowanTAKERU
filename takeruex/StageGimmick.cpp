@@ -12,6 +12,7 @@
 #include"Boss2Control.h"
 #include"Boss4Control.h"
 #include"MainScene.h"
+#include"DirectXSound.h"
 
 #define S_STOPENEMY_SHUTTER1_KEYNUMFLG		0x0001
 #define G_MOVEENEMY_SHUTTER2_KEYNUMFLG		0x0002
@@ -151,16 +152,19 @@ void StageGimmickManage() {
 		case SWITCH_A:
 			if (pEnemy[i].Hp != INTMAX) {
 				gateKeyNumCnt[SWITCH_A_KEYNUM]++;
+				pEnemy[i].tu = 256.0f;
 			}
 			break;
 		case SWITCH_B:
 			if (pEnemy[i].Hp != INTMAX) {
 				gateKeyNumCnt[SWITCH_B_KEYNUM]++;
+				pEnemy[i].tu = 256.0f;
 			}
 			break;
 		case SWITCH_C:
 			if (pEnemy[i].Hp != INTMAX) {
 				gateKeyNumCnt[SWITCH_C_KEYNUM]++;
+				pEnemy[i].tu = 256.0f;
 			}
 			break;
 		}
@@ -224,7 +228,7 @@ void StageGimmickManage() {
 	//スイッチのフラグチェック
 	for (int i = 0; i < KEYNUM_KIND_MAX; i++) {
 
-		if (!(g_GateKeyNum[i] == 0)) {
+		//if (!(g_GateKeyNum[i] == 0)) {
 
 			if (gateKeyNumCnt[i] == g_GateKeyNum[i]) {
 				switch (i) {
@@ -288,56 +292,74 @@ void StageGimmickManage() {
 					gateflg = gateflg | KEYNUM_SWITCHC_FLG;
 					break;
 				}
-			}
+			//}
 		}
 	}
 
 	//シャッターとリンクさせる
+
 	if (gateflg & S_STOPENEMY_SHUTTER1_KEYNUMFLG) {
 		OpenGate(SHUTTER1);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[S_STOPENEMY_SHUTTER1_KEYNUM] = -1;
 	}
 	if ((gateflg & G_MOVEENEMY_SHUTTER2_KEYNUMFLG) && (gateflg & S_MOVEENEMY_SHUTTER2_KEYNUMFLG)) {
 		OpenGate(SHUTTER2);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[G_MOVEENEMY_SHUTTER2_KEYNUM] = -1;
 		g_GateKeyNum[S_MOVEENEMY_SHUTTER2_KEYNUM] = -1;
 	}
 	if (gateflg & DUMMY_______SHUTTER3_KEYNUMFLG) {
 		OpenGate(SHUTTER3);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[DUMMY_______SHUTTER3_KEYNUM] = -1;
 	}
 	if ((gateflg & DUMMY1______SHUTTER4_KEYNUMFLG) && (gateflg & DUMMY2______SHUTTER4_KEYNUMFLG)) {
 		OpenGate(SHUTTER4);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[DUMMY1______SHUTTER4_KEYNUM] = -1;
 		g_GateKeyNum[DUMMY2______SHUTTER4_KEYNUM] = -1;
 	}
 
 	if (gateflg & G_MOVEENEMY_SHUTTER5_KEYNUMFLG) {
 		OpenGate(SHUTTER5);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[G_MOVEENEMY_SHUTTER5_KEYNUM] = -1;
 	}
 	if ((gateflg & G_MOVEENEMY_SHUTTER6_KEYNUMFLG) && (gateflg & DUMMY_______SHUTTER6_KEYNUMFLG)) {
 		OpenGate(SHUTTER6);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[G_MOVEENEMY_SHUTTER6_KEYNUM] = -1;
 		g_GateKeyNum[DUMMY_______SHUTTER6_KEYNUM] = -1;
 	}
 	if (gateflg & BOSS1_SHUTTER7_KEYNUMFLG) {
 		OpenGate(SHUTTER7);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[BOSS1_SHUTTER7_KEYNUM] = -1;
 	}
 	if ((gateflg & BOSS2_SHUTTER8_KEYNUMFLG) && (gateflg & DUMMY_______SHUTTER8_KEYNUMFLG)) {
 		OpenGate(SHUTTER8);
+		PlayBackSound(MAINSCENE_SE_SHUTTER, false, 100);
 		g_GateKeyNum[BOSS2_SHUTTER8_KEYNUM] = -1;
 		g_GateKeyNum[DUMMY_______SHUTTER8_KEYNUM] = -1;
 	}
 	if (gateflg & KEYNUM_SWITCHA_FLG) {
 		OpenGate(SHUTTER_A);
+		PlayBackSound(MAINSCENE_SE_SHUTTERSWITCH, false, 100);
+		g_GateKeyNum[SWITCH_A_KEYNUM] = -1;
+
 	};
 	if (gateflg & KEYNUM_SWITCHB_FLG) {
 		OpenGate(SHUTTER_B);
+		PlayBackSound(MAINSCENE_SE_SHUTTERSWITCH, false, 100);
+		g_GateKeyNum[SWITCH_B_KEYNUM] = -1;
+
 	};
 	if (gateflg & KEYNUM_SWITCHC_FLG) {
 		OpenGate(SHUTTER_C);
+		PlayBackSound(MAINSCENE_SE_SHUTTERSWITCH, false, 100);
+		g_GateKeyNum[SWITCH_C_KEYNUM] = -1;
+
 	};
 
 	bool bossActiveflg = CheckBossActiveBoss();
@@ -345,6 +367,7 @@ void StageGimmickManage() {
 	if (bossActiveflg && !g_BossGateflg) {
 		
 		CloseGate(BOSS_SHUTTER, BOSS_SHUTTER);
+		PlayBackSound(MAINSCENE_SE_BOSSSPAWN1, false, 100);
 		g_BossGateflg = true;
 	}
 

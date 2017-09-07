@@ -89,7 +89,6 @@ BREAK:
 void Boss3Control() {
 
 	if (g_Boss3.isExistence) {
-		if (!g_Boss3.isDead) {
 
 			//活動状態かチェック
 			D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
@@ -105,6 +104,8 @@ void Boss3Control() {
 			}
 
 			if (g_Boss3.isActive) {
+
+				if (!g_Boss3.isDead) {
 
 				static int shotInterval = 78.0f *  (Random(70, 130) / 100.0f);
 
@@ -174,18 +175,21 @@ void Boss3Control() {
 				g_Boss3.MovementY = 20;
 				g_Frcnt++;
 			}
-		}
-		else {
-			static int frcnt = 0;
-			if (frcnt == 0) {
-				StopSound(MAINSCENE_BOSSBGM01);
-				DeleteALLBullet();
+			else {
+				static int frcnt = 0;
+				if (frcnt == 0) {
+					StopSound(MAINSCENE_BOSSBGM01);
+					DeleteALLBullet();
+				}
+				if (frcnt == 120) {
+					PlayBackSound(MAINSCENE_SE_FANFARE, false, 0);
+				}
+				if (frcnt == 300) {
+					frcnt = 0;
+					g_Boss3.goNextStage = true;
+				}
+				frcnt++;
 			}
-			if (frcnt == 300) {
-				frcnt = 0;
-				g_Boss3.goNextStage = true;
-			}
-			frcnt++;
 		}
 	}
 }

@@ -188,8 +188,16 @@ void MainSceneLoad(STAGE_ID stage_ID) {
 	CreateBufferForWave("Sound/SE_attack.wav", MAINSCENE_SE_ATTACK);
 	CreateBufferForWave("Sound/SE_jump.wav", MAINSCENE_SE_JUMP);
 	CreateBufferForWave("Sound/SE_swing.wav", MAINSCENE_SE_SWING);
+	CreateBufferForWave("Sound/SE_PlayerDamaged.wav", MAINSCENE_SE_PLAYYERDAMAGE);
+	CreateBufferForWave("Sound/SE_EnemyShot.wav", MAINSCENE_SE_ENEMYSHOT);
+	CreateBufferForWave("Sound/SE_Explosion1.wav", MAINSCENE_SE_ENEMYDEAD);
 	CreateBufferForWave("Sound/SE_EnemyDamage.wav", MAINSCENE_SE_ENEMYDAMAGE);
 	CreateBufferForWave("Sound/SE_Barrier.wav", MAINSCENE_SE_BARRIER);
+	CreateBufferForWave("Sound/SE_StageClear.wav", MAINSCENE_SE_FANFARE);
+	CreateBufferForWave("Sound/SE_shutter1.wav", MAINSCENE_SE_SHUTTERSWITCH);
+	CreateBufferForWave("Sound/SE_shutter2.wav", MAINSCENE_SE_SHUTTER);
+	CreateBufferForWave("Sound/SE_Explosion2.wav", MAINSCENE_SE_BOSSDEAD);
+	CreateBufferForWave("Sound/SE_warning.wav", MAINSCENE_SE_BOSSSPAWN1); 
 	CreateBufferForWave("Sound/BGM_stage1.wav", MAINSCENE_STAGEBGM01);
 	CreateBufferForWave("Sound/BGM_stage2.wav", MAINSCENE_STAGEBGM02);
 	CreateBufferForWave("Sound/BGM_stage3.wav", MAINSCENE_STAGEBGM03);

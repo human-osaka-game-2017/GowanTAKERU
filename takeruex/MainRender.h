@@ -2,8 +2,11 @@
 #define MAINRENDER_H
 
 #include"CommonRender.h"
+#include"MainControl.h"
 
 #define ENEMYPNGSIZE 1024.0f
+#define BOSSMAXFRCNT 180
+#define BOSSNEXTSTAGEWAIT 300
 
 enum MAINSCENE_TEXTURE
 {
@@ -23,7 +26,7 @@ enum MAINSCENE_TEXTURE
 	MAINSCENE_TEXMAX
 };
 
-void MainRender();
+void MainRender(RENDER_STATE stageStartState);
 
 //画像の左右を反転させます
 //第一引数 反転させる４頂点の先頭アドレス

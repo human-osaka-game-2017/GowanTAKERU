@@ -1,9 +1,6 @@
 #ifndef UIRENDER_H
 #define UIRENDER_H
-
-#define FONTWIDTH 86.4f
-#define FONTHEIGHT 115.2f
-
+ 
 enum FONT {
 	FONT_A,
 	FONT_B,
@@ -33,8 +30,10 @@ enum FONT {
 	FONT_Z,
 	FONT_SURPRISED,
 	FONT_QUESTION,
+	FONT_PLUS,
 	FONT_MULTIPLY,
 	FONT_COLON,
+	FONT_RETRYICON,
 	FONT_0,
 	FONT_1,
 	FONT_2,
@@ -50,6 +49,6 @@ enum FONT {
 
 void UIRender();
 
-void FontRender(float x, float y, FONT font, bool startup);
+void FontRender(float x, float y, float width, float height, int maxfr, FONT font, bool startup);
 
 #endif

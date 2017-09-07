@@ -96,7 +96,7 @@ void BulletControl() {
 			continue;
 		}
 
-		if (pSearchBullet->BulletKind == HOMING1) {
+		if (pSearchBullet->BulletKind / 10 == 4) {
 			if (!pSearchBullet->wasReflect) {
 				pSearchBullet->SaveCoordinate = player->WindowPos;
 				pSearchBullet->Rad = Calculate_rad(

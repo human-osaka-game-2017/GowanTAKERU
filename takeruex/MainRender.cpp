@@ -13,8 +13,9 @@
 #include"Boss3Render.h"
 #include"Boss4Render.h"
 #include"UIRendr.h"
+#include"PlayerControl.h"
 
-void MainRender() {
+void MainRender(RENDER_STATE stageStartState) {
 
 	IDirect3DDevice9* pD3Device = GetGraphicsDevice();
 
@@ -38,25 +39,40 @@ void MainRender() {
 	BulletRender();
 	PlayerRender();
 
-	GO_NEXT_STAGE_STATE goNextStageState = GetGoNextStageWait();
-	if(goNextStageState != RUNNING){
-
+	if (stageStartState != WAITING) {
 		bool startup = false;
-		if (goNextStageState = STARTWAIT) {
+		if (stageStartState = STARTUP) {
 			startup = true;
 		}
 
-		FontRender(100.0f + FONTWIDTH * 0, 300.0f + FONTHEIGHT * 0, FONT_S, startup);
-		FontRender(100.0f + FONTWIDTH * 1, 300.0f + FONTHEIGHT * 0, FONT_T, startup);
-		FontRender(100.0f + FONTWIDTH * 2, 300.0f + FONTHEIGHT * 0, FONT_A, startup);
-		FontRender(100.0f + FONTWIDTH * 3, 300.0f + FONTHEIGHT * 0, FONT_G, startup);
-		FontRender(100.0f + FONTWIDTH * 4, 300.0f + FONTHEIGHT * 0, FONT_E, startup);
-		FontRender(100.0f + FONTWIDTH * 6, 300.0f + FONTHEIGHT * 0, FONT_C, startup);
-		FontRender(100.0f + FONTWIDTH * 7, 300.0f + FONTHEIGHT * 0, FONT_L, startup);
-		FontRender(100.0f + FONTWIDTH * 8, 300.0f + FONTHEIGHT * 0, FONT_E, startup);
-		FontRender(100.0f + FONTWIDTH * 9, 300.0f + FONTHEIGHT * 0, FONT_A, startup);
-		FontRender(100.0f + FONTWIDTH * 10, 300.0f + FONTHEIGHT * 0, FONT_R, startup);
-		FontRender(100.0f + FONTWIDTH * 11, 300.0f + FONTHEIGHT * 0, FONT_SURPRISED, startup);
+		float width = 40.0f;
+		float height = 53.0f;
+		Player* pPlayer = GetplayerData();
+		float posY = pPlayer->WindowPos.y - 120.0f;
+		FontRender(pPlayer->WindowPos.x - 10 + width * -1, posY + height * 0 - 10, width + 10, height + 10, 300, FONT_RETRYICON, startup);
+		FontRender(pPlayer->WindowPos.x + width * 0, posY + height * 0, width - 10, height - 10,300, FONT_PLUS, startup);
+		FontRender(pPlayer->WindowPos.x + width * 1, posY + height * 0, width - 10, height - 10,300, FONT_1, startup);
+	}
+
+	RENDER_STATE goNextStageState = GetGoNextStageWait();
+	if(goNextStageState != WAITING){
+
+		bool startup = false;
+		if (goNextStageState = STARTUP) {
+			startup = true;
+		}
+
+		FontRender(100.0f + 86.4f * 0, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_S, startup);
+		FontRender(100.0f + 86.4f * 1, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_T, startup);
+		FontRender(100.0f + 86.4f * 2, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_A, startup);
+		FontRender(100.0f + 86.4f * 3, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_G, startup);
+		FontRender(100.0f + 86.4f * 4, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_E, startup);
+		FontRender(100.0f + 86.4f * 6, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_C, startup);
+		FontRender(100.0f + 86.4f * 7, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_L, startup);
+		FontRender(100.0f + 86.4f * 8, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_E, startup);
+		FontRender(100.0f + 86.4f * 9, 220.0f + 115.2f * 0,86.4f, 115.2f,600, FONT_A, startup);
+		FontRender(100.0f + 86.4f * 10, 220.0f + 115.2f * 0, 86.4f, 115.2f,600, FONT_R, startup);
+		FontRender(100.0f + 86.4f * 11, 220.0f + 115.2f * 0, 86.4f, 115.2f,600, FONT_SURPRISED, startup);
 
 	}
 

@@ -109,7 +109,6 @@ BREAK:
 void Boss4Control() {
 
 	if (g_Boss4.isExistence) {
-		if (!g_Boss4.isDead) {
 			//活動状態かチェック
 			D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 			D3DXVECTOR2* basePoint = GetBasePoint();
@@ -125,262 +124,276 @@ void Boss4Control() {
 
 			//活動状態である
 			if (g_Boss4.isActive) {
-				if (!g_isControlInitial) {
+				if (!g_Boss4.isDead) {
+				/*if (!g_isControlInitial) {
 					g_isControlInitial = Boss4InitialControl();
 				}
 				else {
 					Boss4BasicControl();
+				}*/
+			}
+			else {
+				static int frcnt = 0;
+				if (frcnt == 0) {
+					StopSound(MAINSCENE_BOSSBGM03);
+					DeleteALLBullet();
 				}
+				if (frcnt == 120) {
+					PlayBackSound(MAINSCENE_SE_FANFARE, false, 0);
+				}
+				if (frcnt == 300) {
+					frcnt = 0;
+					g_Boss4.goNextStage = true;
+				}
+				frcnt++;
 			}
-		}
-		else {
-			static int frcnt = 0;
-			if (frcnt == 0) {
-				StopSound(MAINSCENE_BOSSBGM03);
-				DeleteALLBullet();
-			}
-			if (frcnt == 300) {
-				frcnt = 0;
-				g_Boss4.goNextStage = true;
-			}
-			frcnt++;
 		}
 	}
 }
 
 bool Boss4InitialControl() {
 
-	float moveSpeed = -2.75f;
-	float jumpPower = -10.0f;
-
-	D3DXVECTOR2 LeftBottom = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
-	D3DXVECTOR2 RightBottom = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
-	if (g_Boss4.isJumping) {
-
-		g_Boss4.MovementX = moveSpeed;
-
-		if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {
-			g_Boss4.isJumping = false;
-			g_Boss4.FrCnt = 0;
-			g_Boss4.ga = 0;
-			g_Boss4.MovementX = 0;
-			return true;
-		}
-		
-	}
-
-	if (g_Boss4.FrCnt == 120) {
-		g_Boss4.isJumping = true;
-		g_Boss4.ga = jumpPower;
-	}
-
-	g_Boss4.FrCnt++;
-
-	g_Boss4.ga += BOSS4GRAVITY;
-	g_Boss4.MovementY = g_Boss4.ga;
-	return false;
-}
-
-void Boss4BasicControl() {
-
 	//データ群
 	Pos pointA = { 389 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
 	Pos pointB = { 381 * TIPSIZE + (2 / TIPSIZE),16 * TIPSIZE };
 	Pos pointC = { 373 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
 
-	static D3DXVECTOR2 prePos = g_Boss4.WolrdPos;
-	if (prePos != g_Boss4.WolrdPos) {
-		int a = 0;
-	}
-	prePos = g_Boss4.WolrdPos;
+	//float moveSpeed = -2.75f;
+	//float jumpPower = -10.0f;
 
-	D3DXVECTOR2 LeftTop = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
-	D3DXVECTOR2 RightTop = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
-	D3DXVECTOR2 LeftBottom = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
-	D3DXVECTOR2 RightBottom = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
+	//D3DXVECTOR2 LeftBottom = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
+	//D3DXVECTOR2 RightBottom = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
+	//if (g_Boss4.isJumping) {
 
-	Player* pPlayer = GetplayerData();
+	//	g_Boss4.MovementX = moveSpeed;
 
-	//左向きかを決める
-	if (pPlayer->WorldPos.x <= g_Boss4.WolrdPos.x) {
-		g_Boss4.isLeft = true;
-	}
-	else {
-		g_Boss4.isLeft = false;
-	}
+	//	if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {
+	//		g_Boss4.isJumping = false;
+	//		g_Boss4.FrCnt = 0;
+	//		g_Boss4.ga = 0;
+	//		g_Boss4.MovementX = 0;
+	//		return true;
+	//	}
+	//	
+	//}
 
-	//3秒に一回打つ処理
-	if (g_Boss4.FrCnt == 180) {
-		BulletCreate(g_Boss4.WolrdPos, NONREFLECTTARGET1);
-	}
-	if (g_Boss4.FrCnt == 360) {
-		BulletCreate(g_Boss4.WolrdPos, HOMING1);
-		g_Boss4.FrCnt = 0;
-	}
-	g_Boss4.FrCnt++;
+	//if (g_Boss4.FrCnt == 120) {
+	//	g_Boss4.isJumping = true;
+	//	g_Boss4.ga = jumpPower;
+	//}
 
-	//jump頂点時の処理を何度も行わないためのフラグ
-	static bool isJumpTop = false;
+	//g_Boss4.FrCnt++;
 
-	//jump中
-	if (g_Boss4.isJumping) {
+	//g_Boss4.ga += BOSS4GRAVITY;
+	//g_Boss4.MovementY = g_Boss4.ga;
+	return false;
+}
 
-		//着地処理
-		if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {
+void Boss4BasicControl() {
 
-			g_Boss4.isJumping = false;
-			g_Boss4.ga = 0;
-			g_Boss4.Boss4JumpState = GROUND;
+	////データ群
+	//Pos pointA = { 389 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
+	//Pos pointB = { 381 * TIPSIZE + (2 / TIPSIZE),16 * TIPSIZE };
+	//Pos pointC = { 373 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
 
-			//着地時に打つ処理
-			if (CheckInPoint(pointA, LeftTop, RightBottom) || CheckInPoint(pointC, LeftTop, RightBottom)) {
-				if (g_Boss4.isLeft) {
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 180.0f);
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL3, 135.0f);
-				}
-				else {
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 0.0f);
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL3, 45.0f);
-				}
-			}
-			else if (CheckInPoint(pointB, LeftTop, RightBottom)) {
-				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 210.0f);
-				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 240.0f);
-				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 300.0f);
-				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 330.0f);
-			}
-		}
+	//static D3DXVECTOR2 prePos = g_Boss4.WolrdPos;
+	//if (prePos != g_Boss4.WolrdPos) {
+	//	int a = 0;
+	//}
+	//prePos = g_Boss4.WolrdPos;
 
-		//ジャンプ頂点時に打つ処理
-		if (!isJumpTop) {
-			if (0 < g_Boss4.ga) {
-				isJumpTop = true;
-				switch (g_Boss4.Boss4JumpState) {
+	//D3DXVECTOR2 LeftTop = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
+	//D3DXVECTOR2 RightTop = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
+	//D3DXVECTOR2 LeftBottom = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
+	//D3DXVECTOR2 RightBottom = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
 
-				case JUMP:
-				case LEFTJUMP:
-				case RIGHTJUMP:
-					BulletCreate(g_Boss4.WolrdPos, BULLETTARGET2);
+	//Player* pPlayer = GetplayerData();
 
-				case LEFTHIGHJUMP:
-				case RIGHTHIGHJUMP:
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 210.0f);
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 240.0f);
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 300.0f);
-					BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 330.0f);
-					break;
+	////左向きかを決める
+	//if (pPlayer->WorldPos.x <= g_Boss4.WolrdPos.x) {
+	//	g_Boss4.isLeft = true;
+	//}
+	//else {
+	//	g_Boss4.isLeft = false;
+	//}
 
-				}
-			}
-		}
-	}
+	////3秒に一回打つ処理
+	//if (g_Boss4.FrCnt == 180) {
+	//	BulletCreate(g_Boss4.WolrdPos, NONREFLECTTARGET1);
+	//}
+	//if (g_Boss4.FrCnt == 360) {
+	//	BulletCreate(g_Boss4.WolrdPos, HOMING1);
+	//	g_Boss4.FrCnt = 0;
+	//}
+	//g_Boss4.FrCnt++;
 
-	//ただ立っているときの処理
-	else {
+	////jump頂点時の処理を何度も行わないためのフラグ
+	//static bool isJumpTop = false;
 
-		g_Boss4.JumpFrCnt++;
-		g_Boss4.ga = 0;
+	////jump中
+	//if (g_Boss4.isJumping) {
 
-		//jumpする処理
-		if (g_Boss4.JumpFrCnt == 30) {
+	//	//着地処理
+	//	if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {
 
-			g_Boss4.JumpFrCnt = 0;
-			g_Boss4.isJumping = true;
-			isJumpTop = false;
+	//		g_Boss4.isJumping = false;
+	//		g_Boss4.ga = 0;
+	//		g_Boss4.Boss4JumpState = GROUND;
 
-			//どこに飛ぶのかを決める
-			//まず今どこにいるのか
-			BOSS4POS currentPoint;
-			if (CheckInPoint(pointA, LeftTop, RightBottom)) {
-				currentPoint = POINT_A;
-				g_Boss4.MovementX += pointA.posX - g_Boss4.WolrdPos.x;
+	//		//着地時に打つ処理
+	//		if (CheckInPoint(pointA, LeftTop, RightBottom) || CheckInPoint(pointC, LeftTop, RightBottom)) {
+	//			if (g_Boss4.isLeft) {
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 180.0f);
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL3, 135.0f);
+	//			}
+	//			else {
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 0.0f);
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL3, 45.0f);
+	//			}
+	//		}
+	//		else if (CheckInPoint(pointB, LeftTop, RightBottom)) {
+	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 210.0f);
+	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 240.0f);
+	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 300.0f);
+	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 330.0f);
+	//		}
+	//	}
 
-			}
-			if (CheckInPoint(pointB, LeftTop, RightBottom)) {
-				currentPoint = POINT_B;
-				g_Boss4.MovementX += pointB.posX - g_Boss4.WolrdPos.x;
+	//	//ジャンプ頂点時に打つ処理
+	//	if (!isJumpTop) {
+	//		if (0 < g_Boss4.ga) {
+	//			isJumpTop = true;
+	//			switch (g_Boss4.Boss4JumpState) {
 
-			}
-			if (CheckInPoint(pointC, LeftTop, RightBottom)) {
-				currentPoint = POINT_C;
-				g_Boss4.MovementX +=pointC.posX - g_Boss4.WolrdPos.x;
+	//			case JUMP:
+	//			case LEFTJUMP:
+	//			case RIGHTJUMP:
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETTARGET2);
 
-			}
+	//			case LEFTHIGHJUMP:
+	//			case RIGHTHIGHJUMP:
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 210.0f);
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 240.0f);
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 300.0f);
+	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 330.0f);
+	//				break;
 
-			//それを踏まえてランダムで決める
-			do {
-				g_Boss4.Boss4JumpState = (BOSS4JUMPSTATE)Random(1, 6);
-				if (g_Boss4.Boss4JumpState == JUMP) {
-					break;
-				}
-				if (currentPoint == POINT_A) {
-					if (g_Boss4.Boss4JumpState == LEFTJUMP || g_Boss4.Boss4JumpState == LEFTHIGHJUMP) {
-						break;
-					}
-				}
-				if (currentPoint == POINT_B) {
-					if (g_Boss4.Boss4JumpState == POSB_RJUMP || g_Boss4.Boss4JumpState == POSB_LJUMP) {
-						break;
-					}
-				}
-				if (currentPoint == POINT_C) {
-					if (g_Boss4.Boss4JumpState == RIGHTJUMP || g_Boss4.Boss4JumpState == RIGHTHIGHJUMP) {
-						break;
-					}
-				}
-			} while (1);
-			
-			switch (g_Boss4.Boss4JumpState) {
+	//			}
+	//		}
+	//	}
+	//}
 
-			case JUMP:
-			case LEFTJUMP:
-			case RIGHTJUMP:
-				g_Boss4.ga = JUMPV0;
-				break;
+	////ただ立っているときの処理
+	//else {
 
-			case POSB_RJUMP:
-			case POSB_LJUMP:
-				g_Boss4.ga = 0.5f + JUMPV0;
-				break;
+	//	g_Boss4.JumpFrCnt++;
+	//	g_Boss4.ga = 0;
 
-			case LEFTHIGHJUMP:
-			case RIGHTHIGHJUMP:
-				g_Boss4.ga = HIGHJUMPV0;
-				break;
+	//	//jumpする処理
+	//	if (g_Boss4.JumpFrCnt == 30) {
 
-			}
-		}
-	}
+	//		g_Boss4.JumpFrCnt = 0;
+	//		g_Boss4.isJumping = true;
+	//		isJumpTop = false;
 
-	//移動量の決定
-	switch (g_Boss4.Boss4JumpState) {
+	//		//どこに飛ぶのかを決める
+	//		//まず今どこにいるのか
+	//		BOSS4POS currentPoint;
+	//		if (CheckInPoint(pointA, LeftTop, RightBottom)) {
+	//			currentPoint = POINT_A;
+	//			g_Boss4.MovementX += pointA.posX - g_Boss4.WolrdPos.x;
 
-	case GROUND:
-	case JUMP:
-		g_Boss4.MovementX += 0;
-		break;
+	//		}
+	//		if (CheckInPoint(pointB, LeftTop, RightBottom)) {
+	//			currentPoint = POINT_B;
+	//			g_Boss4.MovementX += pointB.posX - g_Boss4.WolrdPos.x;
 
-	case RIGHTJUMP:
-	case RIGHTHIGHJUMP:
-		g_Boss4.MovementX += BOSS4SPEEDMAX;
-		break;
+	//		}
+	//		if (CheckInPoint(pointC, LeftTop, RightBottom)) {
+	//			currentPoint = POINT_C;
+	//			g_Boss4.MovementX +=pointC.posX - g_Boss4.WolrdPos.x;
 
-	case LEFTJUMP:
-	case LEFTHIGHJUMP:
-		g_Boss4.MovementX += -BOSS4SPEEDMAX;
-		break;
+	//		}
 
-	case POSB_RJUMP:
-		g_Boss4.MovementX += BOSS4SPEED;
-		break;
+	//		//それを踏まえてランダムで決める
+	//		do {
+	//			g_Boss4.Boss4JumpState = (BOSS4JUMPSTATE)Random(1, 6);
+	//			if (g_Boss4.Boss4JumpState == JUMP) {
+	//				break;
+	//			}
+	//			if (currentPoint == POINT_A) {
+	//				if (g_Boss4.Boss4JumpState == LEFTJUMP || g_Boss4.Boss4JumpState == LEFTHIGHJUMP) {
+	//					break;
+	//				}
+	//			}
+	//			if (currentPoint == POINT_B) {
+	//				if (g_Boss4.Boss4JumpState == POSB_RJUMP || g_Boss4.Boss4JumpState == POSB_LJUMP) {
+	//					break;
+	//				}
+	//			}
+	//			if (currentPoint == POINT_C) {
+	//				if (g_Boss4.Boss4JumpState == RIGHTJUMP || g_Boss4.Boss4JumpState == RIGHTHIGHJUMP) {
+	//					break;
+	//				}
+	//			}
+	//		} while (1);
+	//		
+	//		switch (g_Boss4.Boss4JumpState) {
 
-	case POSB_LJUMP:
-		g_Boss4.MovementX += -BOSS4SPEED;
-		break;
-	}
+	//		case JUMP:
+	//		case LEFTJUMP:
+	//		case RIGHTJUMP:
+	//			g_Boss4.ga = JUMPV0;
+	//			break;
 
-	g_Boss4.ga += BOSS4GRAVITY;
-	g_Boss4.MovementY += g_Boss4.ga;
+	//		case POSB_RJUMP:
+	//		case POSB_LJUMP:
+	//			g_Boss4.ga = 0.5f + JUMPV0;
+	//			break;
+
+	//		case LEFTHIGHJUMP:
+	//		case RIGHTHIGHJUMP:
+	//			g_Boss4.ga = HIGHJUMPV0;
+	//			break;
+
+	//		}
+	//	}
+	//}
+
+	////移動量の決定
+	//switch (g_Boss4.Boss4JumpState) {
+
+	//case GROUND:
+	//case JUMP:
+	//	g_Boss4.MovementX += 0;
+	//	break;
+
+	//case RIGHTJUMP:
+	//case RIGHTHIGHJUMP:
+	//	g_Boss4.MovementX += BOSS4SPEEDMAX;
+	//	break;
+
+	//case LEFTJUMP:
+	//case LEFTHIGHJUMP:
+	//	g_Boss4.MovementX += -BOSS4SPEEDMAX;
+	//	break;
+
+	//case POSB_RJUMP:
+	//	g_Boss4.MovementX += BOSS4SPEED;
+	//	break;
+
+	//case POSB_LJUMP:
+	//	g_Boss4.MovementX += -BOSS4SPEED;
+	//	break;
+	//}
+
+	//g_Boss4.ga += BOSS4GRAVITY;
+	//g_Boss4.MovementY += g_Boss4.ga;
+}
+
+void Teleport(float pointX, float pointY) {
+	g_Boss4.MovementX = pointX - g_Boss4.WolrdPos.x;
+	g_Boss4.MovementY = pointY - g_Boss4.WolrdPos.y;
 }
 
 void MoveBoss4() {

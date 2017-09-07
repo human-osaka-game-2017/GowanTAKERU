@@ -10,7 +10,7 @@
 #include"DirectXSound.h"
 
 #define SPEED_X 5.0f
-#define SPEED_Y 3.3f
+#define SPEED_Y 2.45f
 
 struct Pos {
 	float posX, posY;
@@ -76,7 +76,7 @@ BREAK:
 	if (g_Boss2.isExistence) {
 		SetStopScrollPos(g_Boss2.WorldPos.x);
 		g_Boss2.MovementX = g_Boss2.MovementY = 0;
-		g_Boss2.Hp = 120;
+		g_Boss2.Hp = 180;
 		g_Boss2.Atk = 20;
 		g_Boss2.isLeft = true;
 		g_Boss2.isDead = false;
@@ -101,23 +101,24 @@ BREAK:
 
 void Boss2Control() {
 	if (g_Boss2.isExistence) {
-		if (!g_Boss2.isDead) {
 
-			//活動状態かチェック
-			D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
-			D3DXVECTOR2* basePoint = GetBasePoint();
-			g_Boss2.WindowPos.x = g_Boss2.WorldPos.x - (basePoint->x - BasePoint0.x);
-			g_Boss2.WindowPos.y = g_Boss2.WorldPos.y - (basePoint->y - BasePoint0.y);
-			if (-(2 * TIPSIZE) < g_Boss2.WindowPos.x && g_Boss2.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
-				-(2 * TIPSIZE) < g_Boss2.WindowPos.y && g_Boss2.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
-				g_Boss2.isActive = true;
-			}
-			else {
-				g_Boss2.isActive = false;
-			}
+		//活動状態かチェック
+		D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
+		D3DXVECTOR2* basePoint = GetBasePoint();
+		g_Boss2.WindowPos.x = g_Boss2.WorldPos.x - (basePoint->x - BasePoint0.x);
+		g_Boss2.WindowPos.y = g_Boss2.WorldPos.y - (basePoint->y - BasePoint0.y);
+		if (-(2 * TIPSIZE) < g_Boss2.WindowPos.x && g_Boss2.WindowPos.x < DISPLAY_WIDTH + (2 * TIPSIZE) &&
+			-(2 * TIPSIZE) < g_Boss2.WindowPos.y && g_Boss2.WindowPos.y < DISPLAY_HEIGHT + (2 * TIPSIZE)) {
+			g_Boss2.isActive = true;
+		}
+		else {
+			g_Boss2.isActive = false;
+		}
 
-			//活動状態である
-			if (g_Boss2.isActive) {
+		//活動状態である
+		if (g_Boss2.isActive) {
+
+			if (!g_Boss2.isDead) {
 
 				if (g_Boss2.hasDamage && g_Boss2.boss2State != GOPOSB) {
 					g_Boss2.boss2State = GOLEFT;
@@ -135,18 +136,21 @@ void Boss2Control() {
 					break;
 				}
 			}
-		}
-		else {
-			static int frcnt = 0;
-			if (frcnt == 0) {
-				StopSound(MAINSCENE_BOSSBGM02);
-				DeleteALLBullet();
+			else {
+				static int frcnt = 0;
+				if (frcnt == 0) {
+					StopSound(MAINSCENE_BOSSBGM02);
+					DeleteALLBullet();
+				}
+				if (frcnt == 120) {
+					PlayBackSound(MAINSCENE_SE_FANFARE, false, 0);
+				}
+				if (frcnt == 300) {
+					frcnt = 0;
+					g_Boss2.goNextStage = true;
+				}
+				frcnt++;
 			}
-			if (frcnt == 300) {
-				frcnt = 0;
-				g_Boss2.goNextStage = true;
-			}
-			frcnt++;
 		}
 	}
 }
@@ -167,7 +171,7 @@ void MoveBoss2() {
 void GoPosB() {
 
 	if ((g_GoPosBFrcnt % 12) == 0) {
-		BulletCreate(g_Boss2.WorldPos, HOMING1);
+		BulletCreate(g_Boss2.WorldPos, HOMING2);
 	}
 
 	if (g_Goleft) {
@@ -203,13 +207,13 @@ void UPDOWN_MOVE() {
 		BulletCreate(g_Boss2.WorldPos, BULLETNORMAL4, 210.0f);
 	}
 	
-	if (frcnt % 135 < 65) {
+	if (frcnt % 240 < 120) {
 		g_Boss2.MovementY = -SPEED_Y;
 	}
-	else if (frcnt % 135 < 135) {
+	else if (frcnt % 240 < 240) {
 		g_Boss2.MovementY = SPEED_Y;
 	}
-	if (frcnt == 1080) {
+	if (frcnt == 240) {
 		frcnt = 0;
 	}
 	frcnt++;

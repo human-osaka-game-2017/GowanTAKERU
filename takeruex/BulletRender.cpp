@@ -27,8 +27,12 @@ void BulletRender() {
 			DrawVertex[j].x += pSearchBullet->WindowPos.x;
 			DrawVertex[j].y += pSearchBullet->WindowPos.y;
 		}
-
-		TrimingVertex(DrawVertex, bulletInitializeData[pSearchBullet->BulletKind].tu, bulletInitializeData[pSearchBullet->BulletKind].tv, bulletInitializeData[pSearchBullet->BulletKind].Size, bulletInitializeData[pSearchBullet->BulletKind].Size, BULLETPNGSIZE, BULLETPNGSIZE);
+		if (pSearchBullet->wasReflect) {
+			TrimingVertex(DrawVertex, 0.0f, 0.0f, bulletInitializeData[pSearchBullet->BulletKind].Size, bulletInitializeData[pSearchBullet->BulletKind].Size, BULLETPNGSIZE, BULLETPNGSIZE);
+		}
+		else {
+			TrimingVertex(DrawVertex, bulletInitializeData[pSearchBullet->BulletKind].tu, bulletInitializeData[pSearchBullet->BulletKind].tv, bulletInitializeData[pSearchBullet->BulletKind].Size, bulletInitializeData[pSearchBullet->BulletKind].Size, BULLETPNGSIZE, BULLETPNGSIZE);
+		}
 
 		// テクスチャをステージに割り当てる
 		pD3Device->SetTexture(0, pTexture[BULLET_TEX]);

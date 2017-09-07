@@ -38,6 +38,9 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 
 	STAGE_ID stage_ID = GetStage_ID();
 
+	RENDER_STATE rederState = WAITING;
+	static int frcnt = 0;
+
 	switch (step) {
 
 	case 0:
@@ -46,7 +49,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		if (Key[KEY_T] == KEY_ON) {
 			StageSelect(STAGE_5);
 		}
-
+		frcnt = 0;
 		stage_ID = GetStage_ID();
 		MainSceneLoad(stage_ID);
 		PlayBGM(stage_ID, false);
@@ -56,8 +59,20 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 		break;
 
 	case 1:
-		MainControl();
-		MainRender();
+		if (stage_ID != STAGE_1) {
+			if (frcnt == 0) {
+				rederState = STARTUP;
+				frcnt++;
+			}
+			else if (frcnt < 300) {
+				rederState = RUNNING;
+				frcnt++;
+			}
+		}
+		
+
+		MainControl(/*rederState*/);
+		MainRender(rederState);
 
 		if (pPlayer->Hp <= 0) {
 

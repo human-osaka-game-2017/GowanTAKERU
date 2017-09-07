@@ -137,6 +137,10 @@ void HitManage() {
 					if (pBoss1->Hp <= 0) {
 						pBoss1->isDead = true;
 						pBoss1->isActive = false;
+						PlayBackSound(MAINSCENE_SE_BOSSDEAD, false, 100);
+					}
+					else {
+						PlayBackSound(MAINSCENE_SE_ENEMYDAMAGE, false, 100);
 					}
 					DeleteBullet(&pSearchBullet);
 					continue;
@@ -146,12 +150,18 @@ void HitManage() {
 		//ボス２と球のダメージ計算
 		if (pBoss2->isActive && !(pBoss2->isDead)) {
 			if (pSearchBullet->wasReflect) {
-				if (SquareHit(&pSearchBullet->WindowPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &pBoss2->WindowPos, BOSS2WIDTH, BOSS2HEIGHT)) {
+				D3DXVECTOR2 Boss2Pos = pBoss2->WorldPos;
+				Boss2Pos.y -= 27.0f;
+				if (SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &Boss2Pos, BOSS2WIDTH - 76.0f, BOSS2HEIGHT - 54.0f)) {
 					pBoss2->Hp -= pSearchBullet->Atk;
 					pBoss2->hasDamage = true;
 					if (pBoss2->Hp <= 0) {
 						pBoss2->isDead = true;
 						pBoss2->isActive = false;
+						PlayBackSound(MAINSCENE_SE_BOSSDEAD, false, 100);
+					}
+					else {
+						PlayBackSound(MAINSCENE_SE_ENEMYDAMAGE, false, 100);
 					}
 					DeleteBullet(&pSearchBullet);
 					continue;
@@ -197,8 +207,11 @@ void HitManage() {
 					if (pBoss3->Hp <= 0) {
 						pBoss3->isDead = true;
 						pBoss3->isActive = false;
+						PlayBackSound(MAINSCENE_SE_BOSSDEAD, false, 100);
 					}
-					PlayBackSound(MAINSCENE_SE_ENEMYDAMAGE, false, 100);
+					else {
+						PlayBackSound(MAINSCENE_SE_ENEMYDAMAGE, false, 100);
+					}
 					DeleteBullet(&pSearchBullet);
 					continue;
 				}
@@ -213,6 +226,10 @@ void HitManage() {
 					if (pBoss4->Hp <= 0) {
 						pBoss4->isDead = true;
 						pBoss4->isActive = false;
+						PlayBackSound(MAINSCENE_SE_BOSSDEAD, false, 100);
+					}
+					else {
+						PlayBackSound(MAINSCENE_SE_ENEMYDAMAGE, false, 100);
 					}
 					DeleteBullet(&pSearchBullet);
 					continue;
@@ -221,16 +238,12 @@ void HitManage() {
 		}
 
 		//プレイヤーと弾のダメージ計算と無敵時間の考慮
-		bool waitTime = false;
-		if (pBoss1->goNextStage || pBoss3->goNextStage || pBoss4->goNextStage) {
-			waitTime = true;
-		}
+		
 		if(!pSearchBullet->wasReflect){
-			if (!waitTime) {
 				if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size)) {
 
 					if (!player->beInvincible) {
-						//PlayBackSound(SOUND01, false, 100);
+						PlayBackSound(MAINSCENE_SE_PLAYYERDAMAGE, false, 100);
 
 						player->Hp -= pSearchBullet->Atk;
 
@@ -240,7 +253,6 @@ void HitManage() {
 					DeleteBullet(&pSearchBullet);
 					continue;
 				}
-			}
 		}
 
 		//敵とバレットのダメージ計算
@@ -255,6 +267,10 @@ void HitManage() {
 						if (enemy[j].Hp <= 0) {
 							enemy[j].beActive = false;
 							enemy[j].beDead = true;
+							PlayBackSound(MAINSCENE_SE_ENEMYDEAD, false, 100);
+						}
+						else {
+							PlayBackSound(MAINSCENE_SE_ENEMYDAMAGE, false, 100);
 						}
 						DeleteBullet(&pSearchBullet);
 						break;
@@ -272,6 +288,7 @@ void HitManage() {
 				if (!player->beInvincible) {
 					player->Hp -= enemy[i].Atk;
 					player->beInvincible = true;
+					PlayBackSound(MAINSCENE_SE_PLAYYERDAMAGE, false, 100);
 				}
 			}
 		}
@@ -289,6 +306,7 @@ void HitManage() {
 			if (!player->beInvincible) {
 				player->Hp -= pBoss1->Atk;
 				player->beInvincible = true;
+				PlayBackSound(MAINSCENE_SE_PLAYYERDAMAGE, false, 100);
 			}
 		}
 	}
@@ -298,6 +316,7 @@ void HitManage() {
 			if (!player->beInvincible) {
 				player->Hp -= pBoss2->Atk;
 				player->beInvincible = true;
+				PlayBackSound(MAINSCENE_SE_PLAYYERDAMAGE, false, 100);
 			}
 		}
 	}
@@ -309,6 +328,7 @@ void HitManage() {
 			if (!player->beInvincible) {
 				player->Hp -= pBoss3->Atk;
 				player->beInvincible = true;
+				PlayBackSound(MAINSCENE_SE_PLAYYERDAMAGE, false, 100);
 			}
 		}
 	}
@@ -320,6 +340,7 @@ void HitManage() {
 			if (!player->beInvincible) {
 				player->Hp -= pBoss1->Atk;
 				player->beInvincible = true;
+				PlayBackSound(MAINSCENE_SE_PLAYYERDAMAGE, false, 100);
 			}
 		}
 	}

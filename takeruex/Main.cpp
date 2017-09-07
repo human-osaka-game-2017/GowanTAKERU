@@ -73,7 +73,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	DirectXSoundInit(hWnd);
 	StageMapNumMaxInit();
 	LeadEnemyData();
-	//LoadBulletData();
+	LoadBulletData();
 
 
 	MSG msg;

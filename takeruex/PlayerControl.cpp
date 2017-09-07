@@ -63,14 +63,17 @@ void PlayerInit() {
 
 	case STAGE_2:
 		CSVLoad("CSV/mainscene/stage2_gimmick.csv", map, MaxY, MaxX);
+		g_player.LifeReduced++;
 		break;
 
 	case STAGE_3:
 		CSVLoad("CSV/mainscene/stage3_gimmick.csv", map, MaxY, MaxX);
+		g_player.LifeReduced++;
 		break;
 
 	case STAGE_4:
 		CSVLoad("CSV/mainscene/stage4_gimmick.csv", map, MaxY, MaxX);
+		g_player.LifeReduced++;
 		break;
 
 	case STAGE_5:

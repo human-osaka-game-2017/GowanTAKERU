@@ -14,42 +14,45 @@
 #include<time.h>
 
 
-void MainControl() {
+void MainControl(/*RENDER_STATE stageStartState*/) {
 
 	PlayerControl();
-	EnemyControl();
+	if (GetGoNextStageWait() == WAITING) {
+		EnemyControl();
+	}
 	Boss1Control();
 	Boss2Control();
 	Boss3Control();
 	Boss4Control();
 	BulletControl();
-	HitManage();
+	if (GetGoNextStageWait() == WAITING) {
+		HitManage();
+	}
 	StageGimmickManage();
 	MoveManage();
-	
 }
 
-GO_NEXT_STAGE_STATE GetGoNextStageWait() {
+RENDER_STATE GetGoNextStageWait() {
 	Boss1Data* pBoss1 = GetBoss1Data();
 	Boss2Data* pBoss2 = GetBoss2Data();
 	Boss3Data* pBoss3 = GetBoss3Data();
 	Boss4Data* pBoss4 = GetBoss4Data();
 
-	static GO_NEXT_STAGE_STATE goNextStageWait = RUNNING;
+	static RENDER_STATE goNextStageWait = WAITING;
 	if ((pBoss1->isDead && !pBoss1->goNextStage)|| 
 		(pBoss2->isDead && !pBoss2->goNextStage)||
 		(pBoss3->isDead && !pBoss3->goNextStage) ||
 		(pBoss4->isDead && !pBoss4->goNextStage)) {
 
-		if (goNextStageWait == RUNNING) {
-			goNextStageWait = STARTWAIT;
+		if (goNextStageWait == WAITING) {
+			goNextStageWait = STARTUP;
 		}
 		else {
-			goNextStageWait = WAITING;
+			goNextStageWait = RUNNING;
 		}
 	}
 	else {
-		goNextStageWait = RUNNING;
+		goNextStageWait = WAITING;
 	}
 
 	return goNextStageWait;
