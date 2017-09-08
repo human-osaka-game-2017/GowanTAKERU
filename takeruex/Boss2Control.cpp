@@ -16,9 +16,9 @@ struct Pos {
 	float posX, posY;
 };
 
-void GoPosB();
-void UPDOWN_MOVE();
-void HitMove();
+void GoPosB(D3DXVECTOR2* pPos);
+void UPDOWN_MOVE(D3DXVECTOR2* pPos);
+void HitMove(D3DXVECTOR2* pPos);
 
 Boss2Data g_Boss2;
 static int g_GoPosBFrcnt = 0;
@@ -126,13 +126,13 @@ void Boss2Control() {
 
 				switch (g_Boss2.boss2State) {
 				case UDMOVE:
-					UPDOWN_MOVE();
+					UPDOWN_MOVE(&g_Boss2.WorldPos);
 					break;
 				case GOPOSB:
-					GoPosB();
+					GoPosB(&g_Boss2.WorldPos);
 					break;
 				case GOLEFT:
-					HitMove();
+					HitMove(&g_Boss2.WorldPos);
 					break;
 				}
 			}
@@ -168,10 +168,10 @@ void MoveBoss2() {
 	}
 }
 
-void GoPosB() {
+void GoPosB(D3DXVECTOR2* pPos) {
 
 	if ((g_GoPosBFrcnt % 12) == 0) {
-		BulletCreate(g_Boss2.WorldPos, HOMING2);
+		BulletCreate(*pPos, HOMING2);
 	}
 
 	if (g_Goleft) {
@@ -192,7 +192,7 @@ void GoPosB() {
 	g_GoPosBFrcnt++;
 }
 
-void UPDOWN_MOVE() {
+void UPDOWN_MOVE(D3DXVECTOR2* pPos) {
 
 	//D3DXVECTOR2 LeftTop = { (g_Boss2.WorldPos.x - BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) - 1 };
 	//D3DXVECTOR2 RightTop = { (g_Boss2.WorldPos.x + BOSS2WIDTH / 2),(g_Boss2.WorldPos.y - BOSS2HEIGHT / 2) - 1 };
@@ -201,10 +201,10 @@ void UPDOWN_MOVE() {
 
 	static int frcnt = 0;
 	if (frcnt%120 == 60) {
-		BulletCreate(g_Boss2.WorldPos, HOMING1);
+		BulletCreate(*pPos, HOMING1);
 	}
 	if (frcnt % 120 == 119) {
-		BulletCreate(g_Boss2.WorldPos, BULLETNORMAL4, 210.0f);
+		BulletCreate(*pPos, BULLETNORMAL4, 210.0f);
 	}
 	
 	if (frcnt % 240 < 120) {
@@ -223,7 +223,7 @@ void UPDOWN_MOVE() {
 	}
 }
 
-void HitMove() {
+void HitMove(D3DXVECTOR2* pPos) {
 
 	if (6 < g_HitMoveFrcnt) {
 
@@ -235,15 +235,15 @@ void HitMove() {
 		}
 
 		if (g_HitMoveFrcnt == 30) {
-			BulletCreate(g_Boss2.WorldPos, HOMING1);
+			BulletCreate(*pPos, HOMING1);
 		}
 
 		if (g_HitMoveFrcnt == 60) {
-			BulletCreate(g_Boss2.WorldPos, BULLETTARGET3);
+			BulletCreate(*pPos, BULLETTARGET3);
 		}
 
 		if (g_HitMoveFrcnt == 90) {
-			BulletCreate(g_Boss2.WorldPos, BULLETTARGET3);
+			BulletCreate(*pPos, BULLETTARGET3);
 			g_HitMoveFrcnt = 0;
 			g_Boss2.hasDamage = false;
 			g_Boss2.boss2State = UDMOVE;
@@ -252,3 +252,34 @@ void HitMove() {
 
 	g_HitMoveFrcnt++;
 }
+
+void KeyBoss2Control(Enemy* pBoss2) {
+	if (g_Boss2.boss2State == GOPOSB) {
+		g_Boss2.boss2State = UDMOVE;
+	}
+	static int preHp = pBoss2->Hp;
+	if (preHp != pBoss2->Hp) {
+		g_Boss2.hasDamage = true;
+	}
+	preHp = pBoss2->Hp;
+	if (g_Boss2.hasDamage) {
+		g_Boss2.boss2State = GOLEFT;
+	}
+
+	switch (g_Boss2.boss2State) {
+	case UDMOVE:
+		UPDOWN_MOVE(&pBoss2->WorldPos);
+		break;
+	case GOPOSB:
+		GoPosB(&pBoss2->WorldPos);
+		break;
+	case GOLEFT:
+		HitMove(&pBoss2->WorldPos);
+		break;
+	}
+
+	pBoss2->MovementX = g_Boss2.MovementX;
+	pBoss2->MovementY = g_Boss2.MovementY;
+	g_Boss2.MovementX = g_Boss2.MovementY = 0;
+}
+

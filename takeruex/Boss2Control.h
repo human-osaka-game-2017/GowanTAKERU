@@ -2,6 +2,7 @@
 #define BOSS2CONTROL_H
 
 #include<d3dx9.h>
+#include"EnemyControl.h"
 
 #define BOSS2WIDTH 168
 #define BOSS2HEIGHT 197
@@ -35,5 +36,7 @@ void Boss2Init();
 void Boss2Control();
 void MoveBoss2();
 Boss2Data* GetBoss2Data();//ボス２のデータ
+
+void KeyBoss2Control(Enemy* pBoss2);
 
 #endif

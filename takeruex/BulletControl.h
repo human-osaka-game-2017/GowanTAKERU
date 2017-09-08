@@ -56,6 +56,7 @@ enum BULLETKIND{
 	HOMING8,
 	HOMING9,
 	HOMING10,
+	FIREWORKS,
 	BULLET_MAX
 };
 
@@ -72,6 +73,7 @@ struct Bullet {
 	int Atk;
 	int ReflectMax;
 	int ReflectCnt;
+	int frcnt;
 	bool wasReflect;
 	Bullet* next;
 	Bullet* previous;

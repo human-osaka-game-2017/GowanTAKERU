@@ -26,6 +26,7 @@ SCENE_ID RunGameOverScene(bool willbetrancefar) {
 	switch (step) {
 	case 0:
 		GameOverSceneLoad();
+		PlayBackSound(GAMEOVERSCENE_BGM01, false, 100);
 		nextsceneflg = false;
 		step++;
 		break;

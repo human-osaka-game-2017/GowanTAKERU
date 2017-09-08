@@ -6,6 +6,8 @@
 #include"CommonRender.h"
 #include"FileManagement.h"
 
+#define FIREWORKSMAXFR 180
+
 static Bullet g_firstBullet;
 static EditableBulletData g_BulletInitialData[BULLET_MAX];
 
@@ -57,6 +59,7 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, int bulletKind, float plusDe
 	newBullet->wasReflect = false;
 	newBullet->MovementX = newBullet->MovementY = 0;
 	newBullet->ReflectCnt = 0;
+	newBullet->frcnt = 0;
 
 	Player* pPlayer = GetplayerData();
 
@@ -65,7 +68,7 @@ void BulletCreate(const D3DXVECTOR2& launchingSite, int bulletKind, float plusDe
 	newBullet->ReflectMax = g_BulletInitialData[bulletKind].ReflectMax;
 	newBullet->SaveCoordinate = pPlayer->WindowPos;
 
-	if (bulletKind / 10 == 0 || bulletKind / 10 == 2) {
+	if (bulletKind / 10 == 0 || bulletKind / 10 == 2 || bulletKind == FIREWORKS) {
 		newBullet->Rad = 0;
 	}
 	else {
@@ -105,6 +108,25 @@ void BulletControl() {
 					pSearchBullet->SaveCoordinate.x,
 					pSearchBullet->SaveCoordinate.y
 				);
+			}
+		}
+
+		if (pSearchBullet->BulletKind == FIREWORKS) {
+			if (pSearchBullet->frcnt == FIREWORKSMAXFR) {
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 0.0f);
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 45.0f);
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 90.0f);
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 135.0f);
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 180.0f);
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 225.0f);
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 270.0f);
+				BulletCreate(pSearchBullet->WorldPos, BULLETNORMAL2, 315.0f);
+
+				DeleteBullet(&pSearchBullet);
+
+			}
+			else {
+				pSearchBullet->frcnt++;
 			}
 		}
 

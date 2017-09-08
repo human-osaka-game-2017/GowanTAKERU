@@ -34,7 +34,7 @@ void HitManage() {
 	Bullet* pFirstBullet = GetFirstBulletAddress();
 	EditableBulletData* BulletInitializeData = GetEditableBulletData();
 	Enemy* enemy = GetEnemyData();
-	
+
 	//プレイヤーとマップの処理
 	static int frcntInvincible;
 
@@ -107,6 +107,12 @@ void HitManage() {
 	//デバッグ用
 	KEYSTATE* Key = GetKey();
 	KeyCheck(&Key[KEY_P], DIK_P);
+	KeyCheck(&Key[KEY_I], DIK_I);
+	if (Key[KEY_I] == KEY_PUSH) {
+		pBoss4->isActive = true;
+		pBoss4->isDead = true;
+	}
+
 	if (Key[KEY_P] == KEY_PUSH) {
 		for (int i = 0; i < enemyMax; i++) {
 			enemy[i].beDead = true;
@@ -240,7 +246,7 @@ void HitManage() {
 		//プレイヤーと弾のダメージ計算と無敵時間の考慮
 		
 		if(!pSearchBullet->wasReflect){
-				if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT, &pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size)) {
+				if (SquareHit(&player->WorldPos, PLAYERSIZEWIDTH, PLAYERSIZEHEIGHT - 16.0f, &pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size)) {
 
 					if (!player->beInvincible) {
 						PlayBackSound(MAINSCENE_SE_PLAYYERDAMAGE, false, 100);
@@ -260,7 +266,7 @@ void HitManage() {
 		for (int j = 0; j < enemyMax; j++) {
 			if (enemy[j].beActive == true && enemy[j].beDead == false) {
 				if (pSearchBullet->wasReflect) {
-					if (SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &enemy[j].WorldPos, enemy[j].Width, enemy[j].Height)) {
+					if (SquareHit(&pSearchBullet->WorldPos, BulletInitializeData[bulletKind].Size, BulletInitializeData[bulletKind].Size, &enemy[j].WorldPos, enemy[j].Width - 10, enemy[j].Height)) {
 
 						enemy[j].Hp -= pSearchBullet->Atk;
 

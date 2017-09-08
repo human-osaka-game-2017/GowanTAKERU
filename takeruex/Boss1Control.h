@@ -2,6 +2,7 @@
 #define STAGE_1_BOSS_H
 
 #include<d3dx9.h>
+#include"EnemyControl.h"
 
 #define BOSS1WIDTH		150.0f
 #define BOSS1HEIGHT		178.0f
@@ -39,5 +40,7 @@ void Boss1Init();
 void Boss1Control();
 
 void MoveBoss1();
+
+void KeyBoss1Control(Enemy* pKeyBoss1);
 
 #endif

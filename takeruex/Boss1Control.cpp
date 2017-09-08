@@ -72,28 +72,23 @@ void Boss1Init() {
 
 BREAK:
 	if (g_Boss1.isExistence) {
-		g_frcnt = 0;
 		SetStopScrollPos(g_Boss1.WolrdPos.x);
-		g_Boss1.Boss1State = BOSS1_NON;
-		g_Boss1.MovementX = g_Boss1.MovementY = 0;
-		g_Boss1.a = 0;//g_Boss1.ga = 0;
-		g_Boss1.Hp = MAXHP;
-		g_Boss1.Atk = 20;
-		g_Boss1.saveShotFrmcnt = 0;
-		g_Boss1.saveActionCntForNORMALSHOT = 0;
-		g_Boss1.saveActionCntForDUALSHOT = 0;
-		g_Boss1.saveActionCntForLARIAT = 0;
-		//g_Boss1.isJumping = false;
-		g_Boss1.isLeft = true;
-		g_Boss1.isDead = false;
-		g_Boss1.isActive = false;
-		g_Boss1.goNextStage = false;
 	}
-	else {
-		g_Boss1.isDead = false;
-		g_Boss1.isActive = false;
-		g_Boss1.goNextStage = false;
-	}
+	g_frcnt = 0;
+	g_Boss1.Boss1State = BOSS1_NON;
+	g_Boss1.MovementX = g_Boss1.MovementY = 0;
+	g_Boss1.a = 0;//g_Boss1.ga = 0;
+	g_Boss1.Hp = MAXHP;
+	g_Boss1.Atk = 20;
+	g_Boss1.saveShotFrmcnt = 0;
+	g_Boss1.saveActionCntForNORMALSHOT = 0;
+	g_Boss1.saveActionCntForDUALSHOT = 0;
+	g_Boss1.saveActionCntForLARIAT = 0;
+	//g_Boss1.isJumping = false;
+	g_Boss1.isLeft = true;
+	g_Boss1.isDead = false;
+	g_Boss1.isActive = false;
+	g_Boss1.goNextStage = false;
 
 	free(gimmickData);
 }
@@ -335,10 +330,108 @@ float CalculateLARIATDecidedValue(float range) {
 	float decidedValue2 = 80.0f - ((range - 980.0f)*(range - 980.0f)) / 16000.0f;
 
 	//前回のLARIATからのDUALSHOT数による判定値の計算
-	float decidedValue3 = (3.5f * g_Boss1.saveActionCntForNORMALSHOT) + (12.0f*g_Boss1.saveActionCntForDUALSHOT) - (35.0f*g_Boss1.saveActionCntForLARIAT);
+	float decidedValue3 = (3.5f * g_Boss1.saveActionCntForNORMALSHOT) + (20.0f*g_Boss1.saveActionCntForDUALSHOT) - (35.0f*g_Boss1.saveActionCntForLARIAT);
 
 	//平均値による一意な値の決定
 	float decidedValue = (decidedValue1 + decidedValue2 + decidedValue3 + decidedValue3) / 4;
 
 	return decidedValue;
+}
+
+void KeyBoss1Control(Enemy* pKeyBoss1) {
+
+	//知覚する
+	Player* pPlayer = GetplayerData();
+
+	float range = Calculate_distance(pKeyBoss1->WorldPos.x, pKeyBoss1->WorldPos.y, pPlayer->WorldPos.x, pPlayer->WorldPos.y);
+	if (range < 0) {
+		range *= -1;
+	}
+
+	int bulletNum = 0;
+
+	Bullet* pFirstBullet = GetFirstBulletAddress();
+	for (Bullet* SearchBullet = pFirstBullet->next; SearchBullet != NULL; SearchBullet = SearchBullet->next) {
+
+		bulletNum++;
+	}
+
+	//意思決定
+	if (g_Boss1.Boss1State == BOSS1_NON) {
+		g_Boss1.Boss1State = DecidedBoss1State(range, bulletNum);
+	}
+
+	//行動
+	static int DUALSHOTMiddleFrcnt = 0;
+	switch (g_Boss1.Boss1State) {
+	case NORMALSHOT:
+		BulletCreate(pKeyBoss1->WorldPos, BULLETTARGET1);
+		g_Boss1.saveActionCntForNORMALSHOT++;
+		g_Boss1.saveShotFrmcnt = 0;
+		g_Boss1.Boss1State = BOSS1_NON;
+		break;
+
+	case DUALSHOT:
+		if (DUALSHOTMiddleFrcnt == 0) {
+			BulletCreate(pKeyBoss1->WorldPos, BULLETTARGET1);
+		}
+
+		DUALSHOTMiddleFrcnt++;
+
+		if (DUALSHOTMiddleFrcnt == DUALSHOTINTERVALS) {
+			g_Boss1.saveActionCntForDUALSHOT++;
+			g_Boss1.saveShotFrmcnt = 0;
+			g_Boss1.Boss1State = BOSS1_NON;
+			DUALSHOTMiddleFrcnt = 0;
+			if (pKeyBoss1->beLeft) {
+				BulletCreate(pKeyBoss1->WorldPos, BULLETNORMAL2, 150.0f);
+			}
+			else {
+				BulletCreate(pKeyBoss1->WorldPos, BULLETNORMAL2, 30.0f);
+			}
+		}
+		break;
+
+	case LARIAT:
+		if (g_Boss1.a < BOSS1MAXSPEED) {
+			g_Boss1.a += 0.2;
+		}
+
+		if (pKeyBoss1->beLeft) {
+			pKeyBoss1->MovementX += -g_Boss1.a;
+			D3DXVECTOR2 boss1Left = pKeyBoss1->WorldPos;
+			boss1Left.x = pKeyBoss1->WorldPos.x - (BOSS1WIDTH / 2) + pKeyBoss1->MovementX;
+			if (MapKindSpecifyForPos(&boss1Left) != NOTHING) {
+				g_Boss1.Boss1State = BOSS1_NON;
+				g_Boss1.a = 0;
+				g_Boss1.saveActionCntForLARIAT++;
+				pKeyBoss1->beLeft = false;
+			}
+		}
+		else {
+			pKeyBoss1->MovementX += g_Boss1.a;
+			D3DXVECTOR2 boss1Right = pKeyBoss1->WorldPos;
+			boss1Right.x = pKeyBoss1->WorldPos.x + (BOSS1WIDTH / 2) + pKeyBoss1->MovementX;
+			if (MapKindSpecifyForPos(&boss1Right) != NOTHING) {
+				g_Boss1.Boss1State = BOSS1_NON;
+				g_Boss1.a = 0;
+				g_Boss1.saveActionCntForLARIAT++;
+				pKeyBoss1->beLeft = true;
+			}
+		}
+		break;
+	}
+
+	if (g_Boss1.Boss1State != LARIAT) {
+		if (pPlayer->WorldPos.x < pKeyBoss1->WorldPos.x) {
+			pKeyBoss1->beLeft = true;
+			pKeyBoss1->MovementX = -BOSS1SPEED;
+		}
+		else {
+			pKeyBoss1->beLeft = false;
+			pKeyBoss1->MovementX = BOSS1SPEED;
+		}
+	}
+	pKeyBoss1->MovementY = 20;
+	g_Boss1.saveShotFrmcnt++;
 }

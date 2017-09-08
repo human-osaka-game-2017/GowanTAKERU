@@ -7,32 +7,43 @@
 #include"CommonRender.h"
 #include"BulletControl.h"
 #include"DirectXSound.h"
+#include"MainControl.h"
 
 #include<d3dx9.h>
 
-#define JUMPV0 -9.03f
-#define HIGHJUMPV0 -11.1f
-#define BOSS4GRAVITY 0.0234f
-#define BOSS4SPEEDMAX 4.0f
-#define BOSS4SPEED 2.80f
+#define BOSS4SPEED 9.0f
+#define ACTIONWAITMAX 40
 
 struct Pos {
 	float posX, posY;
-
 };
 
-enum BOSS4POS {
-	SKY, POINT_A, POINT_B, POINT_C, INITIALPOINT
-};
+//データ群
+Pos posA = { 401 * TIPSIZE + (2 / TIPSIZE),18 * TIPSIZE };
+Pos posB = { 404 * TIPSIZE + (2 / TIPSIZE),12 * TIPSIZE };
+Pos posC = { 409 * TIPSIZE + (2 / TIPSIZE),11 * TIPSIZE };
+Pos posD = { 409 * TIPSIZE + (2 / TIPSIZE),14 * TIPSIZE };
+Pos posE = { 413 * TIPSIZE + (2 / TIPSIZE),12 * TIPSIZE };
+Pos posF = { 417 * TIPSIZE + (2 / TIPSIZE),18 * TIPSIZE };
+Pos posG = { 423 * TIPSIZE + (2 / TIPSIZE),11 * TIPSIZE };
+Pos posH = { 423 * TIPSIZE + (2 / TIPSIZE),24 * TIPSIZE };
 
 //プロトタイプ群
-int Random(int min, int max);
+BOSS4ACTIONLIST DecidedAction();
+void UpdateTeleport();
+void DualShot();
 bool CheckInPoint(const Pos& Point, const D3DXVECTOR2& LeftTop, const D3DXVECTOR2& RightBottom);
-bool Boss4InitialControl();
-void Boss4BasicControl();
+float CalculateDistance(float forPoint, float fromPoint);
+void Boss4Action();
+void Action_GO_XXX(Pos firstPos, BOSS4POINT firstPoint, Pos endPos, BOSS4POINT endPoint, bool mini);
+void Action_GO_XG();
+void Action_GO_XH();
+//GHは省く
+void Action_GO_GX(Pos endPos, BOSS4POINT endPoint);
+void Action_GO_H_LARIAT_D();
 
 Boss4Data g_Boss4;
-static bool g_isControlInitial = false;
+//static bool g_isControlInitial = false;
 
 Boss4Data* GetBoss4Data() {
 	return &g_Boss4;
@@ -40,7 +51,7 @@ Boss4Data* GetBoss4Data() {
 
 void Boss4Init() {
 	g_Boss4.isExistence = false;
-	g_isControlInitial = false;
+	//g_isControlInitial = false;
 
 	STAGE_ID stage_ID = GetStage_ID();
 	int MaxX = GetStageXYMAX(stage_ID, X);
@@ -83,14 +94,17 @@ void Boss4Init() {
 BREAK:
 	if (g_Boss4.isExistence) {
 		SetStopScrollPos(g_Boss4.WolrdPos.x);
-		g_Boss4.Boss4JumpState = GROUND;
+		g_Boss4.Boss4TeleportState = NONMOVE;
+		g_Boss4.BOSS4ACTIONLIST = NONACTION;
+		g_Boss4.currentPoint = POINT_C;
+		g_Boss4.currentActionState = ACTION_FIN;
 		g_Boss4.MovementX = g_Boss4.MovementY = 0;
 		g_Boss4.Hp = 100;
 		g_Boss4.Atk = 20;
-		g_Boss4.FrCnt = 0;
-		g_Boss4.JumpFrCnt = 0;
-		g_Boss4.ga = 0;
-		g_Boss4.isJumping = false;
+		g_Boss4.TeleportFrCnt = -1;
+		g_Boss4.ActionWaitFrCnt = 0;
+		g_Boss4.shotFrCnt = 0;
+		g_Boss4.waitFrCnt = 0;
 		g_Boss4.isLeft = true;
 		g_Boss4.isDead = false;
 		g_Boss4.isActive = false;
@@ -125,12 +139,47 @@ void Boss4Control() {
 			//活動状態である
 			if (g_Boss4.isActive) {
 				if (!g_Boss4.isDead) {
-				/*if (!g_isControlInitial) {
-					g_isControlInitial = Boss4InitialControl();
-				}
-				else {
-					Boss4BasicControl();
-				}*/
+
+					Player* pPlayer = GetplayerData();
+					if (g_Boss4.WolrdPos.x < pPlayer->WorldPos.x) {
+						g_Boss4.isLeft = false;
+					}
+					else {
+						g_Boss4.isLeft = true;
+					}
+
+					//初期処理
+					if (g_Boss4.TeleportFrCnt < 0) {
+						g_Boss4.BOSS4ACTIONLIST = GO_ACF;
+						g_Boss4.currentActionState = ACTION_START;
+						g_Boss4.TeleportFrCnt = 0;
+						//BulletCreate(g_Boss4.WolrdPos, FIREWORKS, 180.0f);
+					}
+
+					if (g_Boss4.shotFrCnt == 180) {
+						BulletCreate(g_Boss4.WolrdPos, HOMING1);
+						g_Boss4.shotFrCnt = 0;
+					}
+					else {
+						g_Boss4.shotFrCnt++;
+					}
+
+					//コントロール
+					if (g_Boss4.BOSS4ACTIONLIST == NONACTION) {
+						if (g_Boss4.waitFrCnt == BOSS4WAAITTIME) {
+							g_Boss4.BOSS4ACTIONLIST = DecidedAction();
+							g_Boss4.currentActionState = ACTION_START;
+							g_Boss4.waitFrCnt = 0;
+						}
+						g_Boss4.waitFrCnt++;
+					}
+					else {
+						Boss4Action();
+
+						if (g_Boss4.Boss4TeleportState != NONMOVE) {
+							UpdateTeleport();
+						}
+					}
 			}
 			else {
 				static int frcnt = 0;
@@ -151,249 +200,8 @@ void Boss4Control() {
 	}
 }
 
-bool Boss4InitialControl() {
-
-	//データ群
-	Pos pointA = { 389 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
-	Pos pointB = { 381 * TIPSIZE + (2 / TIPSIZE),16 * TIPSIZE };
-	Pos pointC = { 373 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
-
-	//float moveSpeed = -2.75f;
-	//float jumpPower = -10.0f;
-
-	//D3DXVECTOR2 LeftBottom = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
-	//D3DXVECTOR2 RightBottom = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
-	//if (g_Boss4.isJumping) {
-
-	//	g_Boss4.MovementX = moveSpeed;
-
-	//	if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {
-	//		g_Boss4.isJumping = false;
-	//		g_Boss4.FrCnt = 0;
-	//		g_Boss4.ga = 0;
-	//		g_Boss4.MovementX = 0;
-	//		return true;
-	//	}
-	//	
-	//}
-
-	//if (g_Boss4.FrCnt == 120) {
-	//	g_Boss4.isJumping = true;
-	//	g_Boss4.ga = jumpPower;
-	//}
-
-	//g_Boss4.FrCnt++;
-
-	//g_Boss4.ga += BOSS4GRAVITY;
-	//g_Boss4.MovementY = g_Boss4.ga;
-	return false;
-}
-
-void Boss4BasicControl() {
-
-	////データ群
-	//Pos pointA = { 389 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
-	//Pos pointB = { 381 * TIPSIZE + (2 / TIPSIZE),16 * TIPSIZE };
-	//Pos pointC = { 373 * TIPSIZE + (2 / TIPSIZE),20 * TIPSIZE };
-
-	//static D3DXVECTOR2 prePos = g_Boss4.WolrdPos;
-	//if (prePos != g_Boss4.WolrdPos) {
-	//	int a = 0;
-	//}
-	//prePos = g_Boss4.WolrdPos;
-
-	//D3DXVECTOR2 LeftTop = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
-	//D3DXVECTOR2 RightTop = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y - BOSS4HEIGHT / 2) };
-	//D3DXVECTOR2 LeftBottom = { (g_Boss4.WolrdPos.x - BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
-	//D3DXVECTOR2 RightBottom = { (g_Boss4.WolrdPos.x + BOSS4WIDTH / 2),(g_Boss4.WolrdPos.y + BOSS4HEIGHT / 2) + 1 };
-
-	//Player* pPlayer = GetplayerData();
-
-	////左向きかを決める
-	//if (pPlayer->WorldPos.x <= g_Boss4.WolrdPos.x) {
-	//	g_Boss4.isLeft = true;
-	//}
-	//else {
-	//	g_Boss4.isLeft = false;
-	//}
-
-	////3秒に一回打つ処理
-	//if (g_Boss4.FrCnt == 180) {
-	//	BulletCreate(g_Boss4.WolrdPos, NONREFLECTTARGET1);
-	//}
-	//if (g_Boss4.FrCnt == 360) {
-	//	BulletCreate(g_Boss4.WolrdPos, HOMING1);
-	//	g_Boss4.FrCnt = 0;
-	//}
-	//g_Boss4.FrCnt++;
-
-	////jump頂点時の処理を何度も行わないためのフラグ
-	//static bool isJumpTop = false;
-
-	////jump中
-	//if (g_Boss4.isJumping) {
-
-	//	//着地処理
-	//	if (MapKindSpecifyForPos(&LeftBottom) != NOTHING || MapKindSpecifyForPos(&RightBottom) != NOTHING) {
-
-	//		g_Boss4.isJumping = false;
-	//		g_Boss4.ga = 0;
-	//		g_Boss4.Boss4JumpState = GROUND;
-
-	//		//着地時に打つ処理
-	//		if (CheckInPoint(pointA, LeftTop, RightBottom) || CheckInPoint(pointC, LeftTop, RightBottom)) {
-	//			if (g_Boss4.isLeft) {
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 180.0f);
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL3, 135.0f);
-	//			}
-	//			else {
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 0.0f);
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL3, 45.0f);
-	//			}
-	//		}
-	//		else if (CheckInPoint(pointB, LeftTop, RightBottom)) {
-	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 210.0f);
-	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 240.0f);
-	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 300.0f);
-	//			BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 330.0f);
-	//		}
-	//	}
-
-	//	//ジャンプ頂点時に打つ処理
-	//	if (!isJumpTop) {
-	//		if (0 < g_Boss4.ga) {
-	//			isJumpTop = true;
-	//			switch (g_Boss4.Boss4JumpState) {
-
-	//			case JUMP:
-	//			case LEFTJUMP:
-	//			case RIGHTJUMP:
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETTARGET2);
-
-	//			case LEFTHIGHJUMP:
-	//			case RIGHTHIGHJUMP:
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 210.0f);
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 240.0f);
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 300.0f);
-	//				BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL1, 330.0f);
-	//				break;
-
-	//			}
-	//		}
-	//	}
-	//}
-
-	////ただ立っているときの処理
-	//else {
-
-	//	g_Boss4.JumpFrCnt++;
-	//	g_Boss4.ga = 0;
-
-	//	//jumpする処理
-	//	if (g_Boss4.JumpFrCnt == 30) {
-
-	//		g_Boss4.JumpFrCnt = 0;
-	//		g_Boss4.isJumping = true;
-	//		isJumpTop = false;
-
-	//		//どこに飛ぶのかを決める
-	//		//まず今どこにいるのか
-	//		BOSS4POS currentPoint;
-	//		if (CheckInPoint(pointA, LeftTop, RightBottom)) {
-	//			currentPoint = POINT_A;
-	//			g_Boss4.MovementX += pointA.posX - g_Boss4.WolrdPos.x;
-
-	//		}
-	//		if (CheckInPoint(pointB, LeftTop, RightBottom)) {
-	//			currentPoint = POINT_B;
-	//			g_Boss4.MovementX += pointB.posX - g_Boss4.WolrdPos.x;
-
-	//		}
-	//		if (CheckInPoint(pointC, LeftTop, RightBottom)) {
-	//			currentPoint = POINT_C;
-	//			g_Boss4.MovementX +=pointC.posX - g_Boss4.WolrdPos.x;
-
-	//		}
-
-	//		//それを踏まえてランダムで決める
-	//		do {
-	//			g_Boss4.Boss4JumpState = (BOSS4JUMPSTATE)Random(1, 6);
-	//			if (g_Boss4.Boss4JumpState == JUMP) {
-	//				break;
-	//			}
-	//			if (currentPoint == POINT_A) {
-	//				if (g_Boss4.Boss4JumpState == LEFTJUMP || g_Boss4.Boss4JumpState == LEFTHIGHJUMP) {
-	//					break;
-	//				}
-	//			}
-	//			if (currentPoint == POINT_B) {
-	//				if (g_Boss4.Boss4JumpState == POSB_RJUMP || g_Boss4.Boss4JumpState == POSB_LJUMP) {
-	//					break;
-	//				}
-	//			}
-	//			if (currentPoint == POINT_C) {
-	//				if (g_Boss4.Boss4JumpState == RIGHTJUMP || g_Boss4.Boss4JumpState == RIGHTHIGHJUMP) {
-	//					break;
-	//				}
-	//			}
-	//		} while (1);
-	//		
-	//		switch (g_Boss4.Boss4JumpState) {
-
-	//		case JUMP:
-	//		case LEFTJUMP:
-	//		case RIGHTJUMP:
-	//			g_Boss4.ga = JUMPV0;
-	//			break;
-
-	//		case POSB_RJUMP:
-	//		case POSB_LJUMP:
-	//			g_Boss4.ga = 0.5f + JUMPV0;
-	//			break;
-
-	//		case LEFTHIGHJUMP:
-	//		case RIGHTHIGHJUMP:
-	//			g_Boss4.ga = HIGHJUMPV0;
-	//			break;
-
-	//		}
-	//	}
-	//}
-
-	////移動量の決定
-	//switch (g_Boss4.Boss4JumpState) {
-
-	//case GROUND:
-	//case JUMP:
-	//	g_Boss4.MovementX += 0;
-	//	break;
-
-	//case RIGHTJUMP:
-	//case RIGHTHIGHJUMP:
-	//	g_Boss4.MovementX += BOSS4SPEEDMAX;
-	//	break;
-
-	//case LEFTJUMP:
-	//case LEFTHIGHJUMP:
-	//	g_Boss4.MovementX += -BOSS4SPEEDMAX;
-	//	break;
-
-	//case POSB_RJUMP:
-	//	g_Boss4.MovementX += BOSS4SPEED;
-	//	break;
-
-	//case POSB_LJUMP:
-	//	g_Boss4.MovementX += -BOSS4SPEED;
-	//	break;
-	//}
-
-	//g_Boss4.ga += BOSS4GRAVITY;
-	//g_Boss4.MovementY += g_Boss4.ga;
-}
-
-void Teleport(float pointX, float pointY) {
-	g_Boss4.MovementX = pointX - g_Boss4.WolrdPos.x;
-	g_Boss4.MovementY = pointY - g_Boss4.WolrdPos.y;
+float CalculateDistance(float forPoint, float fromPoint) {
+	return (forPoint - fromPoint);
 }
 
 void MoveBoss4() {
@@ -415,4 +223,385 @@ bool CheckInPoint(const Pos& Point, const D3DXVECTOR2& LeftTop, const D3DXVECTOR
 		}
 	}
 	return false;
+}
+
+void GoPoint(const Pos& forPoint) {
+	g_Boss4.MovementX = CalculateDistance(forPoint.posX, g_Boss4.WolrdPos.x);
+	g_Boss4.MovementY = CalculateDistance(forPoint.posY, g_Boss4.WolrdPos.y);
+}
+
+BOSS4ACTIONLIST DecidedAction() {
+
+	int random = Random(0, 99);
+
+	BOSS4ACTIONLIST nextAction;
+
+	/*if (random < 10) {
+		nextAction = TELPORTCONTINUE;
+	}
+	else {*/
+		random = Random(0, 99);
+		switch (g_Boss4.currentPoint) {
+		case POINT_A:
+			if (random < 30) {
+				nextAction = GO_ACF;
+			}
+			else if (random < 60) {
+				nextAction = GO_ABD;
+			}
+			else if (random < 80) {
+				nextAction = GO_AG;
+			}
+			else {
+				nextAction = GO_AH;
+			}
+			break;
+
+		case POINT_D:
+			if (random < 30) {
+				nextAction = GO_DBA;
+			}
+			else if (random < 60) {
+				nextAction = GO_DEF;
+			}
+			else if (random < 80) {
+				nextAction = GO_DG;
+			}
+			else {
+				nextAction = GO_DH;
+			}
+			break;
+
+		case POINT_F:
+			if (random < 30) {
+				nextAction = GO_FED;
+			}
+			else if (random < 60) {
+				nextAction = GO_FCA;
+			}
+			else if (random < 80) {
+				nextAction = GO_FG;
+			}
+			else {
+				nextAction = GO_FH;
+			}
+			break;
+
+		case POINT_G:
+			if (random < 24) {
+				nextAction = GO_GA;
+			}
+			else if (random < 50) {
+				nextAction = GO_GD;
+			}
+			else if (random < 75) {
+				nextAction = GO_GF;
+			}
+			else {
+				nextAction = GO_GH;
+			}
+			break;
+
+		case POINT_H:
+			nextAction = GO_H_LARIAT_D;
+			break;
+		//}
+	}
+
+	return nextAction;
+}
+
+void UpdateTeleport() {
+
+	if (g_Boss4.TeleportFrCnt < BOSS4TELEPORTFRM) {
+		if (g_Boss4.Boss4TeleportState / 10) {
+			g_Boss4.Boss4TeleportState = FADEOUT_FIRSTHALF;
+		}
+		else {
+			g_Boss4.Boss4TeleportState = TELEPORT_FIRSTHALF;
+		}
+	}
+	else if (g_Boss4.TeleportFrCnt == BOSS4TELEPORTFRM) {
+		if (g_Boss4.Boss4TeleportState / 10) {
+			g_Boss4.Boss4TeleportState = FADEOUT_HARF;
+		}
+		else {
+			g_Boss4.Boss4TeleportState = TELEPORT_HARF;
+		}
+	}
+	else if (g_Boss4.TeleportFrCnt < BOSS4TELEPORTFRM * 2) {
+		if (g_Boss4.Boss4TeleportState / 10) {
+			g_Boss4.Boss4TeleportState = FADEOUT_SECONDHALF;
+		}
+		else {
+			g_Boss4.Boss4TeleportState = TELEPORT_SECONDHALF;
+		}
+	}
+	else if (g_Boss4.TeleportFrCnt == BOSS4TELEPORTFRM * 2) {
+		if (g_Boss4.Boss4TeleportState / 10) {
+			g_Boss4.Boss4TeleportState = FADEOUT_FIN;
+		}
+		else {
+			g_Boss4.Boss4TeleportState = TELEPORT_FIN;
+		}
+	}
+	else {
+		g_Boss4.Boss4TeleportState = NONMOVE;
+		g_Boss4.TeleportFrCnt = 0;
+	}
+
+	g_Boss4.TeleportFrCnt++;
+}
+
+void DualShot() {
+	if (g_Boss4.isLeft) {
+		BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 0.0f);
+		BulletCreate(g_Boss4.WolrdPos, NONREFLECTNORMAL2, 45.0f);
+	}
+	else {
+		BulletCreate(g_Boss4.WolrdPos, BULLETNORMAL2, 180.0f);
+		BulletCreate(g_Boss4.WolrdPos, NONREFLECTNORMAL2, 125.0f);
+	}
+}
+
+void SquadShot() {
+	D3DXVECTOR2 tmp = g_Boss4.WolrdPos;
+	tmp.x += g_Boss4.MovementX;
+	BulletCreate(tmp, BULLETNORMAL1, 210.0f);
+	BulletCreate(tmp, BULLETNORMAL1, 240.0f);
+	BulletCreate(tmp, BULLETNORMAL1, 300.0f);
+	BulletCreate(tmp, BULLETNORMAL1, 330.0f);
+}
+
+void Boss4Action() {
+
+	switch (g_Boss4.BOSS4ACTIONLIST) {
+
+	case GO_ACF:
+		Action_GO_XXX(posC, POINT_C, posF, POINT_F, false);
+		break;
+
+	case GO_ABD:
+		Action_GO_XXX(posB, POINT_B, posD, POINT_D, true);
+		break;
+	
+	case GO_DBA:
+		Action_GO_XXX(posB, POINT_B, posA, POINT_A, true);
+		break;
+
+	case GO_DEF:
+		Action_GO_XXX(posE, POINT_E, posF, POINT_F, true);
+		break;
+
+	case GO_FED:
+		Action_GO_XXX(posE, POINT_E, posD, POINT_D, true);
+		break;
+
+	case GO_FCA:
+		Action_GO_XXX(posC, POINT_C, posA, POINT_A, false);
+		break;
+
+	case GO_GA:
+		Action_GO_GX(posA, POINT_A);
+		break;
+
+	case GO_GD:
+		Action_GO_GX(posD, POINT_D);
+		break;
+
+	case GO_GF:
+		Action_GO_GX(posF, POINT_F);
+		break;
+
+	case GO_H_LARIAT_D:
+		Action_GO_H_LARIAT_D();
+		break;
+
+	case GO_AG:
+	case GO_DG:
+	case GO_FG:
+		Action_GO_XG();
+		break;
+
+	case GO_AH:
+	case GO_DH:
+	case GO_FH:
+	case GO_GH:
+		Action_GO_XH();
+		break;
+	}
+}
+
+void Action_GO_XG() {
+	switch (g_Boss4.currentActionState) {
+	case ACTION_START:
+		g_Boss4.Boss4TeleportState = TELEPORT_START;
+		g_Boss4.currentActionState = ACTION_FIRSTHALF;
+		break;
+
+	case ACTION_FIRSTHALF:
+		if (g_Boss4.Boss4TeleportState == TELEPORT_HARF) {
+			GoPoint(posG);
+			g_Boss4.currentPoint = POINT_G;
+		}
+		if (g_Boss4.Boss4TeleportState == NONMOVE) {
+			g_Boss4.ActionWaitFrCnt++;
+			if (g_Boss4.ActionWaitFrCnt == ACTIONWAITMAX / 2) {
+				BulletCreate(g_Boss4.WolrdPos, FIREWORKS, 180.0f);
+			}
+			if (g_Boss4.ActionWaitFrCnt == ACTIONWAITMAX) {
+				g_Boss4.ActionWaitFrCnt = 0;
+				g_Boss4.currentActionState = ACTION_FIN;
+				g_Boss4.BOSS4ACTIONLIST = NONACTION;
+			}
+		}
+		break;
+
+	}
+}
+
+void Action_GO_XH() {
+	switch (g_Boss4.currentActionState) {
+	case ACTION_START:
+		g_Boss4.Boss4TeleportState = FADEOUT_START;
+		g_Boss4.currentActionState = ACTION_FIRSTHALF;
+		break;
+
+	case ACTION_FIRSTHALF:
+		if (g_Boss4.Boss4TeleportState == FADEOUT_HARF) {
+			GoPoint(posH);
+			g_Boss4.currentPoint = POINT_H;
+		}
+		if (g_Boss4.Boss4TeleportState == NONMOVE) {
+			g_Boss4.ActionWaitFrCnt++;
+			if (g_Boss4.ActionWaitFrCnt == ACTIONWAITMAX) {
+				g_Boss4.ActionWaitFrCnt = 0;
+				g_Boss4.currentActionState = ACTION_FIN;
+				g_Boss4.BOSS4ACTIONLIST = NONACTION;
+			}
+		}
+		break;
+	}
+}
+
+//GHは省く
+void Action_GO_GX(Pos endPos, BOSS4POINT endPoint) {
+	switch (g_Boss4.currentActionState) {
+	case ACTION_START:
+		g_Boss4.Boss4TeleportState = TELEPORT_START;
+		g_Boss4.currentActionState = ACTION_FIRSTHALF;
+		break;
+
+	case ACTION_FIRSTHALF:
+		if (g_Boss4.Boss4TeleportState == TELEPORT_HARF) {
+			GoPoint(endPos);
+			g_Boss4.currentPoint = endPoint;
+		}
+		if (g_Boss4.Boss4TeleportState == NONMOVE) {
+			g_Boss4.ActionWaitFrCnt++;
+			
+			if (g_Boss4.ActionWaitFrCnt == ACTIONWAITMAX) {
+				g_Boss4.ActionWaitFrCnt = 0;
+				g_Boss4.currentActionState = ACTION_FIN;
+				g_Boss4.BOSS4ACTIONLIST = NONACTION;
+			}
+		}
+		break;
+
+	}
+}
+
+void Action_GO_XXX(Pos firstPos,BOSS4POINT firstPoint, Pos endPos, BOSS4POINT endPoint, bool mini) {
+	switch (g_Boss4.currentActionState) {
+
+	case ACTION_START:
+		g_Boss4.Boss4TeleportState = TELEPORT_START;
+		g_Boss4.currentActionState = ACTION_FIRSTHALF;
+		break;
+
+	case ACTION_FIRSTHALF:
+		if (g_Boss4.Boss4TeleportState == TELEPORT_HARF) {
+			GoPoint(firstPos);
+			g_Boss4.currentPoint = firstPoint;
+		}
+		if (g_Boss4.Boss4TeleportState == NONMOVE) {
+			g_Boss4.ActionWaitFrCnt++;
+			if (g_Boss4.ActionWaitFrCnt == ACTIONWAITMAX / 2 + 1) {
+				if (mini) {
+					BulletCreate(g_Boss4.WolrdPos, BULLETTARGET2);
+				}
+				else {
+					SquadShot();
+				}
+			}
+			if (g_Boss4.ActionWaitFrCnt == ACTIONWAITMAX) {
+				g_Boss4.ActionWaitFrCnt = 0;
+				g_Boss4.Boss4TeleportState = TELEPORT_START;
+				g_Boss4.currentActionState = ACTION_SECONDHALF;
+			}
+		}
+		break;
+
+	case ACTION_SECONDHALF:
+		if (g_Boss4.Boss4TeleportState == TELEPORT_HARF) {
+			
+			GoPoint(endPos);
+			g_Boss4.currentPoint = endPoint;
+			if (endPoint == POINT_D) {
+				SquadShot();
+			}
+		}
+		if (g_Boss4.Boss4TeleportState == TELEPORT_FIN) {
+			g_Boss4.currentActionState = ACTION_FIN;
+			g_Boss4.BOSS4ACTIONLIST = NONACTION;
+		}
+		break;
+
+
+	}
+}
+
+void Action_GO_H_LARIAT_D() {
+
+	D3DXVECTOR2 boss4Left = g_Boss4.WolrdPos;
+	boss4Left.x = g_Boss4.WolrdPos.x - (BOSS4WIDTH) + g_Boss4.MovementX - 1;
+
+	switch (g_Boss4.currentActionState) {
+
+	case ACTION_START:
+		g_Boss4.currentActionState = ACTION_FIRSTHALF;
+		break;
+
+	case ACTION_FIRSTHALF:
+
+		g_Boss4.ActionWaitFrCnt++;
+		//if (g_Boss4.ActionWaitFrCnt > ACTIONWAITMAX/2) {
+
+			g_Boss4.MovementX -= BOSS4SPEED;
+
+			if (MapKindSpecifyForPos(&boss4Left) != NOTHING) {
+				g_Boss4.ActionWaitFrCnt = 0;
+				g_Boss4.currentActionState = ACTION_HALF;
+			}
+	//	}
+		break;
+
+	case ACTION_HALF:
+		g_Boss4.Boss4TeleportState = TELEPORT_START;
+		g_Boss4.currentActionState = ACTION_SECONDHALF;
+		break;
+
+	case ACTION_SECONDHALF:
+		if (g_Boss4.Boss4TeleportState == TELEPORT_HARF) {
+			GoPoint(posD);
+			g_Boss4.currentPoint = POINT_D;
+		}
+		if (g_Boss4.Boss4TeleportState == TELEPORT_FIN) {
+
+			g_Boss4.ActionWaitFrCnt = 0;
+			g_Boss4.currentActionState = ACTION_FIN;
+			g_Boss4.BOSS4ACTIONLIST = NONACTION;
+
+		}
+	}
 }

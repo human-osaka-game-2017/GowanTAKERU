@@ -25,7 +25,7 @@ struct Enemy {
 	float MovementY;
 	int Atk;
 	int Hp;
-	float bulletFrameCount;//弾を撃つフラグを立てるためのフレームを図っている
+	int bulletFrameCount;//弾を撃つフラグを立てるためのフレームを図っている
 	int firingInterval;//発射感覚
 	float BulletDeg;
 	bool beDead;//死んでいるか

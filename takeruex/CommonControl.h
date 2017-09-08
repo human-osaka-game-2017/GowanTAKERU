@@ -2,6 +2,7 @@
 #define COMMONCONTROL_H
 
 #include<dinput.h>
+#include <XInput.h>
 
 enum KEYSTATE {
 	KEY_PUSH,
@@ -47,10 +48,45 @@ enum KEYKIND
 	KEYMAX
 };
 
+enum PADSTATE
+{
+	PAD_OFF,			//!< 離され続けている.
+	PAD_ON,			//!< 押され続けている.
+	PAD_RELEASE,	//!< 離されたら.
+	PAD_PUSH		//!< 押されたら.
+	
+};
+
+enum XINPUT_ID
+{
+	GAMEPAD_DANALOG_UP,			//!< アナログ十字キー上.
+	GAMEPAD_DANALOG_DOWN,		//!< アナログ十字キー下.
+	GAMEPAD_DANALOG_LEFT,		//!< アナログ十字キー左.
+	GAMEPAD_DANALOG_RIGHT,		//!< アナログ十字キー右.
+	GAMEPAD_START,				//!< スタートボタン.
+	GAMEPAD_BACK,				//!< バックボタン.
+	GAMEANALOG_LEFT_THUMB,		//!< 左スティック押し込み.
+	GAMEANALOG_RIGHT_THUMB,		//!< 右スティック押し込み.
+	GAMEANALOG_LEFT_SHOULDER,	//!< LBキー.
+	GAMEANALOG_RIGHT_SHOULDER,	//!< RBキー.
+	GAMEPAD_A,					//!< Aボタン.
+	GAMEPAD_B,					//!< Bボタン.
+	GAMEPAD_X,					//!< Xボタン.
+	GAMEPAD_Y,					//!< Yボタン.
+	XINPUT_ID_MAX				//!< ボタンの総数.
+};
+
 enum KEYSTATE* GetKey();
+
 void KeyCheck(KEYSTATE* Key, int DIK);
 
 void OutputDebug_Number(float outputNum, HWND hWnd);
+
+PADSTATE GetButtonState(XINPUT_ID _buttonId);
+
+void GamePadCheckButton(XINPUT_ID _buttonId, WORD _xinputButton);
+
+void UpdatePad();
 
 #endif 
 

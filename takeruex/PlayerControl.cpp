@@ -97,7 +97,7 @@ void PlayerInit() {
 	}
 	Break:
 	free(map);
-	g_BasePoint.y = 544;
+	g_BasePoint.y = 539;
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 
 	g_player.Hp = 100;
@@ -126,6 +126,7 @@ void PlayerControl() {
 void SetPlayerMovement() {
 
 	KEYSTATE* Key = GetKey();
+
 	int* map = GetMapData();
 
 	//èÌÇ…èdóÕÇÇ©ÇØÇÈ
@@ -138,9 +139,12 @@ void SetPlayerMovement() {
 	KeyCheck(&Key[KEY_RIGHT], DIK_RIGHT);
 	KeyCheck(&Key[KEY_C], DIK_C);
 	KeyCheck(&Key[KEY_UP], DIK_UP);
+	GamePadCheckButton(GAMEPAD_DANALOG_LEFT, XINPUT_GAMEPAD_DPAD_LEFT);
+	GamePadCheckButton(GAMEPAD_DANALOG_RIGHT, XINPUT_GAMEPAD_DPAD_RIGHT);
+	GamePadCheckButton(GAMEPAD_DANALOG_UP, XINPUT_GAMEPAD_DPAD_UP);
+	GamePadCheckButton(GAMEPAD_A, XINPUT_GAMEPAD_A);
 
-
-	if (Key[KEY_LEFT] == KEY_ON) {
+	if (Key[KEY_LEFT] == KEY_ON || GetButtonState(GAMEPAD_DANALOG_LEFT) == PAD_ON) {
 		if (!g_player.beDownSwing && !g_player.beUPSwing) {
 			g_player.beLeft = true;
 		}
@@ -149,7 +153,7 @@ void SetPlayerMovement() {
 
 	}
 
-	if (Key[KEY_RIGHT] == KEY_ON) {
+	if (Key[KEY_RIGHT] == KEY_ON || GetButtonState(GAMEPAD_DANALOG_RIGHT) == PAD_ON) {
 		if (!g_player.beDownSwing && !g_player.beUPSwing) {
 			g_player.beLeft = false;
 		}
@@ -192,7 +196,8 @@ void SetPlayerMovement() {
 		g_player.Jumping = false;
 		frcnt = 0;
 
-		if (Key[KEY_C] == KEY_PUSH || Key[KEY_UP] == KEY_PUSH) {
+		if (Key[KEY_C] == KEY_PUSH || Key[KEY_UP] == KEY_PUSH || 
+			GetButtonState(GAMEPAD_DANALOG_UP) == PAD_PUSH || GetButtonState(GAMEPAD_A) == PAD_PUSH) {
 			g_player.JumpPower = PLAYERJUMPPOWER;
 			g_player.Jumping = true;
 			PlayBackSound(MAINSCENE_SE_JUMP, false, 10);
@@ -202,7 +207,8 @@ void SetPlayerMovement() {
 	if (g_player.Jumping) {
 		frcnt++;
 		if (frcnt != 0 && frcnt < 15) {
-			if (Key[KEY_C] == KEY_ON || Key[KEY_UP] == KEY_ON) {
+			if (Key[KEY_C] == KEY_ON || Key[KEY_UP] == KEY_ON ||
+				GetButtonState(GAMEPAD_DANALOG_UP) == PAD_ON || GetButtonState(GAMEPAD_A) == PAD_ON) {
 				g_player.JumpPower -= 0.25;
 			}
 		}
@@ -265,12 +271,18 @@ void MovePlayer() {
 void PlayerReflectMotion() {
 
 	KEYSTATE* Key = GetKey();
-
+																																																																																																																																																												
 	//-------------------------------------------------------------------------
 	//íeÇÇÕÇ∂Ç´ï‘Ç∑äpìx
 	//-------------------------------------------------------------------------
 	KeyCheck(&Key[KEY_Z], DIK_Z);
 	KeyCheck(&Key[KEY_X], DIK_X);
+	GamePadCheckButton(GAMEANALOG_LEFT_SHOULDER, XINPUT_GAMEPAD_LEFT_SHOULDER);
+	GamePadCheckButton(GAMEANALOG_RIGHT_SHOULDER, XINPUT_GAMEPAD_RIGHT_SHOULDER);
+	GamePadCheckButton(GAMEANALOG_LEFT_THUMB, XINPUT_GAMEPAD_LEFT_THUMB);
+	GamePadCheckButton(GAMEANALOG_RIGHT_THUMB, XINPUT_GAMEPAD_RIGHT_THUMB);
+	GamePadCheckButton(GAMEPAD_Y, XINPUT_GAMEPAD_Y);
+	GamePadCheckButton(GAMEPAD_X, XINPUT_GAMEPAD_X);
 
 	static int frcnt = 0;
 
@@ -280,13 +292,19 @@ void PlayerReflectMotion() {
 
 	}
 	else {
-		if (Key[KEY_Z] == KEY_PUSH)
+		if (Key[KEY_Z] == KEY_PUSH ||
+			GetButtonState(GAMEANALOG_LEFT_SHOULDER) == PAD_PUSH ||
+			GetButtonState(GAMEANALOG_LEFT_THUMB) == PAD_PUSH ||
+			GetButtonState(GAMEPAD_Y) == PAD_PUSH)
 		{
 			g_player.beDownSwing = true;
 			PlayBackSound(MAINSCENE_SE_SWING, false, 10);
 
 		}
-		if (Key[KEY_X] == KEY_PUSH) {
+		if (Key[KEY_X] == KEY_PUSH ||
+			GetButtonState(GAMEANALOG_RIGHT_SHOULDER) == PAD_PUSH ||
+			GetButtonState(GAMEANALOG_RIGHT_THUMB) == PAD_PUSH ||
+			GetButtonState(GAMEPAD_X) == PAD_PUSH) {
 
 			g_player.beUPSwing = true;
 			PlayBackSound(MAINSCENE_SE_SWING, false, 10);

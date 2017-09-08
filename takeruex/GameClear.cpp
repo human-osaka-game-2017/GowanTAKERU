@@ -53,6 +53,7 @@ SCENE_ID RunGameClearScene(bool willbetrancefar) {
 		break;
 
 	case 2:
+		StopSound(GAMECLEAR_BGM01);
 		ReleaseTexture(GAMECLEAR_TEXMAX);
 		FreeTexture();
 		step = 0;

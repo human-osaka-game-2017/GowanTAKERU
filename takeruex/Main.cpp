@@ -100,14 +100,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				frcnt++;
 			}
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 			if (currenttime - prevtime >= 1000) {
 				OutputDebug_Number((float)frcnt, hWnd);
 				frcnt = 0;
 				prevtime = currenttime;
 
 			}
-//#endif _DEBUG
+#endif _DEBUG
 
 		}
 		//timeEndPeriod(1);

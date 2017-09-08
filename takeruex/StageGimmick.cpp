@@ -531,7 +531,7 @@ void ComeBackCheckPoint() {
 		basePoint->y = 544;
 	}
 
-	basePoint->y = 544;
+	basePoint->y = 539;
 	
 	D3DXVECTOR2 BasePoint0 = D3DXVECTOR2(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2);
 	player->WindowPos.x = player->WorldPos.x - (basePoint->x - BasePoint0.x);

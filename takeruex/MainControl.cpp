@@ -12,9 +12,12 @@
 #include"Boss3Control.h"
 #include"Boss4Control.h"
 #include<time.h>
+#include"CommonControl.h"
 
 
 void MainControl(/*RENDER_STATE stageStartState*/) {
+
+	UpdatePad();
 
 	PlayerControl();
 	if (GetGoNextStageWait() == WAITING) {

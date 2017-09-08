@@ -3,6 +3,10 @@
 #include"FileManagement.h"
 #include"MainRender.h"
 #include"PlayerControl.h"
+#include"MapControl.h"
+
+#define BACKGROUNDWIDTH 2560.0f
+#define BACKGROUNDHEIGHT 720.0f
 
 void BackgroundRender() {
 
@@ -11,12 +15,25 @@ void BackgroundRender() {
 
 	CUSTOMVERTEX Backgrond[] = {
 		{ 0.0f,0.0f,0.5f,1.0f, 0xFFFFFFFF,0.0f,0.0f },
-		{ DISPLAY_WIDTH,0.0f,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
-		{ DISPLAY_WIDTH,DISPLAY_HEIGHT,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
-		{ 0.0f,DISPLAY_HEIGHT,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
+		{ BACKGROUNDWIDTH,0.0f,0.5f,1.0f,0xFFFFFFFF,1.0f,0.0f },
+		{ BACKGROUNDWIDTH,BACKGROUNDHEIGHT,0.5f,1.0f,0xFFFFFFFF,1.0f,1.0f },
+		{ 0.0f,BACKGROUNDHEIGHT,0.5f,1.0f,0xFFFFFFFF,0.0f,1.0f }
 	};
 
 	STAGE_ID stage_ID = GetStage_ID();
+
+	int maptipX = GetStageXYMAX(stage_ID, X);
+
+	float mapX = maptipX * (TIPSIZE);
+
+	D3DXVECTOR2* pBasePoint = GetBasePoint();
+
+	float pos = (pBasePoint->x - DISPLAY_WIDTH / 2) / mapX;
+
+	for (int i = 0; i < 4; i++) {
+		Backgrond[i].x -= (BACKGROUNDWIDTH - DISPLAY_WIDTH) * pos;
+	}
+
 	switch (stage_ID) {
 	case STAGE_1:
 		// テクスチャをステージに割り当てる

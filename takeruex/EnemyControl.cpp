@@ -9,6 +9,8 @@
 #include"PlayerControl.h"
 #include "BulletControl.h"
 #include "FileManagement.h"
+#include"Boss1Control.h"
+#include"Boss2Control.h"
 
 //プロトタイプ群
 void SetEnemyData(int maxX, int maxY, int* pGimmickData);
@@ -144,29 +146,37 @@ void EnemyControl() {
 			}
 
 			if (g_pEnemy[i].beActive == true && g_pEnemy[i].beDead == false) {
-				EnemyPursuit(i);
-				g_pEnemy[i].bulletFrameCount++;
-				if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー毎に持っている発射感覚になったら入る
+				if (g_pEnemy[i].enemyKind == BOSS1_SHUTTER7_KEY) {
+					KeyBoss1Control(&g_pEnemy[i]);
+				}
+				else if (g_pEnemy[i].enemyKind == BOSS2_SHUTTER8_KEY) {
+					KeyBoss2Control(&g_pEnemy[i]);
+				}
+				else {
+					EnemyPursuit(i);
+					g_pEnemy[i].bulletFrameCount++;
+					if (g_pEnemy[i].bulletFrameCount == g_pEnemy[i].firingInterval) {//エネミー毎に持っている発射感覚になったら入る
 
-					if (g_pEnemy[i].BulletKind / 10 == 0 || g_pEnemy[i].BulletKind / 10 == 2) {
-						if (g_pEnemy[i].beLeft) {
-							BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
-						}
-						else {
-							if (g_pEnemy[i].BulletDeg < 180) {
-								BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 180.0f - g_pEnemy[i].BulletDeg);
+						if (g_pEnemy[i].BulletKind / 10 == 0 || g_pEnemy[i].BulletKind / 10 == 2) {
+							if (g_pEnemy[i].beLeft) {
+								BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
 							}
 							else {
-								BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 540.0f - g_pEnemy[i].BulletDeg);
+								if (g_pEnemy[i].BulletDeg < 180) {
+									BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 180.0f - g_pEnemy[i].BulletDeg);
+								}
+								else {
+									BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, 540.0f - g_pEnemy[i].BulletDeg);
+								}
 							}
 						}
-					}
-					else {
-						BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
-					}
+						else {
+							BulletCreate(g_pEnemy[i].WorldPos, g_pEnemy[i].BulletKind, g_pEnemy[i].BulletDeg);
+						}
 
-					g_pEnemy[i].bulletFrameCount = 0;
+						g_pEnemy[i].bulletFrameCount = 0;
 
+					}
 				}
 			}
 		}
@@ -864,7 +874,7 @@ void SetEnemyData(int maxX,int maxY, int* pGimmickData) {
 				g_pEnemy[enemyCount].bulletFrameCount = 0;
 				g_pEnemy[enemyCount].beDead = false;//死んでいるか
 				g_pEnemy[enemyCount].beActive = false;//活動中か
-				g_pEnemy[enemyCount].beLeft = false;//左（右）どうっち向いてるか
+				g_pEnemy[enemyCount].beLeft = true;//左（右）どうっち向いてるか
 				g_pEnemy[enemyCount].EnemyBasePoint.x = g_pEnemy[enemyCount].WorldPos.x;//エネミーの初期座標
 				g_pEnemy[enemyCount].EnemyBasePoint.y = g_pEnemy[enemyCount].WorldPos.y;
 				g_pEnemy[enemyCount].FrontWorldPos.x = g_pEnemy[enemyCount].WorldPos.x;//1フレーム前の敵の座標

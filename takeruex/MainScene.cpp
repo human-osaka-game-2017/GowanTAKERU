@@ -129,6 +129,7 @@ SCENE_ID RunMainScene(bool willbetrancefar) {
 			g_isScreenTransition = true;
 			blackOutData->BlackOutflg = true;
 			nextscene = GAMECLEARSCENE;
+			StageSelect(STAGE_1);
 		}
 		break;
 
@@ -163,12 +164,16 @@ void PlayBGM(STAGE_ID stage_ID, bool boss) {
 		case STAGE_4:
 			PlayBackSound(MAINSCENE_STAGEBGM04, true, 10);
 			break;
+		case STAGE_5:
+			PlayBackSound(MAINSCENE_STAGEBGM03, true, 10);
+			break;
 		}
 	}
 	else {
 		switch (stage_ID) {
 		case STAGE_1:
 		case STAGE_3:
+		case STAGE_5:
 			PlayBackSound(MAINSCENE_BOSSBGM01, true, 10);
 			break;
 		case STAGE_2:
@@ -196,12 +201,16 @@ void StopBGM(STAGE_ID stage_ID, bool boss) {
 		case STAGE_4:
 			StopSound(MAINSCENE_STAGEBGM04);
 			break;
+		case STAGE_5:
+			StopSound(MAINSCENE_STAGEBGM03);
+			break;
 		}
 	}
 	else {
 		switch (stage_ID) {
 		case STAGE_1:
 		case STAGE_3:
+		case STAGE_5:
 			StopSound(MAINSCENE_BOSSBGM01);
 			break;
 		case STAGE_2:

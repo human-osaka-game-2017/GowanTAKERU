@@ -34,6 +34,12 @@ void EnemyRender() {
 
 				TrimingVertex(DrawVertex, enemy[i].tu, enemy[i].tv, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
 
+				if (enemy[i].enemyKind == FIXEDBATTERY1 || enemy[i].enemyKind == FIXEDBATTERY2) {
+					if ((enemy[i].bulletFrameCount % 12) < 6) {
+						TrimingVertex(DrawVertex, 384.0f, 320.0f, enemy[i].Width, enemy[i].Height, ENEMYPNGSIZE, ENEMYPNGSIZE);
+					}
+				}
+
 			if (!enemy[i].beLeft) {
 				TurnVertex_tu(DrawVertex);
 			}

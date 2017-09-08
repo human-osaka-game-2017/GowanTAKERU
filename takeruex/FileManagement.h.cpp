@@ -107,10 +107,17 @@ void LoadBulletDataCSV(EditableBulletData* pInBulletData) {
 
 	fopen_s(&pFile, "CSV/Mainscene/BulletData.csv", "r");
 
-	for (int i = 0; i < BULLET_MAX; i++) {
+	for (int i = 0; i < BULLET_MAX - 1; i++) {
 		int ID;
 		fscanf_s(pFile, "%d,%d,%d,%f,%f,%f,%f", &ID, &pInBulletData[i].Atk, &pInBulletData[i].ReflectMax, &pInBulletData[i] .Speed, &pInBulletData[i].Size, &pInBulletData[i].tu, &pInBulletData[i].tv);
 	}
+
+	pInBulletData[FIREWORKS].Atk = 10;
+	pInBulletData[FIREWORKS].ReflectMax = 1;
+	pInBulletData[FIREWORKS].Speed = 4.0f;
+	pInBulletData[FIREWORKS].Size = 22.0f; 
+	pInBulletData[FIREWORKS].tu = 0.0f;
+	pInBulletData[FIREWORKS].tu = 22.0f;
 	fclose(pFile);
 }
 

@@ -2,6 +2,7 @@
 #define DIRECTXINPUT_H
 
 #include<Windows.h>
+#include <XInput.h>
 
 void DXInputKeybourdInit(HWND hWnd, HINSTANCE hInstance);
 void FreeDxInput();
